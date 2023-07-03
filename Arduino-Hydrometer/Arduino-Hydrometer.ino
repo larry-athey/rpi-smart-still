@@ -36,7 +36,6 @@
 // runs. However, this can be used as a stand-alone digital hydrometer which is way cheaper than
 // those obscenely over-priced handheld digital alcometers that distilleries use.
 //
-// Refer to the file Instructions.pdf included here for wiring and photos of a completed project.
 // The only external component needed is a 4.7K pull up resistor from the 5 volt pin to the GPIO
 // in pin. Since this project needs to run on 12 volts due to the ethanol sensor, I'd recommend
 // sticking a Raspberry PI 3 CPU heatsink to the voltage regulator on an Uno or Mega. I really
