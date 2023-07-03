@@ -5,4 +5,4 @@ Let me start off by saying that I'm no master distiller and don't pretend to be 
 
 This project is a work in progress and components of it will be uploaded here as I feel they are ready for prime-time.
 
-Currently doing physical design debugging of an ESP32 powered hydrometer that uses a weight suspended from a load cell in a miniature sort of a parrot. The distillate proof changes the buoyancy of the weight and seems to be more accurate than the Arduino powered hydrometer, but still works out to be about the same price to build.
+Currently doing physical design debugging of an ESP32 powered hydrometer that uses a reference weight suspended from a load cell in a miniature parrot-like vessel. The distillate proof changes the buoyancy of the reference weight and seems to be more accurate than the Arduino powered hydrometer, but still works out to be about the same price to build.
