@@ -5,7 +5,7 @@ Let me start off by saying that I'm no master distiller and don't pretend to be 
 
 The main focus of this project is to read temperatures and control cooling water via servo controlled needle valves while monitoring the output proof. Eventually, I will add control for electric heating once I obtain more info from distillers who utilize these devices. Thus far, I haven't found an absolute need for this with the Still Spirits boiler.
 
-Once a person takes the condenser and dephleg of the T-500 column and controls their cooling water separately, it's then possible to run a T-500 in pot still mode or have a more controlled reflux system in order to target a higher proof while retaining the flavor from a pot still.
+The T-500 column in its default configuration that Still Spirits designed it, is a one-trick-pony. Reflux only, no pot still flavor. Once a person takes the condenser and dephleg of the T-500 column and controls their cooling water separately, it's then possible to run a T-500 in pot still mode or have a more controlled reflux system. This allows you to target a higher proof while retaining the flavor from a pot still.
 
 This is kind of a juggling act to do manually, no matter what still you happen to use. But it's not hard to automate this and stop your run once the still can no longer deliver the target proof. From that point, you can instantly throw the still into full reflux mode to finish stripping out all remaining ethanol.
 
