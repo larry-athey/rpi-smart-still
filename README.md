@@ -1,7 +1,7 @@
 # RPI-Smart-Still
 Raspberry PI and Arduino/ESP32 powered smart still controller and monitor. Designed around the Still Spirits T-500 column and boiler, but can be easily added to any other custom built still.
 
-**NO, THERE IS NOTHING ILLEGAL ABOUT THIS PROJECT! IT DOESN'T MAKE YOU DO ILLEGAL THINGS OR PREVENT YOU FROM GETTING A LIQUOR LICENSE IN THE USA!**
+**NO, THERE IS NOTHING ILLEGAL ABOUT THIS PROJECT! IT DOESN'T MAKE YOU DO ILLEGAL THINGS OR PREVENT YOU FROM GETTING A LIQUOR LICENSE IN THE USA! THIS IS ONLY A TOOL!**
 
 Let me start off by saying that I'm no master distiller and don't pretend to be one. YouTube and other social media sites are already full of those kinds of frauds *(Yes, I'm talking about you Cyrus Mason Jar, Still'n The Clear charlatan)*. I'm a software engineer with a strong emphasis in the field of automation. I'm only a hobby distiller, but I know very well what needs to be done in order to automate a still and maintain a targeted output proof. It's all a matter of temperature control and monitoring the result.
 
