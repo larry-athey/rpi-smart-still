@@ -18,7 +18,7 @@
 // The reason for this is that they really are not an ethanol sensor, it's actually a capacitor
 // that changes value depending on the density of the dielectric. E-85 Ethanol has 15% water in
 // it, the more water in the sensor, the higher the output frequency. The oscillator is tuned so
-// that 100% gasoline will result in >= 50 Hz and will increase based on the water content.
+// that 100% gasoline will result in <= 50 Hz and will increase based on the water content.
 //
 // Liquid Densities: Gasoline = 6.25#/gallon, Ethanol = 6.53#/gallon, Water = 8.35#/gallon
 //
