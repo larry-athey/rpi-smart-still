@@ -47,7 +47,7 @@
 // of the library's readings. Strange that my cheap little pocket oscilloscope can read it just
 // fine, but not an ESP32. If somebody else can do it, my hat is off to you, I gave up on it.
 //------------------------------------------------------------------------------------------------
-#include "Adafruit_ILI9341.h" // TFT display library add-on to Adafruit GFX
+#include "Adafruit_ILI9341.h" // TFT display library add-on to Adafruit GFX (sadly, it's slow)
 #include "FreeSans10pt7b.h"   // https://github.com/moononournation/ArduinoFreeFontFile.git
 #include "FreeDefaultFonts.h" // Included in MCUFRIEND_kbv (used for the 7-segment LED style font)
 //------------------------------------------------------------------------------------------------
@@ -133,11 +133,11 @@ void setup() {
   tft.fillScreen(ILI9341_BLACK);
   tft.setFont(&FreeSans10pt7b);
   tft.setTextSize(1);
-  tft.setTextColor(ILI9341_PURPLE);
+  tft.setTextColor(ILI9341_DARKGREY);
   tft.setCursor(2,19);
   tft.print("Distillate Temp:");
-  tft.setTextColor(ILI9341_NAVY);
-  tft.setCursor(2,234);
+  tft.setTextColor(ILI9341_DARKGREEN);
+  tft.setCursor(2,233);
   tft.print("Ethanol Sensor Frequency:");
   FreqUpdate();
   TempUpdate();
@@ -238,7 +238,7 @@ void TempUpdate() { // Update the distillate temperature on the display
   String fStr = String(TempC * 9 / 5 + 32,1);
   tft.setFont(&FreeSans10pt7b);
   tft.setTextSize(1);
-  tft.setTextColor(ILI9341_PURPLE);
+  tft.setTextColor(ILI9341_DARKGREY);
   tft.fillRect(140,1,155,24,ILI9341_BLACK);
   tft.setCursor(145,19);
   tft.print(cStr + "C / " + fStr + "F");
@@ -248,9 +248,9 @@ void TempUpdate() { // Update the distillate temperature on the display
 void FreqUpdate() { // Update the sensor frequency value on the display
   tft.setFont(&FreeSans10pt7b);
   tft.setTextSize(1);
-  tft.setTextColor(ILI9341_NAVY);
+  tft.setTextColor(ILI9341_DARKGREEN);
   tft.fillRect(245,215,75,24,ILI9341_BLACK);
-  tft.setCursor(247,234);
+  tft.setCursor(247,233);
   tft.print(String(HZ) + " Hz");
   FreqCounter = millis();
 }
