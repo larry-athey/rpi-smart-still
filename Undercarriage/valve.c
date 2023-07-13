@@ -159,6 +159,14 @@ int main(int argc,char **argv) {
   }
 
   wiringPiSetupGpio();
+  pinMode(VALVE1_OPEN,OUTPUT);
+  pinMode(VALVE1_CLOSE,OUTPUT);
+  pinMode(VALVE1_LIMIT_OPEN,INPUT);
+  pinMode(VALVE1_LIMIT_CLOSE,INPUT);
+  pinMode(VALVE2_OPEN,OUTPUT);
+  pinMode(VALVE2_CLOSE,OUTPUT);
+  pinMode(VALVE2_LIMIT_OPEN,INPUT);
+  pinMode(VALVE2_LIMIT_CLOSE,INPUT);
 
   if (argc == 3) {
     // Valve full open or full close or status requested
