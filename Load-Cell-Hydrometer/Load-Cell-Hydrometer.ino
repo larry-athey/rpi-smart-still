@@ -257,7 +257,7 @@ void EthanolUpdate() { // Update the ethanol value on the display
   }
   tft.drawBitmap(canvasX,75,canvas.getBuffer(),canvas.width(),canvas.height(),FG,ILI9341_BLACK);
   /*
-  // Old school screen updates for Arduino Uno/Nano/Micro (blank the area and redraw)
+  // Old school screen updates for Arduino Uno/Nano (blank the area and redraw)
   if (Reading > 99) {
     tft.setCursor(40,171);
   } else {
@@ -298,7 +298,7 @@ void TempUpdate() { // Update the distillate temperature on the display
   canvas.print(cStr + "C / " + fStr + "F");
   tft.drawBitmap(142,0,canvas.getBuffer(),canvas.width(),canvas.height(),ILI9341_DARKGREY,ILI9341_BLACK);
   /*
-  // Old school screen updates for Arduino Uno/Nano/Micro (blank the area and redraw)
+  // Old school screen updates for Arduino Uno/Nano (blank the area and redraw)
   tft.setFont(&FreeSans10pt7b);
   tft.setTextSize(1);
   tft.setTextColor(ILI9341_DARKGREY);
@@ -318,7 +318,7 @@ void TimeUpdate() {
   canvas.print(Uptime);
   tft.drawBitmap(184,215,canvas.getBuffer(),canvas.width(),canvas.height(),ILI9341_DARKGREEN,ILI9341_BLACK);
   /*
-  // Old school screen updates for Arduino Uno/Nano/Micro (blank the area and redraw)
+  // Old school screen updates for Arduino Uno/Nano (blank the area and redraw)
   tft.setFont(&FreeSans10pt7b);
   tft.setTextSize(1);
   tft.setTextColor(ILI9341_DARKGREEN);
