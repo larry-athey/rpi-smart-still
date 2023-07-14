@@ -25,6 +25,12 @@
 // that means noise gets amplified too. I've added a couple capacitors and an inductor to filter
 // out most of the noise. A grounded shield around its wires also wouldn't be a bad idea here.
 //
+// NOTE: Since this hydrometer mounts to the large evaporator column above the still, you should
+// wait until the boiler is up to temp before you calibrate it. Since aluminum is an excellent
+// heat conductor, you want your load cell in an area with a stable temperature and the top of
+// the still is very consistent after the boiler is fully warmed up. Temperature also affects a
+// glass hydrometer the same way, but you've likely never noticed it. Watch it on video sometime.
+//
 // Beyond that, I'd recommend a decent 5 volt 2 amp power supply instead of running things off a
 // USB port since DS18B20 temperature sensors and HX711 load cell amplifiers need a regulated 5
 // volts or they'll fail to read accurately. For example, when powering an ESP32 by USB, the +5v
@@ -134,7 +140,7 @@ void setup() {
   tft.setCursor(25,110);
   tft.print("Remove the reference weight,");
   tft.setCursor(25,135);
-  tft.print("Pausing 15 seconds");
+  tft.print("Pausing 15 Seconds");
   Counter = 0;
   while (Counter < 15) {
     tft.print(".");
@@ -159,17 +165,6 @@ void setup() {
     while (true);
   }
 
-  // Normal room temperature load cells will read -32767 unloaded. Use a temperature compensated
-  // load cell, or wait for your still to warm up to run temp before calibrating the hydrometer.
-  if (Tare < -33000) {
-    tft.setCursor(35,110);
-    tft.print("Load cell appears to be cold,");
-    tft.setCursor(35,135);
-    tft.print("Readings may drift +/- 3%");
-    delay(5000);
-    tft.fillRect(0,74,320,95,ILI9341_BLACK);
-  }
-
   Scale.tare();
   Scale.set_average_mode();
   Tare = Scale.get_units(20);
@@ -180,7 +175,7 @@ void setup() {
   tft.setCursor(35,110);
   tft.print("Attach the reference weight,");
   tft.setCursor(35,135);
-  tft.print("Pausing 15 seconds");
+  tft.print("Pausing 15 Seconds");
   Counter = 0;
   while (Counter < 15) {
     tft.print(".");
@@ -190,16 +185,16 @@ void setup() {
   tft.fillRect(0,74,320,95,ILI9341_BLACK);
 
   // NOTE: Barometric pressure can affect the stability of a load cell, especially during a rain
-  // storm. If the deviation is outside of 0..5 or less than zero, reset the unit and start over.
+  // storm. If Tare2 is outside of +/- 1..5 from zero, reset the unit and start over.
   Scale.calibrate_scale(64,20);
   for (byte x = 0; x <= 49; x ++) WeightBuf[x] = 64;
   tft.setTextColor(ILI9341_YELLOW);
   tft.setCursor(90,95);
   tft.print("Load Calibrated");
   tft.setCursor(90,120);
-  tft.print("Deviation = " + String(Tare,2));
-  tft.setCursor(90,145);
   tft.print("Install Parrot Cup");
+  tft.setCursor(90,145);
+  tft.print("Pausing 30 Seconds");
   tft.setCursor(90,155);
   Counter = 0;
   while (Counter < 30) {
@@ -350,13 +345,13 @@ void loop() {
     Ethanol = CalcEthanol(WeightAvg);
   }
 
-  /*
+/*
   // Uncomment the following code block for display testing
   TempC = random(18,25);
   eTest ++;
   if (eTest == 100) eTest = 0;
   Ethanol = eTest;
-  */
+*/
 
   // Complete screen redraw takes about 2.5 seconds with the Adafruit_ILI9341 library
   // This keeps all of the latest stats on the screen for 5 seconds before refreshing
