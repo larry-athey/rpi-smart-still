@@ -336,6 +336,12 @@ void loop() {
   // Get the current weight of the steel ball and calculate the ethanol percentage from
   // the buoyancy offset of the reference weight. Higher ethanol makes the ball heavier.
   if (CurrentTime - SerialCounter >= 1000) {
+    // Calibrate the load cell if there is anything in the serial input buffer, my still
+    // controller does this at the start of the run to help assure hydrometer accuracy.
+    if (Serial.available()) {
+      while (Serial.available()) Serial.read();
+      Scale.calibrate_scale(64,20);
+    }
     Weight = Scale.get_units(20);
     for (byte x = 0; x <= 48; x ++) WeightBuf[x] = WeightBuf[x + 1];
     WeightBuf[49] = Weight;
