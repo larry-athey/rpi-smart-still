@@ -25,12 +25,6 @@
 // that means noise gets amplified too. I've added a couple capacitors and an inductor to filter
 // out most of the noise. A grounded shield around its wires also wouldn't be a bad idea here.
 //
-// NOTE: Since this hydrometer mounts to the large evaporator column above the still, you should
-// wait until the boiler is up to temp before you calibrate it. Since aluminum is an excellent
-// heat conductor, you want your load cell in an area with a stable temperature and the top of
-// the still is very consistent after the boiler is fully warmed up. Temperature also affects a
-// glass hydrometer the same way, but you've likely never noticed it. Watch it on video sometime.
-//
 // Beyond that, I'd recommend a decent 5 volt 2 amp power supply instead of running things off a
 // USB port since DS18B20 temperature sensors and HX711 load cell amplifiers need a regulated 5
 // volts or they'll fail to read accurately. For example, when powering an ESP32 by USB, the +5v
@@ -43,6 +37,12 @@
 // forums and none of the suggestions have improved anything in my tests, not even with an ESP32.
 // The library is also the same dog slow speed in the WokWi simulator. I just considerer the slow
 // offscreen buffer display with an ESP32 an artistic feature here since speed isn't a necessity.
+//
+// NOTE: Since this hydrometer mounts to the large evaporator column above the still, you should
+// wait until the boiler is up to temp before you calibrate it. Since aluminum is an excellent
+// heat conductor, you want your load cell in an area with a stable temperature and the top of
+// the still is very consistent after the boiler is fully warmed up. Temperature also affects a
+// glass hydrometer the same way, but you've likely never noticed it. Watch it on video sometime.
 //------------------------------------------------------------------------------------------------
 #include "Adafruit_ILI9341.h"  // TFT display library add-on to Adafruit GFX (sadly, it's slow)
 #include "FreeSans10pt7b.h"    // https://github.com/moononournation/ArduinoFreeFontFile.git
@@ -381,7 +381,7 @@ void loop() {
     Serial.println(Ethanol);
     Serial.print("TempC: ");
     Serial.println(TempC,1);
-    Serial.println(""); // Empty lines mark the start and end of data blocks to the Raspberry PI
+    Serial.println("#"); // Pound signs mark the start and end of data blocks to the Raspberry PI
     SerialCounter = CurrentTime;
   }
 }
