@@ -19,7 +19,7 @@
 // use. I honestly don't have a problem with the moving parts and it's cheaper to replace a load
 // cell than it is to replace the E85 sensor if it goes bad.
 //
-// Be sure to check out Load-Cell-Noise-Filter.* files in the Diagrams directory, there are a few
+// Be sure to check out Load-Cell-Hydrometer.pdf file in the Diagrams directory, there are a few
 // additional components needed besides the 4.7K pull up resistor needed in all OneWire projects.
 // Load cells are an analog device and the circuit board that comes with them is an amplifier, so
 // that means noise gets amplified too. I've added a couple capacitors and an inductor to filter
