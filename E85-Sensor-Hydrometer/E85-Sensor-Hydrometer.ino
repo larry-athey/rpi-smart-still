@@ -293,7 +293,7 @@ void loop() {
     Serial.println(Ethanol);
     Serial.print("TempC: ");
     Serial.println(TempC,1);
-    Serial.println(""); // Empty lines mark the start and end of data blocks to the Raspberry PI
+    Serial.println("#"); // Pound signs mark the start and end of data blocks to the Raspberry PI
     SerialCounter = CurrentTime;
   }
 }
