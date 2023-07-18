@@ -5,7 +5,7 @@ sudo dpkg-reconfigure locales
 sudo apt update
 sudo apt upgrade -y
 sudo apt autoremove -y
-sudo apt install -y alsa-utils espeak git-core lighttpd php php-common php-fpm 
+sudo apt install -y alsa-utils espeak git-core lighttpd php php-common php-fpm php-mysql mariadb-server mariadb-client
 sudo apt clean
 
 sudo lighttpd-enable-mod fastcgi
@@ -25,6 +25,19 @@ sudo cp -f *.c /usr/share/rpi-smart-still
 sudo cp -f *.php /usr/share/rpi-smart-still
 
 sudo gcc -o /usr/share/rpi-smart-still/valve /usr/share/rpi-smart-still/valve.c -l wiringPi
+
+sudo systemctl enable mariadb > /dev/null 2>&1
+sudo systemctl start mariadb > /dev/null 2>&1
+
+echo
+echo
+echo "Time to secure the MySQL server, you will want to answer Yes to all questions"
+echo "and be sure to set the root password to one that you can remember. Since this"
+echo "system isn't meant to be given inbound public internet access, you don't have"
+echo "to worry about anything too complicated. THIS IS NOT A PUBLIC WEB SERVER!"
+echo
+
+sudo mysql_secure_installation
 
 echo
 echo
