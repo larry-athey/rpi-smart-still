@@ -6,6 +6,7 @@ sudo apt update
 sudo apt upgrade -y
 sudo apt autoremove -y
 sudo apt install -y alsa-utils espeak git-core lighttpd php php-common php-fpm php-mysql mariadb-server mariadb-client
+sudo apt --fix-broken install -y
 sudo apt clean
 
 sudo lighttpd-enable-mod fastcgi
