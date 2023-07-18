@@ -5,3 +5,18 @@ CREATE USER rssdbuser@localhost IDENTIFIED BY 'rssdbpasswd';
 USE `rpismartstill`;
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, LOCK TABLES, EXECUTE, CREATE ROUTINE, ALTER ROUTINE, TRIGGER ON `rpismartstill`.* TO 'rssdbuser'@'localhost';
 FLUSH PRIVILEGES;
+
+CREATE TABLE `input_table` (
+  `ID` int(11) NOT NULL,
+  `timestamp` timestamp NULL DEFAULT NULL,
+  `boiler_temp` float DEFAULT NULL,
+  `dephleg_temp` float DEFAULT NULL,
+  `column_temp` float DEFAULT NULL,
+  `distillate_temp` float DEFAULT NULL,
+  `distillate_abv` tinyint(4) DEFAULT NULL,
+  `serial_data` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+
+ALTER TABLE `input_table` ADD PRIMARY KEY (`ID`);
+
+ALTER TABLE `input_table` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
