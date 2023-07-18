@@ -45,15 +45,16 @@ sudo systemctl start mariadb > /dev/null 2>&1
 clear
 
 echo "Time to secure the MySQL server, you will want to answer Yes to all questions"
-echo "and be sure to set the root password to one that you can remember. Since this"
-echo "system isn't meant to be given inbound public internet access, you don't have"
-echo "to worry about anything too complicated. THIS IS NOT A PUBLIC WEB SERVER!"
+echo "EXCEPT for the one about using a Unix socket for authentication. Just be sure"
+echo "to set the root password to one that you can remember, simple is fine. Keep in"
+echo "mind that this system isn't designed to for inbound internet access, you don't"
+echo "have to worry about anything too complicated. THIS IS NOT A PUBLIC WEB SERVER!"
 echo
 
 sudo mysql_secure_installation
 
-echo
-echo
+clear
+
 echo "Installation is now complete, but you still need to create the CRON job that"
 echo "runs the undercarriage of the system."
 echo
