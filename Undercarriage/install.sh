@@ -21,6 +21,8 @@ wget https://project-downloads.drogon.net/wiringpi-latest.deb
 sudo dpkg -i wiringpi-latest.deb
 
 sudo mkdir -p /usr/share/rpi-smart-still
+sudo cp -f *.c /usr/share/rpi-smart-still
+sudo cp -f *.php /usr/share/rpi-smart-still
 
 sudo gcc -o /usr/share/rpi-smart-still/valve /usr/share/rpi-smart-still/valve.c -l wiringPi
 
