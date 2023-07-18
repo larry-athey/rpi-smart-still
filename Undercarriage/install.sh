@@ -59,6 +59,12 @@ echo
 
 sudo mysql_secure_installation
 
+clear
+
+echo "Now installing phpMyAdmin, be sure to select the lighttpd configuration!"
+echo
+read -p "Press ENTER to continue..." nothing
+
 sudo apt install -y phpmyadmin
 sudo service lighttpd force-reload
 
