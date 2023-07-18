@@ -66,7 +66,7 @@ echo "The CRON job shown in the above fires off every minute to verify that all 
 echo "of the process scripts are running for input, output, and logic control."
 echo
 echo "You will also need to run 'sudo raspi-config' and go to Interface Options to"
-echo "enable 1-wire support. This will require your Raspberry PI to be rebooted."
+echo "enable 1-Wire support. This will require your Raspberry PI to be rebooted."
 echo
 echo
 echo "You can delete this git clone after you are done, it is no longer needed."
