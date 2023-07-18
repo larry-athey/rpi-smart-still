@@ -1,11 +1,21 @@
 #!/bin/bash
 
+clear
+
+echo "If you are using anything prior to a Raspberry Pi 4, you need to be running"
+echo "a 32 bit version of Raspbian, even though there are 64 bit versions for it."
+echo "Unless you have 4+ GB of RAM, a 64 bit OS is completely useless. You surely"
+echo "will have problems compiling the servo valve driver under a 64 bit Raspbian"
+echo "on anything older than a Pi 4."
+
+read -p "Press ENTER to continue the installation or CTRL+C to cancel..." nothing
+
 sudo dpkg-reconfigure locales
 
 sudo apt update
 sudo apt upgrade -y
 sudo apt autoremove -y
-sudo apt install -y alsa-utils espeak git-core lighttpd php php-common php-fpm php-mysql mariadb-server mariadb-client
+sudo apt install -y alsa-utils espeak lighttpd php php-common php-fpm php-mysql mariadb-server mariadb-client
 sudo apt --fix-broken install -y
 sudo apt clean
 
