@@ -53,6 +53,9 @@ echo
 
 sudo mysql_secure_installation
 
+sudo apt install -y phpmyadmin
+sudo service lighttpd force-reload
+
 clear
 
 echo "Installation is now complete, but you still need to create the CRON job that"
