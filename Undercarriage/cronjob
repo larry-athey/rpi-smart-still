@@ -1,0 +1,42 @@
+#!/bin/bash
+
+chown -R www-data:www-data /var/www/html
+chmod g+w -R /var/www/html
+
+Hour=$(date +%H)
+Min=$(date +%M)
+
+if [ "$Hour" == "00" ] && [ "$Min" == "15" ]; then
+  cd /usr/share/rpi-smart-still
+  pkill -f /usr/share/rpi-smart-still/rss-logic-loop
+  pkill -f /usr/share/rpi-smart-still/rss-read-loop
+  pkill -f /usr/share/rpi-smart-still/rss-write-loop
+  ./rss-db-maint.php
+  sleep 15
+fi
+
+LoopFailure=0
+
+ps cax | grep [r]ss-logic-loop
+if [ $? -ne 0 ]; then
+  LoopFailure=1
+fi
+
+ps cax | grep [r]ss-read-loop
+if [ $? -ne 0 ]; then
+  LoopFailure=1
+fi
+
+ps cax | grep [r]ss-write-loop
+if [ $? -ne 0 ]; then
+  LoopFailure=1
+fi
+
+if [ $LoopFailure -eq 1 ]; then
+  pkill -f /usr/share/rpi-smart-still/rss-logic-loop
+  pkill -f /usr/share/rpi-smart-still/rss-read-loop
+  pkill -f /usr/share/rpi-smart-still/rss-write-loop
+  /usr/share/rpi-smart-still/rss-logic-loop &
+  /usr/share/rpi-smart-still/rss-read-loop &
+  /usr/share/rpi-smart-still/rss-write-loop &
+fi
