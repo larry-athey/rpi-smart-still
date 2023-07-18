@@ -42,6 +42,12 @@ sudo gcc -o /usr/share/rpi-smart-still/valve /usr/share/rpi-smart-still/valve.c 
 sudo systemctl enable mariadb > /dev/null 2>&1
 sudo systemctl start mariadb > /dev/null 2>&1
 
+if [ ! -f /boot/cmdline.txt.old ]; then
+  sudo mv -f /boot/cmdline.txt /boot/cmdline.txt.old
+  sudo touch /tmp/cmdline.txt
+  sudo mv -f /tmp/cmdline.txt /boot/cmdline.txt
+fi
+
 clear
 
 echo "Time to secure the MySQL server, you will want to answer Yes to all questions"
