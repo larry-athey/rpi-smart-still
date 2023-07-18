@@ -42,8 +42,8 @@ sudo gcc -o /usr/share/rpi-smart-still/valve /usr/share/rpi-smart-still/valve.c 
 sudo systemctl enable mariadb > /dev/null 2>&1
 sudo systemctl start mariadb > /dev/null 2>&1
 
-echo
-echo
+clear
+
 echo "Time to secure the MySQL server, you will want to answer Yes to all questions"
 echo "and be sure to set the root password to one that you can remember. Since this"
 echo "system isn't meant to be given inbound public internet access, you don't have"
