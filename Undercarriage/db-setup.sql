@@ -54,4 +54,3 @@ CREATE TABLE `settings` (
 ALTER TABLE `settings` ADD PRIMARY KEY (`ID`);
 
 ALTER TABLE `settings` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
-
