@@ -371,12 +371,12 @@ void loop() {
   }
   // Communications to my Raspberry PI based still monitor/controller uses 9600 baud serial data
   if (CurrentTime - SerialCounter >= 1000) {
-    //char WeightLog[25];        // For debugging only, not used by Raspberry PI, comment out
-    //sprintf(WeightLog,"%.2f %.2f",Weight,WeightAvg); // "                                 "
-    //Serial.print("Uptime: ");  // "                                                       "
-    //Serial.println(Uptime);    // "                                                       "
-    //Serial.print("Weight: ");  // "                                                       "
-    //Serial.println(WeightLog); // "                                                       "
+    char WeightLog[25];
+    sprintf(WeightLog,"%.2f %.2f",Weight,WeightAvg);
+    Serial.print("Uptime: ");
+    Serial.println(Uptime);
+    Serial.print("Weight: ");
+    Serial.println(WeightLog);
     Serial.print("Ethanol: ");
     Serial.println(Ethanol);
     Serial.print("TempC: ");
