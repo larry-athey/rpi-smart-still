@@ -257,6 +257,13 @@ void FreqUpdate() { // Update the sensor frequency value on the display
 //------------------------------------------------------------------------------------------------
 void loop() {
   long CurrentTime = millis();
+  char Uptime[10];
+  unsigned long allSeconds = CurrentTime / 1000;
+  int runHours = allSeconds / 3600;
+  int secsRemaining = allSeconds % 3600;
+  int runMinutes = secsRemaining / 60;
+  int runSeconds = secsRemaining % 60;
+  sprintf(Uptime,"%02d:%02d:%02d",runHours,runMinutes,runSeconds);
 
   if (revTick > 0) {      // Prevent division by zero, a zero is due to a timer1 overflow/timeout
     HZ = 63000 / revTick; // 3456000 ticks per minute, 57600 per second
@@ -283,12 +290,12 @@ void loop() {
 
   // Communications to my Raspberry PI based still monitor/controller uses 9600 baud serial data
   if (CurrentTime - SerialCounter >= 1000) {
-    Serial.print("Uptime: ");        // For debugging only, not used by Raspberry PI, comment out
-    Serial.println(millis() / 1000); // "                                                       "
-    Serial.print("revTick: ");       // "                                                       "
-    Serial.println(revTick);         // "                                                       "
-    Serial.print("Frequency: ");     // "                                                       "
-    Serial.println(HZ);              // "                                                       "
+    Serial.print("Uptime: ");
+    Serial.println(Uptime);
+    Serial.print("revTick: ");
+    Serial.println(revTick);
+    Serial.print("Frequency: ");
+    Serial.println(HZ);
     Serial.print("Ethanol: ");
     Serial.println(Ethanol);
     Serial.print("TempC: ");
