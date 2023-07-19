@@ -20,3 +20,17 @@ CREATE TABLE `input_table` (
 ALTER TABLE `input_table` ADD PRIMARY KEY (`ID`);
 
 ALTER TABLE `input_table` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+CREATE TABLE `output_table` (
+  `ID` int(11) NOT NULL,
+  `timestamp` timestamp NULL DEFAULT NULL,
+  `valve_id` tinyint(4) DEFAULT NULL,
+  `direction` tinyint(4) DEFAULT NULL,
+  `duration` int(11) DEFAULT NULL,
+  `position` int(11) DEFAULT NULL,
+  `executed` tinyint(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+ALTER TABLE `output_table` ADD PRIMARY KEY (`ID`);
+
+ALTER TABLE `output_table` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
