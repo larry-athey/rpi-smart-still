@@ -13,8 +13,7 @@ CREATE TABLE `input_table` (
   `dephleg_temp` float DEFAULT NULL,
   `column_temp` float DEFAULT NULL,
   `distillate_temp` float DEFAULT NULL,
-  `distillate_abv` tinyint(4) DEFAULT NULL,
-  `serial_data` varchar(255) DEFAULT NULL
+  `distillate_abv` tinyint(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
 
 ALTER TABLE `input_table` ADD PRIMARY KEY (`ID`);
@@ -48,7 +47,8 @@ CREATE TABLE `settings` (
   `valve2_current` int(11) DEFAULT NULL,
   `heating_total` int(11) DEFAULT NULL,
   `heating_pulse` int(11) DEFAULT NULL,
-  `heating_current` int(11) DEFAULT NULL
+  `heating_current` int(11) DEFAULT NULL,
+  `serial_data` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 ALTER TABLE `settings` ADD PRIMARY KEY (`ID`);
