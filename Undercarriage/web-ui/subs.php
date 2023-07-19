@@ -3,6 +3,11 @@
 ini_set('display_errors',1);
 ini_set('error_reporting',E_ALL);
 //---------------------------------------------------------------------------------------------------
+define("DB_HOST","localhost");
+define("DB_NAME","rpismartstill");
+define("DB_USER","rssdbuser");
+define("DB_PASS","rssdbpasswd");
+//---------------------------------------------------------------------------------------------------
 function getOneWireTemp($Address) {
   if (file_exists("/sys/bus/w1/devices/$Address/w1_slave")) {
     $Poll = file_get_contents("/sys/bus/w1/devices/$Address/w1_slave");
