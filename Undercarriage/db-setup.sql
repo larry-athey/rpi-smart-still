@@ -48,6 +48,8 @@ CREATE TABLE `settings` (
   `heating_total` int(11) DEFAULT NULL,
   `heating_pulse` int(11) DEFAULT NULL,
   `heating_current` int(11) DEFAULT NULL,
+  `active_run` tinyint(4) DEFAULT NULL,
+  `active_preset` int(11) DEFAULT NULL,
   `serial_data` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
