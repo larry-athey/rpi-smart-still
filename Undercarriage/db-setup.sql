@@ -45,7 +45,7 @@ CREATE TABLE `settings` (
   `valve2_total` int(11) DEFAULT NULL,
   `valve2_pulse` int(11) DEFAULT NULL,
   `valve2_current` int(11) DEFAULT NULL,
-  `speech_enabled` tinyint(4) DEFAULT NULL
+  `speech_enabled` tinyint(4) DEFAULT NULL,
   `active_run` tinyint(4) DEFAULT NULL,
   `active_preset` int(11) DEFAULT NULL,
   `serial_data` varchar(255) DEFAULT NULL
