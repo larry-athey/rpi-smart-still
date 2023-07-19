@@ -14,7 +14,7 @@ CREATE TABLE `input_table` (
   `column_temp` float DEFAULT NULL,
   `distillate_temp` float DEFAULT NULL,
   `distillate_abv` tinyint(4) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 ALTER TABLE `input_table` ADD PRIMARY KEY (`ID`);
 
