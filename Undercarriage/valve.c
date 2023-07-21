@@ -113,17 +113,17 @@ void valveStatus(int WhichOne) {
   //return;
 
   if (WhichOne == 1) {
-    if (digitalRead(VALVE1_LIMIT_OPEN) == 1) {
+    if (digitalRead(VALVE1_LIMIT_OPEN) == 0) {
       printf("1\n");
-    } else if (digitalRead(VALVE1_LIMIT_CLOSE) == 1) {
+    } else if (digitalRead(VALVE1_LIMIT_CLOSE) == 0) {
       printf("0\n");
     } else {
       printf("10\n");
     }
   } else {
-    if (digitalRead(VALVE2_LIMIT_OPEN) == 1) {
+    if (digitalRead(VALVE2_LIMIT_OPEN) == 0) {
       printf("1\n");
-    } else if (digitalRead(VALVE2_LIMIT_CLOSE) == 1) {
+    } else if (digitalRead(VALVE2_LIMIT_CLOSE) == 0) {
       printf("0\n");
     } else {
       printf("10\n");
