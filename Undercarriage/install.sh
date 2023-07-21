@@ -48,6 +48,9 @@ if [ ! -f /boot/cmdline.txt.old ]; then
   sudo mv -f /tmp/cmdline.txt /boot/cmdline.txt
 fi
 
+sudo cp -f rc.local /etc/rc.local
+sudo chmod +x /etc/rc.local
+
 clear
 
 echo "Time to secure the MySQL server, you will want to answer Yes to all questions"
