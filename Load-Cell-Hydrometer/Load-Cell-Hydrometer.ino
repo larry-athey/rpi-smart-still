@@ -190,7 +190,7 @@ void setup() {
   for (byte x = 0; x <= 49; x ++) WeightBuf[x] = 64;
   tft.setTextColor(ILI9341_YELLOW);
   tft.setCursor(90,95);
-  tft.print("Load Calibrated");
+  tft.print("Load Cell Calibrated");
   tft.setCursor(90,120);
   tft.print("Install Parrot Cup");
   tft.setCursor(90,145);
