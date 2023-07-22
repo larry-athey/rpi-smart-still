@@ -24,6 +24,7 @@ sudo lighttpd-enable-mod fastcgi-php
 sudo cp -f ./15-fastcgi-php.conf /etc/lighttpd/conf-available/15-fastcgi-php.conf
 sudo service lighttpd force-reload
 
+sudo rm -f /var/www/html/index.lighttpd.html
 sudo cp -f ./web-ui/*.php /var/www/html
 sudo chown -R www-data:www-data /var/www/html
 sudo chmod g+w -R /var/www/html
