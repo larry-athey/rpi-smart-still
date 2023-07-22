@@ -37,8 +37,11 @@ ALTER TABLE `output_table` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 CREATE TABLE `settings` (
   `ID` int(11) NOT NULL,
   `boiler_addr` varchar(24) DEFAULT NULL,
+  `boiler_temp` float DEFAULT NULL,
   `dephleg_addr` varchar(24) DEFAULT NULL,
+  `dephleg_temp` float DEFAULT NULL,
   `column_addr` varchar(24) DEFAULT NULL,
+  `column_temp` float DEFAULT NULL,
   `valve1_total` int(11) DEFAULT NULL,
   `valve1_pulse` int(11) DEFAULT NULL,
   `valve1_position` int(11) DEFAULT NULL,
