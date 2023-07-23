@@ -16,7 +16,7 @@ function rss_menu_bar() {
   $Content .=           "<a class=\"nav-link\" aria-current=\"page\" href=\"/\">Home</a>";
   $Content .=         "</li>";
   $Content .=         "<li class=\"nav-item\">";
-  $Content .=           "<a class=\"nav-link\" href=\"/?page=timelines\">Timelines</a>";
+  $Content .=           "<a class=\"nav-link\" href=\"/?page=timeline\">Timeline</a>";
   $Content .=         "</li>";
   $Content .=         "<li class=\"nav-item dropdown\">";
   $Content .=           "<a class=\"nav-link dropdown-toggle\" href=\"#\" role=\"button\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">Programs</a>";
@@ -34,12 +34,12 @@ function rss_menu_bar() {
   $Content .=         "<li class=\"nav-item dropdown\">";
   $Content .=           "<a class=\"nav-link dropdown-toggle\" href=\"#\" role=\"button\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">Management</a>";
   $Content .=           "<ul class=\"dropdown-menu\" style=\"background-color: #212529;\">";
-  $Content .=             "<li><a class=\"dropdown-item\" href=\"/list-devices/\">Manage&nbsp;Devices</a></li>";
-  $Content .=             "<li><a class=\"dropdown-item\" href=\"/list-scripts/\">Manage&nbsp;Scripts</a></li>";
-  $Content .=             "<li><a class=\"dropdown-item\" href=\"/list-groups/\">Manage&nbsp;Groups</a></li>";
+  $Content .=             "<li><a class=\"dropdown-item\" href=\"/?page=programs\">Edit&nbsp;Programs</a></li>";
+  $Content .=             "<li><a class=\"dropdown-item\" href=\"/?page=valves\">Calibrate&nbsp;Valves</a></li>";
+  $Content .=             "<li><a class=\"dropdown-item\" href=\"/?page=sensors\">Configure&nbsp;Sensors</a></li>";
   $Content .=             "<li><hr class=\"dropdown-divider\"></li>";
-  $Content .=             "<li><a class=\"dropdown-item\" href=\"/?CZ_BASIC=0\">Set&nbsp;Desktop&nbsp;View</a></li>";
-  $Content .=             "<li><a class=\"dropdown-item\" href=\"/?CZ_BASIC=1\">Set&nbsp;Basic&nbsp;Mobile&nbsp;View</a></li>";
+  $Content .=             "<li><a class=\"dropdown-item\" href=\"/?run=1\">Start&nbsp;Run</a></li>";
+  $Content .=             "<li><a class=\"dropdown-item\" href=\"/?run=0\">Stop&nbsp;Run</a></li>";
   $Content .=           "</ul>";
   $Content .=         "</li>";
   $Content .=         "<li class=\"nav-item\">";
