@@ -21,33 +21,6 @@ require_once("html.php");
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js" integrity="sha512-asxKqQghC1oBShyhiBwA+YgotaSYKxGP1rcSYTDrB0U6DxwlJjU59B67U8+5/++uFjcuVM8Hh5cokLjZlhm3Vg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <link rel="icon" href="favicon.ico?v=1.1">
   <style>
-    .menubutton {
-      padding-top: 2mm;
-      padding-left: 3mm;
-      display: inline-block;
-      cursor: pointer;
-    }
-
-    .bar1, .bar2, .bar3 {
-      width: 35px;
-      height: 5px;
-      background-color: #333;
-      margin: 5px 0;
-      transition: 0.4s;
-    }
-
-    .change .bar1 {
-      -webkit-transform: rotate(-45deg) translate(-9px, 6px);
-      transform: rotate(-45deg) translate(-9px, 6px);
-    }
-
-    .change .bar2 {opacity: 0;}
-
-    .change .bar3 {
-      -webkit-transform: rotate(45deg) translate(-8px, -8px);
-      transform: rotate(45deg) translate(-8px, -8px);
-    }
-
     @-webkit-keyframes blinker {
       from {opacity: 1.0;}
       to {opacity: 0.0;}
@@ -65,14 +38,8 @@ require_once("html.php");
   </style>
 </head>
 <body data-theme="dark">
+  <?= rss_menu_bar() ?>
 
-
-  <script>
-    function ShowSettings(x) {
-      x.classList.toggle("change");
-      location.href="settings/index.php";
-    }
-  </script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
 </body>
