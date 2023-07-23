@@ -2,6 +2,8 @@
 
 clear
 
+echo "THIS INSTALLER EXPECTS YOU TO BE USING A RAW UNMODIFIED OS INSTALLATION!!!!"
+echo
 echo "If you are using anything prior to a Raspberry Pi 4, you need to be running"
 echo "a 32 bit version of Raspbian, even though there are 64 bit versions for it."
 echo "Unless you have 4+ GB of RAM, a 64 bit OS is completely useless. You surely"
