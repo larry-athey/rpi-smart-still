@@ -14,6 +14,7 @@
 _IP=$(hostname -I) || true
 if [ "$_IP" ]; then
   printf "My IP address is %s\n" "$_IP"
+  espeak -v english-us -s 130 "My IP address is $_IP"
 fi
 
 modprobe w1-gpio
