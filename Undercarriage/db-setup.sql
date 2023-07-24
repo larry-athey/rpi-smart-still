@@ -40,6 +40,7 @@ CREATE TABLE `programs` (
   `program_name` varchar(100) DEFAULT NULL,
   `mode` tinyint(4) DEFAULT NULL,
   `distillate_abv` tinyint(4) DEFAULT NULL,
+  `flow_window` int(11) DEFAULT NULL,
   `boiler_ready` float DEFAULT NULL,
   `dephleg_temp` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -68,6 +69,7 @@ CREATE TABLE `settings` (
   `speech_enabled` tinyint(4) DEFAULT NULL,
   `active_run` tinyint(4) DEFAULT NULL,
   `active_program` int(11) DEFAULT NULL,
+  `paused` tinyint(4) DEFAULT NULL,
   `serial_data` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
