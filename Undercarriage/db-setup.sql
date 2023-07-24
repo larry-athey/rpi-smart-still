@@ -42,8 +42,9 @@ CREATE TABLE `programs` (
   `distillate_abv` tinyint(4) DEFAULT NULL,
   `condenser_rate` int(11) DEFAULT NULL,
   `flow_window` int(11) DEFAULT NULL,
-  `boiler_ready` float DEFAULT NULL,
-  `dephleg_temp` float DEFAULT NULL
+  `boiler_temp` float DEFAULT NULL,
+  `dephleg_temp` float DEFAULT NULL,
+  `column_temp` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 ALTER TABLE `programs` ADD PRIMARY KEY (`ID`);
