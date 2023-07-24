@@ -1,6 +1,9 @@
 //------------------------------------------------------------------------------------------------
 // Written by Larry Athey (Panhandle Ponics - https://3dgtower.com) v1.0.1 released July 4, 2023
 //
+// NOTE: This project is no longer supported by the RPi Smart Still system. This code is merely
+// provided for example purposes to show another method for creating a digital hydrometer.
+//
 // This project is based on an Arduino Uno/Nano/Mega/Micro and any 320x240 color LCD/TFT display
 // that uses SPI communications. Parallel shields are completely useless since they steal GPIO D8
 // and D4 which are required to use Arduino timer1 as an externally triggered frequency counter. 
