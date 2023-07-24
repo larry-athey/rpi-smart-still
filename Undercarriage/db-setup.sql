@@ -35,6 +35,19 @@ ALTER TABLE `output_table` ADD PRIMARY KEY (`ID`);
 
 ALTER TABLE `output_table` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
+CREATE TABLE `programs` (
+  `ID` int(11) NOT NULL,
+  `program_name` varchar(100) DEFAULT NULL,
+  `mode` tinyint(4) DEFAULT NULL,
+  `distillate_abv` tinyint(4) DEFAULT NULL,
+  `boiler_ready` float DEFAULT NULL,
+  `dephleg_temp` float DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+ALTER TABLE `programs` ADD PRIMARY KEY (`ID`);
+
+ALTER TABLE `programs` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
 CREATE TABLE `settings` (
   `ID` int(11) NOT NULL,
   `boiler_addr` varchar(24) DEFAULT NULL,
@@ -54,7 +67,7 @@ CREATE TABLE `settings` (
   `distillate_flowing` tinyint(4) DEFAULT NULL,
   `speech_enabled` tinyint(4) DEFAULT NULL,
   `active_run` tinyint(4) DEFAULT NULL,
-  `active_preset` int(11) DEFAULT NULL,
+  `active_program` int(11) DEFAULT NULL,
   `serial_data` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
