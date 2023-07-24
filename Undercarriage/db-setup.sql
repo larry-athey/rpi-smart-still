@@ -40,6 +40,7 @@ CREATE TABLE `programs` (
   `program_name` varchar(100) DEFAULT NULL,
   `mode` tinyint(4) DEFAULT NULL,
   `distillate_abv` tinyint(4) DEFAULT NULL,
+  `condenser_flow` int(11) DEFAULT NULL,
   `flow_window` int(11) DEFAULT NULL,
   `boiler_ready` float DEFAULT NULL,
   `dephleg_temp` float DEFAULT NULL
