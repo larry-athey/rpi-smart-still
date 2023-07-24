@@ -108,7 +108,7 @@ float WeightBuf[50];  // Buffer for storing the last 50 load cell readings
 bool eToggle = false; // Ethanol display toggle byte (false=%ABV or true=Proof)
 long ScreenCounter;   // Timekeeper for display updates
 long SerialCounter;   // Timekeeper for serial data output updates
-byte FlowDetect = 1;  // Tracking byte for the optical distillate flow sensor
+byte FlowSense = 1;   // Storage byte for the optical distillate flow sensor status
 byte eTest = 0;       // This is only used by the code block in loop() for display testing
 //------------------------------------------------------------------------------------------------
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS,TFT_DC,TFT_MOSI,TFT_CLK,TFT_RST,TFT_MISO);
@@ -334,7 +334,7 @@ void loop() {
   int runMinutes = secsRemaining / 60;
   int runSeconds = secsRemaining % 60;
   sprintf(Uptime,"%02d:%02d:%02d",runHours,runMinutes,runSeconds);
-  if (digitalRead(FLOW_SENSOR) == 0) FlowDetect = 0;
+  if (digitalRead(FLOW_SENSOR) == 1) FlowSense = 0;
 
   // Get the current weight of the steel ball and calculate the ethanol percentage from
   // the buoyancy offset of the reference weight. Higher ethanol makes the ball heavier.
@@ -381,13 +381,13 @@ void loop() {
     Serial.print("Weight: ");
     Serial.println(WeightLog);
     Serial.print("Flow: ");
-    Serial.println(FlowDetect);
+    Serial.println(FlowSense);
     Serial.print("Ethanol: ");
     Serial.println(Ethanol);
     Serial.print("TempC: ");
     Serial.println(TempC,1);
     Serial.println("#"); // Pound signs mark the start and end of data blocks to the Raspberry PI
-    FlowDetect = 1;
+    FlowSense = 1;
     SerialCounter = CurrentTime;
   }
 }
