@@ -7,7 +7,7 @@ Let me start off by saying that I'm no master distiller and don't pretend to be 
 
 The main focus of this project is to read temperatures and control cooling water via servo controlled valves while monitoring the output proof. It's still on the distiller to take cuts because there is no way to make those determinations electronically without a gas chromatagraph mass spectrometer.
 
-I have no plans of adding any heating control to the system at this time because it's a 50/50 split between people who use gas or electricity. This would require a geared stepper motor that could be attached to a gas valve or a potentiometer on an SCR power controller. I haven't studied that stuff at all yet, so this is a wish list item for now.
+I have no plans of adding any heating control to the system at this time because it's a 50/50 split between people who use gas or electricity. This would require a geared stepper motor that could be attached to a gas valve or a potentiometer on an SCR power controller. I haven't studied those things at all yet, so this definitely is a wish list item for now.
 
 The T-500 column in its default configuration that Still Spirits designed it is a one-trick-pony. Reflux only, no pot still flavor, pretty much only good for making neutral spirits. Once a person controls the condenser and dephleg cooling separately, it's then possible to run a T-500 in pot still mode and have a more controlled reflux system. This allows you to target a higher proof than the constantly declining proof in pot still mode, while still retaining pot still flavor.
 
