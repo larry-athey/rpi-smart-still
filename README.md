@@ -13,6 +13,6 @@ The T-500 column in its default configuration that Still Spirits designed it is 
 
 This is a little bit of a juggling act to do manually, no matter what still you happen to use. But it's not hard to automate this and stop your run once the still can no longer deliver the target proof. From that point, you can flip the still controller over to full reflux mode to finish stripping out all of the remaining ethanol which can then be added to another run.
 
-I have no plans of adding any heating control to the system at this time because there's a 50/50 split between people who use gas or electricity. This would require a geared stepper motor that could be attached to a gas valve or a potentiometer on an SCR power controller. I haven't studied those things any further than troubleshooting my own 3D printers, so this is definitely a wish list item for now.
+I have no plans of adding any heating control to the system at this time because there's a 50/50 split between people who use gas or electricity. This would require a geared stepper motor that could be attached to a gas valve or a potentiometer on an SCR power controller. I haven't studied stepper motor control any further than troubleshooting my own 3D printers, so this is definitely a wish list item for now.
 
 **This project is a work in progress and components of it will be uploaded here as I feel they are ready for prime-time.**
