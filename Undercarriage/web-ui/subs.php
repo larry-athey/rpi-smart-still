@@ -13,8 +13,8 @@ function getOneWireTemp($Address) {
     $Poll = file_get_contents("/sys/bus/w1/devices/$Address/w1_slave");
     preg_match("/.*?t=(.*)/i",$Poll,$M);
     $Temp = $M[1];
-    $Data["C"] = $Temp * .001;
-    $Data["F"] = ($Data["C"] * (9 / 5)) + 32;
+    $Data["C"] = round($Temp * .001,2);
+    $Data["F"] = round(($Data["C"] * (9 / 5)) + 32,2);
   } else {
     $Data["C"] = -1000;
     $Data["F"] = -1000;
