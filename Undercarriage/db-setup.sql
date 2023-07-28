@@ -42,9 +42,13 @@ CREATE TABLE `programs` (
   `distillate_abv` tinyint(4) DEFAULT NULL,
   `minimum_flow` tinyint(4) DEFAULT NULL,
   `condenser_rate` int(11) DEFAULT NULL,
-  `boiler_temp` float DEFAULT NULL,
-  `dephleg_temp` float DEFAULT NULL,
-  `column_temp` float DEFAULT NULL
+  `boiler_temp_low` float DEFAULT NULL,
+  `boiler_temp_high` float DEFAULT NULL,
+  `dephleg_temp_low` float DEFAULT NULL,
+  `dephleg_temp_high` float DEFAULT NULL,
+  `column_temp_low` float DEFAULT NULL,
+  `column_temp_high` float DEFAULT NULL,
+  `notes` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 ALTER TABLE `programs` ADD PRIMARY KEY (`ID`);
