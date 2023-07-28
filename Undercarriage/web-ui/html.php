@@ -39,6 +39,7 @@ function rss_menu_bar() {
   $Content .=             "<li><a class=\"dropdown-item\" href=\"/?page=sensors\">Configure&nbsp;Sensors</a></li>";
   $Content .=             "<li><hr class=\"dropdown-divider\"></li>";
   $Content .=             "<li><a class=\"dropdown-item\" href=\"/?run=1\">Start&nbsp;Run</a></li>";
+  $Content .=             "<li><a class=\"dropdown-item\" href=\"/?run=10\">Pause&nbsp;Run</a></li>";
   $Content .=             "<li><a class=\"dropdown-item\" href=\"/?run=0\">Stop&nbsp;Run</a></li>";
   $Content .=           "</ul>";
   $Content .=         "</li>";
