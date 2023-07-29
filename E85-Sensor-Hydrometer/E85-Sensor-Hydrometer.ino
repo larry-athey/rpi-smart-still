@@ -25,7 +25,7 @@
 //
 // Liquid Densities: Gasoline = 6.25#/gallon, Ethanol = 6.53#/gallon, Water = 8.35#/gallon
 //
-// NOTE: This is not a scientifically precise method for reading ethanol content. Those handheld
+// ---> This is not a scientifically precise method for reading ethanol content. Those handheld
 // digital alcometers used in distilleries use something called an Oscillating U-Tube device for
 // precision liquid density measurements. That is why those cost a couple thousand dollars each.
 // See https://en.wikipedia.org/wiki/Oscillating_U-tube for more information. The next best way
