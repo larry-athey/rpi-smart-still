@@ -7,7 +7,7 @@ Let me start off by saying that I'm no master distiller and don't pretend to be 
 
 I'm a veteran software engineer with over 43 years programming experience with a strong emphasis in the areas of automation and remote device management. Even though I'm only a hobby distiller, I know very well what needs to be done in order to automate a still and maintain a targeted output proof. It's all just a matter of temperature control and monitoring the result. Lather, rinse, repeat.
 
-The main focus of this project is to read temperatures and control cooling water via servo controlled valves while monitoring the output proof. It's upon on the distiller themselves to take cuts because there is no way to make those determinations electronically without a gas chromatograph mass spectrometer. I don't know any hobbyists who can afford one of those. Even a small used one is $6000 on eBay.
+The main focus of this project is to read temperatures and control heating & cooling water via servo controlled valves while monitoring the output proof. It's upon on the distiller themselves to take cuts because there is no way to make those determinations electronically without a gas chromatograph mass spectrometer. I don't know any hobbyists who can afford one of those. Even a small used one is $6000 on eBay.
 
 Even though the still that I'm working with is the Still Spirits boiler and their copper T-500 column, this system will work with any other still as long as it has a dephlegmator. I don't have the room for anything larger and don't need to upgrade because of how little I actually drink. I just do distilling as a hobby, electronics and programming are also hobbies of mine. So, here we are. LOL!!!
 
