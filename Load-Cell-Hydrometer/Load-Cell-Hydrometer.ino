@@ -155,6 +155,7 @@ void setup() {
   Scale.set_gain(64,true);
   while (! Scale.is_ready()) delay(250);
   Tare = Scale.get_units(20);
+  Serial.println("#");
   Serial.print("Tare1: ");
   Serial.println(Tare);
 
