@@ -172,7 +172,7 @@ void setup() {
   Tare = Scale.get_units(20);
   Serial.print("Tare2: ");
   Serial.println(Tare);
-  Serial.println("");
+  Serial.println("#");
 
   tft.setCursor(35,110);
   tft.print("Attach the reference weight,");
