@@ -45,12 +45,6 @@ sudo gcc -o /usr/share/rpi-smart-still/valve /usr/share/rpi-smart-still/valve.c 
 sudo systemctl enable mariadb > /dev/null 2>&1
 sudo systemctl start mariadb > /dev/null 2>&1
 
-if [ ! -f /boot/cmdline.txt.old ]; then
-  sudo mv -f /boot/cmdline.txt /boot/cmdline.txt.old
-  sudo touch /tmp/cmdline.txt
-  sudo mv -f /tmp/cmdline.txt /boot/cmdline.txt
-fi
-
 sudo cp -f rc.local /etc/rc.local
 sudo chmod +x /etc/rc.local
 
@@ -88,7 +82,9 @@ echo "The CRON job shown in the above fires off every minute to verify that all 
 echo "of the process scripts are running for input, output, and logic control."
 echo
 echo "You will also need to run 'sudo raspi-config' and go to Interface Options to"
-echo "enable 1-Wire support. This will require your Raspberry PI to be rebooted."
+echo "enable 1-Wire support. Then go to Serial Port and turn off the login shell"
+echo "over serial and leave the serial port enabled. Then exit raspi-config, this"
+echo "will cause your Raspberry PI to be rebooted."
 echo
 echo
 echo "You can delete this git clone after you are done, it is no longer needed."
