@@ -346,7 +346,9 @@ void loop() {
       int Data;
       while (Serial.available()) {
         Data = Serial.read();
-        if (Data == 35) {
+        if (Data == 33) { // Reboot the hydrometer if a "!" is received
+          ESP.restart(); // For Arduinos, see https://arduinogetstarted.com/faq/how-to-reset-arduino-by-programming
+        } else if (Data == 35) {
           digitalWrite(TFT_LED,LOW);
           Scale.calibrate_scale(64,20);
           digitalWrite(TFT_LED,HIGH);
