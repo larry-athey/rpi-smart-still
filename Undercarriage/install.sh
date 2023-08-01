@@ -42,6 +42,7 @@ sudo cp -f rss* /usr/share/rpi-smart-still
 sudo cp -f valve.c /usr/share/rpi-smart-still
 sudo cp -f PhpSerial.php /usr/share/rpi-smart-still
 
+sudo gcc -o /usr/share/rpi-smart-still/hydro-read /usr/share/rpi-smart-still/hydro-read.c -l wiringPi
 sudo gcc -o /usr/share/rpi-smart-still/valve /usr/share/rpi-smart-still/valve.c -l wiringPi
 
 sudo systemctl enable mariadb > /dev/null 2>&1
