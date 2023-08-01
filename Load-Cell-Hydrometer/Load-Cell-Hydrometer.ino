@@ -121,6 +121,7 @@ void setup() {
   float Tare;
   ScreenCounter = millis();
   SerialCounter = ScreenCounter;
+  DT.begin();
   Serial.begin(9600);
   Serial.println("");
 
@@ -290,7 +291,11 @@ void EthanolUpdate() { // Update the ethanol value on the display
 void TempUpdate() { // Update the distillate temperature on the display
   if (DT.getDeviceCount() > 0) {
     DT.requestTemperatures();
+    oneWire.reset_search();
+    delay(250);
     TempC = DT.getTempCByIndex(0);
+  } else {
+    TempC = -100;
   }
   String cStr = String(TempC,1);
   String fStr = String(TempC * 9 / 5 + 32,1);
