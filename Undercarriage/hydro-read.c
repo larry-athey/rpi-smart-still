@@ -26,10 +26,10 @@ int main() {
 
   while (Counter < 10) {
     if (serialDataAvail(UART)) {
+      delay(500);
       while (serialDataAvail(UART)) {
         printf("%c",serialGetchar(UART));
       }
-      printf("\n");
       break;
     } else {
       delay(1000);
