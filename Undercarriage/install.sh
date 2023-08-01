@@ -34,6 +34,7 @@ sudo chmod g+w -R /var/www/html
 wget https://project-downloads.drogon.net/wiringpi-latest.deb
 sudo dpkg -i wiringpi-latest.deb
 sudo systemctl mask serial-getty@ttyAMA0.service
+sudo echo "dtoverlay=uart0" >> /boot/config.txt
 
 sudo mkdir -p /usr/share/rpi-smart-still
 sudo cp -f cronjob /usr/share/rpi-smart-still
