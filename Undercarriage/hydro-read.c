@@ -28,7 +28,7 @@ int main() {
     if (serialDataAvail(UART)) {
       delay(500);
       while (serialDataAvail(UART)) {
-        printf("%c",serialGetchar(UART));
+        fprintf(stdout,"%c",serialGetchar(UART));
       }
       break;
     } else {
