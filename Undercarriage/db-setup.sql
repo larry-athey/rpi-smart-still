@@ -70,7 +70,7 @@ CREATE TABLE `settings` (
   `valve2_pulse` int(11) DEFAULT NULL,
   `valve2_position` int(11) DEFAULT NULL,
   `heating_enabled` tinyint(11) DEFAULT NULL,
-  `heating_steps` int(11) DEFAULT NULL,
+  `heating_total` int(11) DEFAULT NULL,
   `heating_position` int(11) DEFAULT NULL,
   `distillate_temp` float DEFAULT NULL,
   `distillate_abv` tinyint(4) DEFAULT NULL,
@@ -86,4 +86,4 @@ ALTER TABLE `settings` ADD PRIMARY KEY (`ID`);
 
 ALTER TABLE `settings` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
-INSERT INTO `settings` (`ID`, `boiler_addr`, `boiler_temp`, `dephleg_addr`, `dephleg_temp`, `column_addr`, `column_temp`, `valve1_total`, `valve1_pulse`, `valve1_position`, `valve2_total`, `valve2_pulse`, `valve2_position`, `heating_steps`, `heating_limit`, `heating_position`, `distillate_temp`, `distillate_abv`, `distillate_flowing`, `speech_enabled`, `active_run`, `active_program`, `paused`, `serial_data`) VALUES (NULL, '28-000000000001', '0', '28-000000000002', '0', '28-000000000003', '0', '10000', '100', '0', '10000', '100', '0', '0', '0', '0', '21', '0', '0', '1', '0', '1', '0', 'Uptime: 00:00:00\r\nWeight: 64.00 64.00\r\nFlow: 0\r\nEthanol: 0\r\nTempC: 21'); 
+INSERT INTO `settings` (`ID`, `boiler_addr`, `boiler_temp`, `dephleg_addr`, `dephleg_temp`, `column_addr`, `column_temp`, `valve1_total`, `valve1_pulse`, `valve1_position`, `valve2_total`, `valve2_pulse`, `valve2_position`, `heating_total`, `heating_limit`, `heating_position`, `distillate_temp`, `distillate_abv`, `distillate_flowing`, `speech_enabled`, `active_run`, `active_program`, `paused`, `serial_data`) VALUES (NULL, '28-000000000001', '0', '28-000000000002', '0', '28-000000000003', '0', '10000', '100', '0', '10000', '100', '0', '0', '0', '0', '21', '0', '0', '1', '0', '1', '0', 'Uptime: 00:00:00\r\nWeight: 64.00 64.00\r\nFlow: 0\r\nEthanol: 0\r\nTempC: 21'); 
