@@ -165,7 +165,16 @@ void setup() {
     tft.print("Load cell detecting weight,");
     tft.setCursor(45,135);
     tft.print("Correct this and reboot...");
-    while (true);
+    while (true) {
+      if (Serial.available()) {
+        while (Serial.available()) {
+          Counter = Serial.read();
+          if (Counter == 33) { // Reboot the hydrometer if a "!" is received
+            ESP.restart(); // For Arduinos, see https://arduinogetstarted.com/faq/how-to-reset-arduino-by-programming
+          }
+        }
+      }
+    }
   }
 
   Scale.tare();
@@ -343,7 +352,7 @@ void loop() {
     // Recalibrate the load cell if there is a "#" in the serial input buffer, my still
     // controller does this at the start of the run to help assure hydrometer accuracy.
     if (Serial.available()) {
-      int Data;
+      byte Data;
       while (Serial.available()) {
         Data = Serial.read();
         if (Data == 33) { // Reboot the hydrometer if a "!" is received
