@@ -38,4 +38,7 @@ gpio -g write 19 1
 gpio -g mode 18 input
 gpio -g write 18 1
 
+gpio mode 15 ALT0
+gpio mode 16 ALT0
+
 exit 0
