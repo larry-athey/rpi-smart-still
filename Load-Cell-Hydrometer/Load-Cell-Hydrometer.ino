@@ -166,12 +166,10 @@ void setup() {
     tft.setCursor(45,135);
     tft.print("Correct this and reboot...");
     while (true) {
-      if (Serial.available()) {
-        while (Serial.available()) {
-          Counter = Serial.read();
-          if (Counter == 33) { // Reboot the hydrometer if a "!" is received
-            ESP.restart(); // For Arduinos, see https://arduinogetstarted.com/faq/how-to-reset-arduino-by-programming
-          }
+      while (Serial.available()) {
+        Counter = Serial.read();
+        if (Counter == 33) { // Reboot the hydrometer if a "!" is received
+          ESP.restart(); // For Arduinos, see https://arduinogetstarted.com/faq/how-to-reset-arduino-by-programming
         }
       }
     }
@@ -338,6 +336,7 @@ void TimeUpdate() {
 void loop() {
   long CurrentTime = millis();
   float Weight,WeightAvg = 0;
+  byte Data;
   unsigned long allSeconds = CurrentTime / 1000;
   int runHours = allSeconds / 3600;
   int secsRemaining = allSeconds % 3600;
@@ -349,19 +348,15 @@ void loop() {
   // Get the current weight of the steel ball and calculate the ethanol percentage from
   // the buoyancy offset of the reference weight. Higher ethanol makes the ball heavier.
   if (CurrentTime - SerialCounter >= 1000) {
-    // Recalibrate the load cell if there is a "#" in the serial input buffer, my still
-    // controller does this at the start of the run to help assure hydrometer accuracy.
-    if (Serial.available()) {
-      byte Data;
-      while (Serial.available()) {
-        Data = Serial.read();
-        if (Data == 33) { // Reboot the hydrometer if a "!" is received
-          ESP.restart(); // For Arduinos, see https://arduinogetstarted.com/faq/how-to-reset-arduino-by-programming
-        } else if (Data == 35) {
-          digitalWrite(TFT_LED,LOW);
-          Scale.calibrate_scale(64,20);
-          digitalWrite(TFT_LED,HIGH);
-        }
+    // Check for serial data commands from the RPi Smart Still controller
+    while (Serial.available()) {
+      Data = Serial.read();
+      if (Data == 33) { // Reboot the hydrometer if a "!" is received
+        ESP.restart(); // For Arduinos, see https://arduinogetstarted.com/faq/how-to-reset-arduino-by-programming
+      } else if (Data == 35) { // Recalibrate the load cell if a "#" is received
+        digitalWrite(TFT_LED,LOW);
+        Scale.calibrate_scale(64,20);
+        digitalWrite(TFT_LED,HIGH);
       }
     }
     Weight = Scale.get_units(20);
