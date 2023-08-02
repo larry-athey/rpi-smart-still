@@ -121,6 +121,7 @@ void setup() {
   float Tare;
   ScreenCounter = millis();
   SerialCounter = ScreenCounter;
+  pinMode(FLOW_SENSOR,INPUT_PULLDOWN);
   DT.begin();
   Serial.begin(9600);
   Serial.println("");
