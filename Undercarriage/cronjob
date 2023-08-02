@@ -14,7 +14,7 @@ if [ "$Hour" == "00" ] && [ "$Min" == "15" ]; then
   pkill -f /usr/share/rpi-smart-still/rss-logic-loop
   pkill -f /usr/share/rpi-smart-still/rss-read-loop
   pkill -f /usr/share/rpi-smart-still/rss-write-loop
-  /usr/share/rpi-smart-still/rss-db-maint.php
+  ./rss-db-maint.php
   sleep 15
 fi
 
