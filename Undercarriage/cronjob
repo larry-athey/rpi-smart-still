@@ -3,6 +3,9 @@
 chown -R www-data:www-data /var/www/html
 chmod g+w -R /var/www/html
 
+chown -R www-data:www-data /usr/share/rpi-smart-still
+chmod g+w -R /usr/share/rpi-smart-still
+
 Hour=$(date +%H)
 Min=$(date +%M)
 
