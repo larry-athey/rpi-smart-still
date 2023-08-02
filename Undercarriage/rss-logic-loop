@@ -8,8 +8,8 @@ while [ true ]; do
   ScriptEnd=$(date +%s)
   Runtime=$(($ScriptEnd - $ScriptStart))
   echo "Script Runtime: $Runtime seconds"
-  if [ $Runtime -lt 5 ]; then
-    Delay=$((5 - $Runtime))
+  if [ $Runtime -lt 10 ]; then
+    Delay=$((10 - $Runtime))
     echo "Sleeping $Delay seconds"
     sleep $Delay
   fi
