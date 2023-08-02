@@ -46,6 +46,12 @@ sudo gcc -o /usr/share/rpi-smart-still/hydro-read /usr/share/rpi-smart-still/hyd
 sudo gcc -o /usr/share/rpi-smart-still/hydro-write /usr/share/rpi-smart-still/hydro-write.c -l wiringPi
 sudo gcc -o /usr/share/rpi-smart-still/valve /usr/share/rpi-smart-still/valve.c -l wiringPi
 
+sudo chmod +x /usr/share/rpi-smart-still/*
+sudo chmod -x /usr/share/rpi-smart-still/*.c
+
+sudo chown -R www-data:www-data /usr/share/rpi-smart-still
+sudo chmod g+w -R /usr/share/rpi-smart-still
+
 sudo systemctl enable mariadb > /dev/null 2>&1
 sudo systemctl start mariadb > /dev/null 2>&1
 
