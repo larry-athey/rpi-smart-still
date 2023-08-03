@@ -89,7 +89,7 @@
 //#define TFT_LED A0
 
 // 38-pin ESP32 WROOM GPIO mapping
-#define ONE_WIRE 36
+#define ONE_WIRE 15
 #define FLOW_SENSOR 39
 #define I2C_SCL 22
 #define I2C_SDA 21
@@ -290,14 +290,8 @@ void EthanolUpdate() { // Update the ethanol value on the display
 }
 //------------------------------------------------------------------------------------------------
 void TempUpdate() { // Update the distillate temperature on the display
-  if (DT.getDeviceCount() > 0) {
-    DT.requestTemperatures();
-    oneWire.reset_search();
-    delay(250);
-    TempC = DT.getTempCByIndex(0);
-  } else {
-    TempC = -100;
-  }
+  DT.requestTemperatures();
+  TempC = DT.getTempCByIndex(0);
   String cStr = String(TempC,1);
   String fStr = String(TempC * 9 / 5 + 32,1);
   // Off-screen buffers only work with Arduino Mega and ESP32 due to the memory requirements
