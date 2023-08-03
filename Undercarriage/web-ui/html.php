@@ -56,6 +56,20 @@ function rss_menu_bar() {
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
+/*
+      if ($DoAjax) {
+        $RandID   = "input_" . generateRandomString();
+        $Content  = AjaxRefreshJS($ID,$RandID); // $ID is handled in ajax.php to determine which function to call
+        $Content .= "<div id=\"$RandID\">";
+      } else {
+        $Content = "";
+      }
 
+      // Dynamic Content...
+
+      if ($DoAjax) {
+        $Content .= "</div>";
+      }
+*/
 //---------------------------------------------------------------------------------------------------
 ?>
