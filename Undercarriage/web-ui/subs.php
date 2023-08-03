@@ -22,4 +22,32 @@ function getOneWireTemp($Address) {
   return $Data;
 }
 //---------------------------------------------------------------------------------------------------
+function generateRandomString($length = 10) {
+  $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  $charactersLength = strlen($characters);
+  $randomString = '';
+  for ($i = 0; $i < $length; $i++) {
+    $randomString .= $characters[rand(0, $charactersLength - 1)];
+  }
+  return $randomString;
+}
+//---------------------------------------------------------------------------------------------------
+function AjaxRefreshJS($ID,$RandID) {
+  $Content  = "\n<script type=\"text/javascript\">\n";
+  //$Content .= "  // Random 4.5 to 5.5 second refresh time per card so things\n";
+  //$Content .= "  // don't have such a robotic look by updating simultaneously.\n";
+  //$Content .= "  // The sensor and logic loops run on 10 second delay cycles.\n";
+  $Content .= "  jQuery(document).ready(function() {\n";
+  $Content .= "    RandomDelay = 4500 + Math.floor(Math.random() * 1000) + 1;\n";
+  $Content .= "    function refresh() {\n";
+  $Content .= "      jQuery('#$RandID').load('./ajax.php?ID=$ID');\n";
+  $Content .= "    }\n";
+  $Content .= "    setInterval(function() {\n";
+  $Content .= "      refresh()\n";
+  $Content .= "    },RandomDelay);\n";
+  $Content .= "  });\n";
+  $Content .= "</script>\n";
+  return $Content;
+}
+//---------------------------------------------------------------------------------------------------
 ?>
