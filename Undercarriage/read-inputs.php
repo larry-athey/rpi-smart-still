@@ -42,7 +42,7 @@ if (($Hydrometer != "") && (mb_substr($Hydrometer,-1) == "#")) {
     $DistillateTemp = trim($Data2[1]);
     $Update = mysqli_query($DBcnx,"UPDATE settings SET distillate_flowing='$DistillateFlowing',distillate_abv='$DistillateAbv',distillate_temp='$DistillateTemp',serial_data='$Hydrometer' WHERE ID=1");
   } else {
-    echo($Hydrometer);
+    echo("$Hydrometer\n");
     $Update = mysqli_query($DBcnx,"UPDATE settings SET serial_data='$Hydrometer' WHERE ID=1");
   }
 }
