@@ -16,10 +16,13 @@ if (mysqli_num_rows($Result) > 0) {
 
 $Data = getOneWireTemp($Settings["boiler_addr"]);
 $BoilerTemp = $Data["C"];
+echo("Boiler: $BoilerTemp\n");
 $Data = getOneWireTemp($Settings["dephleg_addr"]);
 $DephlegTemp = $Data["C"];
+echo("Dephleg: $DephlegTemp\n");
 $Data = getOneWireTemp($Settings["column_addr"]);
 $ColumnTemp = $Data["C"];
+echo("Column: $ColumnTemp\n\n");
 
 $Update = mysqli_query($DBcnx,"UPDATE settings SET boiler_temp='$BoilerTemp',dephleg_temp='$DephlegTemp',column_temp='$ColumnTemp' WHERE ID=1");
 
