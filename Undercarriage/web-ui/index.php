@@ -44,6 +44,9 @@ $DBcnx = mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
 $Result = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
 if (mysqli_num_rows($Result) > 0) {
   $Settings = mysqli_fetch_assoc($Result);
+  if (($Settings["active_run"] == 0) && (isset($_GET["program_id"])) && (is_numeric($_GET["program_id"]))) {
+    $Result = mysqli_query($DBcnx,"UPDATE settings SET active_program='" . $_GET["program_id"] . "' WHERE ID=1");
+  }
   $Result   = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=" . $Settings["active_program"]);
   $Program  = mysqli_fetch_assoc($Result);
 } else {
@@ -59,28 +62,6 @@ $Content .=   "<div class=\"row\">";
 
 if (! isset($_GET["page"])) {
   $Content .= DrawCard($DBcnx,"temperatures");
-
-  /*
-  $Content .= "<div class=\"card\" style=\"width: 26em; margin-bottom: 1em; margin-left: 0.5em; margin-right: 0.5em;\">";
-  $Content .=   "<div class=\"card-body\">";
-  $Content .=   "</div>";
-  $Content .= "</div>";
-
-  $Content .= "<div class=\"card\" style=\"width: 26em; margin-bottom: 1em; margin-left: 0.5em; margin-right: 0.5em;\">";
-  $Content .=   "<div class=\"card-body\">";
-  $Content .=   "</div>";
-  $Content .= "</div>";
-
-  $Content .= "<div class=\"card\" style=\"width: 26em; margin-bottom: 1em; margin-left: 0.5em; margin-right: 0.5em;\">";
-  $Content .=   "<div class=\"card-body\">";
-  $Content .=   "</div>";
-  $Content .= "</div>";
-
-  $Content .= "<div class=\"card\" style=\"width: 26em; margin-bottom: 1em; margin-left: 0.5em; margin-right: 0.5em;\">";
-  $Content .=   "<div class=\"card-body\">";
-  $Content .=   "</div>";
-  $Content .= "</div>";
-  */
 
 } else {
   if ($_GET["page"] == "heating") {
