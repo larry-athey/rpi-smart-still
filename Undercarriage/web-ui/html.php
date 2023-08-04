@@ -89,11 +89,11 @@ function ShowTemperatures($DBcnx) {
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
-function DrawCard($DBcnx,$Body) {
+function DrawCard($DBcnx,$Body,$DoAjax) {
   $RandID   = "card_" . generateRandomString();
   $Content  = "<div class=\"card\" style=\"width: 26em; margin-top: 0.5em;  margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
-  $Content .=     AjaxRefreshJS($Body,$RandID);
+  if ($DoAjax) $Content .= AjaxRefreshJS($Body,$RandID);
   $Content .=     "<div id=\"$RandID\">";
   if ($Body == "temperatures") {
     $Content .= ShowTemperatures($DBcnx);
