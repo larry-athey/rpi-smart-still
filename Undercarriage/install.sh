@@ -39,9 +39,9 @@ sudo echo "dtoverlay=uart0" >> /boot/config.txt
 sudo mkdir -p /usr/share/rpi-smart-still
 sudo cp -f cronjob /usr/share/rpi-smart-still
 sudo cp -f rss* /usr/share/rpi-smart-still
-sudo cp -f valve.c /usr/share/rpi-smart-still
-sudo cp -f PhpSerial.php /usr/share/rpi-smart-still
+sudo cp -f *.c /usr/share/rpi-smart-still
 
+sudo gcc -o /usr/share/rpi-smart-still/heating /usr/share/rpi-smart-still/heating.c -l wiringPi
 sudo gcc -o /usr/share/rpi-smart-still/hydro-read /usr/share/rpi-smart-still/hydro-read.c -l wiringPi
 sudo gcc -o /usr/share/rpi-smart-still/hydro-write /usr/share/rpi-smart-still/hydro-write.c -l wiringPi
 sudo gcc -o /usr/share/rpi-smart-still/valve /usr/share/rpi-smart-still/valve.c -l wiringPi
