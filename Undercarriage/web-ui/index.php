@@ -46,6 +46,7 @@ if (mysqli_num_rows($Result) > 0) {
   $Settings = mysqli_fetch_assoc($Result);
   if (($Settings["active_run"] == 0) && (isset($_GET["program_id"])) && (is_numeric($_GET["program_id"]))) {
     $Result = mysqli_query($DBcnx,"UPDATE settings SET active_program='" . $_GET["program_id"] . "' WHERE ID=1");
+    $Settings["active_program"] = $_GET["program_id"];
   }
   $Result   = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=" . $Settings["active_program"]);
   $Program  = mysqli_fetch_assoc($Result);
