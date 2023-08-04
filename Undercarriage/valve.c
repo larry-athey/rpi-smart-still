@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------
-// RPI-Smart-Still Cooling Valve Driver v1.0.1 released July 14, 2023
+// RPi-Smart-Still Cooling Valve Driver v1.0.1 released July 14, 2023
 //
 // While the rest of the undercarriage runs on shell scripts the need for millisecond timing in
 // valve motor control requires that a separate compiled binary be used instead. The valves can
@@ -139,7 +139,7 @@ int main(int argc,char **argv) {
   //}
 
   if ((argc == 1) || (argc > 4)) {
-    printf("\nRPI-Smart-Still Cooling Valve Driver v1.0.1 released July 14, 2023\n\n");
+    printf("\nRPi-Smart-Still Cooling Valve Driver v1.0.1 released July 14, 2023\n\n");
     printf("Usage:\n");
     printf("  valve [1 or 2] [open/close/status] [time in ms, or calibrate, or nothing to fully open/close]\n");
     printf("  valve 1 open 2500 {Run valve #1 forward for 2.5 seconds}\n");
