@@ -25,14 +25,14 @@ function DrawMenu($DBcnx) {
   $Content .=         "<li class=\"nav-item dropdown\">";
   $Content .=           "<a class=\"nav-link dropdown-toggle\" href=\"#\" role=\"button\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">Programs</a>";
   $Content .=           "<ul class=\"dropdown-menu\" style=\"background-color: #212529;\">";
-/*
+
   $Result = mysqli_query($DBcnx,"SELECT * FROM programs ORDER BY program_name");
-  while ($Group = mysqli_fetch_assoc($Result)) {
-    if ($Group["ID"] == CZ_GROUP) $GroupName =$Group["Name"];
-    $Group["Name"] = str_replace(" ","&nbsp;",$Group["Name"]);
-    $Content .=           "<li><a class=\"dropdown-item\" href=\"" . selfURL() . "?CZ_GROUP=" . $Group["ID"] . "\">" . $Group["Name"] . "</a></li>";
+  while ($RS = mysqli_fetch_assoc($Result)) {
+    if ($RS["ID"] == $Settings["active_program"]) $RS["program_name"] = "&#10003 " . $RS["program_name"];
+    $RS["program_name"] = str_replace(" ","&nbsp;",$RS["program_name"]);
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"?program_id=" . $RS["ID"] . "\">" . $RS["program_name"] . "</a></li>";
   }
-*/
+
   $Content .=           "</ul>";
   $Content .=         "</li>";
   $Content .=         "<li class=\"nav-item dropdown\">";
