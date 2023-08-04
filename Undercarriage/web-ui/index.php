@@ -61,7 +61,7 @@ $Content  = "<div class=\"container-fluid\" style=\"align: left;\">";
 $Content .=   "<div class=\"row\">";
 
 if (! isset($_GET["page"])) {
-  $Content .= DrawCard($DBcnx,"temperatures");
+  $Content .= DrawCard($DBcnx,"temperatures",true);
 
 } else {
   if ($_GET["page"] == "heating") {
