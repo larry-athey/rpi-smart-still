@@ -19,6 +19,7 @@ require_once("html.php");
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
   <script src="https://code.iconify.design/2/2.0.3/iconify.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js" integrity="sha512-asxKqQghC1oBShyhiBwA+YgotaSYKxGP1rcSYTDrB0U6DxwlJjU59B67U8+5/++uFjcuVM8Hh5cokLjZlhm3Vg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <link rel="icon" href="favicon.ico?v=1.1">
   <style>
     @-webkit-keyframes blinker {
@@ -38,8 +39,63 @@ require_once("html.php");
   </style>
 </head>
 <body data-theme="dark">
-  <?= rss_menu_bar() ?>
+<?php
+$DBcnx = mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
+$Result = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
+if (mysqli_num_rows($Result) > 0) {
+  $Settings = mysqli_fetch_assoc($Result);
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=" . $Settings["active_program"]);
+  $Program  = mysqli_fetch_assoc($Result);
+} else {
+  echo("<br><h3>System settings record is missing, reinstall system from GitHub clone.</h3>");
+  mysqli_close($DBcnx);
+  exit;
+}
 
+echo(DrawMenu($DBcnx) . "\n");
+
+$Content  = "<div class=\"container-fluid\" style=\"align: left;\">";
+$Content .=   "<div class=\"row\">";
+
+if (! isset($_GET["page"])) {
+  $Content .= DrawCard($DBcnx,"temperatures");
+
+  /*
+  $Content .= "<div class=\"card\" style=\"width: 26em; margin-bottom: 1em; margin-left: 0.5em; margin-right: 0.5em;\">";
+  $Content .=   "<div class=\"card-body\">";
+  $Content .=   "</div>";
+  $Content .= "</div>";
+
+  $Content .= "<div class=\"card\" style=\"width: 26em; margin-bottom: 1em; margin-left: 0.5em; margin-right: 0.5em;\">";
+  $Content .=   "<div class=\"card-body\">";
+  $Content .=   "</div>";
+  $Content .= "</div>";
+
+  $Content .= "<div class=\"card\" style=\"width: 26em; margin-bottom: 1em; margin-left: 0.5em; margin-right: 0.5em;\">";
+  $Content .=   "<div class=\"card-body\">";
+  $Content .=   "</div>";
+  $Content .= "</div>";
+
+  $Content .= "<div class=\"card\" style=\"width: 26em; margin-bottom: 1em; margin-left: 0.5em; margin-right: 0.5em;\">";
+  $Content .=   "<div class=\"card-body\">";
+  $Content .=   "</div>";
+  $Content .= "</div>";
+  */
+
+} else {
+  if ($_GET["page"] == "heating") {
+
+  } elseif ($_GET["page"] == "hydrometer") {
+
+  }
+}
+
+$Content .=   "</div>";
+$Content .= "</div>";
+
+echo("$Content\n");
+mysqli_close($DBcnx);
+?>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
 </body>
