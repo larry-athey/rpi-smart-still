@@ -2,6 +2,21 @@
 //---------------------------------------------------------------------------------------------------
 require_once("subs.php");
 //---------------------------------------------------------------------------------------------------
+function DrawCard($DBcnx,$Body,$DoAjax) {
+  $RandID   = "card_" . generateRandomString();
+  $Content  = "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em;  margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
+  $Content .=   "<div class=\"card-body\">";
+  if ($DoAjax) $Content .= AjaxRefreshJS($Body,$RandID);
+  $Content .=     "<div id=\"$RandID\">";
+  if ($Body == "temperatures") {
+    $Content .= ShowTemperatures($DBcnx);
+  }
+  $Content .=     "</div>";
+  $Content .=   "</div>";
+  $Content .= "</div>";
+  return $Content;
+}
+//---------------------------------------------------------------------------------------------------
 function DrawMenu($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
@@ -60,22 +75,6 @@ function DrawMenu($DBcnx) {
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
-/*
-      if ($DoAjax) {
-        $RandID   = "input_" . generateRandomString();
-        $Content  = AjaxRefreshJS($ID,$RandID); // $ID is handled in ajax.php to determine which function to call
-        $Content .= "<div id=\"$RandID\">";
-      } else {
-        $Content = "";
-      }
-
-      // Dynamic Content...
-
-      if ($DoAjax) {
-        $Content .= "</div>";
-      }
-*/
-//---------------------------------------------------------------------------------------------------
 function ShowTemperatures($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
@@ -86,21 +85,6 @@ function ShowTemperatures($DBcnx) {
   $Content .=   "<tr><td>Boiler&nbsp;Temperature:</td><td align=\"right\">" . FormatTemp($Settings["boiler_temp"]) . "</td></tr>";
   $Content .=   "<tr><td>Distillate&nbsp;Temperature:</td><td align=\"right\">" . FormatTemp($Settings["distillate_temp"]) . "</td></tr>";
   $Content .= "</table>";
-  return $Content;
-}
-//---------------------------------------------------------------------------------------------------
-function DrawCard($DBcnx,$Body,$DoAjax) {
-  $RandID   = "card_" . generateRandomString();
-  $Content  = "<div class=\"card\" style=\"width: 26em; margin-top: 0.5em;  margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
-  $Content .=   "<div class=\"card-body\">";
-  if ($DoAjax) $Content .= AjaxRefreshJS($Body,$RandID);
-  $Content .=     "<div id=\"$RandID\">";
-  if ($Body == "temperatures") {
-    $Content .= ShowTemperatures($DBcnx);
-  }
-  $Content .=     "</div>";
-  $Content .=   "</div>";
-  $Content .= "</div>";
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
