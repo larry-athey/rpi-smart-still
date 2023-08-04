@@ -52,7 +52,7 @@ function AjaxRefreshJS($ID,$RandID) {
 //---------------------------------------------------------------------------------------------------
 function FormatTemp($TempC) {
   $TempF = round(($TempC * (9 / 5)) + 32,1);
-  return $TempC . "C / " . $TempF . "F";
+  return "<span class=\"text-light\">" . $TempC . "C / " . $TempF . "F</span>";
 }
 //---------------------------------------------------------------------------------------------------
 ?>
