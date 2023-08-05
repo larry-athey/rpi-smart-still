@@ -65,12 +65,12 @@ int main(int argc,char **argv) {
     printf("Usage:\n");
     printf("  heating enable {Enables the stepper motor controller and locks the motor}\n");
     printf("  heating disable {Disables the stepper motor controller and unlocks the motor}\n");
-    printf("  heating [up or down] [steps] {Rotates the stepper up or down X number of steps}\n");
-    printf("  heating up 100 {Turns your heating dial/valve clockwise 100 steps}\n\n");
+    printf("  heating [cw or ccw] [steps] {Rotates the stepper up or down X number of steps}\n");
+    printf("  heating cw 100 {Turns your heating dial/valve clockwise 100 steps}\n\n");
     return 1;
   }
 
-  if ((strcmp(argv[1],"up") != 0) && (strcmp(argv[1],"down") != 0) && (strcmp(argv[1],"enable") != 0) && (strcmp(argv[1],"disable") != 0)) {
+  if ((strcmp(argv[1],"cw") != 0) && (strcmp(argv[1],"ccw") != 0) && (strcmp(argv[1],"enable") != 0) && (strcmp(argv[1],"disable") != 0)) {
     printf("\nInvalid stepper motor command!\n\n");
     return 1;
   }
@@ -93,11 +93,11 @@ int main(int argc,char **argv) {
       StepperEnable(0);
     }
   } else if (argc == 3) {
-    if (strcmp(argv[1],"up") == 0) {
+    if (strcmp(argv[1],"cw") == 0) {
       // Heating stepper motor pulse up requested
       StepperEnable(1);
       StepperPulse(1,strtol(argv[2],&p,10));
-    } else if (strcmp(argv[1],"down") == 0) {
+    } else if (strcmp(argv[1],"ccw") == 0) {
       // Heating stepper motor pulse down requested
       StepperEnable(1);
       StepperPulse(0,strtol(argv[2],&p,10));
