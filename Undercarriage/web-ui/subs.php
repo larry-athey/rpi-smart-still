@@ -8,30 +8,6 @@ define("DB_NAME","rpismartstill");
 define("DB_USER","rssdbuser");
 define("DB_PASS","rssdbpasswd");
 //---------------------------------------------------------------------------------------------------
-function getOneWireTemp($Address) {
-  if (file_exists("/sys/bus/w1/devices/$Address/w1_slave")) {
-    $Poll = file_get_contents("/sys/bus/w1/devices/$Address/w1_slave");
-    preg_match("/.*?t=(.*)/i",$Poll,$M);
-    $Temp = $M[1];
-    $Data["C"] = round($Temp * .001,1);
-    $Data["F"] = round(($Data["C"] * (9 / 5)) + 32,1);
-  } else {
-    $Data["C"] = -1000;
-    $Data["F"] = -1000;
-  }
-  return $Data;
-}
-//---------------------------------------------------------------------------------------------------
-function generateRandomString($length = 10) {
-  $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  $charactersLength = strlen($characters);
-  $randomString = '';
-  for ($i = 0; $i < $length; $i++) {
-    $randomString .= $characters[rand(0, $charactersLength - 1)];
-  }
-  return $randomString;
-}
-//---------------------------------------------------------------------------------------------------
 function AjaxRefreshJS($ID,$RandID) {
   $Content  = "\n<script type=\"text/javascript\">\n";
   //$Content .= "  // Random 4.5 to 5.5 second refresh time per card so things\n";
@@ -53,6 +29,44 @@ function AjaxRefreshJS($ID,$RandID) {
 function FormatTemp($TempC) {
   $TempF = round(($TempC * (9 / 5)) + 32,1);
   return "<span class=\"text-light\">" . $TempC . "C / " . $TempF . "F</span>";
+}
+//---------------------------------------------------------------------------------------------------
+function FormatTempRange($Lower,$Upper) {
+  $LowerTempF = round(($Lower * (9 / 5)) + 32,1) . "F";
+  $UpperTempF = round(($Upper * (9 / 5)) + 32,1) . "F";
+  $Lower .= "C";
+  $Upper .= "C";
+  $Content  = "<span class=\"text-success\">$Lower</span> / <span class=\"text-success\">$LowerTempF</span> to ";
+  $Content .= "<span class=\"text-danger\">$Upper</span> / <span class=\"text-danger\">$UpperTempF</span>";
+  return $Content;
+}
+//---------------------------------------------------------------------------------------------------
+function generateRandomString($length = 10) {
+  $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  $charactersLength = strlen($characters);
+  $randomString = '';
+  for ($i = 0; $i < $length; $i++) {
+    $randomString .= $characters[rand(0, $charactersLength - 1)];
+  }
+  return $randomString;
+}
+//---------------------------------------------------------------------------------------------------
+function getOneWireTemp($Address) {
+  if (file_exists("/sys/bus/w1/devices/$Address/w1_slave")) {
+    $Poll = file_get_contents("/sys/bus/w1/devices/$Address/w1_slave");
+    preg_match("/.*?t=(.*)/i",$Poll,$M);
+    $Temp = $M[1];
+    $Data["C"] = round($Temp * .001,1);
+    $Data["F"] = round(($Data["C"] * (9 / 5)) + 32,1);
+  } else {
+    $Data["C"] = -1000;
+    $Data["F"] = -1000;
+  }
+  return $Data;
+}
+//---------------------------------------------------------------------------------------------------
+function PosToPct($Total,$Position) {
+  return "<span class=\"text-light\">" . round($Position / $Total * 100,1) . "%</span>";
 }
 //---------------------------------------------------------------------------------------------------
 ?>
