@@ -8,7 +8,9 @@ function DrawCard($DBcnx,$Body,$DoAjax) {
   $Content .=   "<div class=\"card-body\">";
   if ($DoAjax) $Content .= AjaxRefreshJS($Body,$RandID);
   $Content .=     "<div id=\"$RandID\">";
-  if ($Body == "temperatures") {
+  if ($Body == "program_data") {
+    $Content .= ShowProgramData($DBcnx);
+  } elseif ($Body == "temperatures") {
     $Content .= ShowTemperatures($DBcnx);
   }
   $Content .=     "</div>";
@@ -73,6 +75,15 @@ function DrawMenu($DBcnx) {
   $Content .= "</nav>";
   //mysqli_close($DBcnx);
   return $Content;
+}
+//---------------------------------------------------------------------------------------------------
+function ShowProgramData($DBcnx) {
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
+  $Settings = mysqli_fetch_assoc($Result);
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=" . $Settings["active_program"]);
+  $Program  = mysqli_fetch_assoc($Result);
+
+  //return $Content;
 }
 //---------------------------------------------------------------------------------------------------
 function ShowTemperatures($DBcnx) {
