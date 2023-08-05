@@ -63,7 +63,8 @@ $Content .=   "<div class=\"row\">";
 
 if (! isset($_GET["page"])) {
   $Content .= DrawCard($DBcnx,"temperatures",true);
-
+  $Content .= DrawCard($DBcnx,"program_temps",false);
+  $Content .= DrawCard($DBcnx,"valve_positions",true);
 } else {
   if ($_GET["page"] == "heating") {
 
