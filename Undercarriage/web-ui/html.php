@@ -8,10 +8,12 @@ function DrawCard($DBcnx,$Body,$DoAjax) {
   $Content .=   "<div class=\"card-body\">";
   if ($DoAjax) $Content .= AjaxRefreshJS($Body,$RandID);
   $Content .=     "<div id=\"$RandID\">";
-  if ($Body == "program_data") {
-    $Content .= ShowProgramData($DBcnx);
+  if ($Body == "program_temps") {
+    $Content .= ShowProgramTemps($DBcnx);
   } elseif ($Body == "temperatures") {
     $Content .= ShowTemperatures($DBcnx);
+  } elseif ($Body == "valve_positions") {
+    $Content .= ShowValves($DBcnx);
   }
   $Content .=     "</div>";
   $Content .=   "</div>";
@@ -77,13 +79,23 @@ function DrawMenu($DBcnx) {
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
-function ShowProgramData($DBcnx) {
+function ShowProgramTemps($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
   $Result   = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=" . $Settings["active_program"]);
   $Program  = mysqli_fetch_assoc($Result);
 
-  //return $Content;
+  $Content  = "<table class=\"table table-sm table-borderless\">";
+  $Content .=   "<tr><td>Dephleg&nbsp;Range:</td><td align=\"right\" nowrap>" . FormatTempRange($Program["dephleg_temp_low"],$Program["dephleg_temp_high"]) . "</td></tr>";
+  $Content .=   "<tr><td>Column&nbsp;Range:</td><td align=\"right\" nowrap>" . FormatTempRange($Program["column_temp_low"],$Program["column_temp_high"]) . "</td></tr>";
+  $Content .=   "<tr><td>Boiler&nbsp;Range:</td><td align=\"right\" nowrap>" . FormatTempRange($Program["boiler_temp_low"],$Program["boiler_temp_high"]) . "</td></tr>";
+  if ($Settings["active_run"] == 0) {
+    $Content .= "<tr><td colspan=\"2\" align=\"right\"><span class=\"text-warning\">Distillation run not active, no temperature management</span></td></tr>";
+  } else {
+    $Content .= "<tr><td colspan=\"2\" align=\"right\"><span class=\"text-success blink\">Distillation run active, temperatures are being managed</span></td></tr>";
+  }
+  $Content .= "</table>";
+  return $Content;
 }
 //---------------------------------------------------------------------------------------------------
 function ShowTemperatures($DBcnx) {
@@ -91,12 +103,26 @@ function ShowTemperatures($DBcnx) {
   $Settings = mysqli_fetch_assoc($Result);
 
   $Content  = "<table class=\"table table-sm table-borderless\">";
-  $Content .=   "<tr><td>Dephleg&nbsp;Temperature:</td><td align=\"right\">" . FormatTemp($Settings["dephleg_temp"]) . "</td></tr>";
-  $Content .=   "<tr><td>Column&nbsp;Temperature:</td><td align=\"right\">" . FormatTemp($Settings["column_temp"]) . "</td></tr>";
-  $Content .=   "<tr><td>Boiler&nbsp;Temperature:</td><td align=\"right\">" . FormatTemp($Settings["boiler_temp"]) . "</td></tr>";
-  $Content .=   "<tr><td>Distillate&nbsp;Temperature:</td><td align=\"right\">" . FormatTemp($Settings["distillate_temp"]) . "</td></tr>";
+  $Content .=   "<tr><td>Dephleg&nbsp;Temperature:</td><td align=\"right\" nowrap>" . FormatTemp($Settings["dephleg_temp"]) . "</td></tr>";
+  $Content .=   "<tr><td>Column&nbsp;Temperature:</td><td align=\"right\" nowrap>" . FormatTemp($Settings["column_temp"]) . "</td></tr>";
+  $Content .=   "<tr><td>Boiler&nbsp;Temperature:</td><td align=\"right\" nowrap>" . FormatTemp($Settings["boiler_temp"]) . "</td></tr>";
+  $Content .=   "<tr><td>Distillate&nbsp;Temperature:</td><td align=\"right\" nowrap>" . FormatTemp($Settings["distillate_temp"]) . "</td></tr>";
   $Content .= "</table>";
   return $Content;
+}
+//---------------------------------------------------------------------------------------------------
+function ShowValves($DBcnx) {
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
+  $Settings = mysqli_fetch_assoc($Result);
+
+  $Content  = "<table class=\"table table-sm table-borderless\">";
+  $Content .=   "<tr><td>Dephleg&nbsp;Valve:</td><td align=\"right\" nowrap>" . PosToPct($Settings["valve2_total"],$Settings["valve2_position"]) . "</td></tr>";
+  $Content .=   "<tr><td>Condenser&nbsp;Valve:</td><td align=\"right\" nowrap>" . PosToPct($Settings["valve1_total"],$Settings["valve1_position"]) . "</td></tr>";
+  $Content .=   "<tr><td>Heating&nbsp;Stepper:</td><td align=\"right\" nowrap><span class=\"text-light\">" . $Settings["heating_position"] . " / " . $Settings["heating_total"] . "</span></td></tr>";
+  //$Content .=   "<tr><td>Distillate&nbsp;Temperature:</td><td align=\"right\" nowrap>" . FormatTemp($Settings["distillate_temp"]) . "</td></tr>";
+  $Content .= "</table>";
+  return $Content;
+
 }
 //---------------------------------------------------------------------------------------------------
 ?>
