@@ -66,7 +66,9 @@ if (! isset($_GET["page"])) {
   $Content .= DrawCard($DBcnx,"program_temps",false);
   $Content .= DrawCard($DBcnx,"valve_positions",true);
 } else {
-  if ($_GET["page"] == "heating") {
+  if ($_GET["page"] == "edit_servos") {
+
+  } elseif ($_GET["page"] == "heating") {
 
   } elseif ($_GET["page"] == "hydrometer") {
 
