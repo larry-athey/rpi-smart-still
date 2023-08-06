@@ -43,16 +43,20 @@ CREATE TABLE `programs` (
   `distillate_abv` int(11) DEFAULT NULL,
   `minimum_flow` int(11) DEFAULT NULL,
   `condenser_rate` int(11) DEFAULT NULL,
+  `boiler_managed` tinyint(4) DEFAULT NULL,
   `boiler_temp_low` float DEFAULT NULL,
   `boiler_temp_high` float DEFAULT NULL,
+  `dephleg_managed` tinyint(4) DEFAULT NULL,
   `dephleg_temp_low` float DEFAULT NULL,
   `dephleg_temp_high` float DEFAULT NULL,
+  `column_managed` tinyint(4) DEFAULT NULL,
   `column_temp_low` float DEFAULT NULL,
   `column_temp_high` float DEFAULT NULL,
   `notes` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `programs` (`ID`, `program_name`, `mode`, `distillate_abv`, `minimum_flow`, `condenser_rate`, `boiler_temp_low`, `boiler_temp_high`, `dephleg_temp_low`, `dephleg_temp_high`, `column_temp_low`, `column_temp_high`, `notes`) VALUES (1, 'Maximum Reflux', 1, 180, 30, 50, 180, 190, 55, 60, 180, 190, NULL);
+INSERT INTO `programs` (`ID`, `program_name`, `mode`, `distillate_abv`, `minimum_flow`, `condenser_rate`, `boiler_managed`, `boiler_temp_low`, `boiler_temp_high`, `dephleg_managed`, `dephleg_temp_low`, `dephleg_temp_high`, `column_managed`, `column_temp_low`, `column_temp_high`, `notes`) VALUES
+(1, 'Maximum Reflux', 1, 180, 30, 50, 1, 82.2, 87.8, 1, 55, 60, 0, 82.2, 87.8, NULL);
 
 ALTER TABLE `programs` ADD PRIMARY KEY (`ID`);
 
