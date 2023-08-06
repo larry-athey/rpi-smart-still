@@ -69,6 +69,7 @@ while ($RS = mysqli_fetch_assoc($Result)) {
       }
     }
     shell_exec("/usr/share/rpi-smart-still/heating $Direction " . $RS["duration"]);
+    if (Settings["active_run"] == 0) shell_exec("/usr/share/rpi-smart-still/heating disable");
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET executed='1' WHERE ID=" . $RS["ID"]);
   }
 }
