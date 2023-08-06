@@ -12,6 +12,8 @@ function DrawCard($DBcnx,$Body,$DoAjax) {
     $Content .= ShowHydrometer($DBcnx);
   } elseif ($Body == "program_temps") {
     $Content .= ShowProgramTemps($DBcnx);
+  } elseif ($Body == "edit_servos") {
+    $Content .= ServoPositionEditor($DBcnx);
   } elseif ($Body == "temperatures") {
     $Content .= ShowTemperatures($DBcnx);
   } elseif ($Body == "valve_positions") {
@@ -77,7 +79,23 @@ function DrawMenu($DBcnx) {
   $Content .=     "</div>";
   $Content .=   "</div>";
   $Content .= "</nav>";
-  //mysqli_close($DBcnx);
+  return $Content;
+}
+//---------------------------------------------------------------------------------------------------
+function ServoPositionEditor($DBcnx) {
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
+  $Settings = mysqli_fetch_assoc($Result);
+
+  $Content  = "<p style=\"font-weight: bold;\">Servo Position Editor:</p>";
+  $Content .= "<form id=\"servo_editor\" method=\"post\" action=\"process.php\">";
+  $Content .= "<label for=\"Valve2\" class=\"form-label\">Dephleg Cooling Valve %</label>";
+  $Content .= "<input type=\"number\" class=\"form-control\" id=\"Valve2\" name=\"Valve2\" min=\"0\" max=\"100\" step=\".1\" value=\"" . PosToPct($Settings["valve2_total"],$Settings["valve2_position"]) . "\">";
+  $Content .= "<label for=\"Valve1\" class=\"form-label\" style=\"margin-top: .5em;\">Condenser Cooling Valve %</label>";
+  $Content .= "<input type=\"number\" class=\"form-control\" id=\"Valve1\" name=\"Valve1\" min=\"0\" max=\"100\" step=\".1\" value=\"" . PosToPct($Settings["valve1_total"],$Settings["valve1_position"]) . "\">";
+  $Content .= "<label for=\"Heating\" class=\"form-label\" style=\"margin-top: .5em;\">Heating Stepper Position [0.." . $Settings["heating_total"] . "]</label>";
+  $Content .= "<input type=\"number\" class=\"form-control\" id=\"Heating\" name=\"Heating\" min=\"0\" max=\"" . $Settings["heating_total"] . "\" step=\"1\" value=\"" . $Settings["heating_position"] . "\">";
+  $Content .= "<button type=\"submit\" class=\"btn btn-primary\" name=\"rss_edit_servos\" style=\"margin-top: 1em; float: right;\">Submit</button>";
+  $Content .= "</form>";
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
@@ -134,7 +152,6 @@ function ShowValves($DBcnx) {
   $Content .=   "<tr><td colspan=\"2\" align=\"right\"><a href=\"?page=edit_servos\" class=\"btn btn-secondary\" name=\"edit_motors\" style=\"float: right; --bs-btn-padding-y: .10rem; --bs-btn-padding-x: .75rem; --bs-btn-font-size: .75rem;\"><span>Modify Servo Positions</span></a></td></tr>";
   $Content .= "</table>";
   return $Content;
-
 }
 //---------------------------------------------------------------------------------------------------
 ?>
