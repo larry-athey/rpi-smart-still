@@ -88,7 +88,8 @@ CREATE TABLE `settings` (
   `serial_data` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `settings` (`ID`, `boiler_addr`, `boiler_temp`, `dephleg_addr`, `dephleg_temp`, `column_addr`, `column_temp`, `valve1_total`, `valve1_pulse`, `valve1_position`, `valve2_total`, `valve2_pulse`, `valve2_position`, `heating_enabled`, `heating_polarity`, `heating_total`, `heating_position`, `distillate_temp`, `distillate_abv`, `distillate_flowing`, `speech_enabled`, `active_run`, `active_program`, `paused`, `serial_data`) VALUES (1, '28-3c12f649f6eb', 32.4, '28-3c1cf6499389', 26.7, '28-3c02f649bef7', 26.7, 10000, 100, 0, 10000, 100, 0, 0, 0, 0, 0, 26.8, 28, 0, 1, 0, 1, 0, 'Uptime: 00:16:40\nWeight: 64.15 64.16\nFlow: 0\nEthanol: 28\nTempC: 26.8');
+INSERT INTO `settings` (`ID`, `boiler_addr`, `boiler_temp`, `dephleg_addr`, `dephleg_temp`, `column_addr`, `column_temp`, `valve1_total`, `valve1_pulse`, `valve1_position`, `valve2_total`, `valve2_pulse`, `valve2_position`, `heating_enabled`, `heating_polarity`, `heating_total`, `heating_position`, `distillate_temp`, `distillate_abv`, `distillate_flowing`, `speech_enabled`, `active_run`, `active_program`, `paused`, `run_start`, `run_end`, `serial_data`) VALUES
+(1, '28-3c12f649f6eb', 26.9, '28-3c1cf6499389', 21.8, '28-3c02f649bef7', 21.8, 10000, 100, 0, 10000, 100, 0, 1, 1, 140, 0, 21.8, 86, 0, 1, 0, 1, 0, '2023-08-06 15:47:40', '2023-08-06 19:20:15', 'Uptime: 35:25:33\nWeight: 63.76 63.79\nFlow: 0\nEthanol: 86\nTempC: 21.8');
 
 ALTER TABLE `settings` ADD PRIMARY KEY (`ID`);
 
