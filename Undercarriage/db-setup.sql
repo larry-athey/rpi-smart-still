@@ -24,6 +24,7 @@ ALTER TABLE `input_table` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 CREATE TABLE `output_table` (
   `ID` int(11) NOT NULL,
   `timestamp` timestamp NULL DEFAULT NULL,
+  `auto_manual` tinyint(4) DEFAULT NULL,
   `valve_id` tinyint(4) DEFAULT NULL,
   `direction` tinyint(4) DEFAULT NULL,
   `duration` int(11) DEFAULT NULL,
