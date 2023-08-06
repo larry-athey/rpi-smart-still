@@ -44,6 +44,12 @@ $DBcnx = mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
 $Result = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
 if (mysqli_num_rows($Result) > 0) {
   $Settings = mysqli_fetch_assoc($Result);
+  // Speech enable/disable requested
+  if (isset($_GET["speech"]) {
+    $Result = mysqli_query($DBcnx,"UPDATE settings SET speec_enabled='" . $_GET["speech"] . "' WHERE ID=1");
+    $Settings["speech_enabled"] = $_GET["speech"];
+  }
+  // Program change requested
   if (($Settings["active_run"] == 0) && (isset($_GET["program_id"])) && (is_numeric($_GET["program_id"]))) {
     $Result = mysqli_query($DBcnx,"UPDATE settings SET active_program='" . $_GET["program_id"] . "' WHERE ID=1");
     $Settings["active_program"] = $_GET["program_id"];
