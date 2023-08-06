@@ -66,6 +66,11 @@ function DrawMenu($DBcnx) {
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=sensors\">Configure&nbsp;Sensors</a></li>";
   $Content .=             "<li><a class=\"dropdown-item disabled\" href=\"?page=heating\"><span class=\"text-secondary\">Configure&nbsp;Heating</span></a></li>";
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=hydrometer\">Calibrate&nbsp;Hydrometer</a></li>";
+  if ($Settings["speech_enabled"] == 0) {
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"?speech=1\">Enable&nbsp;Speech</a></li>";
+  } else {
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"?speech=0\">Disable&nbsp;Speech</a></li>";
+  }
   $Content .=             "<li><hr class=\"dropdown-divider\"></li>";
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?run=1\">Start&nbsp;Run</a></li>";
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?run=10\">Pause&nbsp;Run</a></li>";
