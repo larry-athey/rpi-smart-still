@@ -83,6 +83,8 @@ CREATE TABLE `settings` (
   `active_run` tinyint(4) DEFAULT NULL,
   `active_program` int(11) DEFAULT NULL,
   `paused` tinyint(4) DEFAULT NULL,
+  `run_start` timestamp NULL DEFAULT NULL,
+  `run_end` timestamp NULL DEFAULT NULL,
   `serial_data` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
