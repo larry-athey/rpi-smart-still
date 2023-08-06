@@ -26,6 +26,40 @@ function AjaxRefreshJS($ID,$RandID) {
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
+function FormatEthanol($Value) {
+  if ($Value <= 24) {
+    $Color = "text-primary";
+  } elseif (($Value > 24) && ($Value <= 39)) {
+    $Color = "text-info";
+  } elseif (($Value > 39) && ($Value <= 55)) {
+    $Color = "text-success";
+  } elseif (($Value > 55) && ($Value <= 70)) {
+    $Color = "text-warning";
+  } else {
+    $Color = "text-danger";
+  }
+  $Content = "<p class=\"card-text $Color\" style=\"font-size:3em;text-align:center;\">$Value % /  " . $Value * 2 . " P</p>";
+  return $Content;
+}
+//---------------------------------------------------------------------------------------------------
+function FormatEthanolMeter($Value) {
+  if ($Value <= 24) {
+    $Color = "bg-primary";
+  } elseif (($Value > 24) && ($Value <= 39)) {
+    $Color = "bg-info";
+  } elseif (($Value > 39) && ($Value <= 55)) {
+    $Color = "bg-success";
+  } elseif (($Value > 55) && ($Value <= 70)) {
+    $Color = "bg-warning";
+  } else {
+    $Color = "bg-danger";
+  }
+  $Content  = "<div class=\"progress\" role=\"progressbar\" aria-label=\"\" aria-valuenow=\"$Value\" aria-valuemin=\"0\" aria-valuemax=\"100\">";
+  $Content .=   "<div class=\"progress-bar $Color\" style=\"width: $Value%\"></div>";
+  $Content .= "</div>";
+  return $Content;
+}
+//---------------------------------------------------------------------------------------------------
 function FormatTemp($TempC) {
   $TempF = round(($TempC * (9 / 5)) + 32,1);
   return "<span class=\"text-light\">" . $TempC . "C / " . $TempF . "F</span>";
