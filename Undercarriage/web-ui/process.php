@@ -8,6 +8,7 @@ if (isset($_POST["rss_edit_servos"])) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
 
+  // Safety nets just in case somebody is using a seriously outdated web browser that won't enforce form value limits
   $Valve1 = round($_POST["Valve1"] * $Settings["valve1_pulse"],0);
   if ($Valve1 > $Settings["valve1_total"]) $Valve1 = $Settings["valve1_total"]; // Prevents submissions > 100%
   $Valve2 = round($_POST["Valve2"] * $Settings["valve2_pulse"],0);
@@ -25,6 +26,8 @@ if (isset($_POST["rss_edit_servos"])) {
   }
   if ($Difference > 0) {
     $Update = mysqli_query($DBcnx,"UPDATE settings SET valve1_position='$Valve1' WHERE ID=1");
+    $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,executed) " .
+                                  "VALUES (now(),'1','1','$Direction','$Difference','$Valve1','0')");
   }
 
   // Requires a difference in Valve2 position to process
@@ -38,9 +41,11 @@ if (isset($_POST["rss_edit_servos"])) {
   }
   if ($Difference > 0) {
     $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$Valve2' WHERE ID=1");
+    $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,executed) " .
+                                  "VALUES (now(),'1','2','$Direction','$Difference','$Valve2','0')");
   }
 
-  // Requires a difference in Heating position to process
+  // Requires a difference in heating stepper position to process
   $Difference = 0;
   if ($Settings["heating_enabled"] == 1) {
     if ($_POST["Heating"] > $Settings["heating_position"]) {
@@ -52,11 +57,13 @@ if (isset($_POST["rss_edit_servos"])) {
     }
     if ($Difference > 0) {
       $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $_POST["Heating"] . "' WHERE ID=1");
+      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,executed) " .
+                                    "VALUES (now(),'1','3','$Direction','$Difference'," . $_POST["Heating"] . ",'0')");
     }
   }
 }
 //---------------------------------------------------------------------------------------------------
-header("Location: index.php");
 mysqli_close($DBcnx);
+header("Location: index.php");
 //---------------------------------------------------------------------------------------------------
 ?>
