@@ -128,8 +128,8 @@ function ShowValves($DBcnx) {
   $Settings = mysqli_fetch_assoc($Result);
 
   $Content  = "<table class=\"table table-sm table-borderless\">";
-  $Content .=   "<tr><td>Dephleg&nbsp;Valve:</td><td align=\"right\" nowrap>" . PosToPct($Settings["valve2_total"],$Settings["valve2_position"]) . "</td></tr>";
-  $Content .=   "<tr><td>Condenser&nbsp;Valve:</td><td align=\"right\" nowrap>" . PosToPct($Settings["valve1_total"],$Settings["valve1_position"]) . "</td></tr>";
+  $Content .=   "<tr><td>Dephleg&nbsp;Valve:</td><td align=\"right\" nowrap>" . FormatValvePosition($Settings["valve2_total"],$Settings["valve2_position"]) . "</td></tr>";
+  $Content .=   "<tr><td>Condenser&nbsp;Valve:</td><td align=\"right\" nowrap>" . FormatValvePosition($Settings["valve1_total"],$Settings["valve1_position"]) . "</td></tr>";
   $Content .=   "<tr><td>Heating&nbsp;Stepper:</td><td align=\"right\" nowrap><span class=\"text-light\">" . $Settings["heating_position"] . " / " . $Settings["heating_total"] . "</span></td></tr>";
   $Content .=   "<tr><td colspan=\"2\" align=\"right\"><a href=\"?page=edit_servos\" class=\"btn btn-secondary\" name=\"edit_motors\" style=\"float: right; --bs-btn-padding-y: .10rem; --bs-btn-padding-x: .75rem; --bs-btn-font-size: .75rem;\"><span>Modify Servo Positions</span></a></td></tr>";
   $Content .= "</table>";
