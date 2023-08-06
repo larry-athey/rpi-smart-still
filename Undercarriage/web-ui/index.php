@@ -62,10 +62,10 @@ $Content  = "<div class=\"container-fluid\" style=\"align: left;\">";
 $Content .=   "<div class=\"row\">";
 
 if (! isset($_GET["page"])) {
-  $Content .= DrawCard($DBcnx,"temperatures",true);
   $Content .= DrawCard($DBcnx,"hydrometer",true);
-  $Content .= DrawCard($DBcnx,"program_temps",false);
+  $Content .= DrawCard($DBcnx,"temperatures",true);
   $Content .= DrawCard($DBcnx,"valve_positions",true);
+  $Content .= DrawCard($DBcnx,"program_temps",false);
 } else {
   if ($_GET["page"] == "edit_servos") {
 
