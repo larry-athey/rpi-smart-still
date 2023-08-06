@@ -64,7 +64,7 @@ function DrawMenu($DBcnx) {
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=programs\">Edit&nbsp;Programs</a></li>";
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=valves\">Calibrate&nbsp;Valves</a></li>";
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=sensors\">Configure&nbsp;Sensors</a></li>";
-  $Content .=             "<li><a class=\"dropdown-item disabled\" href=\"?page=heating\"><span class=\"text-secondary\">Configure&nbsp;Heating</span></a></li>";
+  $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=heating\">Configure&nbsp;Heating</a></li>";
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=hydrometer\">Calibrate&nbsp;Hydrometer</a></li>";
   if ($Settings["speech_enabled"] == 0) {
     $Content .=           "<li><a class=\"dropdown-item\" href=\"?speech=1\">Enable&nbsp;Speech</a></li>";
@@ -72,9 +72,19 @@ function DrawMenu($DBcnx) {
     $Content .=           "<li><a class=\"dropdown-item\" href=\"?speech=0\">Disable&nbsp;Speech</a></li>";
   }
   $Content .=             "<li><hr class=\"dropdown-divider\"></li>";
-  $Content .=             "<li><a class=\"dropdown-item\" href=\"?run=1\">Start&nbsp;Run</a></li>";
-  $Content .=             "<li><a class=\"dropdown-item\" href=\"?run=10\">Pause&nbsp;Run</a></li>";
-  $Content .=             "<li><a class=\"dropdown-item\" href=\"?run=0\">Stop&nbsp;Run</a></li>";
+  if ($Settings["active_run"] == 1) {
+    $Content .=           "<li><a  class=\"dropdown-item disabled\" href=\"?run=1\"><span class=\"text-secondary\">Start&nbsp;Run</span></a></li>";
+    if ($Settings["paused"] == 0) {
+      $Content .=         "<li><a class=\"dropdown-item\" href=\"process.php?pause_run=1\">Pause&nbsp;Run</a></li>";
+    } else {
+      $Content .=         "<li><a class=\"dropdown-item\" href=\"process.php?pause_run=0\">Resume&nbsp;Run</a></li>";
+    }
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"?run=0\">Stop&nbsp;Run</a></li>";
+  } else {
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"?run=1\">Start&nbsp;Run</a></li>";
+    $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"process.php?pause_run=1\"><span class=\"text-secondary\">Pause&nbsp;Run</span></a></li>";
+    $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"?run=0\"><span class=\"text-secondary\">Stop&nbsp;Run</span></a></li>";
+  }
   $Content .=           "</ul>";
   $Content .=         "</li>";
   $Content .=         "<li class=\"nav-item\">";
