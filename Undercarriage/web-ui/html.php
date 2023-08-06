@@ -53,7 +53,11 @@ function DrawMenu($DBcnx) {
   while ($RS = mysqli_fetch_assoc($Result)) {
     if ($RS["ID"] == $Settings["active_program"]) $RS["program_name"] = "&#10003 " . $RS["program_name"];
     $RS["program_name"] = str_replace(" ","&nbsp;",$RS["program_name"]);
-    $Content .=           "<li><a class=\"dropdown-item\" href=\"?program_id=" . $RS["ID"] . "\">" . $RS["program_name"] . "</a></li>";
+    if ($Settings["active_run"] == 1) {
+      $Content .=         "<li><a class=\"dropdown-item disabled\" href=\"?program_id=" . $RS["ID"] . "\"><span class=\"text-secondary\">" . $RS["program_name"] . "</span></a></li>";
+    } else {
+      $Content .=         "<li><a class=\"dropdown-item\" href=\"?program_id=" . $RS["ID"] . "\">" . $RS["program_name"] . "</a></li>";
+    }
   }
 
   $Content .=           "</ul>";
