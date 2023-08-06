@@ -27,14 +27,16 @@ function AjaxRefreshJS($ID,$RandID) {
 }
 //---------------------------------------------------------------------------------------------------
 function FormatEthanol($Value) {
-  if ($Value <= 24) {
+  if ($Value <= 19) {
     $Color = "text-primary";
-  } elseif (($Value > 24) && ($Value <= 39)) {
+  } elseif (($Value > 19) && ($Value <= 29)) {
     $Color = "text-info";
-  } elseif (($Value > 39) && ($Value <= 55)) {
+  } elseif (($Value > 29) && ($Value <= 49)) {
     $Color = "text-success";
-  } elseif (($Value > 55) && ($Value <= 70)) {
+  } elseif (($Value > 49) && ($Value <= 64)) {
     $Color = "text-warning";
+  } elseif (($Value > 64) && ($Value <= 84)) {
+    $Color = "text-danger-emphasis"; // No color class that matches the hydrometer's magenta in this range
   } else {
     $Color = "text-danger";
   }
@@ -43,14 +45,16 @@ function FormatEthanol($Value) {
 }
 //---------------------------------------------------------------------------------------------------
 function FormatEthanolMeter($Value) {
-  if ($Value <= 24) {
+  if ($Value <= 19) {
     $Color = "bg-primary";
-  } elseif (($Value > 24) && ($Value <= 39)) {
+  } elseif (($Value > 19) && ($Value <= 29)) {
     $Color = "bg-info";
-  } elseif (($Value > 39) && ($Value <= 55)) {
+  } elseif (($Value > 29) && ($Value <= 49)) {
     $Color = "bg-success";
-  } elseif (($Value > 55) && ($Value <= 70)) {
+  } elseif (($Value > 49) && ($Value <= 64)) {
     $Color = "bg-warning";
+  } elseif (($Value > 64) && ($Value <= 84)) {
+    $Color = "bg-danger"; // No bg-danger-emphasis class
   } else {
     $Color = "bg-danger";
   }
@@ -75,6 +79,10 @@ function FormatTempRange($Lower,$Upper) {
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
+function FormatValvePosition($Total,$Position) {
+  return "<span class=\"text-light\">" . round($Position / $Total * 100,1) . "%</span>";
+}
+//---------------------------------------------------------------------------------------------------
 function generateRandomString($length = 10) {
   $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
   $charactersLength = strlen($characters);
@@ -97,10 +105,6 @@ function getOneWireTemp($Address) {
     $Data["F"] = -1000;
   }
   return $Data;
-}
-//---------------------------------------------------------------------------------------------------
-function PosToPct($Total,$Position) {
-  return "<span class=\"text-light\">" . round($Position / $Total * 100,1) . "%</span>";
 }
 //---------------------------------------------------------------------------------------------------
 ?>
