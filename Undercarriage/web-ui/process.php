@@ -54,8 +54,6 @@ if (isset($_POST["rss_edit_servos"])) {
       $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $_POST["Heating"] . "' WHERE ID=1");
     }
   }
-
-  exit;
 }
 //---------------------------------------------------------------------------------------------------
 header("Location: index.php");
