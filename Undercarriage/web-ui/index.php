@@ -45,8 +45,8 @@ $Result = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
 if (mysqli_num_rows($Result) > 0) {
   $Settings = mysqli_fetch_assoc($Result);
   // Speech enable/disable requested
-  if (isset($_GET["speech"]) {
-    $Result = mysqli_query($DBcnx,"UPDATE settings SET speec_enabled='" . $_GET["speech"] . "' WHERE ID=1");
+  if (isset($_GET["speech"])) {
+    $Result = mysqli_query($DBcnx,"UPDATE settings SET speech_enabled='" . $_GET["speech"] . "' WHERE ID=1");
     $Settings["speech_enabled"] = $_GET["speech"];
   }
   // Program change requested
