@@ -191,7 +191,7 @@ function StartRun($DBcnx) {
 }
 //---------------------------------------------------------------------------------------------------
 function StopRun($DBcnx) {
-
+  $Content  = "<p class=\"text-light\">Are you sure that you want to stop the current run rather than pausing it? Starting a new distillation run will clear all data currently stored in the timeline.</p>";
   $Content .= "<div style=\"float: right;\"><a href=\"index.php\" class=\"btn btn-danger\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"process.php?active_run=0\" class=\"btn btn-primary\" name=\"start_run\">Stop Distillation Run</a></div>";
   return $Content;
 }
