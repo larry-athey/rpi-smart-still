@@ -69,7 +69,7 @@ if (mysqli_num_rows($Result) > 0) {
       /***** BOILER TEMPERATURE MANAGEMENT ROUTINES *****/
       if ($Program["boiler_managed"] == 1) {
         // Check boiler temperature every 600 seconds (10 minutes)
-        if (time() - strtotime($Logic["boiler_last_adjustment"]) >= 600)
+        if (time() - strtotime($Logic["boiler_last_adjustment"]) >= 600) {
           if ($Settings["boiler_temp"] < $Program["boiler_temp_low"]) {
             if ($Settings["heating_enabled"] == 1) {
               // Increase boiler power to the next higher 10% mark
