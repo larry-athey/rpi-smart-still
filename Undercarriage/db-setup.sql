@@ -44,6 +44,7 @@ ALTER TABLE `input_table` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 CREATE TABLE `logic_tracker` (
   `ID` int(11) NOT NULL,
+  `run_start` tinyint(4) DEFAULT NULL,
   `boiler_done` tinyint(4) DEFAULT NULL,
   `boiler_done_timestamp` timestamp NULL DEFAULT NULL,
   `boiler_last_adjustment` timestamp NULL DEFAULT NULL,
