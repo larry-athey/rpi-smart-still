@@ -12,6 +12,9 @@ function SpeakMessage($ID) {
   $Msg[4] = "Increasing heating stepper position";
   $Msg[5] = "Decreasing heating stepper position";
 
+  if ($ID == 6) {
+  }
+
   shell_exec("/usr/bin/espeak -v english-us -s 160 \"$Msg[$ID]\" 2> /dev/null &");
   mysqli_close($DBcnx);
 }
