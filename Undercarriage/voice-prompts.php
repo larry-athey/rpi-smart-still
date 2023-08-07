@@ -18,7 +18,7 @@ function SpeakMessage($ID) {
   $Msg[4]   = "Increasing heating stepper motor position";
   $Msg[5]   = "Decreasing heating stepper motor position";
   $Msg[6]   = "Starting a new distillation run using the program named. " . $Program["program_name"];
-  $Msg[7]   = "Stopping the current distillation run. Shutting down the boiler and cooling cooling valves";
+  $Msg[7]   = "Stopping the current distillation run. Shutting down the boiler and cooling valves";
   $Msg[8]   = "Please turn on your boiler's heating control to its highest setting at this time";
   $Msg[9]   = "Please turn off your boiler's heating control at this time";
   $Msg[10]  = "Boiler has reached minimum operating temperature. Reducing heat to 70%";
