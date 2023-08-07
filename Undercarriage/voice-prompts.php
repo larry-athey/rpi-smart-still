@@ -21,6 +21,8 @@ function SpeakMessage($ID) {
   $Msg[7]   = "Stopping the current distillation run. Shutting down the boiler and cooling valves";
   $Msg[8]   = "Please turn on your boiler's heating control to its highest setting at this time";
   $Msg[9]   = "Please turn off your boiler's heating control at this time";
+  $Msg[10]  = "Boiler has reached minimum operating temperature. Reducing heat to 70%";
+  $Msg[11]  = "Boiler has reached minimum operating temperature. Please reduce your heat to 70%";
 
   shell_exec("/usr/bin/espeak -v english-us -s 160 \"$Msg[$ID]\" 2> /dev/null &");
   mysqli_close($DBcnx);
