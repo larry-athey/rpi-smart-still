@@ -21,6 +21,19 @@ ALTER TABLE `input_table` ADD PRIMARY KEY (`ID`);
 
 ALTER TABLE `input_table` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
+CREATE TABLE `logic_tracker` (
+  `ID` int(11) NOT NULL,
+  `boiler_done` tinyint(4) DEFAULT NULL,
+  `boiler_done_timestamp` timestamp NULL DEFAULT NULL,
+  `boiler_last_adjustment` timestamp NULL DEFAULT NULL,
+  `boiler_last_action` tinyint(4) DEFAULT NULL,
+  `boiler_note` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+ALTER TABLE `logic_tracker` ADD PRIMARY KEY (`ID`);
+
+ALTER TABLE `logic_tracker` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
 CREATE TABLE `output_table` (
   `ID` int(11) NOT NULL,
   `timestamp` timestamp NULL DEFAULT NULL,
