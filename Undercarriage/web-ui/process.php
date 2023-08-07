@@ -1,7 +1,6 @@
 <?php
 //---------------------------------------------------------------------------------------------------
 require_once("subs.php");
-require_once("/usr/share/rpi-smart-still/voice-prompts.php");
 //---------------------------------------------------------------------------------------------------
 $DBcnx = mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
 //---------------------------------------------------------------------------------------------------
@@ -9,21 +8,22 @@ if (isset($_GET["active_run"])) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
   if ($_GET["active_run"] == 1) {
-    SpeakMessage(6);
+    //SpeakMessage(6);
     $Update = mysqli_query($DBcnx,"TRUNCATE input_table");
     $Update = mysqli_query($DBcnx,"TRUNCATE output_table");
     $Update = mysqli_query($DBcnx,"TRUNCATE logic_tracker");
-    $Update = mysqli_query($DBcnx,"UPDATE settings SET valve1_position='0',valve2_position='0',active_run='1',run_start=now(),run_end=NULL WHERE ID=1");
-    shell_exec("/usr/share/rpi-smart-still/valve 1 close");
-    shell_exec("/usr/share/rpi-smart-still/valve 2 close");
-    $Insert = mysqli_query($DBcnx,"INSERT INTO logic_tracker (boiler_done) VALUES (0)");
+    $Update = mysqli_query($DBcnx,"UPDATE settings SET active_run='1',run_start=now(),run_end=NULL WHERE ID=1");
+    //shell_exec("/usr/share/rpi-smart-still/valve 1 close");
+    //shell_exec("/usr/share/rpi-smart-still/valve 2 close");
+    $Insert = mysqli_query($DBcnx,"INSERT INTO logic_tracker (run_start,boiler_done) VALUES (1,0)");
     $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,executed) " .
                                   "VALUES (now(),'0','3','1','" . $Settings["heating_total"] . "','" . $Settings["heating_total"] . "','0')");
   } else {
-    SpeakMessage(7);
-    $Update = mysqli_query($DBcnx,"UPDATE settings SET valve1_position='0',valve2_position='0',active_run='0',run_end=now() WHERE ID=1");
-    shell_exec("/usr/share/rpi-smart-still/valve 1 close");
-    shell_exec("/usr/share/rpi-smart-still/valve 2 close");
+    //SpeakMessage(7);
+    $Update = mysqli_query($DBcnx,"TRUNCATE logic_tracker");
+    $Update = mysqli_query($DBcnx,"UPDATE settings SET active_run='0',run_end=now() WHERE ID=1");
+    //shell_exec("/usr/share/rpi-smart-still/valve 1 close");
+    //shell_exec("/usr/share/rpi-smart-still/valve 2 close");
     $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,executed) " .
                                   "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','0')");
   }
