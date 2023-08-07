@@ -18,6 +18,10 @@ function DrawCard($DBcnx,$Body,$DoAjax) {
     $Content .= ShowTemperatures($DBcnx);
   } elseif ($Body == "valve_positions") {
     $Content .= ShowValves($DBcnx);
+  } elseif ($Body == "start_run") {
+    $Content .= StartRun($DBcnx);
+  } elseif ($Body == "stop_run") {
+    $Content .= StopRun($DBcnx);
   }
   $Content .=     "</div>";
   $Content .=   "</div>";
@@ -77,17 +81,17 @@ function DrawMenu($DBcnx) {
   }
   $Content .=             "<li><hr class=\"dropdown-divider\"></li>";
   if ($Settings["active_run"] == 1) {
-    $Content .=           "<li><a  class=\"dropdown-item disabled\" href=\"?run=1\"><span class=\"text-secondary\">Start&nbsp;Run</span></a></li>";
+    $Content .=           "<li><a  class=\"dropdown-item disabled\" href=\"?page=start_run\"><span class=\"text-secondary\">Start&nbsp;Run</span></a></li>";
     if ($Settings["paused"] == 0) {
       $Content .=         "<li><a class=\"dropdown-item\" href=\"process.php?pause_run=1\">Pause&nbsp;Run</a></li>";
     } else {
       $Content .=         "<li><a class=\"dropdown-item\" href=\"process.php?pause_run=0\">Resume&nbsp;Run</a></li>";
     }
-    $Content .=           "<li><a class=\"dropdown-item\" href=\"?run=0\">Stop&nbsp;Run</a></li>";
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"?page=stop_run\">Stop&nbsp;Run</a></li>";
   } else {
-    $Content .=           "<li><a class=\"dropdown-item\" href=\"?run=1\">Start&nbsp;Run</a></li>";
-    $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"process.php?pause_run=1\"><span class=\"text-secondary\">Pause&nbsp;Run</span></a></li>";
-    $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"?run=0\"><span class=\"text-secondary\">Stop&nbsp;Run</span></a></li>";
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"?page=start_run\">Start&nbsp;Run</a></li>";
+    $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"process.php?pause_page=start_run\"><span class=\"text-secondary\">Pause&nbsp;Run</span></a></li>";
+    $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"?page=stop_run\"><span class=\"text-secondary\">Stop&nbsp;Run</span></a></li>";
   }
   $Content .=           "</ul>";
   $Content .=         "</li>";
@@ -171,6 +175,14 @@ function ShowValves($DBcnx) {
   $Content .=   "<tr><td colspan=\"2\" align=\"right\"><a href=\"?page=edit_servos\" class=\"btn btn-secondary\" name=\"edit_motors\" style=\"float: right; --bs-btn-padding-y: .10rem; --bs-btn-padding-x: .75rem; --bs-btn-font-size: .75rem;\"><span>Modify Servo Positions</span></a></td></tr>";
   $Content .= "</table>";
   return $Content;
+}
+//---------------------------------------------------------------------------------------------------
+function StartRun($DBcnx) {
+
+}
+//---------------------------------------------------------------------------------------------------
+function StopRun($DBcnx) {
+
 }
 //---------------------------------------------------------------------------------------------------
 ?>
