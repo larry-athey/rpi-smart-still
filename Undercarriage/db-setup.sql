@@ -6,6 +6,27 @@ USE `rpismartstill`;
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, LOCK TABLES, EXECUTE, CREATE ROUTINE, ALTER ROUTINE, TRIGGER ON `rpismartstill`.* TO 'rssdbuser'@'localhost';
 FLUSH PRIVILEGES;
 
+CREATE TABLE `heating_translation` (
+  `ID` int(11) NOT NULL,
+  `percent` tinyint(4) DEFAULT NULL,
+  `position` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `heating_translation` (`ID`, `percent`, `position`) VALUES
+(1, 90, 134),
+(2, 80, 130),
+(3, 70, 127),
+(4, 60, 124),
+(5, 50, 120),
+(6, 40, 117),
+(7, 30, 114),
+(8, 20, 111),
+(9, 10, 108);
+
+ALTER TABLE `heating_translation` ADD PRIMARY KEY (`ID`);
+
+ALTER TABLE `heating_translation` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
 CREATE TABLE `input_table` (
   `ID` int(11) NOT NULL,
   `timestamp` timestamp NULL DEFAULT NULL,
