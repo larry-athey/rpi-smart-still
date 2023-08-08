@@ -78,6 +78,7 @@ CREATE TABLE `programs` (
   `program_name` varchar(100) DEFAULT NULL,
   `mode` tinyint(4) DEFAULT NULL,
   `distillate_abv` int(11) DEFAULT NULL,
+  `abv_managed` tinyint(4) DEFAULT NULL,
   `minimum_flow` int(11) DEFAULT NULL,
   `dephleg_start` int(11) DEFAULT NULL,
   `condenser_rate` int(11) DEFAULT NULL,
@@ -93,8 +94,8 @@ CREATE TABLE `programs` (
   `notes` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `programs` (`ID`, `program_name`, `mode`, `distillate_abv`, `minimum_flow`, `dephleg_start`, `condenser_rate`, `boiler_managed`, `boiler_temp_low`, `boiler_temp_high`, `dephleg_managed`, `dephleg_temp_low`, `dephleg_temp_high`, `column_managed`, `column_temp_low`, `column_temp_high`, `notes`) VALUES
-(1, 'Maximum Reflux', 1, 180, 30, 40, 40, 1, 82.2, 92.8, 1, 55, 60, 0, 82.2, 87.8, NULL);
+INSERT INTO `programs` (`ID`, `program_name`, `mode`, `distillate_abv`, `abv_managed`, `minimum_flow`, `dephleg_start`, `condenser_rate`, `boiler_managed`, `boiler_temp_low`, `boiler_temp_high`, `dephleg_managed`, `dephleg_temp_low`, `dephleg_temp_high`, `column_managed`, `column_temp_low`, `column_temp_high`, `notes`) VALUES
+(1, 'Maximum Reflux', 1, 180, 0, 30, 40, 40, 1, 82.2, 93.3, 1, 60, 65, 1, 82.2, 87.8, NULL);
 
 ALTER TABLE `programs` ADD PRIMARY KEY (`ID`);
 
@@ -116,6 +117,7 @@ CREATE TABLE `settings` (
   `valve2_position` int(11) DEFAULT NULL,
   `heating_enabled` tinyint(11) DEFAULT NULL,
   `heating_polarity` tinyint(4) DEFAULT NULL,
+  `heating_analog` tinyint(4) DEFAULT NULL,
   `heating_total` int(11) DEFAULT NULL,
   `heating_position` int(11) DEFAULT NULL,
   `distillate_temp` float DEFAULT NULL,
@@ -131,8 +133,8 @@ CREATE TABLE `settings` (
   `serial_data` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `settings` (`ID`, `boiler_addr`, `boiler_temp`, `dephleg_addr`, `dephleg_temp`, `column_addr`, `column_temp`, `valve1_total`, `valve1_pulse`, `valve1_position`, `valve2_total`, `valve2_pulse`, `valve2_position`, `heating_enabled`, `heating_polarity`, `heating_total`, `heating_position`, `distillate_temp`, `distillate_abv`, `distillate_flowing`, `speech_enabled`, `active_run`, `active_program`, `paused`, `pause_return`, `run_start`, `run_end`, `serial_data`) VALUES
-(1, '28-3c12f649f6eb', 32.1, '28-3c1cf6499389', 25.6, '28-3c02f649bef7', 25.9, 10000, 100, 0, 10000, 100, 0, 1, 1, 140, 0, 24.9, 63, 0, 1, 0, 1, 0, 0, '2023-08-06 15:47:40', '2023-08-06 19:20:15', 'Uptime: 42:54:03\nWeight: 64.57 64.60\nFlow: 0\nEthanol: 63\nTempC: 24.9');
+INSERT INTO `settings` (`ID`, `boiler_addr`, `boiler_temp`, `dephleg_addr`, `dephleg_temp`, `column_addr`, `column_temp`, `valve1_total`, `valve1_pulse`, `valve1_position`, `valve2_total`, `valve2_pulse`, `valve2_position`, `heating_enabled`, `heating_polarity`, `heating_analog`, `heating_total`, `heating_position`, `distillate_temp`, `distillate_abv`, `distillate_flowing`, `speech_enabled`, `active_run`, `active_program`, `paused`, `pause_return`, `run_start`, `run_end`, `serial_data`) VALUES
+(1, '28-3c12f649f6eb', 92, '28-3c1cf6499389', 59.3, '28-3c02f649bef7', 79.1, 10000, 100, 3800, 10000, 100, 4250, 1, 1, 1, 140, 123, 25.3, 13, 0, 1, 1, 1, 0, 0, '2023-08-07 22:15:30', NULL, 'Uptime: 70:13:41\nWeight: 57.04 57.06\nFlow: 0\nEthanol: 13\nTempC: 25.3');
 
 ALTER TABLE `settings` ADD PRIMARY KEY (`ID`);
 
