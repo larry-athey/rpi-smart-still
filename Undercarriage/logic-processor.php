@@ -57,12 +57,12 @@ if (mysqli_num_rows($Result) > 0) {
           $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Heating["position"] . "' WHERE ID=1");
           $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_done='1',boiler_last_adjustment=now()," .
                                         "boiler_note='Boiler has reached minimum operating temperature, reducing heat to 50%' WHERE ID=1");
-          if ($Settings["heating_analog"] == 1) {
+          if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
             $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                           "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')");
             $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                           "VALUES (now(),'0','3','1','" . $Heating["position"] . "','" . $Heating["position"] . "','1','0')");
-          } else {
+          } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
             $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                           "VALUES (now(),'0','3','0','$Difference','" . $Heating["position"] . "','1','0')");
           }
@@ -71,7 +71,8 @@ if (mysqli_num_rows($Result) > 0) {
                                         "boiler_note='Boiler has reached minimum operating temperature, please reduce your heat to 50%' WHERE ID=1");
           if ($Settings["speech_enabled"] == 1) SpeakMessage(11);
         }
-        // Open the condenser valve and dephleg valve to their starting positions
+        // Open the condenser valve to its starting position
+        // Open the dephleg valve to its starting position if this is a reflux program and dephleg_managed = 1
 
       }
     } else {
@@ -94,9 +95,12 @@ if (mysqli_num_rows($Result) > 0) {
                 $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now()," .
                                               "boiler_note='Boiler is under temperature, increasing heat to " . $Heating["position"] . " steps' WHERE ID=1");
                 if ($Settings["speech_enabled"] == 1) SpeakMessage(12);
-                if ($Settings["heating_analog"] == 1) {
-
-                } else {
+                if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
+                  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')");
+                  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                "VALUES (now(),'0','3','1','" . $Heating["position"] . "','" . $Heating["position"] . "','1','0')");
+                } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
                   $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                                 "VALUES (now(),'0','3','1','$Difference','" . $Heating["position"] . "','1','0')");
                 }
@@ -122,9 +126,12 @@ if (mysqli_num_rows($Result) > 0) {
                 $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now()," .
                                               "boiler_note='Boiler is over temperature, decreasing heat to " . $Heating["position"] . " steps' WHERE ID=1");
                 if ($Settings["speech_enabled"] == 1) SpeakMessage(13);
-                if ($Settings["heating_analog"] == 1) {
-
-                } else {
+                if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
+                  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')");
+                  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                "VALUES (now(),'0','3','1','" . $Heating["position"] . "','" . $Heating["position"] . "','1','0')");
+                } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
                   $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                                 "VALUES (now(),'0','3','0','$Difference','" . $Heating["position"] . "','1','0')");
                 }
