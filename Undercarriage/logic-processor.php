@@ -147,6 +147,25 @@ if (mysqli_num_rows($Result) > 0) {
           }
         }
       }
+      /***** COLUMN TEMPERATURE MANAGEMENT ROUTINES *****/
+      if ($Program["column_managed"] == 1) {
+        if ($Logic["column_done"] == 0) {
+          // Don't bother managing any dephleg or ABV stuff until the column is up to temperature
+
+          mysqli_close($DBcnx);
+          exit;
+        } else {
+
+        }
+      }
+      /***** DEPHLEG TEMPERATURE MANAGEMENT ROUTINES *****/
+      if ($Program["dephleg_managed"] == 1) {
+
+      }
+      /***** DISTILLATE MINIMUM ABV MANAGEMENT ROUTINES *****/
+      if ($Program["abv_managed"] == 1) {
+
+      }
     }
   }
 }
