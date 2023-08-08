@@ -66,6 +66,7 @@ CREATE TABLE `output_table` (
   `direction` tinyint(4) DEFAULT NULL,
   `duration` int(11) DEFAULT NULL,
   `position` int(11) DEFAULT NULL,
+  `muted` tinyint(4) DEFAULT NULL,
   `executed` tinyint(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
