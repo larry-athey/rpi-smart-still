@@ -95,7 +95,7 @@ CREATE TABLE `programs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `programs` (`ID`, `program_name`, `mode`, `distillate_abv`, `abv_managed`, `minimum_flow`, `dephleg_start`, `condenser_rate`, `boiler_managed`, `boiler_temp_low`, `boiler_temp_high`, `dephleg_managed`, `dephleg_temp_low`, `dephleg_temp_high`, `column_managed`, `column_temp_low`, `column_temp_high`, `notes`) VALUES
-(1, 'Maximum Reflux', 1, 180, 0, 30, 40, 40, 1, 82.2, 93.3, 1, 60, 65, 1, 82.2, 87.8, NULL);
+(1, 'Maximum Reflux', 1, 180, 0, 30, 40, 38, 1, 82.2, 93.3, 1, 60, 65, 1, 82.2, 85, NULL);
 
 ALTER TABLE `programs` ADD PRIMARY KEY (`ID`);
 
