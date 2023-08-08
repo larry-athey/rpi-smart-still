@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------
-// RPI-Smart-Still Hydrometer Serial Data Reader v1.0.1 released July 14, 2023
+// RPI-Smart-Still Hydrometer Serial Data Writer v1.0.1 released July 14, 2023
 //
 // Simple program to send commands to the hydrometer to reboot it or recalibrate the load cell.
 //------------------------------------------------------------------------------------------------
