@@ -23,15 +23,15 @@ while ($RS = mysqli_fetch_assoc($Result)) {
     if ($Settings["speech_enabled"] == 1) {
       if ($RS["valve_id"] == 1) {
         if ($RS["direction"] == 0) {
-          SpeakMessage(1);
+          if (RS["muted"] == 0) SpeakMessage(1);
         } else {
-          SpeakMessage(0);
+          if (RS["muted"] == 0) SpeakMessage(0);
         }
       } else {
         if ($RS["direction"] == 0) {
-          SpeakMessage(3);
+          if (RS["muted"] == 0) SpeakMessage(3);
         } else {
-          SpeakMessage(2);
+          if (RS["muted"] == 0) SpeakMessage(2);
         }
       }
     }
@@ -65,9 +65,9 @@ while ($RS = mysqli_fetch_assoc($Result)) {
     }
     if ($Settings["speech_enabled"] == 1) {
       if ($RS["direction"] == 0) {
-        SpeakMessage(5);
+        if (RS["muted"] == 0) SpeakMessage(5);
       } else {
-        SpeakMessage(4);
+        if (RS["muted"] == 0) SpeakMessage(4);
       }
     }
     shell_exec("/usr/share/rpi-smart-still/heating $Direction " . $RS["duration"]);
