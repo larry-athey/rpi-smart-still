@@ -24,8 +24,8 @@ if (mysqli_num_rows($Result) > 0) {
     shell_exec("/usr/share/rpi-smart-still/valve 2 close");
     $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET run_start='0' WHERE ID=1");
     if ($Settings["heating_enabled"] == 1) {
-      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,executed) " .
-                                    "VALUES (now(),'0','3','1','" . $Settings["heating_total"] . "','" . $Settings["heating_total"] . "','0')");
+      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                    "VALUES (now(),'0','3','1','" . $Settings["heating_total"] . "','" . $Settings["heating_total"] . "','1','0')");
     } else {
       if ($Settings["speech_enabled"] == 1) SpeakMessage(8);
     }
@@ -39,8 +39,8 @@ if (mysqli_num_rows($Result) > 0) {
     shell_exec("/usr/share/rpi-smart-still/valve 2 close");
     $Update = mysqli_query($DBcnx,"TRUNCATE logic_tracker");
     if ($Settings["heating_enabled"] == 1) {
-      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,executed) " .
-                                    "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','0')");
+      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                    "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')");
     } else {
       if ($Settings["speech_enabled"] == 1) SpeakMessage(9);
     }
@@ -57,8 +57,15 @@ if (mysqli_num_rows($Result) > 0) {
           $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Heating["position"] . "' WHERE ID=1");
           $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_done='1',boiler_last_adjustment=now()," .
                                         "boiler_note='Boiler has reached minimum operating temperature, reducing heat to 50%' WHERE ID=1");
-          $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,executed) " .
-                                        "VALUES (now(),'0','3','0','$Difference','" . $Heating["position"] . "','0')");
+          if ($Settings["heating_analog"] == 1) {
+            $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                          "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')");
+            $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                          "VALUES (now(),'0','3','1','" . $Heating["position"] . "','" . $Heating["position"] . "','1','0')");
+          } else {
+            $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                          "VALUES (now(),'0','3','0','$Difference','" . $Heating["position"] . "','1','0')");
+          }
         } else {
           $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_done='1',boiler_last_adjustment=now()," .
                                         "boiler_note='Boiler has reached minimum operating temperature, please reduce your heat to 50%' WHERE ID=1");
@@ -87,12 +94,16 @@ if (mysqli_num_rows($Result) > 0) {
                 $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now()," .
                                               "boiler_note='Boiler is under temperature, increasing heat to " . $Heating["position"] . " steps' WHERE ID=1");
                 if ($Settings["speech_enabled"] == 1) SpeakMessage(12);
-                $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,executed) " .
-                                              "VALUES (now(),'0','3','1','$Difference','" . $Heating["position"] . "','0')");
+                if ($Settings["heating_analog"] == 1) {
+
+                } else {
+                  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                "VALUES (now(),'0','3','1','$Difference','" . $Heating["position"] . "','1','0')");
+                }
               }
             } else {
               // Tell the user to manually turn up their heat a notch or two
-              $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_note='Boiler is under temperature, please increase your heat a notch or two' WHERE ID=1");
+              $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now(),boiler_note='Boiler is under temperature, please increase your heat a notch or two' WHERE ID=1");
               if ($Settings["speech_enabled"] == 1) SpeakMessage(14);
             }
           } elseif ($Settings["boiler_temp"] > $Program["boiler_temp_high"]) {
@@ -111,12 +122,16 @@ if (mysqli_num_rows($Result) > 0) {
                 $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now()," .
                                               "boiler_note='Boiler is over temperature, decreasing heat to " . $Heating["position"] . " steps' WHERE ID=1");
                 if ($Settings["speech_enabled"] == 1) SpeakMessage(13);
-                $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,executed) " .
-                                              "VALUES (now(),'0','3','0','$Difference','" . $Heating["position"] . "','0')");
+                if ($Settings["heating_analog"] == 1) {
+
+                } else {
+                  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                "VALUES (now(),'0','3','0','$Difference','" . $Heating["position"] . "','1','0')");
+                }
               }
             } else {
               // Tell the user to manually turn down their heat a notch or two
-              $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_note='Boiler is over temperature, please decrease your heat a notch or two' WHERE ID=1");
+              $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now(),boiler_note='Boiler is over temperature, please decrease your heat a notch or two' WHERE ID=1");
               if ($Settings["speech_enabled"] == 1) SpeakMessage(15);
             }
           } else {
