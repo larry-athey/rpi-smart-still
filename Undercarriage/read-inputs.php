@@ -50,7 +50,8 @@ if (($Hydrometer != "") && (mb_substr($Hydrometer,-1) == "#")) {
 
 $Sec = date("s",time());
 if (($Settings["active_run"] ==  1) && ($Sec <= 10) && (count($Data) == 5)) {
-  //$Insert = mysqli_query($DBcnx,"INSERT INTO input_table (DeviceID,TimeStamp,Reading,RawText) VALUES (" . $Sensor["ID"] . ",now(),'$Reading','$RawText')");
+  $Insert = mysqli_query($DBcnx,"INSERT INTO input_table (timestamp,boiler_temp,dephleg_temp,column_temp,distillate_temp,distillate_abv,distillate_flowing) " .
+                                "VALUES (now(),'$BoilerTemp','$DephlegTemp','$ColumnTemp','$DistillateTemp','$DistillateAbv','$DistillateFlowing')");
 }
 //---------------------------------------------------------------------------------------------
 mysqli_close($DBcnx);
