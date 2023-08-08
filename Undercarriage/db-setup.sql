@@ -48,6 +48,8 @@ CREATE TABLE `logic_tracker` (
   `boiler_done` tinyint(4) DEFAULT NULL,
   `boiler_last_adjustment` timestamp NULL DEFAULT NULL,
   `boiler_note` varchar(255) DEFAULT NULL,
+  `dephleg_last_adjustment` timestamp NULL DEFAULT NULL,
+  `dephleg_note` varchar(255) DEFAULT NULL,
   `column_done` tinyint(4) DEFAULT NULL,
   `column_last_adjustment` timestamp NULL DEFAULT NULL,
   `column_note` varchar(255) DEFAULT NULL
