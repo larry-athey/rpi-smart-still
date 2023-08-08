@@ -21,8 +21,8 @@ function SpeakMessage($ID) {
   $Msg[7]   = "Stopping the current distillation run. Shutting down the boiler and cooling valves";
   $Msg[8]   = "Please turn on your boiler's heating control to its highest setting at this time";
   $Msg[9]   = "Please turn off your boiler's heating control at this time";
-  $Msg[10]  = "Boiler has reached minimum operating temperature. Reducing heat to 70%";
-  $Msg[11]  = "Boiler has reached minimum operating temperature. Please reduce your heat to 70%";
+  $Msg[10]  = "Boiler has reached minimum operating temperature. Reducing heat to 50%";
+  $Msg[11]  = "Boiler has reached minimum operating temperature. Please reduce your heat to 50%";
   $Msg[12]  = "Boiler is under temperature, increasing heat to " . $Settings["heating_position"] . " steps";
   $Msg[13]  = "Boiler is over temperature, decreasing heat to " . $Settings["heating_position"] . " steps";
   $Msg[14]  = "Boiler is under temperature. Please increase your heat a notch or two";
