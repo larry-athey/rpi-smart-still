@@ -55,13 +55,13 @@ if (mysqli_num_rows($Result) > 0) {
           $Heating = mysqli_fetch_assoc($Result);
           $Difference = $Settings["heating_position"] - $Heating["position"];
           $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Heating["position"] . "' WHERE ID=1");
-          $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_done='1',boiler_done_time=now(),boiler_last_temp='" . $Settings["boiler_temp"] . "',boiler_last_adjustment=now()," .
-                                        "boiler_last_direction='0',boiler_last_duration='$Difference',boiler_note='Boiler has reached minimum operating temperature, reducing heat to 50%' WHERE ID=1");
+          $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_done='1',boiler_last_adjustment=now()," .
+                                        "boiler_note='Boiler has reached minimum operating temperature, reducing heat to 50%' WHERE ID=1");
           $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,executed) " .
                                         "VALUES (now(),'0','3','0','$Difference','" . $Heating["position"] . "','0')");
         } else {
-          $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_done='1',boiler_done_time=now(),boiler_last_temp='" . $Settings["boiler_temp"] . "',boiler_last_adjustment=now()," .
-                                        "boiler_last_direction='0',boiler_last_duration='$Difference',boiler_note='Boiler has reached minimum operating temperature, please reduce your heat to 50%' WHERE ID=1");
+          $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_done='1',boiler_last_adjustment=now()," .
+                                        "boiler_note='Boiler has reached minimum operating temperature, please reduce your heat to 50%' WHERE ID=1");
           if ($Settings["speech_enabled"] == 1) SpeakMessage(11);
         }
         // Open the condenser valve and dephleg valve to their starting positions
@@ -84,8 +84,8 @@ if (mysqli_num_rows($Result) > 0) {
               $Difference = $Heating["position"] - $Settings["heating_position"];
               if ($Difference > 0) {
                 $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Heating["position"] . "' WHERE ID=1");
-                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_temp='" . $Settings["boiler_temp"] . "',boiler_last_adjustment=now()," .
-                                              "boiler_last_direction='1',boiler_last_duration='$Difference',boiler_note='Boiler is under temperature, increasing heat to " . $Heating["position"] . " steps' WHERE ID=1");
+                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now()," .
+                                              "boiler_note='Boiler is under temperature, increasing heat to " . $Heating["position"] . " steps' WHERE ID=1");
                 if ($Settings["speech_enabled"] == 1) SpeakMessage(12);
                 $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,executed) " .
                                               "VALUES (now(),'0','3','1','$Difference','" . $Heating["position"] . "','0')");
@@ -108,8 +108,8 @@ if (mysqli_num_rows($Result) > 0) {
               $Difference = $Settings["heating_position"] - $Heating["position"];
               if ($Difference > 0) {
                 $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Heating["position"] . "' WHERE ID=1");
-                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_temp='" . $Settings["boiler_temp"] . "',boiler_last_adjustment=now()," .
-                                              "boiler_last_direction='0',boiler_last_duration='$Difference',boiler_note='Boiler is over temperature, decreasing heat to " . $Heating["position"] . " steps' WHERE ID=1");
+                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now()," .
+                                              "boiler_note='Boiler is over temperature, decreasing heat to " . $Heating["position"] . " steps' WHERE ID=1");
                 if ($Settings["speech_enabled"] == 1) SpeakMessage(13);
                 $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,executed) " .
                                               "VALUES (now(),'0','3','0','$Difference','" . $Heating["position"] . "','0')");
