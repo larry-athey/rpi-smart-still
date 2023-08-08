@@ -29,6 +29,19 @@ function DrawCard($DBcnx,$Body,$DoAjax) {
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
+function DrawLogicTracker($DBcnx) {
+  $RandID   = "card_" . generateRandomString();
+  $Content  = "<div class=\"card\" style=\"width: 98.5%; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
+  $Content .=   "<div class=\"card-body\">";
+  $Content .= AjaxRefreshJS("logic_tracker",$RandID);
+  $Content .=     "<div id=\"$RandID\">";
+  $Content .= LogicTracker($DBcnx);
+  $Content .=     "</div>";
+  $Content .=   "</div>";
+  $Content .= "</div>";
+  return $Content;
+}
+//---------------------------------------------------------------------------------------------------
 function DrawMenu($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
@@ -102,6 +115,22 @@ function DrawMenu($DBcnx) {
   $Content .=     "</div>";
   $Content .=   "</div>";
   $Content .= "</nav>";
+  return $Content;
+}
+//---------------------------------------------------------------------------------------------------
+function LogicTracker($DBcnx) {
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
+  $Settings = mysqli_fetch_assoc($Result);
+  if ($Settings["active_run"] == 1) {
+    $Result = mysqli_query($DBcnx,"SELECT * FROM logic_tracker WHERE ID=1");
+    $Logic  = mysqli_fetch_assoc($Result);
+    $Content  = "<table class=\"table table-sm table-borderless table-striped\">";
+    $Content .=   "<tr><td><span class=\"text-white-50\">" . $Logic["boiler_last_adjustment"] . "</span><span class=\"text-primary\"> - </span>" .
+                  "<span class=\"text-light\">" . $Logic["boiler_note"] . "</span></td></tr>";
+    $Content .= "</table>";
+  } else {
+    $Content = "No distillation run currently active";
+  }
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
