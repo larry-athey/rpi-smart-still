@@ -25,7 +25,7 @@ if (mysqli_num_rows($Result) > 0) {
     $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET run_start='0' WHERE ID=1");
     if ($Settings["heating_enabled"] == 1) {
       $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                    "VALUES (now(),'0','3','1','" . $Settings["heating_total"] . "','" . $Settings["heating_total"] . "','1','0')");
+                                    "VALUES (now(),'0','3','1','" . $Settings["heating_total"] . "','" . $Settings["heating_total"] . "','0','0')");
     } else {
       if ($Settings["speech_enabled"] == 1) SpeakMessage(8);
     }
@@ -40,7 +40,7 @@ if (mysqli_num_rows($Result) > 0) {
     $Update = mysqli_query($DBcnx,"TRUNCATE logic_tracker");
     if ($Settings["heating_enabled"] == 1) {
       $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                    "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')");
+                                    "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','0','0')");
     } else {
       if ($Settings["speech_enabled"] == 1) SpeakMessage(9);
     }
@@ -90,7 +90,7 @@ if (mysqli_num_rows($Result) > 0) {
           if ($Settings["boiler_temp"] < $Program["boiler_temp_low"]) {
             if ($Settings["heating_enabled"] == 1) {
               // Increase boiler power to the next higher 10% mark
-              $Result = mysqli_query($DBcnx,"SELECT * FROM heating_translation WHERE position > " . $Settings["heating_position"] . " limit 1");
+              $Result = mysqli_query($DBcnx,"SELECT * FROM heating_translation WHERE position > " . $Settings["heating_position"] . " ORDER BY position ASC LIMIT 1");
               if (mysqli_num_rows($Result) > 0) {
                 $Heating = mysqli_fetch_assoc($Result);
               } else {
@@ -120,7 +120,7 @@ if (mysqli_num_rows($Result) > 0) {
           } elseif ($Settings["boiler_temp"] > $Program["boiler_temp_high"]) {
             if ($Settings["heating_enabled"] == 1) {
               // Decrease boiler power to the next lower 10% mark
-              $Result = mysqli_query($DBcnx,"SELECT * FROM heating_translation WHERE position < " . $Settings["heating_position"] . " limit 1");
+              $Result = mysqli_query($DBcnx,"SELECT * FROM heating_translation WHERE position < " . $Settings["heating_position"] . " ORDER BY position DESC LIMIT 1");
               if (mysqli_num_rows($Result) > 0) {
                 $Heating = mysqli_fetch_assoc($Result);
               } else {
