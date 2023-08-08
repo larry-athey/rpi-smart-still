@@ -46,11 +46,7 @@ CREATE TABLE `logic_tracker` (
   `ID` int(11) NOT NULL,
   `run_start` tinyint(4) DEFAULT NULL,
   `boiler_done` tinyint(4) DEFAULT NULL,
-  `boiler_done_time` timestamp NULL DEFAULT NULL,
-  `boiler_last_temp` float DEFAULT NULL,
   `boiler_last_adjustment` timestamp NULL DEFAULT NULL,
-  `boiler_last_direction` tinyint(4) DEFAULT NULL,
-  `boiler_last_duration` int(11) DEFAULT NULL,
   `boiler_note` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
