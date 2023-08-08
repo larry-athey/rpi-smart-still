@@ -111,4 +111,13 @@ function PosToPct($Total,$Position) {
   return round($Position / $Total * 100,1);
 }
 //---------------------------------------------------------------------------------------------------
+function SecsToTime($Seconds) {
+  $dtF = new \DateTime('@0');
+  $dtT = new \DateTime("@$Seconds");
+  $Out = $dtF->diff($dtT)->format('%a Days + %h:%i');
+  $Tmp = explode(":",$Out);
+  if (strlen($Tmp[1]) == 1) $Tmp[1] = "0" . $Tmp[1];
+  return $Tmp[0] . ":" . $Tmp[1];
+}
+//---------------------------------------------------------------------------------------------------
 ?>
