@@ -64,12 +64,14 @@ if (mysqli_num_rows($Result) > 0) {
                                         "boiler_last_direction='0',boiler_last_duration='$Difference',boiler_note='Boiler has reached minimum operating temperature, please reduce your heat to 70%' WHERE ID=1");
           if ($Settings["speech_enabled"] == 1) SpeakMessage(11);
         }
+        // Open the condenser valve and dephleg valve to their starting positions
+
       }
     } else {
       /***** BOILER TEMPERATURE MANAGEMENT ROUTINES *****/
       if ($Program["boiler_managed"] == 1) {
-        // Check boiler temperature every 600 seconds (10 minutes)
-        if (time() - strtotime($Logic["boiler_last_adjustment"]) >= 600) {
+        // Check boiler temperature every 300 seconds (5 minutes)
+        if (time() - strtotime($Logic["boiler_last_adjustment"]) >= 300) {
           if ($Settings["boiler_temp"] < $Program["boiler_temp_low"]) {
             if ($Settings["heating_enabled"] == 1) {
               // Increase boiler power to the next higher 10% mark
@@ -81,10 +83,10 @@ if (mysqli_num_rows($Result) > 0) {
               }
               $Difference = $Heating["position"] - $Settings["heating_position"];
               if ($Difference > 0) {
-                if ($Settings["speech_enabled"] == 1) SpeakMessage(12);
                 $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Heating["position"] . "' WHERE ID=1");
                 $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_temp='" . $Settings["boiler_temp"] . "',boiler_last_adjustment=now()," .
                                               "boiler_last_direction='1',boiler_last_duration='$Difference',boiler_note='Boiler is under temperature, increasing heat to " . $Heating["position"] . " steps' WHERE ID=1");
+                if ($Settings["speech_enabled"] == 1) SpeakMessage(12);
                 $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,executed) " .
                                               "VALUES (now(),'0','3','1','$Difference','" . $Heating["position"] . "','0')");
               }
@@ -100,15 +102,15 @@ if (mysqli_num_rows($Result) > 0) {
               if (mysqli_num_rows($Result) > 0) {
                 $Heating = mysqli_fetch_assoc($Result);
               } else {
-                $Heating["position"] = $Settings["heating_position"] - 1;
+                $Heating["position"] = $Settings["heating_position"] - 3;
                 if ($Heating["position"] < 0) $Heating["position"] = 0;
               }
               $Difference = $Settings["heating_position"] - $Heating["position"];
               if ($Difference > 0) {
-                if ($Settings["speech_enabled"] == 1) SpeakMessage(13);
                 $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Heating["position"] . "' WHERE ID=1");
                 $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_temp='" . $Settings["boiler_temp"] . "',boiler_last_adjustment=now()," .
                                               "boiler_last_direction='0',boiler_last_duration='$Difference',boiler_note='Boiler is over temperature, decreasing heat to " . $Heating["position"] . " steps' WHERE ID=1");
+                if ($Settings["speech_enabled"] == 1) SpeakMessage(13);
                 $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,executed) " .
                                               "VALUES (now(),'0','3','0','$Difference','" . $Heating["position"] . "','0')");
               }
@@ -118,7 +120,8 @@ if (mysqli_num_rows($Result) > 0) {
               if ($Settings["speech_enabled"] == 1) SpeakMessage(15);
             }
           } else {
-            // Update the $Logic["boiler_last_adjustment"] timestamp to start the 10 minute timer over
+            // Perform micro stepping adjustments if we're not above or below boiler temerature limits
+            // Update the $Logic["boiler_last_adjustment"] timestamp to start the 5 minute timer over
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now() WHERE ID=1");
           }
         }
