@@ -72,6 +72,7 @@ if (! isset($_GET["page"])) {
   $Content .= DrawCard($DBcnx,"temperatures",true);
   $Content .= DrawCard($DBcnx,"valve_positions",true);
   $Content .= DrawCard($DBcnx,"program_temps",false);
+  $Content .= DrawLogicTracker($DBcnx);
   // Full width card to show run logic tracking info
 } else {
   if ($_GET["page"] == "edit_servos") {
