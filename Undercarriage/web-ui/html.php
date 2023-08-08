@@ -124,12 +124,15 @@ function LogicTracker($DBcnx) {
   if ($Settings["active_run"] == 1) {
     $Result = mysqli_query($DBcnx,"SELECT * FROM logic_tracker WHERE ID=1");
     $Logic  = mysqli_fetch_assoc($Result);
-    $Content  = "<table class=\"table table-sm table-borderless table-striped\">";
-    $Content .=   "<tr><td><span class=\"text-white-50\">" . $Logic["boiler_last_adjustment"] . "</span><span class=\"text-primary\"> - </span>" .
-                  "<span class=\"text-light\">" . $Logic["boiler_note"] . "</span></td></tr>";
+    $Content  = "<table class=\"table table-sm table-borderless\">";
+    $Content .=   "<tr><td nowrap width=\"15%\"><span class=\"text-white-50\">Distillation Run Time</span></td>" .
+                  "<td><span class=\"text-primary\">: </span><span class=\"text-light\">" . SecsToTime(time() - strtotime($Settings["run_start"])) . "</span></td></tr>";
+    $Content .=   "<tr><td nowrap><span class=\"text-white-50\">" . $Logic["boiler_last_adjustment"] . "</span></td>" .
+                  "<td><span class=\"text-primary\">: </span><span class=\"text-light\">" . $Logic["boiler_note"] . "</span></td></tr>";
     $Content .= "</table>";
   } else {
-    $Content = "No distillation run currently active";
+    $Content = "<p>No distillation run currently active</p>" .
+               "<p>Last run started at " . $Settings["run_start"] . " and ended at " . $Settings["run_end"] . "</p>";
   }
   return $Content;
 }
