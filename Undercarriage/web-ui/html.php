@@ -129,6 +129,8 @@ function LogicTracker($DBcnx) {
                   "<td><span class=\"text-primary\">: </span><span class=\"text-light\">" . SecsToTime(time() - strtotime($Settings["run_start"])) . "</span></td></tr>";
     $Content .=   "<tr><td nowrap><span class=\"text-white-50\">" . $Logic["boiler_last_adjustment"] . "</span></td>" .
                   "<td><span class=\"text-primary\">: </span><span class=\"text-light\">" . $Logic["boiler_note"] . "</span></td></tr>";
+    $Content .=   "<tr><td nowrap><span class=\"text-white-50\">" . $Logic["column_last_adjustment"] . "</span></td>" .
+                  "<td><span class=\"text-primary\">: </span><span class=\"text-light\">" . $Logic["column_note"] . "</span></td></tr>";
     $Content .= "</table>";
   } else {
     $Content = "<p>No distillation run currently active</p>" .
