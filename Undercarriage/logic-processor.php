@@ -72,8 +72,13 @@ if (mysqli_num_rows($Result) > 0) {
           if ($Settings["speech_enabled"] == 1) SpeakMessage(11);
         }
         // Open the condenser valve to its starting position
-        // Open the dephleg valve to its starting position if this is a reflux program and dephleg_managed = 1
-
+        $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                      "VALUES (now(),'0','1','1','" . $Program["condenser_rate"] . "','" . $Program["condenser_rate"] . "','0','0')");
+        // Open the dephleg valve to its starting position if this is a reflux program and dephleg_managed == 1
+        if ($Pogram["dephleg_managed"] == 1) {
+          $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                        "VALUES (now(),'0','2','1','" . $Program["dephleg_start"] . "','" . $Program["dephleg_start"] . "','0','0')");
+        }
       }
     } else {
       /***** BOILER TEMPERATURE MANAGEMENT ROUTINES *****/
