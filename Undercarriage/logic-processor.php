@@ -72,12 +72,12 @@ if (mysqli_num_rows($Result) > 0) {
           if ($Settings["speech_enabled"] == 1) SpeakMessage(11);
         }
         // Open the condenser valve to its starting position
-        $Update = mysqli_query($DBcnx,"UPDATE settings SET condenser_position='" . $Program["condenser_rate"] * $Settings["valve1_pulse"] . "' WHERE ID=1");
+        $Update = mysqli_query($DBcnx,"UPDATE settings SET valve1_position='" . $Program["condenser_rate"] * $Settings["valve1_pulse"] . "' WHERE ID=1");
         $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                       "VALUES (now(),'0','1','1','" . $Program["condenser_rate"] * $Settings["valve1_pulse"] . "','" . $Program["condenser_rate"] * $Settings["valve1_pulse"] . "','0','0')");
         // Open the dephleg valve to its starting position if this is a reflux program and dephleg_managed == 1
         if ($Program["dephleg_managed"] == 1) {
-          $Update = mysqli_query($DBcnx,"UPDATE settings SET dephleg_position='" . $Program["dephleg_start"]  * $Settings["valve2_pulse"] . "' WHERE ID=1");
+          $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='" . $Program["dephleg_start"]  * $Settings["valve2_pulse"] . "' WHERE ID=1");
           $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                         "VALUES (now(),'0','2','1','" . $Program["dephleg_start"]  * $Settings["valve2_pulse"] . "','" . $Program["dephleg_start"] * $Settings["valve2_pulse"] . "','0','0')");
         }
