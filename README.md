@@ -5,7 +5,7 @@ Raspberry PI and Arduino/ESP32 powered smart still controller and monitor. Desig
 
 Let me start off by saying that I'm no master distiller and I don't pretend to be one. YouTube and other social media sites already have more than enough self-idolizing hacks and frauds who think that they're celebrities in the distilling world *(for example, Cyrus Mason and "Windsong", the Still'n The Clear charlatans)*. **I'm just a nobody hobby distiller, period. Not an internet celebrity or a deluded podcaster wannabe. I'm just a hobbyist.**
 
-I'm a veteran software engineer with over 43 years programming experience and a strong emphasis in the areas of automation and remote device management. Even though I'm only a hobby distiller, I know very well what needs to be done in order to automate a still and maintain a targeted output proof. It's all just a matter of temperature control and monitoring the result. Lather, rinse, repeat.
+I'm a veteran software engineer with over 43 years programming experience and a strong emphasis in the areas of automation and remote device management. Even though I'm only a hobby distiller, I know very well what needs to be done in order to automate a still and maintain a targeted output. It's all just a matter of temperature control and monitoring the result. Lather, rinse, repeat.
 
 The main focus of this project is to read temperatures and control heating & cooling water via servo controlled valves while monitoring the output proof. It's upon on the distiller themselves to take cuts because there is no way to make those determinations electronically without a gas chromatograph mass spectrometer. I don't know any hobbyists who can afford one of those. Even a small used one is $6000 on eBay.
 
