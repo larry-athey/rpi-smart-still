@@ -47,7 +47,10 @@ CREATE TABLE `logic_tracker` (
   `run_start` tinyint(4) DEFAULT NULL,
   `boiler_done` tinyint(4) DEFAULT NULL,
   `boiler_last_adjustment` timestamp NULL DEFAULT NULL,
-  `boiler_note` varchar(255) DEFAULT NULL
+  `boiler_note` varchar(255) DEFAULT NULL,
+  `column_done` tinyint(4) DEFAULT NULL,
+  `column_last_adjustment` timestamp NULL DEFAULT NULL,
+  `column_note` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 ALTER TABLE `logic_tracker` ADD PRIMARY KEY (`ID`);
