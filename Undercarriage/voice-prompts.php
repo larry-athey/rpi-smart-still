@@ -2,6 +2,11 @@
 //---------------------------------------------------------------------------------------------
 require_once("/var/www/html/subs.php");
 //---------------------------------------------------------------------------------------------
+function DebugMessage($Msg) {
+  if (trim($Msg) == "") exit;
+  shell_exec("/usr/bin/espeak -v english-us -s 160 \"$Msg\" 2> /dev/null &");
+}
+//---------------------------------------------------------------------------------------------
 function SpeakMessage($ID) {
   $DBcnx    = mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
@@ -27,6 +32,8 @@ function SpeakMessage($ID) {
   $Msg[13]  = "Boiler is over temperature, decreasing heat to " . $Settings["heating_position"] . " steps";
   $Msg[14]  = "Boiler is under temperature. Please increase your heat a notch or two";
   $Msg[15]  = "Boiler is over temperature. Please decrease your heat a notch or two";
+  $Msg[16]  = "Column has reached minimum operating temperature. Waiting for dephlegmator";
+  $Msg[17]  = "Dephleg has reached minimum operating temperature. On with the show!";
 
   shell_exec("/usr/bin/espeak -v english-us -s 160 \"$Msg[$ID]\" 2> /dev/null &");
   mysqli_close($DBcnx);
