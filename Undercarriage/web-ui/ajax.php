@@ -8,6 +8,8 @@ if ($_GET["ID"] == "hydrometer") {
   $Content = ShowHydrometer($DBcnx);
 } elseif ($_GET["ID"] == "logic_tracker") {
   $Content = LogicTracker($DBcnx);
+} elseif ($_GET["ID"] == "program_temps") {
+  $Content = ShowProgramTemps($DBcnx);
 } elseif ($_GET["ID"] == "temperatures") {
   $Content = ShowTemperatures($DBcnx);
 } elseif ($_GET["ID"] == "valve_positions") {
