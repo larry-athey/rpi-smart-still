@@ -146,7 +146,7 @@ if (mysqli_num_rows($Result) > 0) {
               if ($Settings["speech_enabled"] == 1) SpeakMessage(15);
             }
           } else {
-            // Update the $Logic["boiler_last_adjustment"] timestamp to restart the 5 minute
+            // Update the $Logic["boiler_last_adjustment"] timestamp to restart the 5 minute timer
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now(),boiler_note='Boiler temperature is within the program\'s operating range' WHERE ID=1");
           }
         }
@@ -163,9 +163,56 @@ if (mysqli_num_rows($Result) > 0) {
           mysqli_close($DBcnx);
           exit;
         } else {
-           // Check column temperature every 300 seconds (5 minutes)
-          if (time() - strtotime($Logic["column_last_adjustment"]) >= 300) {
-
+          // Check column temperature every 180 seconds (2 minutes)
+          if (time() - strtotime($Logic["column_last_adjustment"]) >= 120) {
+            if ($Settings["column_temp"] < $Program["column_temp_low"]) {
+              if ($Settings["heating_enabled"] == 1) {
+                // Increase boiler power to the next higher step
+                $Increase = $Settings["heating_position"] + 1;
+                if ($Increase > $Settings["heating_total"]) $Increase = $Settings["heating_total"];
+                $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='$Increase' WHERE ID=1");
+                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now()," .
+                                              "column_note='Column is under temperature, increasing heat to $Increase steps' WHERE ID=1");
+                if ($Settings["speech_enabled"] == 1) SpeakMessage(20);
+                if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
+                  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
+                                                       "(now(),'0','3','1','$Increase','$Increase','1','0')");
+                } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
+                  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                "VALUES (now(),'0','3','1','1','$Increase','1','0')");
+                }
+              } else {
+                // Tell the user to manually turn up their heat a notch or two
+                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_last_adjustment=now(),column_note='Column is over temperature, please decrease your heat a notch or two' WHERE ID=1");
+                if ($Settings["speech_enabled"] == 1) SpeakMessage(18);
+              }
+            } elseif ($Settings["column_temp"] > $Program["column_temp_high"]) {
+              if ($Settings["heating_enabled"] == 1) {
+                // Decrease boiler power to the next lower step
+                $Decrease = $Settings["heating_position"] - 1;
+                if ($Decrease < 0) $Decrease = 0;
+                $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='$Decrease' WHERE ID=1");
+                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now()," .
+                                              "column_note='Column is over temperature, decreasing heat to $Decrease steps' WHERE ID=1");
+                if ($Settings["speech_enabled"] == 1) SpeakMessage(21);
+                if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
+                  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
+                                                       "(now(),'0','3','1','$Decrease','$Decrease','1','0')");
+                } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
+                  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                "VALUES (now(),'0','3','1','1','$Decrease','1','0')");
+                }
+              } else {
+                // Tell the user to manually turn down their heat a notch or two
+                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_last_adjustment=now(),column_note='Column is over temperature, please decrease your heat a notch or two' WHERE ID=1");
+                if ($Settings["speech_enabled"] == 1) SpeakMessage(19);
+              }
+            } else {
+              // Update the $Logic["column_last_adjustment"] timestamp to restart the 2 minute timer
+              $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_last_adjustment=now(),column_note='Column temperature is within the program\'s operating range' WHERE ID=1");
+            }
           }
         }
       }
@@ -178,8 +225,15 @@ if (mysqli_num_rows($Result) > 0) {
                                           "dephleg_note='Dephleg has reached minimum operating temperature, on with the show!' WHERE ID=1");
           }
         } else {
-          if (time() - strtotime($Logic["column_last_adjustment"]) >= 300) {
+          // Check dephleg temperature every 180 seconds (2 minutes)
+          if (time() - strtotime($Logic["column_last_adjustment"]) >= 120) {
+            if ($Settings["dephleg_temp"] < $Program["dephleg_temp_low"]) {
 
+            } elseif ($Settings["dephleg_temp"] > $Program["dephleg_temp_high"]) {
+
+            } else {
+
+            }
           }
         }
       }
