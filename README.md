@@ -15,4 +15,4 @@ The T-500 column in its default configuration that Still Spirits designed it is 
 
 This is a little bit of a juggling act to do manually, no matter what still you happen to use, but especially so with a T-500. But it's not hard to automate this and stop your run once the still can no longer deliver the target proof. From that point, you can flip the still controller over to full reflux mode to finish stripping out all of the remaining ethanol which can then be added to another run.
 
-**This project is a work in progress, this is not release ready code at this time. Components of it are uploaded and updated multiple times per day as development progresses. All I can say is that I'm hoping to have a first release declared before the end of 2023.**
+**This project is a work in progress, this is not release ready code at this time. Components of it are uploaded and updated multiple times per day as development progresses. All I can say is that I'm hoping to have a first official release declared before the end of 2023.**
