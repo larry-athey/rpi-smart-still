@@ -38,6 +38,8 @@ function SpeakMessage($ID) {
   $Msg[19]  = "Column is over temperature. Please decrease your heat a notch or two";
   $Msg[20]  = "Column is under temperature. Increasing heat to " . $Settings["heating_position"] . " steps";
   $Msg[21]  = "Column is over temperature. Decreasing heat to " . $Settings["heating_position"] . " steps";
+  $Msg[22]  = "Dephlegmator is under temperature. Decreasing cooling water flow";
+  $Msg[23]  = "Dephlegmator is over temperature. Increasing cooling water flow";
 
   shell_exec("/usr/bin/espeak -v english-us -s 160 \"$Msg[$ID]\" 2> /dev/null &");
   mysqli_close($DBcnx);
