@@ -232,8 +232,9 @@ if (mysqli_num_rows($Result) > 0) {
               if ($TempError >= 1) {
                 $Difference = $Settings["valve2_pulse"];
               } else {
-                $Difference = round($Settings["valve2_pulse"] * .1)
+                $Difference = round($Settings["valve2_pulse"] * .1);
               }
+              // No error correction needed since the valves have limit switches
               $NewPosition = $Settings["valve2_position"] - $Difference;
               $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$NewPosition' WHERE ID=1");
               $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now()," .
@@ -248,6 +249,7 @@ if (mysqli_num_rows($Result) > 0) {
               } else {
                 $Difference = round($Settings["valve2_pulse"] * .1);
               }
+              // No error correction needed since the valves have limit switches
               $NewPosition = $Settings["valve2_position"] + $Difference;
               $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$NewPosition' WHERE ID=1");
               $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now()," .
