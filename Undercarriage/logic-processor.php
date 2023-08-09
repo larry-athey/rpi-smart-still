@@ -51,12 +51,12 @@ if (mysqli_num_rows($Result) > 0) {
       if ($Settings["boiler_temp"] >= $Program["boiler_temp_low"]) {
         if ($Settings["heating_enabled"] == 1) {
           if ($Settings["speech_enabled"] == 1) SpeakMessage(10);
-          $Result  = mysqli_query($DBcnx,"SELECT * FROM heating_translation WHERE percent=50");
+          $Result  = mysqli_query($DBcnx,"SELECT * FROM heating_translation WHERE percent=60");
           $Heating = mysqli_fetch_assoc($Result);
           $Difference = $Settings["heating_position"] - $Heating["position"];
           $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Heating["position"] . "' WHERE ID=1");
           $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_done='1',boiler_last_adjustment=now()," .
-                                        "boiler_note='Boiler has reached minimum operating temperature, reducing heat to 50%' WHERE ID=1");
+                                        "boiler_note='Boiler has reached minimum operating temperature, reducing heat to 60%' WHERE ID=1");
           if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
             $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                           "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
@@ -67,7 +67,7 @@ if (mysqli_num_rows($Result) > 0) {
           }
         } else {
           $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_done='1',boiler_last_adjustment=now()," .
-                                        "boiler_note='Boiler has reached minimum operating temperature, please reduce your heat to 50%' WHERE ID=1");
+                                        "boiler_note='Boiler has reached minimum operating temperature, please reduce your heat to 60%' WHERE ID=1");
           if ($Settings["speech_enabled"] == 1) SpeakMessage(11);
         }
         // Open the condenser valve to its starting position
@@ -171,7 +171,7 @@ if (mysqli_num_rows($Result) > 0) {
                 $Increase = $Settings["heating_position"] + 1;
                 if ($Increase > $Settings["heating_total"]) $Increase = $Settings["heating_total"];
                 $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='$Increase' WHERE ID=1");
-                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now()," .
+                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_last_adjustment=now()," .
                                               "column_note='Column is under temperature, increasing heat to $Increase steps' WHERE ID=1");
                 if ($Settings["speech_enabled"] == 1) SpeakMessage(20);
                 if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
@@ -193,7 +193,7 @@ if (mysqli_num_rows($Result) > 0) {
                 $Decrease = $Settings["heating_position"] - 1;
                 if ($Decrease < 0) $Decrease = 0;
                 $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='$Decrease' WHERE ID=1");
-                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now()," .
+                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_last_adjustment=now()," .
                                               "column_note='Column is over temperature, decreasing heat to $Decrease steps' WHERE ID=1");
                 if ($Settings["speech_enabled"] == 1) SpeakMessage(21);
                 if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
