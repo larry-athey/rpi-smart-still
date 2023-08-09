@@ -28,12 +28,16 @@ function SpeakMessage($ID) {
   $Msg[9]   = "Please turn off your boiler's heating control at this time";
   $Msg[10]  = "Boiler has reached minimum operating temperature. Reducing heat to 50%";
   $Msg[11]  = "Boiler has reached minimum operating temperature. Please reduce your heat to 50%";
-  $Msg[12]  = "Boiler is under temperature, increasing heat to " . $Settings["heating_position"] . " steps";
-  $Msg[13]  = "Boiler is over temperature, decreasing heat to " . $Settings["heating_position"] . " steps";
+  $Msg[12]  = "Boiler is under temperature. Increasing heat to " . $Settings["heating_position"] . " steps";
+  $Msg[13]  = "Boiler is over temperature. Decreasing heat to " . $Settings["heating_position"] . " steps";
   $Msg[14]  = "Boiler is under temperature. Please increase your heat a notch or two";
   $Msg[15]  = "Boiler is over temperature. Please decrease your heat a notch or two";
   $Msg[16]  = "Column has reached minimum operating temperature. Waiting for dephlegmator";
   $Msg[17]  = "Dephleg has reached minimum operating temperature. On with the show!";
+  $Msg[18]  = "Column is under temperature. Please increase your heat a notch or two";
+  $Msg[19]  = "Column is over temperature. Please decrease your heat a notch or two";
+  $Msg[20]  = "Column is under temperature. Increasing heat to " . $Settings["heating_position"] . " steps";
+  $Msg[21]  = "Column is over temperature. Decreasing heat to " . $Settings["heating_position"] . " steps";
 
   shell_exec("/usr/bin/espeak -v english-us -s 160 \"$Msg[$ID]\" 2> /dev/null &");
   mysqli_close($DBcnx);
