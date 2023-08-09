@@ -163,7 +163,10 @@ if (mysqli_num_rows($Result) > 0) {
           mysqli_close($DBcnx);
           exit;
         } else {
+           // Check column temperature every 300 seconds (5 minutes)
+          if (time() - strtotime($Logic["column_last_adjustment"]) >= 300) {
 
+          }
         }
       }
       /***** DEPHLEG TEMPERATURE MANAGEMENT ROUTINES *****/
@@ -175,7 +178,9 @@ if (mysqli_num_rows($Result) > 0) {
                                           "dephleg_note='Dephleg has reached minimum operating temperature, on with the show!' WHERE ID=1");
           }
         } else {
+          if (time() - strtotime($Logic["column_last_adjustment"]) >= 300) {
 
+          }
         }
       }
       /***** DISTILLATE MINIMUM ABV MANAGEMENT ROUTINES *****/
