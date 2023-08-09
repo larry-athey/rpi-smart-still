@@ -121,11 +121,18 @@ function DrawMenu($DBcnx) {
 function LogicTracker($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=" . $Settings["active_program"]);
+  $Program  = mysqli_fetch_assoc($Result);
+  if ($Program["mode"] == 0) {
+    $RunType = "Pot Still";
+  } else {
+    $RunType = "Reflux";
+  }
   if ($Settings["active_run"] == 1) {
     $Result = mysqli_query($DBcnx,"SELECT * FROM logic_tracker WHERE ID=1");
     $Logic  = mysqli_fetch_assoc($Result);
     $Content  = "<table class=\"table table-sm table-borderless\">";
-    $Content .=   "<tr><td nowrap width=\"15%\"><span class=\"text-white-50\">Distillation Run Time</span></td>" .
+    $Content .=   "<tr><td nowrap width=\"15%\"><span class=\"text-white-50\">$RunType Run Time</span></td>" .
                   "<td><span class=\"text-primary\">: </span><span class=\"text-light\">" . SecsToTime(time() - strtotime($Settings["run_start"])) . "</span></td></tr>";
     $Content .=   "<tr><td nowrap><span class=\"text-white-50\">" . $Logic["dephleg_last_adjustment"] . "</span></td>" .
                   "<td><span class=\"text-primary\">: </span><span class=\"text-light\">" . $Logic["dephleg_note"] . "</span></td></tr>";
@@ -190,6 +197,8 @@ function ShowProgramTemps($DBcnx) {
 function ShowTemperatures($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=" . $Settings["active_program"]);
+  $Program  = mysqli_fetch_assoc($Result);
 
   $Content  = "<table class=\"table table-sm table-borderless\">";
   $Content .=   "<tr><td>Dephleg&nbsp;Temperature:</td><td align=\"right\" nowrap>" . FormatTemp($Settings["dephleg_temp"]) . "</td></tr>";
