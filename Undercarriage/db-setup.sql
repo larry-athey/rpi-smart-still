@@ -120,6 +120,7 @@ CREATE TABLE `settings` (
   `heating_enabled` tinyint(11) DEFAULT NULL,
   `heating_polarity` tinyint(4) DEFAULT NULL,
   `heating_analog` tinyint(4) DEFAULT NULL,
+  `heating_idle` int(11) DEFAULT NULL,
   `heating_total` int(11) DEFAULT NULL,
   `heating_position` int(11) DEFAULT NULL,
   `distillate_temp` float DEFAULT NULL,
@@ -135,8 +136,8 @@ CREATE TABLE `settings` (
   `serial_data` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `settings` (`ID`, `boiler_addr`, `boiler_temp`, `dephleg_addr`, `dephleg_temp`, `column_addr`, `column_temp`, `valve1_total`, `valve1_pulse`, `valve1_position`, `valve2_total`, `valve2_pulse`, `valve2_position`, `heating_enabled`, `heating_polarity`, `heating_analog`, `heating_total`, `heating_position`, `distillate_temp`, `distillate_abv`, `distillate_flowing`, `speech_enabled`, `active_run`, `active_program`, `paused`, `pause_return`, `run_start`, `run_end`, `serial_data`) VALUES
-(1, '28-3c12f649f6eb', 92, '28-3c1cf6499389', 59.3, '28-3c02f649bef7', 79.1, 10000, 100, 3800, 10000, 100, 4250, 1, 1, 1, 140, 123, 25.3, 13, 0, 1, 1, 1, 0, 0, '2023-08-07 22:15:30', NULL, 'Uptime: 70:13:41\nWeight: 57.04 57.06\nFlow: 0\nEthanol: 13\nTempC: 25.3');
+INSERT INTO `settings` (`ID`, `boiler_addr`, `boiler_temp`, `dephleg_addr`, `dephleg_temp`, `column_addr`, `column_temp`, `valve1_total`, `valve1_pulse`, `valve1_position`, `valve2_total`, `valve2_pulse`, `valve2_position`, `heating_enabled`, `heating_polarity`, `heating_analog`, `heating_idle`, `heating_total`, `heating_position`, `distillate_temp`, `distillate_abv`, `distillate_flowing`, `speech_enabled`, `active_run`, `active_program`, `paused`, `pause_return`, `run_start`, `run_end`, `serial_data`) VALUES
+(1, '28-3c12f649f6eb', 85.2, '28-3c1cf6499389', 27.9, '28-3c02f649bef7', 40, 10258, 102, 0, 10413, 104, 0, 1, 1, 1, 60, 140, 0, 24.1, 7, 0, 1, 0, 1, 0, 0, '2023-08-09 02:48:44', '2023-08-09 03:40:39', 'Uptime: 95:51:23\nWeight: 55.46 55.46\nFlow: 0\nEthanol: 7\nTempC: 24.1');
 
 ALTER TABLE `settings` ADD PRIMARY KEY (`ID`);
 
