@@ -127,12 +127,12 @@ function LogicTracker($DBcnx) {
     $Content  = "<table class=\"table table-sm table-borderless\">";
     $Content .=   "<tr><td nowrap width=\"15%\"><span class=\"text-white-50\">Distillation Run Time</span></td>" .
                   "<td><span class=\"text-primary\">: </span><span class=\"text-light\">" . SecsToTime(time() - strtotime($Settings["run_start"])) . "</span></td></tr>";
-    $Content .=   "<tr><td nowrap><span class=\"text-white-50\">" . $Logic["boiler_last_adjustment"] . "</span></td>" .
-                  "<td><span class=\"text-primary\">: </span><span class=\"text-light\">" . $Logic["boiler_note"] . "</span></td></tr>";
-    $Content .=   "<tr><td nowrap><span class=\"text-white-50\">" . $Logic["column_last_adjustment"] . "</span></td>" .
-                  "<td><span class=\"text-primary\">: </span><span class=\"text-light\">" . $Logic["column_note"] . "</span></td></tr>";
     $Content .=   "<tr><td nowrap><span class=\"text-white-50\">" . $Logic["dephleg_last_adjustment"] . "</span></td>" .
                   "<td><span class=\"text-primary\">: </span><span class=\"text-light\">" . $Logic["dephleg_note"] . "</span></td></tr>";
+    $Content .=   "<tr><td nowrap><span class=\"text-white-50\">" . $Logic["column_last_adjustment"] . "</span></td>" .
+                  "<td><span class=\"text-primary\">: </span><span class=\"text-light\">" . $Logic["column_note"] . "</span></td></tr>";
+    $Content .=   "<tr><td nowrap><span class=\"text-white-50\">" . $Logic["boiler_last_adjustment"] . "</span></td>" .
+                  "<td><span class=\"text-primary\">: </span><span class=\"text-light\">" . $Logic["boiler_note"] . "</span></td></tr>";
     $Content .= "</table>";
   } else {
     $Content = "<p>No distillation run currently active</p>" .
@@ -217,6 +217,7 @@ function StartRun($DBcnx) {
   $Content  = "<p class=\"text-light\">Before you start your run, you must complete the pre-flight checklist first. Failing to do so will guarantee poor results. " .
               "Remember, you are making a computer perform the physical actions that a human being would manually perform. Make sure that you always start with a clean and accurate slate!</p>";
   $Content .= "<ol>";
+  $Content .=   "<li>Make sure that your still is completely cooled down.</li>";
   $Content .=   "<li>Zero the heating stepper motor (if enabled).</li>";
   $Content .=   "<li>Confirm that your water lines are pressurized.</li>";
   $Content .=   "<li>Calibrate the condenser and dephleg cooling valves.</li>";
