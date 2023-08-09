@@ -36,7 +36,7 @@ while ($RS = mysqli_fetch_assoc($Result)) {
       }
     }
     shell_exec("/usr/share/rpi-smart-still/valve " . $RS["valve_id"] . " $Direction " . $RS["duration"]);
-    $Update = mysqli_query($DBcnx,"UPDATE output_table SET executed='1' WHERE ID=" . $RS["ID"]);
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
     $Status = trim(shell_exec("/usr/share/rpi-smart-still/valve " . $RS["valve_id"] . " status"));
     if ($Status == 0) {
       $Update = mysqli_query($DBcnx,"UPDATE settings SET valve" . $RS["valve_id"] . "_position ='0' WHERE ID=1");
@@ -71,8 +71,15 @@ while ($RS = mysqli_fetch_assoc($Result)) {
       }
     }
     shell_exec("/usr/share/rpi-smart-still/heating $Direction " . $RS["duration"]);
-    if (Settings["active_run"] == 0) shell_exec("/usr/share/rpi-smart-still/heating disable");
-    $Update = mysqli_query($DBcnx,"UPDATE output_table SET executed='1' WHERE ID=" . $RS["ID"]);
+    if ($Settings["active_run"] == 0) {
+      shell_exec("/usr/share/rpi-smart-still/heating disable");
+    } else {
+      if (($Settings["heating_analog"] == 1) && ($RS["auto_manual"]) == 0) {
+        //DebugMessage("Sleeping 1 second1");
+        sleep(1);
+      }
+    }
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 4) {
     // Control commands to pause and unpause a distillation run
 
