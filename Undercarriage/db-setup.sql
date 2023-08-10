@@ -83,7 +83,7 @@ CREATE TABLE `programs` (
   `mode` tinyint(4) DEFAULT NULL,
   `distillate_abv` int(11) DEFAULT NULL,
   `abv_managed` tinyint(4) DEFAULT NULL,
-  `minimum_flow` int(11) DEFAULT NULL,
+  `minimum_flow` tinyint(4) DEFAULT NULL,
   `flow_managed` tinyint(4) DEFAULT NULL,
   `dephleg_start` int(11) DEFAULT NULL,
   `condenser_rate` int(11) DEFAULT NULL,
