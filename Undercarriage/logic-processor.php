@@ -260,13 +260,18 @@ if (mysqli_num_rows($Result) > 0) {
             } else {
               // Update the $Logic["dephleg_last_adjustment"] timestamp to restart the 1 minute timer
               $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now(),dephleg_note='Dephleg temperature is within the program\'s operating range' WHERE ID=1");
+              // Perform microstepping to maintain the dephleg temperature between the upper and lower limits
             }
           }
         }
       }
       /***** DISTILLATE MINIMUM ABV MANAGEMENT ROUTINES *****/
       if ($Program["abv_managed"] == 1) {
-
+        if ($Program["mode == 0"] {
+          // In pot still mode, we stop the run when we hit the minimum ABV
+        } else {
+          // In reflux mode, we dynamically adjust the column upper and lower temperature limits
+        }
       }
     }
   }
