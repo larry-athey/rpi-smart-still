@@ -273,6 +273,10 @@ if (mysqli_num_rows($Result) > 0) {
           // In reflux mode, we dynamically adjust the column upper and lower temperature limits
         }
       }
+      /***** DISTILLATE MINIMUM FLOW RATE MANAGEMENT ROUTINES *****/
+      if ($Program["flow_managed"] == 1) {
+
+      }
     }
   }
 }
