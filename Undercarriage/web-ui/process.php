@@ -14,7 +14,7 @@ if (isset($_GET["active_run"])) {
     $Update = mysqli_query($DBcnx,"UPDATE settings SET active_run='1',run_start=now(),run_end=NULL WHERE ID=1");
     $Insert = mysqli_query($DBcnx,"INSERT INTO logic_tracker (run_start,boiler_done,boiler_last_adjustment,boiler_note,dephleg_done,dephleg_last_adjustment,dephleg_note,column_done,column_last_adjustment,column_note) " .
                                   "VALUES (1,0,now(),'Waiting for the boiler to reach its minimum temperature','0',now(),'Waiting for the dephleg sensor to reach its minimum temperature',0,now(),'Waiting for the column to reach its minimum temperature')");
-  } else {
+  } elseif ($_GET["active_run"] == 0) {
     $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET run_start='2' WHERE ID=1");
     $Update = mysqli_query($DBcnx,"UPDATE settings SET active_run='0',run_end=now() WHERE ID=1");
   }
