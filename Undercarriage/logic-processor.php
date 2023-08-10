@@ -261,13 +261,33 @@ if (mysqli_num_rows($Result) > 0) {
               // Update the $Logic["dephleg_last_adjustment"] timestamp to restart the 1 minute timer
               $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now(),dephleg_note='Dephleg temperature is within the program\'s operating range' WHERE ID=1");
               // Perform microstepping to maintain the dephleg temperature between the upper and lower limits
+              $Range = ($Program["dephleg_temp_high"] - $Program["dephleg_temp_Low"]);
+              if ($Range > 4) {
+                if ($Range % 2 == 0) { // Always better to use an odd numbered range, preferably 5 degrees between upper and lower limits
+                  $RangeCenter = ($Range / 2) + $Program["dephleg_temp_Low"];
+                } else {
+                  $RangeCenter = (round($Range / 2,0,PHP_ROUND_HALF_ODD) + $Program["dephleg_temp_Low"]);
+                }
+                $Difference = round($Settings["valve2_pulse"] * .1);
+                if ($Settings["dephleg_temp"] < $RangeCenter) {
+                  $NewPosition = $Settings["valve2_position"] - $Difference;
+                  $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$NewPosition' WHERE ID=1");
+                  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                "VALUES (now(),'0','2','0','Difference','$NewPosition','1','0')");
+                } elseif ($Settings["dephleg_temp"] > $RangeCenter) {
+                  $NewPosition = $Settings["valve2_position"] + $Difference;
+                  $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$NewPosition' WHERE ID=1");
+                  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                "VALUES (now(),'0','2','1','Difference','$NewPosition','1','0')");
+                }
+              }
             }
           }
         }
       }
       /***** DISTILLATE MINIMUM ABV MANAGEMENT ROUTINES *****/
       if ($Program["abv_managed"] == 1) {
-        if ($Program["mode == 0"] {
+        if ($Program["mode == 0"]) {
           // In pot still mode, we stop the run when we hit the minimum ABV
         } else {
           // In reflux mode, we dynamically adjust the column upper and lower temperature limits
