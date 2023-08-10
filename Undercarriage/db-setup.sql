@@ -35,7 +35,7 @@ CREATE TABLE `input_table` (
   `column_temp` float DEFAULT NULL,
   `distillate_temp` float DEFAULT NULL,
   `distillate_abv` int(11) DEFAULT NULL,
-  `distillate_flowing` tinyint(4) DEFAULT NULL
+  `distillate_flow` tinyint(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 ALTER TABLE `input_table` ADD PRIMARY KEY (`ID`);
