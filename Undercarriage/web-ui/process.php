@@ -7,6 +7,8 @@ $DBcnx = mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
 if (isset($_GET["active_run"])) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=" . $Settings["active_program"]);
+  $Program  = mysqli_fetch_assoc($Result);
   if ($_GET["active_run"] == 1) {
     $Update = mysqli_query($DBcnx,"TRUNCATE input_table");
     $Update = mysqli_query($DBcnx,"TRUNCATE output_table");
@@ -14,9 +16,15 @@ if (isset($_GET["active_run"])) {
     $Update = mysqli_query($DBcnx,"UPDATE settings SET active_run='1',run_start=now(),run_end=NULL WHERE ID=1");
     $Insert = mysqli_query($DBcnx,"INSERT INTO logic_tracker (run_start,boiler_done,boiler_last_adjustment,boiler_note,dephleg_done,dephleg_last_adjustment,dephleg_note,column_done,column_last_adjustment,column_note) " .
                                   "VALUES (1,0,now(),'Waiting for the boiler to reach its minimum temperature','0',now(),'Waiting for the dephleg sensor to reach its minimum temperature',0,now(),'Waiting for the column to reach its minimum temperature')");
+    if ($Program["abv_managed"] == 1) {
+      $Update = mysqli_query($DBcnx,"UPDATE settings SET saved_lower='" . $Program["column_temp_low"] . "',saved_upper='" . $Program["column_temp_high"] . "' WHERE ID=1");
+    }
   } elseif ($_GET["active_run"] == 0) {
     $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET run_start='2' WHERE ID=1");
     $Update = mysqli_query($DBcnx,"UPDATE settings SET active_run='0',run_end=now() WHERE ID=1");
+    if ($Program["abv_managed"] == 1) {
+      $Update = mysqli_query($DBcnx,"UPDATE programs SET column_temp_low='" . $Settings["saved_lower"] . "',column_temp_high='" . $Settings["saved_upper"] . "' WHERE ID=" . $Program["ID"]);
+    }
   }
 }
 //---------------------------------------------------------------------------------------------------
