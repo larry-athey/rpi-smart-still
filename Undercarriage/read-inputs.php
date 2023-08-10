@@ -41,7 +41,12 @@ if (($Hydrometer != "") && (mb_substr($Hydrometer,-1) == "#")) {
     $DistillateAbv = trim($Data2[1]);
     $Data2 = explode(": ",$Data[4]);
     $DistillateTemp = trim($Data2[1]);
-    $Update = mysqli_query($DBcnx,"UPDATE settings SET distillate_flowing='$DistillateFlowing',distillate_abv='$DistillateAbv',distillate_temp='$DistillateTemp',serial_data='$Hydrometer' WHERE ID=1");
+    if (strlen($Settings["distillate_flow"]) == 199) {
+      $Settings["distillate_flow"] = substr($Settings["distillate_flow"],2) . "|$DistillateFlowing";
+    } else {
+      $Settings["distillate_flow"] .= "|$DistillateFlowing";
+    }
+    $Update = mysqli_query($DBcnx,"UPDATE settings SET distillate_flow='" . $Settings["distillate_flow"] . "',distillate_abv='$DistillateAbv',distillate_temp='$DistillateTemp',serial_data='$Hydrometer' WHERE ID=1");
   } else {
     echo("$Hydrometer\n");
     $Update = mysqli_query($DBcnx,"UPDATE settings SET serial_data='$Hydrometer' WHERE ID=1");
@@ -50,8 +55,15 @@ if (($Hydrometer != "") && (mb_substr($Hydrometer,-1) == "#")) {
 
 $Sec = date("s",time());
 if (($Settings["active_run"] ==  1) && ($Sec <= 10) && (count($Data) == 5)) {
-  $Insert = mysqli_query($DBcnx,"INSERT INTO input_table (timestamp,boiler_temp,dephleg_temp,column_temp,distillate_temp,distillate_abv,distillate_flowing) " .
-                                "VALUES (now(),'$BoilerTemp','$DephlegTemp','$ColumnTemp','$DistillateTemp','$DistillateAbv','$DistillateFlowing')");
+  $Flow = 0;
+  $Data = explode("|",$Settings["distillate_flow"]);
+  if (count($Data) == 100) {
+    for ($x = 0; $x <= 99; $x ++) {
+      if ($Data[$x] ==  1) $Flow ++;
+    }
+  }
+  $Insert = mysqli_query($DBcnx,"INSERT INTO input_table (timestamp,boiler_temp,dephleg_temp,column_temp,distillate_temp,distillate_abv,distillate_flow) " .
+                                "VALUES (now(),'$BoilerTemp','$DephlegTemp','$ColumnTemp','$DistillateTemp','$DistillateAbv','$Flow')");
 }
 //---------------------------------------------------------------------------------------------
 mysqli_close($DBcnx);
