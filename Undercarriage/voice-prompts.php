@@ -40,6 +40,10 @@ function SpeakMessage($ID) {
   $Msg[21]  = "Column is over temperature. Decreasing heat to " . $Settings["heating_position"] . " steps";
   $Msg[22]  = "Dephlegmator is under temperature. Decreasing cooling water flow";
   $Msg[23]  = "Dephlegmator is over temperature. Increasing cooling water flow";
+  $Msg[24]  = "Calibrating condenser valve";
+  $Msg[25]  = "Condenser valve reported " . $Settings["valve1_total"] . " total pulses. Each 1% movement equals " . $Settings["valve1_pulse"] . " pulses";
+  $Msg[26]  = "Calibrating dephlegmator valve";
+  $Msg[27]  = "Dephlegmator valve reported " . $Settings["valve2_total"] . " total pulses. Each 1% movement equals " . $Settings["valve2_pulse"] . " pulses";
 
   shell_exec("/usr/bin/espeak -v english-us -s 160 \"$Msg[$ID]\" 2> /dev/null &");
   mysqli_close($DBcnx);
