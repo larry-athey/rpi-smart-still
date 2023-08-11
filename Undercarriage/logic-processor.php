@@ -51,19 +51,17 @@ if (mysqli_num_rows($Result) > 0) {
       if ($Settings["boiler_temp"] >= $Program["boiler_temp_low"]) {
         if ($Settings["heating_enabled"] == 1) {
           if ($Settings["speech_enabled"] == 1) SpeakMessage(10);
-          $Result  = mysqli_query($DBcnx,"SELECT * FROM heating_translation WHERE percent=" . $Program["heating_idle"]);
-          $Heating = mysqli_fetch_assoc($Result);
-          $Difference = $Settings["heating_position"] - $Heating["position"];
-          $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Heating["position"] . "' WHERE ID=1");
+          $Difference = $Settings["heating_position"] - $Program["heating_idle"];
+          $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Program["heating_idle"] . "' WHERE ID=1");
           $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_done='1',boiler_last_adjustment=now()," .
-                                        "boiler_note='Boiler has reached minimum operating temperature, reducing heat to " . $Program["heating_idle"] . "%' WHERE ID=1");
+                                        "boiler_note='Boiler has reached minimum operating temperature, reducing heat to " . $Program["heating_idle"] . " steps' WHERE ID=1");
           if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
             $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                           "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
-                                                 "(now(),'0','3','1','" . $Heating["position"] . "','" . $Heating["position"] . "','1','0')");
+                                                 "(now(),'0','3','1','" . $Program["heating_idle"] . "','" . $Program["heating_idle"] . "','1','0')");
           } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
             $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                          "VALUES (now(),'0','3','0','$Difference','" . $Heating["position"] . "','1','0')");
+                                          "VALUES (now(),'0','3','0','$Difference','" . $Program["heating_idle"] . "','1','0')");
           }
         } else {
           $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_done='1',boiler_last_adjustment=now()," .
@@ -157,22 +155,8 @@ if (mysqli_num_rows($Result) > 0) {
           // Don't bother managing any dephleg or ABV stuff until the column is up to temperature
           if ($Settings["column_temp"] >= $Program["column_temp_low"]) {
             if ($Settings["speech_enabled"] == 1) SpeakMessage(16);
-            $NewIdle = $Program["heating_idle"] - 10;
-            if ($NewIdle < 10) $NewIdle = 10;
-            $Result  = mysqli_query($DBcnx,"SELECT * FROM heating_translation WHERE percent=$NewIdle");
-            $Heating = mysqli_fetch_assoc($Result);
-            $Difference = $Settings["heating_position"] - $Heating["position"];
-            $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Heating["position"] . "' WHERE ID=1");
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_done='1',column_last_adjustment=now()," .
                                           "column_note='Column has reached minimum operating temperature, waiting for dephleg' WHERE ID=1");
-            if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
-              $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                            "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
-                                                   "(now(),'0','3','1','" . $Heating["position"] . "','" . $Heating["position"] . "','1','0')");
-            } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
-              $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                            "VALUES (now(),'0','3','0','$Difference','" . $Heating["position"] . "','1','0')");
-            }
           }
           mysqli_close($DBcnx);
           exit;
@@ -248,8 +232,12 @@ if (mysqli_num_rows($Result) > 0) {
               } else {
                 $Difference = round($Settings["valve2_pulse"] * .1);
               }
-              // No error correction needed since the valves have limit switches
               $NewPosition = $Settings["valve2_position"] - $Difference;
+              if ($NewPosition < 0) {
+                // If we got here, there's a water flow problem
+                mysqli_close($DBcnx);
+                exit;
+              }
               $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$NewPosition' WHERE ID=1");
               $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now()," .
                                             "dephleg_note='Dephleg is under temperature, decreasing cooling water flow' WHERE ID=1");
@@ -263,8 +251,12 @@ if (mysqli_num_rows($Result) > 0) {
               } else {
                 $Difference = round($Settings["valve2_pulse"] * .1);
               }
-              // No error correction needed since the valves have limit switches
               $NewPosition = $Settings["valve2_position"] + $Difference;
+              if ($NewPosition >= $Settings["valve2_total"]) {
+                // If we got here, there's a water flow problem
+                mysqli_close($DBcnx);
+                exit;
+              }
               $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$NewPosition' WHERE ID=1");
               $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now()," .
                                             "dephleg_note='Dephleg is over temperature, increasing cooling water flow' WHERE ID=1");
