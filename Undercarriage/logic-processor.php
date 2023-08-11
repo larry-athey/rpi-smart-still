@@ -157,8 +157,22 @@ if (mysqli_num_rows($Result) > 0) {
           // Don't bother managing any dephleg or ABV stuff until the column is up to temperature
           if ($Settings["column_temp"] >= $Program["column_temp_low"]) {
             if ($Settings["speech_enabled"] == 1) SpeakMessage(16);
+            $NewIdle = $Program["heating_idle"] - 10;
+            if ($NewIdle < 10) $NewIdle = 10;
+            $Result  = mysqli_query($DBcnx,"SELECT * FROM heating_translation WHERE percent=$NewIdle");
+            $Heating = mysqli_fetch_assoc($Result);
+            $Difference = $Settings["heating_position"] - $Heating["position"];
+            $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Heating["position"] . "' WHERE ID=1");
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_done='1',column_last_adjustment=now()," .
                                           "column_note='Column has reached minimum operating temperature, waiting for dephleg' WHERE ID=1");
+            if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
+              $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                            "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
+                                                   "(now(),'0','3','1','" . $Heating["position"] . "','" . $Heating["position"] . "','1','0')");
+            } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
+              $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                            "VALUES (now(),'0','3','0','$Difference','" . $Heating["position"] . "','1','0')");
+            }
           }
           mysqli_close($DBcnx);
           exit;
