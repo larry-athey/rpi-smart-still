@@ -91,9 +91,8 @@ function DrawMenu($DBcnx) {
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=sensors\">Configure&nbsp;Sensors</a></li>";
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=heating\">Configure&nbsp;Heating</a></li>";
   if ($Settings["active_run"] == 1) {
-  } else {
     $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"?page=hydrometer\"><span class=\"text-secondary\">Calibrate&nbsp;Hydrometer</a></span></li>";
-  }
+  } else {
     $Content .=           "<li><a class=\"dropdown-item\" href=\"?page=hydrometer\">Calibrate&nbsp;Hydrometer</a></li>";
   }
   if ($Settings["speech_enabled"] == 0) {
