@@ -81,8 +81,22 @@ while ($RS = mysqli_fetch_assoc($Result)) {
     }
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 4) {
-    // Control commands to pause and unpause a distillation run
-
+    // Control commands to calibrate the valves
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(24);
+    $Result1 = trim(shell_exec("/usr/share/rpi-smart-still/valve 1 open calibrate"));
+    $Result2 = trim(shell_exec("/usr/share/rpi-smart-still/valve 1 close calibrate"));
+    $Total   = round(($Result1 + $Result2) / 2,0,PHP_ROUND_HALF_UP);
+    $Pulses  = round($Total / 100,0,PHP_ROUND_HALF_UP);
+    $Update = mysqli_query($DBcnx,"UPDATE settings SET valve1_total='$Total',valve1_pulse='$Pulses',valve1_position ='0' WHERE ID=1");
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(25);
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(26);
+    $Result1 = trim(shell_exec("/usr/share/rpi-smart-still/valve 2 open calibrate"));
+    $Result2 = trim(shell_exec("/usr/share/rpi-smart-still/valve 2 close calibrate"));
+    $Total   = round(($Result1 + $Result2) / 2,0,PHP_ROUND_HALF_UP);
+    $Pulses  = round($Total / 100,0,PHP_ROUND_HALF_UP);
+    $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_total='$Total',valve2_pulse='$Pulses',valve2_position ='0' WHERE ID=1");
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(27);
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   }
 }
 
