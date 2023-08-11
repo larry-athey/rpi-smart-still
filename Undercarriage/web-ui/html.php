@@ -83,10 +83,19 @@ function DrawMenu($DBcnx) {
   $Content .=           "<a class=\"nav-link dropdown-toggle\" href=\"#\" role=\"button\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">Management</a>";
   $Content .=           "<ul class=\"dropdown-menu\" style=\"background-color: #212529;\">";
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=programs\">Edit&nbsp;Programs</a></li>";
-  $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=valves\">Calibrate&nbsp;Valves</a></li>";
+  if ($Settings["active_run"] == 1) {
+    $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"process.php?calibrate_valves=1\"><span class=\"text-secondary\">Calibrate&nbsp;Valves</span></a></li>";
+  } else {
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?calibrate_valves=1\">Calibrate&nbsp;Valves</a></li>";
+  }
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=sensors\">Configure&nbsp;Sensors</a></li>";
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=heating\">Configure&nbsp;Heating</a></li>";
-  $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=hydrometer\">Calibrate&nbsp;Hydrometer</a></li>";
+  if ($Settings["active_run"] == 1) {
+  } else {
+    $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"?page=hydrometer\"><span class=\"text-secondary\">Calibrate&nbsp;Hydrometer</a></span></li>";
+  }
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"?page=hydrometer\">Calibrate&nbsp;Hydrometer</a></li>";
+  }
   if ($Settings["speech_enabled"] == 0) {
     $Content .=           "<li><a class=\"dropdown-item\" href=\"?speech=1\">Enable&nbsp;Speech</a></li>";
   } else {
