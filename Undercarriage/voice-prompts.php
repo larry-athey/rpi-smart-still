@@ -44,6 +44,7 @@ function SpeakMessage($ID) {
   $Msg[25]  = "Condenser valve reported " . $Settings["valve1_total"] . " total pulses. Each 1% movement equals " . $Settings["valve1_pulse"] . " pulses";
   $Msg[26]  = "Calibrating dephlegmator valve";
   $Msg[27]  = "Dephlegmator valve reported " . $Settings["valve2_total"] . " total pulses. Each 1% movement equals " . $Settings["valve2_pulse"] . " pulses";
+  $Msg[28]  = "Turning off the cooling valves in 2 minutes";
 
   shell_exec("/usr/bin/espeak -v english-us -s 160 \"$Msg[$ID]\" 2> /dev/null &");
   mysqli_close($DBcnx);
