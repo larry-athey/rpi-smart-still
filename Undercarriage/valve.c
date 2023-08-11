@@ -41,21 +41,21 @@ void valveFullPosition(int WhichOne,int Direction) {
   if (WhichOne == 1) {
     if (Direction == 0) {
       digitalWrite(VALVE1_CLOSE,HIGH);
-      while (digitalRead(VALVE1_LIMIT_CLOSE) == 1) delay(100);
+      while (digitalRead(VALVE1_LIMIT_CLOSE) == 1) delay(10);
       digitalWrite(VALVE1_CLOSE,LOW);
     } else {
       digitalWrite(VALVE1_OPEN,HIGH);
-      while (digitalRead(VALVE1_LIMIT_OPEN) == 1) delay(100);
+      while (digitalRead(VALVE1_LIMIT_OPEN) == 1) delay(10);
       digitalWrite(VALVE1_OPEN,LOW);
     }
   } else {
     if (Direction == 0) {
       digitalWrite(VALVE2_CLOSE,HIGH);
-      while (digitalRead(VALVE2_LIMIT_CLOSE) == 1) delay(100);
+      while (digitalRead(VALVE2_LIMIT_CLOSE) == 1) delay(10);
       digitalWrite(VALVE2_CLOSE,LOW);
     } else {
       digitalWrite(VALVE2_OPEN,HIGH);
-      while (digitalRead(VALVE2_LIMIT_OPEN) == 1) delay(100);
+      while (digitalRead(VALVE2_LIMIT_OPEN) == 1) delay(10);
       digitalWrite(VALVE2_OPEN,LOW);
     }
   }
