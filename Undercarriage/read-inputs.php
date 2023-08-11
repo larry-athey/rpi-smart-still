@@ -56,7 +56,7 @@ if (($Hydrometer != "") && (mb_substr($Hydrometer,-1) == "#")) {
 $Sec = date("s",time());
 if (($Settings["active_run"] ==  1) && ($Sec <= 10) && (count($Data) == 5)) {
   $Flow = 0;
-  $Data = explode("|",$Settings["distillate_flow"]);
+  $Data = explode("|",trim($Settings["distillate_flow"],"|"));
   if (count($Data) == 100) {
     for ($x = 0; $x <= 99; $x ++) {
       if ($Data[$x] ==  1) $Flow ++;
