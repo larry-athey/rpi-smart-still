@@ -33,10 +33,6 @@ if (mysqli_num_rows($Result) > 0) {
     // Active run stopped
     if ($Settings["speech_enabled"] == 1) SpeakMessage(7);
     $Update = mysqli_query($DBcnx,"UPDATE settings SET valve1_position='0',valve2_position='0',heating_position='0' WHERE ID=1");
-    if ($Settings["speech_enabled"] == 1) SpeakMessage(1);
-    shell_exec("/usr/share/rpi-smart-still/valve 1 close");
-    if ($Settings["speech_enabled"] == 1) SpeakMessage(3);
-    shell_exec("/usr/share/rpi-smart-still/valve 2 close");
     $Update = mysqli_query($DBcnx,"TRUNCATE logic_tracker");
     if ($Settings["heating_enabled"] == 1) {
       $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
@@ -44,6 +40,13 @@ if (mysqli_num_rows($Result) > 0) {
     } else {
       if ($Settings["speech_enabled"] == 1) SpeakMessage(9);
     }
+    sleep(8);
+    if ($Settings["speech_enabled"] == 1) SpeakMessage(28);
+    sleep(120);
+    if ($Settings["speech_enabled"] == 1) SpeakMessage(1);
+    shell_exec("/usr/share/rpi-smart-still/valve 1 close");
+    if ($Settings["speech_enabled"] == 1) SpeakMessage(3);
+    shell_exec("/usr/share/rpi-smart-still/valve 2 close");
   } else {
     // Handle the active run
     if ($Logic["boiler_done"] == 0) {
