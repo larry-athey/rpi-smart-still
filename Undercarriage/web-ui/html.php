@@ -191,9 +191,9 @@ function ShowProgramTemps($DBcnx) {
   $Program  = mysqli_fetch_assoc($Result);
 
   $Content  = "<table class=\"table table-sm table-borderless\">";
-  $Content .=   "<tr><td>Dephleg&nbsp;Range:</td><td align=\"right\" nowrap>" . FormatTempRange($Program["dephleg_temp_low"],$Program["dephleg_temp_high"]) . "</td></tr>";
-  $Content .=   "<tr><td>Column&nbsp;Range:</td><td align=\"right\" nowrap>" . FormatTempRange($Program["column_temp_low"],$Program["column_temp_high"]) . "</td></tr>";
-  $Content .=   "<tr><td>Boiler&nbsp;Range:</td><td align=\"right\" nowrap>" . FormatTempRange($Program["boiler_temp_low"],$Program["boiler_temp_high"]) . "</td></tr>";
+  $Content .=   "<tr><td>Dephleg&nbsp;Range:</td><td align=\"right\" nowrap>" . FormatTempRange($Program["dephleg_temp_low"],$Program["dephleg_temp_high"],$Program["dephleg_managed"]) . "</td></tr>";
+  $Content .=   "<tr><td>Column&nbsp;Range:</td><td align=\"right\" nowrap>" . FormatTempRange($Program["column_temp_low"],$Program["column_temp_high"],$Program["column_managed"]) . "</td></tr>";
+  $Content .=   "<tr><td>Boiler&nbsp;Range:</td><td align=\"right\" nowrap>" . FormatTempRange($Program["boiler_temp_low"],$Program["boiler_temp_high"],$Program["boiler_managed"]) . "</td></tr>";
   if ($Settings["active_run"] == 0) {
     $Content .= "<tr><td colspan=\"2\" align=\"right\"><span class=\"text-warning\">Distillation run not active, no temperature management</span></td></tr>";
   } else {
