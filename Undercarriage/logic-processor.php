@@ -68,7 +68,7 @@ if (mysqli_num_rows($Result) > 0) {
                                           "VALUES (now(),'0','3','0','$Difference','" . $Program["heating_idle"] . "','1','0')");
           }
         } else {
-          $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_done='1',boiler_last_adjustment=now()," .
+          $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_timer=now(),boiler_done='1',boiler_last_adjustment=now()," .
                                         "boiler_note='Boiler has reached minimum operating temperature, please reduce your heat to " . $Program["heating_idle"] . "%' WHERE ID=1");
           if ($Settings["speech_enabled"] == 1) SpeakMessage(11);
         }
@@ -86,85 +86,91 @@ if (mysqli_num_rows($Result) > 0) {
     } else {
       /***** BOILER TEMPERATURE MANAGEMENT ROUTINES *****/
       if ($Program["boiler_managed"] == 1) {
-        // Check boiler temperature every 300 seconds (5 minutes)
-        if (time() - strtotime($Logic["boiler_last_adjustment"]) >= 300) {
-          if ($Settings["boiler_temp"] < $Program["boiler_temp_low"]) {
-            if ($Settings["heating_enabled"] == 1) {
-              // Increase boiler power to the next higher 10% mark
-              $Result = mysqli_query($DBcnx,"SELECT * FROM heating_translation WHERE position > " . $Settings["heating_position"] . " ORDER BY position ASC LIMIT 1");
-              if (mysqli_num_rows($Result) > 0) {
-                $Heating = mysqli_fetch_assoc($Result);
-              } else {
-                $Heating["position"] = $Settings["heating_total"];
-              }
-              $Difference = $Heating["position"] - $Settings["heating_position"];
-              if ($Difference > 0) {
-                $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Heating["position"] . "' WHERE ID=1");
-                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now()," .
-                                              "boiler_note='Boiler is under temperature, increasing heat to " . $Heating["position"] . " steps' WHERE ID=1");
-                if ($Settings["speech_enabled"] == 1) SpeakMessage(12);
-                if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
-                  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                                "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
-                                                       "(now(),'0','3','1','" . $Heating["position"] . "','" . $Heating["position"] . "','1','0')");
-                } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
-                  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                                "VALUES (now(),'0','3','1','$Difference','" . $Heating["position"] . "','1','0')");
+        // Check boiler temperature every 60 seconds
+        if (time() - strtotime($Logic["boiler_timer"]) >= 60) {
+          $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_timer=now() WHERE ID=1");
+          // Boilers are slow to reflect temperature changes due to the themal mass of their contents
+          // Therefore, we only check every 10 minutes to see the result of the last adjustment
+          if (time() - strtotime($Logic["boiler_last_adjustment"]) >= 600) {
+            if ($Settings["boiler_temp"] < $Program["boiler_temp_low"]) {
+              if ($Settings["heating_enabled"] == 1) {
+                // Increase boiler power to the next higher 10% mark
+                $Result = mysqli_query($DBcnx,"SELECT * FROM heating_translation WHERE position > " . $Settings["heating_position"] . " ORDER BY position ASC LIMIT 1");
+                if (mysqli_num_rows($Result) > 0) {
+                  $Heating = mysqli_fetch_assoc($Result);
+                } else {
+                  $Heating["position"] = $Settings["heating_total"];
                 }
+                $Difference = $Heating["position"] - $Settings["heating_position"];
+                if ($Difference > 0) {
+                  $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Heating["position"] . "' WHERE ID=1");
+                  $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now()," .
+                                                "boiler_note='Boiler is under temperature, increasing heat to " . $Heating["position"] . " steps' WHERE ID=1");
+                  if ($Settings["speech_enabled"] == 1) SpeakMessage(12);
+                  if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
+                    $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                  "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
+                                                         "(now(),'0','3','1','" . $Heating["position"] . "','" . $Heating["position"] . "','1','0')");
+                  } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
+                    $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                  "VALUES (now(),'0','3','1','$Difference','" . $Heating["position"] . "','1','0')");
+                  }
+                }
+              } else {
+                // Tell the user to manually turn up their heat a notch or two
+                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now(),boiler_note='Boiler is under temperature, please increase your heat a notch or two' WHERE ID=1");
+                if ($Settings["speech_enabled"] == 1) SpeakMessage(14);
+              }
+            } elseif ($Settings["boiler_temp"] > $Program["boiler_temp_high"]) {
+              if ($Settings["heating_enabled"] == 1) {
+                // Decrease boiler power to the next lower 10% mark
+                $Result = mysqli_query($DBcnx,"SELECT * FROM heating_translation WHERE position < " . $Settings["heating_position"] . " ORDER BY position DESC LIMIT 1");
+                if (mysqli_num_rows($Result) > 0) {
+                  $Heating = mysqli_fetch_assoc($Result);
+                } else {
+                  $Heating["position"] = $Settings["heating_position"] - 3;
+                  if ($Heating["position"] < 0) $Heating["position"] = 0;
+                }
+                $Difference = $Settings["heating_position"] - $Heating["position"];
+                if ($Difference > 0) {
+                  $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Heating["position"] . "' WHERE ID=1");
+                  $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now()," .
+                                                "boiler_note='Boiler is over temperature, decreasing heat to " . $Heating["position"] . " steps' WHERE ID=1");
+                  if ($Settings["speech_enabled"] == 1) SpeakMessage(13);
+                  if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
+                    $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                  "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
+                                                         "(now(),'0','3','1','" . $Heating["position"] . "','" . $Heating["position"] . "','1','0')");
+                  } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
+                    $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                  "VALUES (now(),'0','3','0','$Difference','" . $Heating["position"] . "','1','0')");
+                  }
+                }
+              } else {
+                // Tell the user to manually turn down their heat a notch or two
+                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now(),boiler_note='Boiler is over temperature, please decrease your heat a notch or two' WHERE ID=1");
+                if ($Settings["speech_enabled"] == 1) SpeakMessage(15);
               }
             } else {
-              // Tell the user to manually turn up their heat a notch or two
-              $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now(),boiler_note='Boiler is under temperature, please increase your heat a notch or two' WHERE ID=1");
-              if ($Settings["speech_enabled"] == 1) SpeakMessage(14);
-            }
-          } elseif ($Settings["boiler_temp"] > $Program["boiler_temp_high"]) {
-            if ($Settings["heating_enabled"] == 1) {
-              // Decrease boiler power to the next lower 10% mark
-              $Result = mysqli_query($DBcnx,"SELECT * FROM heating_translation WHERE position < " . $Settings["heating_position"] . " ORDER BY position DESC LIMIT 1");
-              if (mysqli_num_rows($Result) > 0) {
-                $Heating = mysqli_fetch_assoc($Result);
-              } else {
-                $Heating["position"] = $Settings["heating_position"] - 3;
-                if ($Heating["position"] < 0) $Heating["position"] = 0;
-              }
-              $Difference = $Settings["heating_position"] - $Heating["position"];
-              if ($Difference > 0) {
-                $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Heating["position"] . "' WHERE ID=1");
-                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now()," .
-                                              "boiler_note='Boiler is over temperature, decreasing heat to " . $Heating["position"] . " steps' WHERE ID=1");
-                if ($Settings["speech_enabled"] == 1) SpeakMessage(13);
-                if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
-                  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                                "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
-                                                       "(now(),'0','3','1','" . $Heating["position"] . "','" . $Heating["position"] . "','1','0')");
-                } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
-                  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                                "VALUES (now(),'0','3','0','$Difference','" . $Heating["position"] . "','1','0')");
-                }
-              }
-            } else {
-              // Tell the user to manually turn down their heat a notch or two
-              $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now(),boiler_note='Boiler is over temperature, please decrease your heat a notch or two' WHERE ID=1");
-              if ($Settings["speech_enabled"] == 1) SpeakMessage(15);
-            }
-          } else {
-            // Update the $Logic["boiler_last_adjustment"] timestamp to restart the 5 minute timer
-            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now(),boiler_note='Boiler temperature is within the program\'s operating range' WHERE ID=1");
-          }
-        }
-      }
+              // Update the user interface status message with a current time stamp
+              $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now(),boiler_note='Boiler temperature is within the program\'s operating range' WHERE ID=1");
+            } // $Settings["boiler_temp"] compare against $Program["boiler_temp_low/high"] checks
+          } // $Logic["boiler_last_adjustment"]) >= 600 check
+        } //$Logic["boiler_timer"] >= 60 check
+      } // $Program["boiler_managed"] == 1 check
       /***** COLUMN TEMPERATURE MANAGEMENT ROUTINES *****/
       if ($Program["column_managed"] == 1) {
         if ($Logic["column_done"] == 0) {
           // Don't bother managing any dephleg or ABV stuff until the column is up to temperature
           if ($Settings["column_temp"] >= $Program["column_temp_low"]) {
             if ($Settings["speech_enabled"] == 1) SpeakMessage(16);
-            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_done='1',column_last_adjustment=now()," .
+            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET columntime=now(),column_done='1',column_last_adjustment=now()," .
                                           "column_note='Column has reached minimum operating temperature' WHERE ID=1");
           }
         } else {
           // Check column temperature every 30 seconds
-          if (time() - strtotime($Logic["column_last_adjustment"]) >= 30) {
+          if (time() - strtotime($Logic["column_timer"]) >= 30) {
+            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_timer=now() WHERE ID=1");
             if ($Settings["column_temp"] < $Program["column_temp_low"]) {
               if ($Settings["heating_enabled"] == 1) {
                 // Increase boiler power to the next higher step
@@ -210,7 +216,7 @@ if (mysqli_num_rows($Result) > 0) {
                 if ($Settings["speech_enabled"] == 1) SpeakMessage(19);
               }
             } else {
-              // Update the $Logic["column_last_adjustment"] timestamp to restart the 2 minute timer
+              // Update the user interface status message with a current time stamp
               $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_last_adjustment=now(),column_note='Column temperature is within the program\'s operating range' WHERE ID=1");
             }
           }
@@ -221,12 +227,13 @@ if (mysqli_num_rows($Result) > 0) {
         if ($Logic["dephleg_done"] == 0) {
           if ($Settings["dephleg_temp"] >= $Program["dephleg_temp_low"]) {
             if ($Settings["speech_enabled"] == 1) SpeakMessage(17);
-            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_done='1',dephleg_last_adjustment=now()," .
+            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_timer=now(),dephleg_done='1',dephleg_last_adjustment=now()," .
                                           "dephleg_note='Dephleg has reached minimum operating temperature' WHERE ID=1");
           }
         } else {
           // Check dephleg temperature every 30 seconds
-          if (time() - strtotime($Logic["dephleg_last_adjustment"]) >= 30) {
+          if (time() - strtotime($Logic["dephleg_timer"]) >= 30) {
+            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_timer=now() WHERE ID=1");
             if ($Settings["dephleg_temp"] < $Program["dephleg_temp_low"]) {
               $TempError = $Program["dephleg_temp_low"] - $Settings["dephleg_temp"];
               if ($TempError >= 1) {
@@ -266,7 +273,7 @@ if (mysqli_num_rows($Result) > 0) {
               $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                             "VALUES (now(),'0','2','1','Difference','$NewPosition','1','0')");
             } else {
-              // Update the $Logic["dephleg_last_adjustment"] timestamp to restart the timer
+              // Update the user interface status message with a current time stamp
               $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now(),dephleg_note='Dephleg temperature is within the program\'s operating range' WHERE ID=1");
               // Perform microstepping to maintain the dephleg temperature between the upper and lower limits
               $Range = ($Program["dephleg_temp_high"] - $Program["dephleg_temp_Low"]);
