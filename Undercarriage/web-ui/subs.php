@@ -69,13 +69,17 @@ function FormatTemp($TempC) {
   return "<span class=\"text-light\">" . $TempC . "C / " . $TempF . "F</span>";
 }
 //---------------------------------------------------------------------------------------------------
-function FormatTempRange($Lower,$Upper) {
+function FormatTempRange($Lower,$Upper,$Managed) {
   $LowerTempF = round(($Lower * (9 / 5)) + 32,1) . "F";
   $UpperTempF = round(($Upper * (9 / 5)) + 32,1) . "F";
   $Lower .= "C";
   $Upper .= "C";
-  $Content  = "<span class=\"text-success\">$Lower</span> / <span class=\"text-success\">$LowerTempF</span> to ";
-  $Content .= "<span class=\"text-danger\">$Upper</span> / <span class=\"text-danger\">$UpperTempF</span>";
+  if ($Managed == 1) {
+    $Content  = "<span class=\"text-success\">$Lower</span> / <span class=\"text-success\">$LowerTempF</span> to ";
+    $Content .= "<span class=\"text-danger\">$Upper</span> / <span class=\"text-danger\">$UpperTempF</span>";
+  } else {
+    $Content  = "<span class=\"text-secondary\">$Lower / $LowerTempF to $Upper / $UpperTempF</span>";
+  }
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
