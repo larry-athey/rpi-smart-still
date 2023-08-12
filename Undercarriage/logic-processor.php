@@ -74,13 +74,19 @@ if (mysqli_num_rows($Result) > 0) {
         }
         // Open the condenser valve to its starting position
         $Update = mysqli_query($DBcnx,"UPDATE settings SET valve1_position='" . $Program["condenser_rate"] * $Settings["valve1_pulse"] . "' WHERE ID=1");
+        // Open to 100% and pull down to the setting to evacuate any air in its water lines
+        $Duration = $Settings["valve1_total"] - ($Program["condenser_rate"] * $Settings["valve1_pulse"]);
         $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                      "VALUES (now(),'0','1','1','" . $Program["condenser_rate"] * $Settings["valve1_pulse"] . "','" . $Program["condenser_rate"] * $Settings["valve1_pulse"] . "','0','0')");
-        // Open the dephleg valve to its starting position if this is a reflux program and dephleg_managed == 1
-        if (($Program["mode"] == 1) && ($Program["dephleg_managed"] == 1)) {
+                                      "VALUES (now(),'0','1','1','" . $Settings["valve1_total"] . "','" . $Settings["valve1_total"] . "','1','0')," .
+                                             "(now(),'0','1','0','$Duration','" . $Program["condenser_rate"] * $Settings["valve1_pulse"] . "','0','0')");
+        // Open the dephleg valve to its starting position if this is a reflux program
+        if ($Program["mode"] == 1) {
           $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='" . $Program["dephleg_start"]  * $Settings["valve2_pulse"] . "' WHERE ID=1");
+          // Open to 100% and pull down to the setting to evacuate any air in its water lines
+          $Duration = $Settings["valve2_total"] - ($Program["dephleg_start"] * $Settings["valve2_pulse"]);
           $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                        "VALUES (now(),'0','2','1','" . $Program["dephleg_start"]  * $Settings["valve2_pulse"] . "','" . $Program["dephleg_start"] * $Settings["valve2_pulse"] . "','0','0')");
+                                        "VALUES (now(),'0','1','1','" . $Settings["valve2_total"] . "','" . $Settings["valve2_total"] . "','1','0')," .
+                                               "(now(),'0','1','0','$Duration','" . $Program["dephleg_start"] * $Settings["valve2_pulse"] . "','0','0')");
         }
       }
     } else {
