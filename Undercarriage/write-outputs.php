@@ -97,6 +97,12 @@ while ($RS = mysqli_fetch_assoc($Result)) {
     $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_total='$Total',valve2_pulse='$Pulses',valve2_position ='0' WHERE ID=1");
     if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(27);
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+  }  elseif ($RS["valve_id"] == 5) {
+    // Control commands to pause and unpause a run
+  } elseif ($RS["valve_id"] == 6) {
+    // Control commands to reboot the hydrometer
+  } elseif ($RS["valve_id"] == 7) {
+    // Control commands to recalibrate the hydrometer
   }
 }
 
