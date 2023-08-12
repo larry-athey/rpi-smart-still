@@ -160,13 +160,11 @@ if (mysqli_num_rows($Result) > 0) {
           if ($Settings["column_temp"] >= $Program["column_temp_low"]) {
             if ($Settings["speech_enabled"] == 1) SpeakMessage(16);
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_done='1',column_last_adjustment=now()," .
-                                          "column_note='Column has reached minimum operating temperature, waiting for dephleg' WHERE ID=1");
+                                          "column_note='Column has reached minimum operating temperature' WHERE ID=1");
           }
-          mysqli_close($DBcnx);
-          exit;
         } else {
-          // Check column temperature every 120 seconds (2 minutes)
-          if (time() - strtotime($Logic["column_last_adjustment"]) >= 120) {
+          // Check column temperature every 30 seconds
+          if (time() - strtotime($Logic["column_last_adjustment"]) >= 30) {
             if ($Settings["column_temp"] < $Program["column_temp_low"]) {
               if ($Settings["heating_enabled"] == 1) {
                 // Increase boiler power to the next higher step
@@ -224,17 +222,17 @@ if (mysqli_num_rows($Result) > 0) {
           if ($Settings["dephleg_temp"] >= $Program["dephleg_temp_low"]) {
             if ($Settings["speech_enabled"] == 1) SpeakMessage(17);
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_done='1',dephleg_last_adjustment=now()," .
-                                          "dephleg_note='Dephleg has reached minimum operating temperature, on with the show!' WHERE ID=1");
+                                          "dephleg_note='Dephleg has reached minimum operating temperature' WHERE ID=1");
           }
         } else {
-          // Check dephleg temperature every 60 seconds (1 minute)
-          if (time() - strtotime($Logic["dephleg_last_adjustment"]) >= 60) {
+          // Check dephleg temperature every 30 seconds
+          if (time() - strtotime($Logic["dephleg_last_adjustment"]) >= 30) {
             if ($Settings["dephleg_temp"] < $Program["dephleg_temp_low"]) {
               $TempError = $Program["dephleg_temp_low"] - $Settings["dephleg_temp"];
               if ($TempError >= 1) {
                 $Difference = $Settings["valve2_pulse"];
               } else {
-                $Difference = round($Settings["valve2_pulse"] * .1);
+                $Difference = round($Settings["valve2_pulse"] * .1,0,PHP_ROUND_HALF_UP);
               }
               $NewPosition = $Settings["valve2_position"] - $Difference;
               if ($NewPosition < 0) {
@@ -253,7 +251,7 @@ if (mysqli_num_rows($Result) > 0) {
               if ($TempError >= 1) {
                 $Difference = $Settings["valve2_pulse"];
               } else {
-                $Difference = round($Settings["valve2_pulse"] * .1);
+                $Difference = round($Settings["valve2_pulse"] * .1,0,PHP_ROUND_HALF_UP);
               }
               $NewPosition = $Settings["valve2_position"] + $Difference;
               if ($NewPosition >= $Settings["valve2_total"]) {
@@ -268,7 +266,7 @@ if (mysqli_num_rows($Result) > 0) {
               $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                             "VALUES (now(),'0','2','1','Difference','$NewPosition','1','0')");
             } else {
-              // Update the $Logic["dephleg_last_adjustment"] timestamp to restart the 1 minute timer
+              // Update the $Logic["dephleg_last_adjustment"] timestamp to restart the timer
               $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now(),dephleg_note='Dephleg temperature is within the program\'s operating range' WHERE ID=1");
               // Perform microstepping to maintain the dephleg temperature between the upper and lower limits
               $Range = ($Program["dephleg_temp_high"] - $Program["dephleg_temp_Low"]);
@@ -278,7 +276,7 @@ if (mysqli_num_rows($Result) > 0) {
                 } else {
                   $RangeCenter = (round($Range / 2,0,PHP_ROUND_HALF_ODD) + $Program["dephleg_temp_Low"]);
                 }
-                $Difference = round($Settings["valve2_pulse"] * .1);
+                $Difference = round($Settings["valve2_pulse"] * .1,0,PHP_ROUND_HALF_UP);
                 if ($Settings["dephleg_temp"] < $RangeCenter) {
                   $NewPosition = $Settings["valve2_position"] - $Difference;
                   $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$NewPosition' WHERE ID=1");
