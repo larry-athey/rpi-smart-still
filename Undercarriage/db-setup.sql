@@ -104,7 +104,7 @@ CREATE TABLE `programs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `programs` (`ID`, `program_name`, `mode`, `distillate_abv`, `abv_managed`, `minimum_flow`, `flow_managed`, `dephleg_start`, `condenser_rate`, `boiler_managed`, `boiler_temp_low`, `boiler_temp_high`, `dephleg_managed`, `dephleg_temp_low`, `dephleg_temp_high`, `column_managed`, `column_temp_low`, `column_temp_high`, `heating_idle`, `notes`) VALUES
-(1, 'Maximum Reflux', 1, 180, 0, 50, 0, 44, 38, 1, 85, 93.3, 1, 58, 63, 0, 87.2, 87.8, 125, NULL);
+(1, 'Maximum Reflux', 1, 180, 0, 50, 0, 40, 35, 1, 87.8, 93.4, 1, 58, 63, 0, 88.9, 89.5, 125, 'This is an example program for my Still Spirits boiler and T-500 column, using the exact parts shown in the diagrams provided on GitHub. Unless you are using the 100% exact setup, this program likely will not work for you. Always create your own programs from scratch since there is no way to create a program that is guaranteed to work with every still under the sun.');
 
 ALTER TABLE `programs` ADD PRIMARY KEY (`ID`);
 
