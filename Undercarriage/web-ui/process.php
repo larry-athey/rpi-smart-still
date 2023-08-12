@@ -37,9 +37,9 @@ elseif (isset($_POST["rss_edit_servos"])) {
   $Settings = mysqli_fetch_assoc($Result);
 
   // Safety nets just in case somebody is using a seriously outdated web browser that won't enforce form value limits
-  $Valve1 = round($_POST["Valve1"] * $Settings["valve1_pulse"],0);
+  $Valve1 = round($_POST["Valve1"] * $Settings["valve1_pulse"],1,PHP_ROUND_HALF_UP);
   if ($Valve1 > $Settings["valve1_total"]) $Valve1 = $Settings["valve1_total"]; // Prevents submissions > 100%
-  $Valve2 = round($_POST["Valve2"] * $Settings["valve2_pulse"],0);
+  $Valve2 = round($_POST["Valve2"] * $Settings["valve2_pulse"],1,PHP_ROUND_HALF_UP);
   if ($Valve2 > $Settings["valve2_total"]) $Valve2 = $Settings["valve2_total"]; // Prevents submissions > 100%
   if ($_POST["Heating"] > $Settings["heating_total"]) $_POST["Heating"] = $Settings["heating_total"]; // Same as above but different
 
@@ -85,8 +85,14 @@ elseif (isset($_POST["rss_edit_servos"])) {
     }
     if ($Difference > 0) {
       $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $_POST["Heating"] . "' WHERE ID=1");
-      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                    "VALUES (now(),'1','3','$Direction','$Difference','" . $_POST["Heating"] . "','0','0')");
+      if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
+        $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                      "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
+                                             "(now(),'1','3','1','" . $_POST["Heating"] . "','" . $_POST["Heating"] . "','0','0')");
+      } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
+        $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                      "VALUES (now(),'1','3','$Direction','$Difference','" . $_POST["Heating"] . "','0','0')");
+      }
     }
   }
 }
