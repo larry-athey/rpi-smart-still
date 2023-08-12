@@ -85,8 +85,8 @@ CREATE TABLE `programs` (
   `abv_managed` tinyint(4) DEFAULT NULL,
   `minimum_flow` tinyint(4) DEFAULT NULL,
   `flow_managed` tinyint(4) DEFAULT NULL,
-  `dephleg_start` int(11) DEFAULT NULL,
-  `condenser_rate` int(11) DEFAULT NULL,
+  `dephleg_start` float DEFAULT NULL,
+  `condenser_rate` float DEFAULT NULL,
   `boiler_managed` tinyint(4) DEFAULT NULL,
   `boiler_temp_low` float DEFAULT NULL,
   `boiler_temp_high` float DEFAULT NULL,
@@ -101,7 +101,7 @@ CREATE TABLE `programs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `programs` (`ID`, `program_name`, `mode`, `distillate_abv`, `abv_managed`, `minimum_flow`, `flow_managed`, `dephleg_start`, `condenser_rate`, `boiler_managed`, `boiler_temp_low`, `boiler_temp_high`, `dephleg_managed`, `dephleg_temp_low`, `dephleg_temp_high`, `column_managed`, `column_temp_low`, `column_temp_high`, `heating_idle`, `notes`) VALUES
-(1, 'Maximum Reflux', 1, 180, 0, 30, 0, 37, 38, 1, 87.8, 93.3, 1, 58, 63, 1, 87.8, 90.5, 124, NULL);
+(1, 'Maximum Reflux', 1, 180, 0, 50, 0, 45, 38, 1, 85, 93.3, 1, 58, 63, 0, 87.2, 87.8, 126, NULL);
 
 ALTER TABLE `programs` ADD PRIMARY KEY (`ID`);
 
