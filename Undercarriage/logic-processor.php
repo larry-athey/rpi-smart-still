@@ -237,72 +237,75 @@ if (mysqli_num_rows($Result) > 0) {
           // Check dephleg temperature every 30 seconds
           if (time() - strtotime($Logic["dephleg_timer"]) >= 30) {
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_timer=now() WHERE ID=1");
-            if ($Settings["dephleg_temp"] < $Program["dephleg_temp_low"]) {
-              $TempError = $Program["dephleg_temp_low"] - $Settings["dephleg_temp"];
-              if ($TempError >= 1) {
-                $Difference = $Settings["valve2_pulse"];
-              } else {
-                $Difference = round($Settings["valve2_pulse"] * .1,0,PHP_ROUND_HALF_UP);
-              }
-              $NewPosition = $Settings["valve2_position"] - $Difference;
-              if ($NewPosition < 0) {
-                // If we got here, there's a water flow problem
-                mysqli_close($DBcnx);
-                exit;
-              }
-              $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$NewPosition' WHERE ID=1");
-              $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now()," .
-                                            "dephleg_note='Dephleg is under temperature, decreasing cooling water flow' WHERE ID=1");
-              if ($Settings["speech_enabled"] == 1) SpeakMessage(22);
-              $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                            "VALUES (now(),'0','2','0','Difference','$NewPosition','1','0')");
-            } elseif ($Settings["dephleg_temp"] > $Program["dephleg_temp_high"]) {
-              $TempError = $Settings["dephleg_temp"] - $Program["dephleg_temp_high"];
-              if ($TempError >= 1) {
-                $Difference = $Settings["valve2_pulse"];
-              } else {
-                $Difference = round($Settings["valve2_pulse"] * .1,0,PHP_ROUND_HALF_UP);
-              }
-              $NewPosition = $Settings["valve2_position"] + $Difference;
-              if ($NewPosition >= $Settings["valve2_total"]) {
-                // If we got here, there's a water flow problem
-                mysqli_close($DBcnx);
-                exit;
-              }
-              $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$NewPosition' WHERE ID=1");
-              $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now()," .
-                                            "dephleg_note='Dephleg is over temperature, increasing cooling water flow' WHERE ID=1");
-              if ($Settings["speech_enabled"] == 1) SpeakMessage(23);
-              $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                            "VALUES (now(),'0','2','1','Difference','$NewPosition','1','0')");
-            } else {
-              // Update the user interface status message with a current time stamp
-              $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now(),dephleg_note='Dephleg temperature is within the program\'s operating range' WHERE ID=1");
-              // Perform microstepping to maintain the dephleg temperature between the upper and lower limits
-              $Range = ($Program["dephleg_temp_high"] - $Program["dephleg_temp_Low"]);
-              if ($Range > 4) {
-                if ($Range % 2 == 0) { // Always better to use an odd numbered range, preferably 5 degrees between upper and lower limits
-                  $RangeCenter = ($Range / 2) + $Program["dephleg_temp_Low"];
+
+            if (time() - strtotime($Logic["dephleg_last_adjustment"]) >= 60) {
+              if ($Settings["dephleg_temp"] < $Program["dephleg_temp_low"]) {
+                $TempError = $Program["dephleg_temp_low"] - $Settings["dephleg_temp"];
+                if ($TempError >= 1) {
+                  $Difference = $Settings["valve2_pulse"];
                 } else {
-                  $RangeCenter = (round($Range / 2,0,PHP_ROUND_HALF_ODD) + $Program["dephleg_temp_Low"]);
+                  $Difference = round($Settings["valve2_pulse"] * .1,0,PHP_ROUND_HALF_UP);
                 }
-                $Difference = round($Settings["valve2_pulse"] * .1,0,PHP_ROUND_HALF_UP);
-                if ($Settings["dephleg_temp"] < $RangeCenter) {
-                  $NewPosition = $Settings["valve2_position"] - $Difference;
-                  $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$NewPosition' WHERE ID=1");
-                  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                                "VALUES (now(),'0','2','0','Difference','$NewPosition','1','0')");
-                } elseif ($Settings["dephleg_temp"] > $RangeCenter) {
-                  $NewPosition = $Settings["valve2_position"] + $Difference;
-                  $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$NewPosition' WHERE ID=1");
-                  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                                "VALUES (now(),'0','2','1','Difference','$NewPosition','1','0')");
+                $NewPosition = $Settings["valve2_position"] - $Difference;
+                if ($NewPosition < 0) {
+                  // If we got here, there's a water flow problem
+                  mysqli_close($DBcnx);
+                  exit;
                 }
-              }
-            }
-          }
-        }
-      }
+                $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$NewPosition' WHERE ID=1");
+                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now()," .
+                                              "dephleg_note='Dephleg is under temperature, decreasing cooling water flow' WHERE ID=1");
+                if ($Settings["speech_enabled"] == 1) SpeakMessage(22);
+                $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                              "VALUES (now(),'0','2','0','Difference','$NewPosition','1','0')");
+              } elseif ($Settings["dephleg_temp"] > $Program["dephleg_temp_high"]) {
+                $TempError = $Settings["dephleg_temp"] - $Program["dephleg_temp_high"];
+                if ($TempError >= 1) {
+                  $Difference = $Settings["valve2_pulse"];
+                } else {
+                  $Difference = round($Settings["valve2_pulse"] * .1,0,PHP_ROUND_HALF_UP);
+                }
+                $NewPosition = $Settings["valve2_position"] + $Difference;
+                if ($NewPosition >= $Settings["valve2_total"]) {
+                  // If we got here, there's a water flow problem
+                  mysqli_close($DBcnx);
+                  exit;
+                }
+                $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$NewPosition' WHERE ID=1");
+                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now()," .
+                                              "dephleg_note='Dephleg is over temperature, increasing cooling water flow' WHERE ID=1");
+                if ($Settings["speech_enabled"] == 1) SpeakMessage(23);
+                $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                              "VALUES (now(),'0','2','1','Difference','$NewPosition','1','0')");
+              } else {
+                // Update the user interface status message with a current time stamp
+                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now(),dephleg_note='Dephleg temperature is within the program\'s operating range' WHERE ID=1");
+                // Perform microstepping to maintain the dephleg temperature between the upper and lower limits
+                $Range = ($Program["dephleg_temp_high"] - $Program["dephleg_temp_Low"]);
+                if ($Range > 4) {
+                  if ($Range % 2 == 0) { // Always better to use an odd numbered range, preferably 5 degrees between upper and lower limits
+                    $RangeCenter = ($Range / 2) + $Program["dephleg_temp_Low"];
+                  } else {
+                    $RangeCenter = (round($Range / 2,0,PHP_ROUND_HALF_ODD) + $Program["dephleg_temp_Low"]);
+                  }
+                  $Difference = round($Settings["valve2_pulse"] * .1,0,PHP_ROUND_HALF_UP);
+                  if ($Settings["dephleg_temp"] < $RangeCenter) {
+                    $NewPosition = $Settings["valve2_position"] - $Difference;
+                    $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$NewPosition' WHERE ID=1");
+                    $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                  "VALUES (now(),'0','2','0','Difference','$NewPosition','1','0')");
+                  } elseif ($Settings["dephleg_temp"] > $RangeCenter) {
+                    $NewPosition = $Settings["valve2_position"] + $Difference;
+                    $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$NewPosition' WHERE ID=1");
+                    $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                  "VALUES (now(),'0','2','1','Difference','$NewPosition','1','0')");
+                  }
+                } // Dephleg valid range for microstepping check
+              } // $Settings["dephleg_temp"] vs $Program["dephleg_temp_low/high"] checks
+            } // $Logic["dephleg_last_adjustment"]) >= 60 check
+          } // $Logic["dephleg_timer"]) >= 30 check
+        } // $Logic["dephleg_done"] == 0 check
+      } // $Program["dephleg_managed"] == 1 check
       /***** DISTILLATE MINIMUM ABV MANAGEMENT ROUTINES *****/
       if ($Program["abv_managed"] == 1) {
         if ($Program["mode == 0"]) {
