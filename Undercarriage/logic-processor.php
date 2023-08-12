@@ -72,21 +72,22 @@ if (mysqli_num_rows($Result) > 0) {
                                         "boiler_note='Boiler has reached minimum operating temperature, please reduce your heat to " . $Program["heating_idle"] . "%' WHERE ID=1");
           if ($Settings["speech_enabled"] == 1) SpeakMessage(11);
         }
+        if ($Settings["speech_enabled"] == 1) SpeakMessage(29);
         // Open the condenser valve to its starting position
         $Update = mysqli_query($DBcnx,"UPDATE settings SET valve1_position='" . round($Program["condenser_rate"] * $Settings["valve1_pulse"],0,PHP_ROUND_HALF_UP) . "' WHERE ID=1");
         // Open to 100% and pull down to the setting to evacuate any air in its water lines
         $Duration = $Settings["valve1_total"] - round($Program["condenser_rate"] * $Settings["valve1_pulse"],0,PHP_ROUND_HALF_UP);
         $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                       "VALUES (now(),'0','1','1','" . $Settings["valve1_total"] . "','" . $Settings["valve1_total"] . "','1','0')," .
-                                             "(now(),'0','1','0','$Duration','" . round($Program["condenser_rate"] * $Settings["valve1_pulse"],0,PHP_ROUND_HALF_UP) . "','0','0')");
+                                             "(now(),'0','1','0','$Duration','" . round($Program["condenser_rate"] * $Settings["valve1_pulse"],0,PHP_ROUND_HALF_UP) . "','1','0')");
         // Open the dephleg valve to its starting position if this is a reflux program
         if ($Program["mode"] == 1) {
           $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='" . round($Program["dephleg_start"]  * $Settings["valve2_pulse"],0,PHP_ROUND_HALF_UP) . "' WHERE ID=1");
           // Open to 100% and pull down to the setting to evacuate any air in its water lines
           $Duration = $Settings["valve2_total"] - round($Program["dephleg_start"] * $Settings["valve2_pulse"],0,PHP_ROUND_HALF_UP);
           $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                        "VALUES (now(),'0','1','1','" . $Settings["valve2_total"] . "','" . $Settings["valve2_total"] . "','1','0')," .
-                                               "(now(),'0','1','0','$Duration','" . round($Program["dephleg_start"] * $Settings["valve2_pulse"],0,PHP_ROUND_HALF_UP) . "','0','0')");
+                                        "VALUES (now(),'0','2','1','" . $Settings["valve2_total"] . "','" . $Settings["valve2_total"] . "','1','0')," .
+                                               "(now(),'0','2','0','$Duration','" . round($Program["dephleg_start"] * $Settings["valve2_pulse"],0,PHP_ROUND_HALF_UP) . "','1','0')");
         }
       }
     } else {
