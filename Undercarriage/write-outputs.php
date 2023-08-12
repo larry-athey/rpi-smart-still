@@ -37,6 +37,7 @@ while ($RS = mysqli_fetch_assoc($Result)) {
     }
     shell_exec("/usr/share/rpi-smart-still/valve " . $RS["valve_id"] . " $Direction " . $RS["duration"]);
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+    sleep(1);
     $Status = trim(shell_exec("/usr/share/rpi-smart-still/valve " . $RS["valve_id"] . " status"));
     if ($Status == 0) {
       $Update = mysqli_query($DBcnx,"UPDATE settings SET valve" . $RS["valve_id"] . "_position ='0' WHERE ID=1");
