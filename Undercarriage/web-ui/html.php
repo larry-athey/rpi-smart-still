@@ -85,10 +85,11 @@ function DrawMenu($DBcnx) {
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=programs\">Edit&nbsp;Programs</a></li>";
   if ($Settings["active_run"] == 1) {
     $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"process.php?calibrate_valves=1\"><span class=\"text-secondary\">Calibrate&nbsp;Valves</span></a></li>";
+    $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"?page=sensors\"><span class=\"text-secondary\">Configure&nbsp;Sensors</span></a></li>";
   } else {
     $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?calibrate_valves=1\">Calibrate&nbsp;Valves</a></li>";
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"?page=sensors\">Configure&nbsp;Sensors</a></li>";
   }
-  $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=sensors\">Configure&nbsp;Sensors</a></li>";
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=heating\">Configure&nbsp;Heating</a></li>";
   if ($Settings["active_run"] == 1) {
     $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"?page=hydrometer\"><span class=\"text-secondary\">Calibrate&nbsp;Hydrometer</a></span></li>";
