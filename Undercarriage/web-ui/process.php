@@ -14,8 +14,18 @@ if (isset($_GET["active_run"])) {
     $Update = mysqli_query($DBcnx,"TRUNCATE output_table");
     $Update = mysqli_query($DBcnx,"TRUNCATE logic_tracker");
     $Update = mysqli_query($DBcnx,"UPDATE settings SET active_run='1',run_start=now(),run_end=NULL WHERE ID=1");
-    $Insert = mysqli_query($DBcnx,"INSERT INTO logic_tracker (run_start,boiler_done,boiler_last_adjustment,boiler_note,dephleg_done,dephleg_last_adjustment,dephleg_note,column_done,column_last_adjustment,column_note,flow_last_check) " .
-                                  "VALUES (1,0,now(),'Waiting for the boiler to reach its minimum temperature','0',now(),'Waiting for the dephleg sensor to reach its minimum temperature',0,now(),'Waiting for the column to reach its minimum temperature',now())");
+    $Insert = mysqli_query($DBcnx,"INSERT INTO logic_tracker (run_start,boiler_done,boiler_last_adjustment,boiler_note) " .
+                                  "VALUES (1,0,now(),'Waiting for the boiler to reach its minimum temperature')");
+    if ($Program["dephleg_managed"] == 1) {
+      $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_done='0',dephleg_last_adjustment=now(),dephleg_note='Waiting for the dephleg sensor to reach its minimum temperature' WHERE ID=1");
+    } else {
+      $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_done='0',dephleg_last_adjustment=now(),dephleg_note='Not managing the dephleg temperature in this program' WHERE ID=1");
+    }
+    if ($Program["column_managed"] == 1) {
+      $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_done='0',column_last_adjustment=now(),column_note='Waiting for the column to reach its minimum temperature' WHERE ID=1");
+    } else {
+      $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_done='0',column_last_adjustment=now(),column_note='Not managing the column temperature in this program' WHERE ID=1");
+    }
     if ($Program["abv_managed"] == 1) {
       $Update = mysqli_query($DBcnx,"UPDATE settings SET saved_lower='" . $Program["column_temp_low"] . "',saved_upper='" . $Program["column_temp_high"] . "' WHERE ID=1");
     }
