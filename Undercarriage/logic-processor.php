@@ -254,7 +254,7 @@ if (mysqli_num_rows($Result) > 0) {
                 if ($TempError >= 1) {
                   $Difference = $Settings["valve2_pulse"];
                 } else {
-                  $Difference = round($Settings["valve2_pulse"] * .1,0,PHP_ROUND_HALF_UP);
+                  $Difference = round($Settings["valve2_pulse"] * .5,0,PHP_ROUND_HALF_UP);
                 }
                 $NewPosition = $Settings["valve2_position"] - $Difference;
                 if ($NewPosition < 0) {
@@ -293,7 +293,7 @@ if (mysqli_num_rows($Result) > 0) {
                 // Perform microstepping to maintain the dephleg temperature between the upper and lower limits
                 $Range = $Program["dephleg_temp_high"] - $Program["dephleg_temp_Low"];
                 if ($Range > 4) {
-                  $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now(),dephleg_note='Dephleg temperature is within range, now using microstepping' WHERE ID=1");
+                  $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now(),dephleg_note='Dephleg temperature is within range, microstepping as needed' WHERE ID=1");
                   if ($Range % 2 == 0) { // Always better to use an odd numbered range, preferably 5 degrees between upper and lower limits
                     $RangeCenter = ($Range / 2) + $Program["dephleg_temp_Low"];
                   } else {
