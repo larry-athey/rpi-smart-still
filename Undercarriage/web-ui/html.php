@@ -131,8 +131,11 @@ function EditProgram($DBcnx,$ID) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=$ID");
   $Program  = mysqli_fetch_assoc($Result);
 
-  $Content  = "";
+  $Content  = "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
+  $Content .=   "<div class=\"card-body\">";
 
+  $Content .=   "</div>";
+  $Content .= "</div>";
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
