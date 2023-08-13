@@ -314,7 +314,7 @@ if (mysqli_num_rows($Result) > 0) {
                     $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$NewPosition' WHERE ID=1");
                     $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                                   "VALUES (now(),'0','2','1','$Difference','$NewPosition','1','0')");
-                  }
+                  } // $Settings["dephleg_temp"] vs $RangeCenter check
                 } // Dephleg valid range for microstepping check
               } // $Settings["dephleg_temp"] vs $Program["dephleg_temp_low/high"] checks
             } // $Logic["dephleg_last_adjustment"]) >= 120 check
