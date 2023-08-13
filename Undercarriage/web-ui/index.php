@@ -98,6 +98,8 @@ if (! isset($_GET["page"])) {
 
   } elseif ($_GET["page"] == "hydrometer") {
 
+  } elseif ($_GET["page"] == "programs") {
+    $Content = ShowPrograms($DBcnx);
   } elseif ($_GET["page"] == "start_run") {
     $Content .= DrawCard($DBcnx,"start_run",false);
   } elseif ($_GET["page"] == "stop_run") {
