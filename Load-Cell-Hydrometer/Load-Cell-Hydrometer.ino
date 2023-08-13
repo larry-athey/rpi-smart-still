@@ -313,14 +313,18 @@ void TempUpdate() { // Update the distillate temperature on the display
   */
 }
 //------------------------------------------------------------------------------------------------
-void TimeUpdate() {
+void TimeUpdate(String Debug) {
   // Off-screen buffers only work with Arduino Mega and ESP32 due to the memory requirements
   GFXcanvas1 canvas(105,24);
   canvas.setTextWrap(false);
   canvas.setFont(&FreeSans10pt7b);
   canvas.setTextSize(1);
   canvas.setCursor(1,19);
-  canvas.print(Uptime);
+  if (Debug == "") {
+    canvas.print(Uptime);
+  } else {
+    canvas.print(Debug);
+  }
   tft.drawBitmap(184,215,canvas.getBuffer(),canvas.width(),canvas.height(),ILI9341_DARKGREEN,ILI9341_BLACK);
   /*
   // Old school screen updates for Arduino Uno/Nano (blank the area and redraw)
@@ -329,12 +333,17 @@ void TimeUpdate() {
   tft.setTextColor(ILI9341_DARKGREEN);
   tft.fillRect(182,215,105,24,ILI9341_BLACK);
   tft.setCursor(184,233);
-  tft.print(Uptime);
+  if (Debug == "") {
+    tft.print(Uptime);
+  } else {
+    tft.print(Debug);
+  }
   */
 }
 //------------------------------------------------------------------------------------------------
 void loop() {
   long CurrentTime = millis();
+  if (CurrentTime > 4200000000) ESP.restart();
   float Weight,WeightAvg = 0;
   byte Data;
   unsigned long allSeconds = CurrentTime / 1000;
@@ -369,7 +378,7 @@ void loop() {
   }
 
 /*
-  // Uncomment the following code block for display testing
+  // Uncomment the following code block for display testing and load cell debugging
   TempC = random(18,25);
   eTest ++;
   if (eTest == 100) eTest = 0;
@@ -381,13 +390,14 @@ void loop() {
   if (CurrentTime - ScreenCounter >= 7500) {
     EthanolUpdate();
     TempUpdate();
-    TimeUpdate();
+    TimeUpdate("");
     ScreenCounter = CurrentTime;
   }
   // Communications to my Raspberry PI based still monitor/controller uses 9600 baud serial data
   if (CurrentTime - SerialCounter >= 1000) {
     char WeightLog[25];
     sprintf(WeightLog,"%.2f %.2f",Weight,WeightAvg);
+    if (eTest > 0) TimeUpdate(WeightLog);
     Serial.print("Uptime: ");
     Serial.println(Uptime);
     Serial.print("Weight: ");
