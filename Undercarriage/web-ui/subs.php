@@ -36,7 +36,7 @@ function FormatEthanol($Value) {
   } elseif (($Value > 49) && ($Value <= 64)) {
     $Color = "text-warning";
   } elseif (($Value > 64) && ($Value <= 84)) {
-    $Color = "text-danger-emphasis"; // No color class that matches the hydrometer's magenta in this range
+    $Color = "text-magenta";
   } else {
     $Color = "text-danger";
   }
@@ -54,7 +54,7 @@ function FormatEthanolMeter($Value) {
   } elseif (($Value > 49) && ($Value <= 64)) {
     $Color = "bg-warning";
   } elseif (($Value > 64) && ($Value <= 84)) {
-    $Color = "bg-danger"; // No bg-danger-emphasis class
+    $Color = "bg-magenta";
   } else {
     $Color = "bg-danger";
   }
