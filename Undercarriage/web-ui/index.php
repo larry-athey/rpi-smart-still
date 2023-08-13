@@ -92,7 +92,9 @@ if (! isset($_GET["page"])) {
   $Content .= DrawLogicTracker($DBcnx);
   // Full width card to show run logic tracking info
 } else {
-  if ($_GET["page"] == "edit_servos") {
+  if ($_GET["page"] == "edit_program") {
+    $Content .= EditProgram($DBcnx,$_GET["ID"]);
+  } elseif ($_GET["page"] == "edit_servos") {
     $Content .= DrawCard($DBcnx,"edit_servos",false);
   } elseif ($_GET["page"] == "heating") {
 
