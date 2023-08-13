@@ -2,6 +2,10 @@
 //---------------------------------------------------------------------------------------------------
 require_once("html.php");
 //---------------------------------------------------------------------------------------------------
+// Not designed for desktop use, but if you are using Firefox you can press CTRL+SHIFT+M to switch it
+// into mobile view. Set the resolution to 1025x650 and it will condense the view to match the format
+// you see on an iPad Air in landscape orientation.
+//---------------------------------------------------------------------------------------------------
 ?>
 <!DOCTYPE html>
 <html lang="en">
