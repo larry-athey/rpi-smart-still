@@ -199,7 +199,7 @@ function ShowPrograms($DBcnx) {
     $Content .=     "<p style=\"float: right;\"><a href=\"?page=delete_confirm\" class=\"btn btn-danger\" name=\"delete_program\" style=\"--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .75rem; --bs-btn-font-size: .75rem;\"><span>Delete</span></a>&nbsp;&nbsp;&nbsp;&nbsp;";
     $Content .=     "<a href=\"?page=edit_program=" . $RS["ID"] . "\" class=\"btn btn-primary\" name=\"edit_program\" style=\"--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .75rem; --bs-btn-font-size: .75rem;\"><span>Edit</span></a></p>";
     $Content .=   "</div>";
-    $Content .= "</div><p></p>";
+    $Content .= "</div>";
   }
 
   if ($Counter == 0) $Content .= "No programs found...";
