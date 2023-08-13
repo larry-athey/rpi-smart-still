@@ -206,7 +206,7 @@ function ShowPrograms($DBcnx) {
     $Content .= "<div class=\"card\">";
     $Content .=   "<div class=\"card-body\">";
     $Content .=     "<p>" . $RS["program_name"] . "</p>";
-    $Content .=     "<p style=\"float: right;\"><a href=\"?page=delete_confirm\" class=\"btn btn-danger\" name=\"delete_program\" style=\"--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .75rem; --bs-btn-font-size: .75rem;\"><span>Delete</span></a>&nbsp;&nbsp;&nbsp;&nbsp;";
+    $Content .=     "<p style=\"float: right;\"><a href=\"?page=delete_confirm&ID=" . $RS["ID"] . "\" class=\"btn btn-danger\" name=\"delete_program\" style=\"--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .75rem; --bs-btn-font-size: .75rem;\"><span>Delete</span></a>&nbsp;&nbsp;&nbsp;&nbsp;";
     $Content .=     "<a href=\"?page=edit_program&ID=" . $RS["ID"] . "\" class=\"btn btn-primary\" name=\"edit_program\" style=\"--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .75rem; --bs-btn-font-size: .75rem;\"><span>Edit</span></a></p>";
     $Content .=   "</div>";
     $Content .= "</div>";
