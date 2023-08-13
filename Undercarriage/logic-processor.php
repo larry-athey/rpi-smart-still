@@ -273,7 +273,7 @@ if (mysqli_num_rows($Result) > 0) {
                 if ($TempError >= 1) {
                   $Difference = $Settings["valve2_pulse"];
                 } else {
-                  $Difference = round($Settings["valve2_pulse"] * .1,0,PHP_ROUND_HALF_UP);
+                  $Difference = round($Settings["valve2_pulse"] * .5,0,PHP_ROUND_HALF_UP);
                 }
                 $NewPosition = $Settings["valve2_position"] + $Difference;
                 if ($NewPosition >= $Settings["valve2_total"]) {
