@@ -183,6 +183,7 @@ if (mysqli_num_rows($Result) > 0) {
           // Check column temperature every 30 seconds
           if (time() - strtotime($Logic["column_timer"]) >= 30) {
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_timer=now() WHERE ID=1");
+            // Adjustments are given 2 minutes to take full effect before another
             if (time() - strtotime($Logic["column_last_adjustment"]) >= 120) {
               if ($Settings["column_temp"] < $Program["column_temp_low"]) {
                 if ($Settings["heating_enabled"] == 1) {
@@ -248,6 +249,7 @@ if (mysqli_num_rows($Result) > 0) {
           // Check dephleg temperature every 30 seconds
           if (time() - strtotime($Logic["dephleg_timer"]) >= 30) {
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_timer=now() WHERE ID=1");
+            // Adjustments are given 2 minutes to take full effect before another
             if (time() - strtotime($Logic["dephleg_last_adjustment"]) >= 120) {
               if ($Settings["dephleg_temp"] < $Program["dephleg_temp_low"]) {
                 $TempError = $Program["dephleg_temp_low"] - $Settings["dephleg_temp"];
@@ -324,7 +326,7 @@ if (mysqli_num_rows($Result) > 0) {
         if ($Program["mode == 0"]) {
           // In pot still mode, we stop the run when we hit the minimum ABV
         } else {
-          // In reflux mode, we dynamically adjust the column upper and lower temperature limits
+          // In reflux mode, we dynamically adjust the program's column upper and lower temperature limits
         }
       }
       /***** DISTILLATE MINIMUM FLOW RATE MANAGEMENT ROUTINES *****/
