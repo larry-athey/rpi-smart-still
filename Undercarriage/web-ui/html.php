@@ -127,11 +127,21 @@ function DrawMenu($DBcnx) {
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
+function EditProgram($DBcnx,$ID) {
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=$ID");
+  $Program  = mysqli_fetch_assoc($Result);
+
+  $Content  = "";
+
+  return $Content;
+}
+//---------------------------------------------------------------------------------------------------
 function LogicTracker($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
   $Result   = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=" . $Settings["active_program"]);
   $Program  = mysqli_fetch_assoc($Result);
+
   if ($Program["mode"] == 0) {
     $RunType = "Pot Still";
   } else {
@@ -186,7 +196,7 @@ function ShowHydrometer($DBcnx) {
 //---------------------------------------------------------------------------------------------------
 function ShowPrograms($DBcnx) {
   $Counter  = 0;
-  $Content  = "<a href=\"?page=edit_program=0\" class=\"btn btn-outline-secondary\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\" name=\"create_program\">Create New Program</a><br>";
+  $Content  = "<a href=\"?page=edit_program&ID=0\" class=\"btn btn-outline-secondary\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\" name=\"create_program\">Create New Program</a><br>";
   $Content .= "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
 
@@ -197,7 +207,7 @@ function ShowPrograms($DBcnx) {
     $Content .=   "<div class=\"card-body\">";
     $Content .=     "<p>" . $RS["program_name"] . "</p>";
     $Content .=     "<p style=\"float: right;\"><a href=\"?page=delete_confirm\" class=\"btn btn-danger\" name=\"delete_program\" style=\"--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .75rem; --bs-btn-font-size: .75rem;\"><span>Delete</span></a>&nbsp;&nbsp;&nbsp;&nbsp;";
-    $Content .=     "<a href=\"?page=edit_program=" . $RS["ID"] . "\" class=\"btn btn-primary\" name=\"edit_program\" style=\"--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .75rem; --bs-btn-font-size: .75rem;\"><span>Edit</span></a></p>";
+    $Content .=     "<a href=\"?page=edit_program&ID=" . $RS["ID"] . "\" class=\"btn btn-primary\" name=\"edit_program\" style=\"--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .75rem; --bs-btn-font-size: .75rem;\"><span>Edit</span></a></p>";
     $Content .=   "</div>";
     $Content .= "</div>";
   }
