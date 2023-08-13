@@ -21,7 +21,20 @@ require_once("html.php");
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js" integrity="sha512-asxKqQghC1oBShyhiBwA+YgotaSYKxGP1rcSYTDrB0U6DxwlJjU59B67U8+5/++uFjcuVM8Hh5cokLjZlhm3Vg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <link rel="icon" href="favicon.ico?v=1.1">
+  <script type="text/javascript">
+    $(function() {
+      $("#rssFG").addClass("text-purple");
+      $("#rssBG").addClass("bg-purple");
+    });
+  </script>
   <style>
+    .text-magenta {
+      color: purple !important;
+    }
+    .bg-magenta {
+      background-color: purple !important;
+    }
+
     @-webkit-keyframes blinker {
       from {opacity: 1.0;}
       to {opacity: 0.0;}
