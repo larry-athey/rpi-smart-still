@@ -267,7 +267,7 @@ if (mysqli_num_rows($Result) > 0) {
                                               "dephleg_note='Dephleg is under temperature, decreasing cooling water flow' WHERE ID=1");
                 if ($Settings["speech_enabled"] == 1) SpeakMessage(22);
                 $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                              "VALUES (now(),'0','2','0','Difference','$NewPosition','1','0')");
+                                              "VALUES (now(),'0','2','0','$Difference','$NewPosition','1','0')");
               } elseif ($Settings["dephleg_temp"] > $Program["dephleg_temp_high"]) {
                 $TempError = $Settings["dephleg_temp"] - $Program["dephleg_temp_high"];
                 if ($TempError >= 1) {
@@ -286,7 +286,7 @@ if (mysqli_num_rows($Result) > 0) {
                                               "dephleg_note='Dephleg is over temperature, increasing cooling water flow' WHERE ID=1");
                 if ($Settings["speech_enabled"] == 1) SpeakMessage(23);
                 $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                              "VALUES (now(),'0','2','1','Difference','$NewPosition','1','0')");
+                                              "VALUES (now(),'0','2','1','$Difference','$NewPosition','1','0')");
               } else {
                 // Update the user interface status message with a current time stamp
                 $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now(),dephleg_note='Dephleg temperature is within the program\'s operating range' WHERE ID=1");
