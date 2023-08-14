@@ -293,13 +293,13 @@ if (mysqli_num_rows($Result) > 0) {
                 // Update the user interface status message with a current time stamp
                 $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now(),dephleg_note='Dephleg temperature is within the program\'s operating range' WHERE ID=1");
                 // Perform microstepping to maintain the dephleg temperature between the upper and lower limits
-                $Range = $Program["dephleg_temp_high"] - $Program["dephleg_temp_Low"];
+                $Range = $Program["dephleg_temp_high"] - $Program["dephleg_temp_low"];
                 if ($Range > 4) {
                   $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now(),dephleg_note='Dephleg temperature is within range, microstepping as needed' WHERE ID=1");
                   if ($Range % 2 == 0) { // Always better to use an odd numbered range, preferably 5 degrees between upper and lower limits
-                    $RangeCenter = ($Range / 2) + $Program["dephleg_temp_Low"];
+                    $RangeCenter = ($Range / 2) + $Program["dephleg_temp_low"];
                   } else {
-                    $RangeCenter = round($Range / 2,0,PHP_ROUND_HALF_ODD) + $Program["dephleg_temp_Low"];
+                    $RangeCenter = round($Range / 2,0,PHP_ROUND_HALF_UP) + $Program["dephleg_temp_low"];
                   }
                   $Difference = round($Settings["valve2_pulse"] * .1,0,PHP_ROUND_HALF_DOWN);
                   if ($Settings["dephleg_temp"] < $RangeCenter) {
