@@ -199,13 +199,13 @@ function LogicTracker($DBcnx) {
     $Logic  = mysqli_fetch_assoc($Result);
     $Content  = "<table class=\"table table-sm table-borderless\">";
     $Content .=   "<tr><td nowrap width=\"15%\"><span class=\"text-white-50\">$RunType Run Time</span></td>" .
-                  "<td><span class=\"text-primary\">: </span><span class=\"text-light\">" . SecsToTime(time() - strtotime($Settings["run_start"])) . "</span></td></tr>";
+                  "<td width=\"1%\"><span class=\"text-primary\">:</span></td><td><span class=\"text-light\">" . SecsToTime(time() - strtotime($Settings["run_start"])) . "</span></td></tr>";
     $Content .=   "<tr><td nowrap><span class=\"text-white-50\">" . $Logic["dephleg_last_adjustment"] . "</span></td>" .
-                  "<td><span class=\"text-primary\">: </span><span class=\"text-light\">" . $Logic["dephleg_note"] . "</span></td></tr>";
+                  "<td><span class=\"text-primary\">:</span></td><td><span class=\"text-light\">" . $Logic["dephleg_note"] . "</span></td></tr>";
     $Content .=   "<tr><td nowrap><span class=\"text-white-50\">" . $Logic["column_last_adjustment"] . "</span></td>" .
-                  "<td><span class=\"text-primary\">: </span><span class=\"text-light\">" . $Logic["column_note"] . "</span></td></tr>";
+                  "<td><span class=\"text-primary\">:</span></td><td><span class=\"text-light\">" . $Logic["column_note"] . "</span></td></tr>";
     $Content .=   "<tr><td nowrap><span class=\"text-white-50\">" . $Logic["boiler_last_adjustment"] . "</span></td>" .
-                  "<td><span class=\"text-primary\">: </span><span class=\"text-light\">" . $Logic["boiler_note"] . "</span></td></tr>";
+                  "<td><span class=\"text-primary\">:</span></td><td><span class=\"text-light\">" . $Logic["boiler_note"] . "</span></td></tr>";
     $Content .= "</table>";
   } else {
     $Content = "<p>No distillation run currently active</p>" .
