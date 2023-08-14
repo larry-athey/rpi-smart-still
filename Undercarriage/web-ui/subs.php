@@ -115,6 +115,21 @@ function PosToPct($Total,$Position) {
   return round($Position / $Total * 100,1);
 }
 //---------------------------------------------------------------------------------------------------
+function ProgramTypeSelector($Selected) {
+  $PType[] = "Pot Still Mode";
+  $PType[] = "Reflux Mode";
+  $Content = "<select style=\"width: 100%;margin-bottom: 0.5em;\" size=\"1\" class=\"form-control form-select\" id=\"ProgramType\" name=\"ProgramType\" onChange=\"ToggleInputFields(this)\">";
+  for ($x = 0; $x <= 1; $x ++) {
+    if ($x == $Selected) {
+      $Content .= "<option selected value=\"$x\">$PType[$x]</option>";
+    } else {
+      $Content .= "<option value=\"$x\">$PType[$x]</option>";
+    }
+  }
+  $Content .= "</select>";
+  return $Content;
+}
+//---------------------------------------------------------------------------------------------------
 function SecsToTime($Seconds) {
   $dtF = new \DateTime('@0');
   $dtT = new \DateTime("@$Seconds");
