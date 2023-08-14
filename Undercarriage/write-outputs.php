@@ -98,6 +98,7 @@ while ($RS = mysqli_fetch_assoc($Result)) {
 }
 //---------------------------------------------------------------------------------------------
 if ($Counter == 0) {
+  // If there were no waiting tasks executed, check the limit switches on the valves
   for ($x = 1; $x <= 2; $x ++) {
     $Status = trim(shell_exec("/usr/share/rpi-smart-still/valve $x status"));
     if ($Status == 0) {
