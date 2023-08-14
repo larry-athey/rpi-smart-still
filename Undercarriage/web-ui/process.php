@@ -65,6 +65,8 @@ elseif (isset($_GET["heat_jump"])) {
       $Direction = 0;
     }
     if ($Difference > 0) {
+      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                    "VALUES (now(),'1','99','0','" . $_GET["value"] . "','1','0','0')");
       $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Heating["position"] . "' WHERE ID=1");
       if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
         $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
@@ -131,13 +133,15 @@ elseif (isset($_POST["rss_edit_servos"])) {
     }
     if ($Difference > 0) {
       $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $_POST["Heating"] . "' WHERE ID=1");
+      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                    "VALUES (now(),'1','99','0','0','2','0','0')");
       if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
         $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                       "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
-                                             "(now(),'1','3','1','" . $_POST["Heating"] . "','" . $_POST["Heating"] . "','0','0')");
+                                             "(now(),'1','3','1','" . $_POST["Heating"] . "','" . $_POST["Heating"] . "','1','0')");
       } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
         $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                      "VALUES (now(),'1','3','$Direction','$Difference','" . $_POST["Heating"] . "','0','0')");
+                                      "VALUES (now(),'1','3','$Direction','$Difference','" . $_POST["Heating"] . "','1','0')");
       }
     }
   }
