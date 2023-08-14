@@ -115,6 +115,18 @@ function DrawMenu($DBcnx) {
     $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"process.php?pause_page=start_run\"><span class=\"text-secondary\">Pause&nbsp;Run</span></a></li>";
     $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"?page=stop_run\"><span class=\"text-secondary\">Stop&nbsp;Run</span></a></li>";
   }
+  $Content .=             "<li><hr class=\"dropdown-divider\"></li>";
+  $Content .=             "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=100\">Heat&nbsp;Jump&nbsp;To&nbsp;100%</a></li>";
+  $Content .=             "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=90\">Heat&nbsp;Jump&nbsp;To&nbsp;90%</a></li>";
+  $Content .=             "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=80\">Heat&nbsp;Jump&nbsp;To&nbsp;80%</a></li>";
+  $Content .=             "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=70\">Heat&nbsp;Jump&nbsp;To&nbsp;70%</a></li>";
+  $Content .=             "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=60\">Heat&nbsp;Jump&nbsp;To&nbsp;60%</a></li>";
+  $Content .=             "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=50\">Heat&nbsp;Jump&nbsp;To&nbsp;50%</a></li>";
+  $Content .=             "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=40\">Heat&nbsp;Jump&nbsp;To&nbsp;40%</a></li>";
+  $Content .=             "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=30\">Heat&nbsp;Jump&nbsp;To&nbsp;30%</a></li>";
+  $Content .=             "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=20\">Heat&nbsp;Jump&nbsp;To&nbsp;20%</a></li>";
+  $Content .=             "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=10\">Heat&nbsp;Jump&nbsp;To&nbsp;10%</a></li>";
+  $Content .=             "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=0\">Heat&nbsp;Jump&nbsp;To&nbsp;0%</a></li>";
   $Content .=           "</ul>";
   $Content .=         "</li>";
   $Content .=         "<li class=\"nav-item\">";
@@ -128,14 +140,29 @@ function DrawMenu($DBcnx) {
 }
 //---------------------------------------------------------------------------------------------------
 function EditProgram($DBcnx,$ID) {
-  $Result   = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=$ID");
-  $Program  = mysqli_fetch_assoc($Result);
+  if ($ID > 0) {
+    $Result  = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=$ID");
+    $Program = mysqli_fetch_assoc($Result);
+  } else {
+    $Program["program_name"] = "";
+    $Program["mode"] = 0;
+  }
 
-  $Content  = "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
+  $Content  = "<form id=\"edit_program\" method=\"post\" action=\"process.php\">";
+  $Content .= "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
+  $Content .=     "<div style=\"margin-top: 1em;\">";
+  $Content .=       "<label for=\"ProgramName\" class=\"form-label\">Program Name</label>";
+  $Content .=       "<input type=\"text\" class=\"form-control\" id=\"ProgramName\" name=\"ProgramName\" maxlength=\"100\" value=\"" . $Program["program_name"] . "\">";
+  $Content .=     "</div>";
+  $Content .=     "<div style=\"margin-top: 1em;\">";
+  $Content .=       "<label for=\"ProgramName\" class=\"form-label\">Program Type</label>";
+  $Content .=       ProgramTypeSelector($Program["mode"]);
+  $Content .=     "</div>";
 
   $Content .=   "</div>";
   $Content .= "</div>";
+  $Content .= "</form>";
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
@@ -146,9 +173,9 @@ function LogicTracker($DBcnx) {
   $Program  = mysqli_fetch_assoc($Result);
 
   if ($Program["mode"] == 0) {
-    $RunType = "Pot Still";
+    $RunType = "Pot Still Mode";
   } else {
-    $RunType = "Reflux";
+    $RunType = "Reflux Mode";
   }
   if ($Settings["active_run"] == 1) {
     $Result = mysqli_query($DBcnx,"SELECT * FROM logic_tracker WHERE ID=1");
@@ -198,6 +225,9 @@ function ShowHydrometer($DBcnx) {
 }
 //---------------------------------------------------------------------------------------------------
 function ShowPrograms($DBcnx) {
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
+  $Settings = mysqli_fetch_assoc($Result);
+
   $Counter  = 0;
   $Content  = "<a href=\"?page=edit_program&ID=0\" class=\"btn btn-outline-secondary\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\" name=\"create_program\">Create New Program</a><br>";
   $Content .= "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
@@ -206,10 +236,19 @@ function ShowPrograms($DBcnx) {
   $Result = mysqli_query($DBcnx,"SELECT * FROM programs ORDER BY program_name");
   while ($RS = mysqli_fetch_assoc($Result)) {
     $Counter ++;
+    $Disabled = "";
+    if ($RS["ID"] == $Settings["active_program"]) {
+      $Disabled = "disabled";
+      $BtnColor = "btn-outline-danger";
+      $RS["program_name"] = "&#10003 " . $RS["program_name"];
+    } else {
+      $Disabled = "";
+      $BtnColor = "btn-danger";
+    }
     $Content .= "<div class=\"card\">";
     $Content .=   "<div class=\"card-body\">";
     $Content .=     "<p>" . $RS["program_name"] . "</p>";
-    $Content .=     "<p style=\"float: right;\"><a href=\"?page=delete_confirm&ID=" . $RS["ID"] . "\" class=\"btn btn-danger\" name=\"delete_program\" style=\"--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .75rem; --bs-btn-font-size: .75rem;\"><span>Delete</span></a>&nbsp;&nbsp;&nbsp;&nbsp;";
+    $Content .=     "<p style=\"float: right;\"><a href=\"?page=delete_confirm&ID=" . $RS["ID"] . "\" class=\"btn $BtnColor $Disabled\" name=\"delete_program\" style=\"--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .75rem; --bs-btn-font-size: .75rem;\"><span>Delete</span></a>&nbsp;&nbsp;&nbsp;&nbsp;";
     $Content .=     "<a href=\"?page=edit_program&ID=" . $RS["ID"] . "\" class=\"btn btn-primary\" name=\"edit_program\" style=\"--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .75rem; --bs-btn-font-size: .75rem;\"><span>Edit</span></a></p>";
     $Content .=   "</div>";
     $Content .= "</div>";
