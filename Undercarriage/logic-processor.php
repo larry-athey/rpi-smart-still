@@ -41,7 +41,7 @@ if (mysqli_num_rows($Result) > 0) {
       if ($Settings["speech_enabled"] == 1) SpeakMessage(9);
     }
     if ($Settings["speech_enabled"] == 1) {
-      sleep(3);
+      sleep(10);
       SpeakMessage(28);
     }
     sleep(120);
