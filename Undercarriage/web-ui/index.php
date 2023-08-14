@@ -10,7 +10,7 @@ require_once("html.php");
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Raspberry Pi Smart Still Controller</title>
+  <title>Raspberry Pi Smart Still Controller System</title>
   <meta http-equiv="cache-control" content="max-age=0">
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
