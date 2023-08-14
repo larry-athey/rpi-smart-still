@@ -15,6 +15,7 @@ if (mysqli_num_rows($Result) > 0) {
   exit;
 }
 
+// Read the three DS18B20 temperature sensors and update the settings table
 $Data = getOneWireTemp($Settings["boiler_addr"]);
 $BoilerTemp = $Data["C"];
 echo("Boiler: $BoilerTemp\n");
@@ -27,8 +28,10 @@ echo("Column: $ColumnTemp\n\n");
 
 $Update = mysqli_query($DBcnx,"UPDATE settings SET boiler_temp='$BoilerTemp',dephleg_temp='$DephlegTemp',column_temp='$ColumnTemp' WHERE ID=1");
 
+// Read any waiting serial data from the digital hydrometer
 $Hydrometer = str_replace("\r","",trim(shell_exec("/usr/share/rpi-smart-still/hydro-read")));
 
+// If we got a valid data block from the hydrometer, explode it and update the settings table
 if (($Hydrometer != "") && (mb_substr($Hydrometer,-1) == "#")) {
   $Hydrometer = trim(str_replace("#","",$Hydrometer));
   $Data = explode("\n",$Hydrometer);
@@ -53,6 +56,7 @@ if (($Hydrometer != "") && (mb_substr($Hydrometer,-1) == "#")) {
   }
 }
 
+// If we have an active run and a valid serial data block, create a record in the input_table every minute for the timeline graphs
 $Sec = date("s",time());
 if (($Settings["active_run"] ==  1) && ($Sec <= 10) && (count($Data) == 5)) {
   $Flow = 0;
