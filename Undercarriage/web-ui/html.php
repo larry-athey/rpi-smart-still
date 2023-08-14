@@ -144,8 +144,25 @@ function EditProgram($DBcnx,$ID) {
     $Result  = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=$ID");
     $Program = mysqli_fetch_assoc($Result);
   } else {
-    $Program["program_name"] = "";
+    $Program["program_name"] = "New Program";
     $Program["mode"] = 0;
+    $Program["distillate_abv"] = 0;
+    $Program["abv_managed"] = 0;
+    $Program["minimum_flow"] = 0;
+    $Program["flow_managed"] = 0;
+    $Program["dephleg_start"] = 0;
+    $Program["condenser_rate"] = 0;
+    $Program["boiler_managed"] = 0;
+    $Program["boiler_temp_low"] = 0;
+    $Program["boiler_temp_high"] = 0;
+    $Program["dephleg_managed"] = 0;
+    $Program["dephleg_temp_low"] = 0;
+    $Program["dephleg_temp_high"] = 0;
+    $Program["column_managed"] = 0;
+    $Program["column_temp_low"] = 0;
+    $Program["column_temp_high"] = 0;
+    $Program["heating_idle"] = 0;
+    $Program["notes"] = "";
   }
 
   $Content  = "<form id=\"edit_program\" method=\"post\" action=\"process.php\">";
