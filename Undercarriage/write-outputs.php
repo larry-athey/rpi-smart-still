@@ -89,10 +89,12 @@ while ($RS = mysqli_fetch_assoc($Result)) {
     // Control commands to pause and unpause a run
   } elseif ($RS["valve_id"] == 6) {
     // Control commands to reboot the hydrometer
+    shell_exec("/usr/share/rpi-smart-still/hydro-write !");
   } elseif ($RS["valve_id"] == 7) {
     // Control commands to recalibrate the hydrometer
+    shell_exec("/usr/share/rpi-smart-still/hydro-write #");
   } elseif ($RS["valve_id"] == 99) {
-    // Control commands to speak notifications alone
+    // Control commands to speak notifications with no other actions
     if ($Settings["speech_enabled"] == 1) {
       if ($RS["position"] == 1) {
         DebugMessage("Performing boiler heating stepper motor jump to " . $RS["duration"] . "%");
