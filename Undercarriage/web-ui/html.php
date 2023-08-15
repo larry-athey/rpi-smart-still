@@ -175,7 +175,7 @@ function EditProgram($DBcnx,$ID) {
   $Content .=       "<input type=\"text\" class=\"form-control\" id=\"ProgramName\" name=\"ProgramName\" maxlength=\"100\" value=\"" . $Program["program_name"] . "\">";
   $Content .=     "</div>";
   $Content .=     "<div style=\"margin-top: .5em;\">";
-  $Content .=       "<label for=\"ProgramName\" class=\"form-label\">Program Type</label>";
+  $Content .=       "<label for=\"ProgramType\" class=\"form-label\">Program Type</label>";
   $Content .=       ProgramTypeSelector($Program["mode"]);
   $Content .=     "</div>";
   $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
@@ -250,7 +250,7 @@ function EditProgram($DBcnx,$ID) {
   $Content .=         "<input type=\"number\" class=\"form-control\" id=\"DephlegTempLow\" name=\"DephlegTempLow\" min=\"0\" max=\"100\" step=\".1\" value=\"" . $Program["dephleg_temp_low"] . "\">";
   $Content .=       "</div>";
   $Content .=       "<div class=\"col\">";
-  $Content .=         "<label for=\"BoilerTempHigh\" class=\"form-label\">Boiler High (C)</label>";
+  $Content .=         "<label for=\"DephlegTempHigh\" class=\"form-label\">Dephleg High (C)</label>";
   $Content .=         "<input type=\"number\" class=\"form-control\" id=\"DephlegTempHigh\" name=\"DephlegTempHigh\" min=\"0\" max=\"100\" step=\".1\" value=\"" . $Program["dephleg_temp_high"] . "\">";
   $Content .=       "</div>";
   $Content .=     "</div>";
@@ -258,7 +258,7 @@ function EditProgram($DBcnx,$ID) {
   $Content .=       "<label for=\"Notes\" class=\"form-label\">Program Notes</label>";
   $Content .=       "<textarea class=\"form-control\" id=\"Notes\" name=\"Notes\" style=\"height: 150px;\">" . $Program["notes"] . "</textarea>";
   $Content .=     "</div>";
-  $Content .=     "<div style=\"margin-top: 1em; float: right;\"><a href=\"?page=programs\" class=\"btn btn-danger\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-primary\" name=\"save_program\">Save Program</button></div>";
+  $Content .=     "<div style=\"margin-top: 1em; float: right;\"><a href=\"?page=programs\" class=\"btn btn-danger\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-primary\" name=\"rss_save_program\">Save Program</button></div>";
   $Content .=   "</div>";
   $Content .= "</div>";
   $Content .= "</form>";
