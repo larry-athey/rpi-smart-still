@@ -101,7 +101,7 @@ if (mysqli_num_rows($Result) > 0) {
         // Check boiler temperature every 60 seconds
         if (time() - strtotime($Logic["boiler_timer"]) >= 60) {
           $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_timer=now() WHERE ID=1");
-          // Boilers are slow to reflect temperature changes due to the themal mass of their contents
+          // Boilers are super slow to reflect temperature changes due to the thermal mass of their contents
           // Therefore, we only check every 10 minutes to see the result of the last adjustment
           if (time() - strtotime($Logic["boiler_last_adjustment"]) >= 600) {
             if ($Settings["boiler_temp"] < $Program["boiler_temp_low"]) {
@@ -176,15 +176,16 @@ if (mysqli_num_rows($Result) > 0) {
           // Don't bother managing any dephleg or ABV stuff until the column is up to temperature
           if ($Settings["column_temp"] >= $Program["column_temp_low"]) {
             if ($Settings["speech_enabled"] == 1) SpeakMessage(16);
-            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET columntime=now(),column_done='1',column_last_adjustment=now()," .
+            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_timer=now(),column_done='1',column_last_adjustment=now()," .
                                           "column_note='Column has reached minimum operating temperature' WHERE ID=1");
           }
         } else {
           // Check column temperature every 30 seconds
           if (time() - strtotime($Logic["column_timer"]) >= 30) {
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_timer=now() WHERE ID=1");
-            // Adjustments are given 2 minutes to take full effect before another
-            if (time() - strtotime($Logic["column_last_adjustment"]) >= 120) {
+            // Adjustments are given 5 minutes to take full effect before another
+            // The column is slower to react to adjustments than the dephleg sensor
+            if (time() - strtotime($Logic["column_last_adjustment"]) >= 300) {
               if ($Settings["column_temp"] < $Program["column_temp_low"]) {
                 if ($Settings["heating_enabled"] == 1) {
                   // Increase boiler power to the next higher step
@@ -323,7 +324,7 @@ if (mysqli_num_rows($Result) > 0) {
       } // $Program["dephleg_managed"] == 1 check
       /***** DISTILLATE MINIMUM ABV MANAGEMENT ROUTINES *****/
       if ($Program["abv_managed"] == 1) {
-        if ($Program["mode == 0"]) {
+        if ($Program["mode"] == 0) {
           // In pot still mode, we stop the run when we hit the minimum ABV
         } else {
           // In reflux mode, we dynamically adjust the program's column upper and lower temperature limits
