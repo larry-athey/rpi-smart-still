@@ -14,8 +14,8 @@ if (isset($_GET["active_run"])) {
     $Update = mysqli_query($DBcnx,"TRUNCATE output_table");
     $Update = mysqli_query($DBcnx,"TRUNCATE logic_tracker");
     $Update = mysqli_query($DBcnx,"UPDATE settings SET active_run='1',run_start=now(),run_end=NULL WHERE ID=1");
-    $Insert = mysqli_query($DBcnx,"INSERT INTO logic_tracker (run_start,boiler_done,boiler_last_adjustment,boiler_note) " .
-                                  "VALUES (1,0,now(),'Waiting for the boiler to reach its minimum temperature')");
+    $Insert = mysqli_query($DBcnx,"INSERT INTO logic_tracker (run_start,boiler_done,boiler_last_adjustment,boiler_note,hydrometer_started) " .
+                                  "VALUES (1,0,now(),'Waiting for the boiler to reach its minimum temperature',0)");
     if ($Program["dephleg_managed"] == 1) {
       $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_done='0',dephleg_last_adjustment=now(),dephleg_note='Waiting for the dephleg sensor to reach its minimum temperature' WHERE ID=1");
     } else {
