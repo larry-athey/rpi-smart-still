@@ -116,8 +116,8 @@ function PosToPct($Total,$Position) {
 }
 //---------------------------------------------------------------------------------------------------
 function ProgramTypeSelector($Selected) {
-  $PType[] = "Pot Still Mode";
-  $PType[] = "Reflux Mode";
+  $PType[] = "Pot Still Mode (No Dephleg Management)";
+  $PType[] = "Reflux Mode (No Column Management)";
   $Content = "<select style=\"width: 100%;margin-bottom: 0.5em;\" size=\"1\" class=\"form-control form-select\" id=\"ProgramType\" name=\"ProgramType\" onChange=\"ToggleInputFields(this)\">";
   for ($x = 0; $x <= 1; $x ++) {
     if ($x == $Selected) {
@@ -137,6 +137,21 @@ function SecsToTime($Seconds) {
   $Tmp = explode(":",$Out);
   if (strlen($Tmp[1]) == 1) $Tmp[1] = "0" . $Tmp[1];
   return $Tmp[0] . ":" . $Tmp[1];
+}
+//---------------------------------------------------------------------------------------------------
+function YNSelector($Selected,$ID) {
+  if ($Selected == 0) {
+    $S0 = "selected";
+    $S1 = "";
+  } else {
+    $S0 = "";
+    $S1 = "selected";
+  }
+  $Content  = "<select style=\"width: 100%;\" size=\"1\" class=\"form-control form-select\" id=\"$ID\" name=\"$ID\" aria-describedby=\"$ID" . "Help\">";
+  $Content .= "<option $S1 value=\"1\">Yes</option>";
+  $Content .= "<option $S0 value=\"0\">No</option>";
+  $Content .= "</select>";
+  return $Content;
 }
 //---------------------------------------------------------------------------------------------------
 ?>
