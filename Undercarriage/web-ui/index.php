@@ -26,10 +26,16 @@ require_once("html.php");
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <link rel="icon" href="favicon.ico?v=1.1">
   <script type="text/javascript">
+    //---------------------------------------------------------------------------------------------------
     $(function() {
       $("#rssFG").addClass("text-purple");
       $("#rssBG").addClass("bg-purple");
     });
+    //---------------------------------------------------------------------------------------------------
+    window.onload = function() {
+      ToggleInputFields(document.getElementById('ProgramType'));
+    }
+    //---------------------------------------------------------------------------------------------------
   </script>
   <style>
     .text-magenta {
