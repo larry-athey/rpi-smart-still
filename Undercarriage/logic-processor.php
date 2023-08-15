@@ -324,10 +324,19 @@ if (mysqli_num_rows($Result) > 0) {
       } // $Program["dephleg_managed"] == 1 check
       /***** DISTILLATE MINIMUM ABV MANAGEMENT ROUTINES *****/
       if ($Program["abv_managed"] == 1) {
-        if ($Program["mode"] == 0) {
-          // In pot still mode, we stop the run when we hit the minimum ABV
+        if ($Logic["hydrometer_started"] == 0) {
+          if ($Settings["distillate_abv"] > 0) $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_started='1' WHERE ID=1");
         } else {
-          // In reflux mode, we dynamically adjust the program's column upper and lower temperature limits
+          if ($Program["mode"] == 0) {
+            // In pot still mode, we stop the run when we hit the minimum ABV
+            if ($Settings["distillate_abv"] <= $Program["distillate_abv"]) {
+              if ($Settings["speech_enabled"] == 1) SpeakMessage(31);
+              $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET run_start='2' WHERE ID=1");
+              $Update = mysqli_query($DBcnx,"UPDATE settings SET active_run='0',run_end=now() WHERE ID=1");
+            }
+          } else {
+            // In reflux mode, we dynamically adjust the program's column upper and lower temperature limits
+          }
         }
       }
       /***** DISTILLATE MINIMUM FLOW RATE MANAGEMENT ROUTINES *****/
