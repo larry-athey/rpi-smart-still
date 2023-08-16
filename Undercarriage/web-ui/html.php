@@ -308,7 +308,7 @@ function ServoPositionEditor($DBcnx) {
   $Content .= "<input type=\"number\" class=\"form-control\" id=\"Valve1\" name=\"Valve1\" min=\"0\" max=\"100\" step=\".1\" value=\"" . PosToPct($Settings["valve1_total"],$Settings["valve1_position"]) . "\">";
   $Content .= "<label for=\"Heating\" class=\"form-label\" style=\"margin-top: .5em;\">Heating Stepper Position [0.." . $Settings["heating_total"] . "]</label>";
   $Content .= "<input type=\"number\" class=\"form-control\" id=\"Heating\" name=\"Heating\" min=\"0\" max=\"" . $Settings["heating_total"] . "\" step=\"1\" value=\"" . $Settings["heating_position"] . "\">";
-  $Content .= "<button type=\"submit\" class=\"btn btn-primary\" name=\"rss_edit_servos\" style=\"margin-top: 1em; float: right;\">Submit</button>";
+  $Content .= "<div style=\"margin-top: 1em; float: right;\"><a href=\"index.php\" class=\"btn btn-danger\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-primary\" name=\"rss_edit_servos\">Submit</button></div>";
   $Content .= "</form>";
   return $Content;
 }
