@@ -89,10 +89,14 @@ while ($RS = mysqli_fetch_assoc($Result)) {
     // Control commands to pause and unpause a run
   } elseif ($RS["valve_id"] == 6) {
     // Control commands to reboot the hydrometer
+    if ($RS["muted"] == 0) SpeakMessage(33);
     shell_exec("/usr/share/rpi-smart-still/hydro-write !");
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 7) {
     // Control commands to recalibrate the hydrometer
-    shell_exec("/usr/share/rpi-smart-still/hydro-write #");
+    if ($RS["muted"] == 0) SpeakMessage(32);
+    shell_exec("/usr/share/rpi-smart-still/hydro-write \#");
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 99) {
     // Control commands to speak notifications with no other actions
     if ($Settings["speech_enabled"] == 1) {
