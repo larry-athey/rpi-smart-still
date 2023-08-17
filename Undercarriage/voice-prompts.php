@@ -33,7 +33,7 @@ function SpeakMessage($ID) {
   $Msg[14]  = "Boiler is under temperature. Please increase your heat a notch or two";
   $Msg[15]  = "Boiler is over temperature. Please decrease your heat a notch or two";
   $Msg[16]  = "Column has reached minimum operating temperature";
-  $Msg[17]  = "Dephleg has reached minimum operating temperature";
+  $Msg[17]  = "Dephlegmator has reached minimum operating temperature";
   $Msg[18]  = "Column is under temperature. Please increase your heat a notch or two";
   $Msg[19]  = "Column is over temperature. Please decrease your heat a notch or two";
   $Msg[20]  = "Column is under temperature. Increasing heat to " . $Settings["heating_position"] . " steps";
@@ -48,6 +48,8 @@ function SpeakMessage($ID) {
   $Msg[29]  = "Setting the cooling valves to their starting positions according to the current program";
   $Msg[30]  = "Manual adjustment of heating stepper motor to " . $Settings["heating_position"] . " steps";
   $Msg[31]  = "Pot still mode minimum ABV has been reached";
+  $Msg[32]  = "Sending the command to recalibrate the hydrometer to zero ABV reference";
+  $Msg[33]  = "Sending the command to reboot the hydrometer";
 
   shell_exec("/usr/bin/espeak -v english-us -s 160 \"$Msg[$ID]\" 2> /dev/null &");
   mysqli_close($DBcnx);
