@@ -47,6 +47,7 @@ function SpeakMessage($ID) {
   $Msg[28]  = "Turning off the cooling valves in 2 minutes";
   $Msg[29]  = "Setting the cooling valves to their starting positions according to the current program";
   $Msg[30]  = "Manual adjustment of heating stepper motor to " . $Settings["heating_position"] . " steps";
+  $Msg[31]  = "Pot still mode minimum ABV has been reached";
 
   shell_exec("/usr/bin/espeak -v english-us -s 160 \"$Msg[$ID]\" 2> /dev/null &");
   mysqli_close($DBcnx);
