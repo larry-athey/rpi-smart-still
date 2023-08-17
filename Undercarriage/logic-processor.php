@@ -237,7 +237,7 @@ if (mysqli_num_rows($Result) > 0) {
                 // Update the user interface status message with a current time stamp
                 $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_last_adjustment=now(),column_note='Column temperature is within the program\'s operating range' WHERE ID=1");
               } // $Settings["column_temp"] vs $Program["column_temp_low/high"] checks
-            } // $Logic["column_last_adjustment"]) >= 120 check
+            } // $Logic["column_last_adjustment"]) >= 300 check
           } // $Logic["column_timer"]) >= 30 check
         } // $Logic["column_done"] == 0 check
       } // $Program["column_managed"] == 1 check
