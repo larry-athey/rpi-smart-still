@@ -103,11 +103,13 @@ if (! isset($_GET["page"])) {
   } elseif ($_GET["page"] == "edit_servos") {
     $Content .= DrawCard($DBcnx,"edit_servos",false);
   } elseif ($_GET["page"] == "heating") {
-
+    $Content .= EditHeating($DBcnx);
   } elseif ($_GET["page"] == "hydrometer") {
-
+    $Content .= CalibrateHydrometer($DBcnx);
   } elseif ($_GET["page"] == "programs") {
     $Content = ShowPrograms($DBcnx);
+  } elseif ($_GET["page"] == "sensors") {
+    $Content .= EditSensors($DBcnx);
   } elseif ($_GET["page"] == "start_run") {
     $Content .= DrawCard($DBcnx,"start_run",false);
   } elseif ($_GET["page"] == "stop_run") {
