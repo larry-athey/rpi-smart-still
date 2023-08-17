@@ -339,6 +339,7 @@ if (mysqli_num_rows($Result) > 0) {
             }
           } else {
             // In reflux mode, we dynamically adjust the program's dephleg upper and lower temperature limits
+            // Remember, you can only adjust the ABV up, you can't adjust it down without adding water to it
           }
         }
       }
