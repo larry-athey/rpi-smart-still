@@ -2,6 +2,19 @@
 //---------------------------------------------------------------------------------------------------
 require_once("subs.php");
 //---------------------------------------------------------------------------------------------------
+function CalibrateHydrometer($DBcnx) {
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
+  $Settings = mysqli_fetch_assoc($Result);
+
+  $RandID   = "card_" . generateRandomString();
+  $Content  = "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\">";
+  $Content .=   "<div class=\"card-body\">";
+
+  $Content .=   "</div>";
+  $Content .= "</div>";
+  return $Content;
+}
+//---------------------------------------------------------------------------------------------------
 function DrawCard($DBcnx,$Body,$DoAjax) {
   $RandID   = "card_" . generateRandomString();
   $Content  = "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
@@ -139,13 +152,27 @@ function DrawMenu($DBcnx) {
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
+function EditHeating($DBcnx) {
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
+  $Settings = mysqli_fetch_assoc($Result);
+
+  $Content  = "<form id=\"edit_heating\" method=\"post\" action=\"process.php\">";
+  $Content .= "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
+  $Content .=   "<div class=\"card-body\">";
+
+  $Content .=   "</div>";
+  $Content .= "</div>";
+  $Content .= "</form>";
+  return $Content;
+}
+//---------------------------------------------------------------------------------------------------
 function EditProgram($DBcnx,$ID) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
   if ($ID > 0) {
     $Result  = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=$ID");
     $Program = mysqli_fetch_assoc($Result);
-    } else {
+  } else {
     $Program["program_name"] = "New Program";
     $Program["mode"] = 0;
     $Program["distillate_abv"] = 0;
@@ -259,6 +286,20 @@ function EditProgram($DBcnx,$ID) {
   $Content .=       "<textarea class=\"form-control\" id=\"Notes\" name=\"Notes\" style=\"height: 150px;\">" . $Program["notes"] . "</textarea>";
   $Content .=     "</div>";
   $Content .=     "<div style=\"margin-top: 1em; float: right;\"><a href=\"?page=programs\" class=\"btn btn-danger\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-primary\" name=\"rss_save_program\">Save Program</button></div>";
+  $Content .=   "</div>";
+  $Content .= "</div>";
+  $Content .= "</form>";
+  return $Content;
+}
+//---------------------------------------------------------------------------------------------------
+function EditSensors($DBcnx) {
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
+  $Settings = mysqli_fetch_assoc($Result);
+
+  $Content  = "<form id=\"edit_sensors\" method=\"post\" action=\"process.php\">";
+  $Content .= "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
+  $Content .=   "<div class=\"card-body\">";
+
   $Content .=   "</div>";
   $Content .= "</div>";
   $Content .= "</form>";
