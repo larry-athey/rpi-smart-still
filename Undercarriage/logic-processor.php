@@ -102,7 +102,7 @@ if (mysqli_num_rows($Result) > 0) {
       /***** BOILER TEMPERATURE MANAGEMENT ROUTINES *****/
       if ($Program["boiler_managed"] == 1) {
         // Check boiler temperature every 60 seconds
-        if (time() - strtotime($Logic["boiler_timer"]) >= 60) {
+        if (time() - strtotime($Logic["boiler_timer"]) >= 30) { // Primary timer "just in case"
           $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_timer=now() WHERE ID=1");
           // Boilers are super slow to reflect temperature changes due to the thermal mass of their contents
           // Therefore, we only check every 10 minutes to see the result of the last adjustment
@@ -171,7 +171,7 @@ if (mysqli_num_rows($Result) > 0) {
               $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now(),boiler_note='Boiler temperature is within the program\'s operating range' WHERE ID=1");
             } // $Settings["boiler_temp"] vs $Program["boiler_temp_low/high"] checks
           } // $Logic["boiler_last_adjustment"]) >= 600 check
-        } //$Logic["boiler_timer"] >= 60 check
+        } //$Logic["boiler_timer"] >= 30 check
       } // $Program["boiler_managed"] == 1 check
       /***** COLUMN TEMPERATURE MANAGEMENT ROUTINES *****/
       if ($Program["column_managed"] == 1) {
@@ -184,7 +184,7 @@ if (mysqli_num_rows($Result) > 0) {
           }
         } else {
           // Check column temperature every 30 seconds
-          if (time() - strtotime($Logic["column_timer"]) >= 30) {
+          if (time() - strtotime($Logic["column_timer"]) >= 30) { // Primary timer "just in case"
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_timer=now() WHERE ID=1");
             // Adjustments are given 5 minutes to take full effect before another
             // The column is slower to react to adjustments than the dephleg sensor
@@ -251,7 +251,7 @@ if (mysqli_num_rows($Result) > 0) {
           }
         } else {
           // Check dephleg temperature every 30 seconds
-          if (time() - strtotime($Logic["dephleg_timer"]) >= 30) {
+          if (time() - strtotime($Logic["dephleg_timer"]) >= 30) { // Primary timer "just in case"
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_timer=now() WHERE ID=1");
             // Adjustments are given 2 minutes to take full effect before another
             if (time() - strtotime($Logic["dephleg_last_adjustment"]) >= 120) {
