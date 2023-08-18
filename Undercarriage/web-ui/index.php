@@ -32,10 +32,23 @@ require_once("html.php");
       $("#rssBG").addClass("bg-purple");
     });
     //---------------------------------------------------------------------------------------------------
+<?php if ($_GET["page"] == "edit_program") { ?>
     window.onload = function() {
       ToggleInputFields(document.getElementById('ProgramType'));
     }
     //---------------------------------------------------------------------------------------------------
+    function ToggleInputFields(RunType) {
+      var Value = RunType.options[RunType.selectedIndex].value;
+      if (Value == 0) {
+        DephlegDiv.style.display  = 'none';
+        ColumnDiv.style.display   = 'inline';
+      } else {
+        DephlegDiv.style.display  = 'inline';
+        ColumnDiv.style.display   = 'none';
+      }
+    }
+    //---------------------------------------------------------------------------------------------------
+<?php } ?>
   </script>
   <style>
     .text-magenta {
