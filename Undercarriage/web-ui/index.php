@@ -37,8 +37,8 @@ require_once("html.php");
       ToggleInputFields(document.getElementById('ProgramType'));
     }
     //---------------------------------------------------------------------------------------------------
-    function ToggleInputFields(RunType) {
-      var Value = RunType.options[RunType.selectedIndex].value;
+    function ToggleInputFields(ProgramType) {
+      var Value = ProgramType.options[ProgramType.selectedIndex].value;
       if (Value == 0) {
         DephlegDiv.style.display  = 'none';
         ColumnDiv.style.display   = 'inline';
