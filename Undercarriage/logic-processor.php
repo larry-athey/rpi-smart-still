@@ -78,7 +78,7 @@ if (mysqli_num_rows($Result) > 0) {
           sleep(10);
           SpeakMessage(29);
         }
-        // Open the condenser valve to its starting position
+        // Open the condenser valve to its programed position
         $Update = mysqli_query($DBcnx,"UPDATE settings SET valve1_position='" . round($Program["condenser_rate"] * $Settings["valve1_pulse"],0,PHP_ROUND_HALF_UP) . "' WHERE ID=1");
         // Open to 100% and pull down to the setting to evacuate any air in its water lines
         $Duration = $Settings["valve1_total"] - round($Program["condenser_rate"] * $Settings["valve1_pulse"],0,PHP_ROUND_HALF_UP);
