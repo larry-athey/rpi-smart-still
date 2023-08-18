@@ -369,8 +369,8 @@ function ShowPrograms($DBcnx) {
   $Settings = mysqli_fetch_assoc($Result);
 
   $Counter  = 0;
-  $Content  = "<a href=\"?page=edit_program&ID=0\" class=\"btn btn-outline-secondary\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\" name=\"create_program\">Create New Program</a><br>";
-  $Content .= "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
+  $Content  = "<a href=\"?page=edit_program&ID=0\" class=\"btn btn-outline-secondary\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\" name=\"create_program\">Create New Program</a><br>";
+  $Content .= "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
 
   $Result = mysqli_query($DBcnx,"SELECT * FROM programs ORDER BY program_name");
