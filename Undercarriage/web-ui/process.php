@@ -80,6 +80,20 @@ elseif (isset($_GET["heat_jump"])) {
   }
 }
 //---------------------------------------------------------------------------------------------------
+elseif (isset($_GET["reboot_hydro"])) {
+  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','6','0','0')");
+  mysqli_close($DBcnx);
+  header("Location: index.php?page=hydrometer");
+  exit;
+}
+//---------------------------------------------------------------------------------------------------
+elseif (isset($_GET["recalibrate_hydro"])) {
+  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','7','0','0')");
+  mysqli_close($DBcnx);
+  header("Location: index.php?page=hydrometer");
+  exit;
+}
+//---------------------------------------------------------------------------------------------------
 elseif (isset($_POST["rss_edit_servos"])) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
