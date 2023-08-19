@@ -180,7 +180,7 @@ if (mysqli_num_rows($Result) > 0) {
           if ($Settings["column_temp"] >= $Program["column_temp_low"]) {
             if ($Settings["speech_enabled"] == 1) SpeakMessage(16);
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_timer=now(),column_done='1',column_last_adjustment=now()," .
-                                          "column_note='Column has reached minimum operating temperature' WHERE ID=1");
+                                          "column_note='Column has reached minimum operating temperature',hydrometer_timer=now(),hydrometer_temp_errors='0' WHERE ID=1");
           }
         } else {
           // Check column temperature every 30 seconds
@@ -247,7 +247,7 @@ if (mysqli_num_rows($Result) > 0) {
           if ($Settings["dephleg_temp"] >= $Program["dephleg_temp_low"]) {
             if ($Settings["speech_enabled"] == 1) SpeakMessage(17);
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_timer=now(),dephleg_done='1',dephleg_last_adjustment=now()," .
-                                          "dephleg_note='Dephleg has reached minimum operating temperature' WHERE ID=1");
+                                          "dephleg_note='Dephleg has reached minimum operating temperature',hydrometer_timer=now(),hydrometer_temp_errors='0' WHERE ID=1");
           }
         } else {
           // Check dephleg temperature every 30 seconds
@@ -346,6 +346,22 @@ if (mysqli_num_rows($Result) > 0) {
       /***** DISTILLATE MINIMUM FLOW RATE MANAGEMENT ROUTINES *****/
       if ($Program["flow_managed"] == 1) {
 
+      }
+      /***** DISTILLATE TEMPERATURE SAFETY MANAGEMENT ROUTINES *****/
+      if (($Logic["column_done"] == 1) || ($Logic["column_done"] == 1)) {
+        // Check the distillate temperature every 10 minutes after column or dephleg are up to temperature
+        if (time() - strtotime($Logic["hydrometer_timer"]) >= 600) {
+          // If distillate is over 24C/75F, increment the $Logic["hydrometer_temp_error"] counter
+          if ($Settings["distillate_temp"] > 24) {
+
+          } else {
+
+          }
+          // If $Logic["hydrometer_temp_error"] has 3 errors, increase the condenser cooling flow 10%
+          if ($Logic["hydrometer_temp_error"] == 3) {
+
+          }
+        }
       }
     }
   }
