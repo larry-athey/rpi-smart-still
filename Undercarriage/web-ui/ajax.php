@@ -12,6 +12,8 @@ if ($_GET["ID"] == "hydrometer") {
   $Content = ShowProgramTemps($DBcnx);
 } elseif ($_GET["ID"] == "show_sensors") {
   $Content = ShowSensors($DBcnx);
+} elseif ($_GET["ID"] == "show_serial") {
+  $Content = ShowSerialData($DBcnx);
 } elseif ($_GET["ID"] == "temperatures") {
   $Content = ShowTemperatures($DBcnx);
 } elseif ($_GET["ID"] == "valve_positions") {
