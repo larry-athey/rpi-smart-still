@@ -10,6 +10,8 @@ if ($_GET["ID"] == "hydrometer") {
   $Content = LogicTracker($DBcnx);
 } elseif ($_GET["ID"] == "program_temps") {
   $Content = ShowProgramTemps($DBcnx);
+} elseif ($_GET["ID"] == "show_sensors") {
+  $Content = ShowSensors($DBcnx);
 } elseif ($_GET["ID"] == "temperatures") {
   $Content = ShowTemperatures($DBcnx);
 } elseif ($_GET["ID"] == "valve_positions") {
