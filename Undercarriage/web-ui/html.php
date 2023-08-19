@@ -6,12 +6,14 @@ function CalibrateHydrometer($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
 
-  $RandID   = "card_" . generateRandomString();
   $Content  = "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
+  $Content .=   "<p>If you are starting a new run, it is suggested that you Reboot the hydrometer since barrometric pressure can affect a load cell's current calibration.</p>" .
+                "<p>Do not use the Calibrate button if there is any distillate in the parrot cup, only use this to clear load cell drift before any output begins.</p>";
 
   $Content .=   "</div>";
   $Content .= "</div>";
+  $Content .= "<div>" . DrawCard($DBcnx,"show_serial",true) . "<div>";
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
@@ -29,6 +31,8 @@ function DrawCard($DBcnx,$Body,$DoAjax) {
     $Content .= ServoPositionEditor($DBcnx);
   } elseif ($Body == "show_sensors") {
     $Content .= ShowSensors($DBcnx);
+  } elseif ($Body == "show_serial") {
+    $Content .= ShowSerialData($DBcnx);
   } elseif ($Body == "temperatures") {
     $Content .= ShowTemperatures($DBcnx);
   } elseif ($Body == "valve_positions") {
@@ -450,6 +454,15 @@ function ShowSensors($DBcnx) {
     $Content .= "<tr><td>No DS18B20 temperature sensors found</td></tr>";
   }
   $Content .= "</table>";
+  return $Content;
+}
+//---------------------------------------------------------------------------------------------------
+function ShowSerialData($DBcnx) {
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
+  $Settings = mysqli_fetch_assoc($Result);
+
+  $Settings["serial_data"] = nl2br(trim($Settings["serial_data"]));
+  $Content = "<div style=\"font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;\">" . $Settings["serial_data"] . "</div>";
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
