@@ -58,6 +58,8 @@ CREATE TABLE `logic_tracker` (
   `column_last_adjustment` timestamp NULL DEFAULT NULL,
   `column_note` varchar(255) DEFAULT NULL,
   `hydrometer_started` tinyint(4) DEFAULT NULL,
+  `hydrometer_timer` timestamp NULL DEFAULT NULL,
+  `hydrometer_temp_errors` tinyint(4) DEFAULT NULL,
   `flow_last_check` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
