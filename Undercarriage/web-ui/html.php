@@ -437,8 +437,7 @@ function ServoPositionEditor($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
 
-  $Content  = "<p style=\"font-weight: bold;\">Servo Position Editor:</p>";
-  $Content .= "<form id=\"servo_editor\" method=\"post\" action=\"process.php\">";
+  $Content  = "<form id=\"servo_editor\" method=\"post\" action=\"process.php\">";
   $Content .= "<label for=\"Valve2\" class=\"form-label\">Dephleg Cooling Valve %</label>";
   $Content .= "<input type=\"number\" class=\"form-control\" id=\"Valve2\" name=\"Valve2\" min=\"0\" max=\"100\" step=\".1\" value=\"" . PosToPct($Settings["valve2_total"],$Settings["valve2_position"]) . "\">";
   $Content .= "<label for=\"Valve1\" class=\"form-label\" style=\"margin-top: .5em;\">Condenser Cooling Valve %</label>";
