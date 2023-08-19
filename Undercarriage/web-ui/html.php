@@ -12,7 +12,7 @@ function CalibrateHydrometer($DBcnx) {
   $Content .=     "<p>Do not use the calibrate function if there is any distillate in the parrot cup, only use this to clear load cell drift before any output begins.</p>";
   $Content .=     "<div class=\"row\">";
   $Content .=       "<div class=\"col\"><a href=\"process.php?reboot_hydro=1\" class=\"btn btn-primary\" name=\"cancel_action\">Reboot Hydrometer</a></div>";
-  $Content .=       "<div class=\"col\"><a href=\"process.php?recalibrate_hydro=1\" class=\"btn btn-primary\" name=\"cancel_action\">Recalibrate Load Cell</a></div>";
+  $Content .=       "<div class=\"col\"><a style=\"float: right;\" href=\"process.php?recalibrate_hydro=1\" class=\"btn btn-primary\" name=\"cancel_action\">Recalibrate Load Cell</a></div>";
   $Content .=     "</div>";
   $Content .=   "</div>";
   $Content .= "</div>";
@@ -465,7 +465,7 @@ function ShowSerialData($DBcnx) {
   $Settings = mysqli_fetch_assoc($Result);
 
   $Settings["serial_data"] = nl2br(trim($Settings["serial_data"]));
-  $Content = "<div style=\"font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;\">" . $Settings["serial_data"] . "</div>";
+  $Content = "<div style=\"margin-left: 0.75em; font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;\">" . $Settings["serial_data"] . "</div>";
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
