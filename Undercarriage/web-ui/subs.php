@@ -145,6 +145,25 @@ function SecsToTime($Seconds) {
   return $Tmp[0] . ":" . $Tmp[1];
 }
 //---------------------------------------------------------------------------------------------------
+function SensorSelector($Selected,$ID) {
+  $Sensors = getSensorList();
+  if (count($Sensors) > 0) {
+    $Content  = "<select style=\"width: 100%;\" size=\"1\" class=\"form-control form-select\" id=\"$ID\" name=\"$ID\" aria-describedby=\"$ID" . "Help\">";
+    for ($x = 0; $x <= (count($Sensors) - 1); $x++) {
+      if ($Selected == $Sensors[$x]) {
+        $OptionSelected = " selected";
+      } else {
+        $OptionSelected = "";
+      }
+      $Content .= "<option value=\"$Sensors[$x]\"$OptionSelected>$Sensors[$x]</option>";
+    }
+    $Content .= "</select>";
+  } else {
+    $Content = "No DS18B20 temperature sensors found";
+  }
+  return $Content;
+}
+//---------------------------------------------------------------------------------------------------
 function YNSelector($Selected,$ID) {
   if ($Selected == 0) {
     $S0 = "selected";
