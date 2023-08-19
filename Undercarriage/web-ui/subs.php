@@ -111,6 +111,12 @@ function getOneWireTemp($Address) {
   return $Data;
 }
 //---------------------------------------------------------------------------------------------------
+function getSensorList() {
+  $Files = array_diff(scandir("/sys/bus/w1/devices/"),array('.','..','w1_bus_master1'));
+  $Files = array_values($Files);
+  return $Files;
+}
+//---------------------------------------------------------------------------------------------------
 function PosToPct($Total,$Position) {
   return round($Position / $Total * 100,1);
 }
