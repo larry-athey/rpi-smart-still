@@ -350,7 +350,7 @@ if (mysqli_num_rows($Result) > 0) {
       /***** DISTILLATE TEMPERATURE SAFETY MANAGEMENT ROUTINES *****/
       if (($Logic["column_done"] == 1) || ($Logic["column_done"] == 1)) {
         // Check the distillate temperature every 10 minutes after column or dephleg are up to temperature
-        if (time() - strtotime($Logic["hydrometer_timer"]) >= 600) {
+        if ((time() - strtotime($Logic["hydrometer_timer"]) >= 600) && ($Settings["distillate_abv"] > 0)) {
           // If distillate is over 24C/75F, increment the $Logic["hydrometer_temp_error"] counter
           if ($Settings["distillate_temp"] > 24) {
             $Logic["hydrometer_temp_error"] ++;
