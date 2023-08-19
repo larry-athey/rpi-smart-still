@@ -353,13 +353,25 @@ if (mysqli_num_rows($Result) > 0) {
         if (time() - strtotime($Logic["hydrometer_timer"]) >= 600) {
           // If distillate is over 24C/75F, increment the $Logic["hydrometer_temp_error"] counter
           if ($Settings["distillate_temp"] > 24) {
-
+            $Logic["hydrometer_temp_error"] ++;
+            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_temp_error='" . $Logic["hydrometer_temp_error"] . "' WHERE ID=1");
           } else {
-
+            $Logic["hydrometer_temp_error"] = 0;
+            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_temp_error='0' WHERE ID=1");
           }
           // If $Logic["hydrometer_temp_error"] has 3 errors, increase the condenser cooling flow 10%
           if ($Logic["hydrometer_temp_error"] == 3) {
-
+            if ($Settings["speech_enabled"] == 1) SpeakMessage(34);
+            $Difference = round($Settings["valve1_total"] * 0.1);
+            if ($Settings["valve1_position"] + $Difference > $Settings["valve1_total"]) {
+              $NewPosition = $Settings["valve1_position"] + $Difference;
+            } else {
+              $NewPosition = $Settings["valve1_total"];
+            }
+            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_temp_error='0' WHERE ID=1");
+            $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$NewPosition' WHERE ID=1");
+            $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                          "VALUES (now(),'0','1','1','$Difference','$NewPosition','1','0')");
           }
         }
       }
