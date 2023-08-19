@@ -48,7 +48,7 @@ function SpeakMessage($ID) {
   $Msg[29]  = "Setting the cooling valves to their starting positions according to the current program";
   $Msg[30]  = "Manual adjustment of heating stepper motor to " . $Settings["heating_position"] . " steps";
   $Msg[31]  = "Pot still mode minimum ABV has been reached";
-  $Msg[32]  = "Sending the command to recalibrate the hydrometer to zero ABV reference";
+  $Msg[32]  = "Sending the command to recalibrate the hydrometer load cell";
   $Msg[33]  = "Sending the command to reboot the hydrometer";
 
   shell_exec("/usr/bin/espeak -v english-us -s 160 \"$Msg[$ID]\" 2> /dev/null &");
