@@ -305,7 +305,19 @@ function EditSensors($DBcnx) {
   $Content  = "<form id=\"edit_sensors\" method=\"post\" action=\"process.php\">";
   $Content .= "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
-
+  $Content .=     "<div style=\"margin-top: .5em;\">";
+  $Content .=       "<label for=\"DephlegAddr\" class=\"form-label\">Dephleg Sensor Address</label>";
+  $Content .=       SensorSelector($Settings["dephleg_addr"],"DephlegAddr");
+  $Content .=     "</div>";
+  $Content .=     "<div style=\"margin-top: .5em;\">";
+  $Content .=       "<label for=\"ColumnAddr\" class=\"form-label\">Column Sensor Address</label>";
+  $Content .=       SensorSelector($Settings["column_addr"],"ColumnAddr");
+  $Content .=     "</div>";
+  $Content .=     "<div style=\"margin-top: .5em;\">";
+  $Content .=       "<label for=\"BoilerAddr\" class=\"form-label\">Boiler Sensor Address</label>";
+  $Content .=       SensorSelector($Settings["boiler_addr"],"BoilerAddr");
+  $Content .=     "</div>";
+  $Content .=     "<div style=\"margin-top: 1em; float: right;\"><a href=\"index.php\" class=\"btn btn-danger\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-primary\" name=\"rss_edit_sensors\">Submit</button></div>";
   $Content .=   "</div>";
   $Content .= "</div>";
   $Content .= "</form>";
