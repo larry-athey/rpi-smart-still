@@ -27,6 +27,8 @@ function DrawCard($DBcnx,$Body,$DoAjax) {
     $Content .= ShowProgramTemps($DBcnx);
   } elseif ($Body == "edit_servos") {
     $Content .= ServoPositionEditor($DBcnx);
+  } elseif ($Body == "show_sensors") {
+    $Content .= ShowSensors($DBcnx);
   } elseif ($Body == "temperatures") {
     $Content .= ShowTemperatures($DBcnx);
   } elseif ($Body == "valve_positions") {
@@ -46,9 +48,9 @@ function DrawLogicTracker($DBcnx) {
   $RandID   = "card_" . generateRandomString();
   $Content  = "<div class=\"card\" style=\"width: 98.5%; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
-  $Content .= AjaxRefreshJS("logic_tracker",$RandID);
+  $Content .=     AjaxRefreshJS("logic_tracker",$RandID);
   $Content .=     "<div id=\"$RandID\">";
-  $Content .= LogicTracker($DBcnx);
+  $Content .=     LogicTracker($DBcnx);
   $Content .=     "</div>";
   $Content .=   "</div>";
   $Content .= "</div>";
@@ -307,6 +309,7 @@ function EditSensors($DBcnx) {
   $Content .=   "</div>";
   $Content .= "</div>";
   $Content .= "</form>";
+  $Content .= "<div>" . DrawCard($DBcnx,"show_sensors",true) . "<div>";
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
@@ -418,6 +421,21 @@ function ShowProgramTemps($DBcnx) {
     $Content .= "<tr><td colspan=\"2\" align=\"right\"><span class=\"text-warning\">Distillation run not active, no temperature management</span></td></tr>";
   } else {
     $Content .= "<tr><td colspan=\"2\" align=\"right\"><span class=\"text-success blink\">Distillation run active, temperatures are being managed</span></td></tr>";
+  }
+  $Content .= "</table>";
+  return $Content;
+}
+//---------------------------------------------------------------------------------------------------
+function ShowSensors($DBcnx) {
+  $Sensors  = getSensorList();
+  $Content  = "<table class=\"table table-sm\">";
+  if (count($Sensors) > 0) {
+    for ($x = 0; $x <= (count($Sensors) - 1); $x++) {
+      $Data = getOneWireTemp($Sensors[$x]);
+      $Content .= "<tr><td>$Sensors[$x]</td><td align=\"right\">" . $Data["C"] . "C / " . $Data["F"] . "F</td></tr>";
+    }
+  } else {
+    $Content .= "<tr><td>No DS18B20 temperature sensors found</td></tr>";
   }
   $Content .= "</table>";
   return $Content;
