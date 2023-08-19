@@ -8,9 +8,12 @@ function CalibrateHydrometer($DBcnx) {
 
   $Content  = "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
-  $Content .=   "<p>If you are starting a new run, it is suggested that you Reboot the hydrometer since barrometric pressure can affect a load cell's current calibration.</p>" .
-                "<p>Do not use the Calibrate button if there is any distillate in the parrot cup, only use this to clear load cell drift before any output begins.</p>";
-
+  $Content .=     "<p>If you are starting a new run, it is suggested that you Reboot the hydrometer since barrometric pressure can affect a load cell's current calibration.</p>" .
+                  "<p>Do not use the Calibrate button if there is any distillate in the parrot cup, only use this to clear load cell drift before any output begins.</p>";
+  $Content .=     "<div class=\"row\">";
+  $Content .=       "<div class=\"col\"><a href=\"process.php?reboot_hydro=1\" class=\"btn btn-primary\" name=\"cancel_action\">Reboot Hydrometer</a></div>";
+  $Content .=       "<div class=\"col\"><a href=\"process.php?recalibrate_hydro=1\" class=\"btn btn-primary\" name=\"cancel_action\">Recalibrate Load Cell</a></div>";
+  $Content .=     "</div>";
   $Content .=   "</div>";
   $Content .= "</div>";
   $Content .= "<div>" . DrawCard($DBcnx,"show_serial",true) . "<div>";
