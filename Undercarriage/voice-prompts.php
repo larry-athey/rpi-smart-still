@@ -50,6 +50,7 @@ function SpeakMessage($ID) {
   $Msg[31]  = "Pot still mode minimum ABV has been reached";
   $Msg[32]  = "Sending the command to recalibrate the hydrometer load cell";
   $Msg[33]  = "Sending the command to reboot the hydrometer";
+  $Msg[34]  = "Distillate is too warm. Increasing condenser cooling water flow";
 
   shell_exec("/usr/bin/espeak -v english-us -s 160 \"$Msg[$ID]\" 2> /dev/null &");
   mysqli_close($DBcnx);
