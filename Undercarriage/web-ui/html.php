@@ -556,26 +556,6 @@ function ShowTemperatures($DBcnx) {
 }
 //---------------------------------------------------------------------------------------------------
 function ShowTimelines($DBcnx) {
-  /*
-  new Chart("{TimelineName}", {
-  type: 'line',
-  data: {
-    labels: [{Timestamps}],
-    datasets: [{
-      label: '{Label1}',
-      data: [{Data1}],
-      backgroundColor: [
-        'rgba({RGB1},0.2)'
-      ],
-      borderColor: [
-        'rgba({RGB1},0.7)'
-      ],
-      fill: true,
-      lineTension: 0.1,
-      borderWidth: 1,
-      pointRadius: 0
-    },
-  */
   $Timestamps1 = "";
   $Timestamps2 = "";
   $BoilerTemps = "";
@@ -594,7 +574,6 @@ function ShowTimelines($DBcnx) {
   $Color[] = "250,201,6";
   $Color[] = "3,112,251";
   $Color[] = "213,57,73";
-  $Color[] = "140,140,140";
 
   $Chart   = file_get_contents("timeline_multiple.html");
   $Content = "";
@@ -670,8 +649,21 @@ function ShowTimelines($DBcnx) {
     $Content = str_replace("{Label3}","Heating Stepper",$Content);
     $Content = str_replace("{Data3}",$HeatingSteps,$Content);
     $Content = str_replace("{RGB3}",$Color[2],$Content);
+
+    $Content .= $Chart;
+    $Content = str_replace("{TimelineName}","HydroChart",$Content);
+    $Content = str_replace("{Timestamps}",$Timestamps1,$Content);
+    $Content = str_replace("{Label1}","Distillate ABV",$Content);
+    $Content = str_replace("{Data1}",$DistillateABVs,$Content);
+    $Content = str_replace("{RGB1}",$Color[5],$Content);
+    $Content = str_replace("{Label2}","Distillate Temperature",$Content);
+    $Content = str_replace("{Data2}",$DistillateTemps,$Content);
+    $Content = str_replace("{RGB2}",$Color[3],$Content);
+    $Content = str_replace("{Label3}","Distillate Flow Rate",$Content);
+    $Content = str_replace("{Data3}",$DistillateFlows,$Content);
+    $Content = str_replace("{RGB3}",$Color[1],$Content);
   } else {
-    $Content .= "<p>No data found for any previous distillation run</p>";
+    $Content .= "<p></p><p>No data found for any previous distillation run</p>";
   }
   return $Content;
 }
