@@ -555,6 +555,18 @@ function ShowTemperatures($DBcnx) {
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
+function ShowTimelines($DBcnx) {
+  $Color[] = "38,166,68";
+  $Color[] = "255,159,64";
+  $Color[] = "153,102,255";
+  $Color[] = "250,201,6";
+  $Color[] = "3,112,251";
+  $Color[] = "213,57,73";
+  $Color[] = "140,140,140";
+  $Chart   = file_get_contents("timeline_multiple.html");
+  return $Chart;
+}
+//---------------------------------------------------------------------------------------------------
 function ShowValves($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
