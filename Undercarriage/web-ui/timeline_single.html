@@ -1,18 +1,18 @@
 <div style="width:100%;height:600px;">
-<canvas id="devTimeline" style="width:100%;height:600px;"></canvas>
+<canvas id="{TimelineName}" style="width:100%;height:600px;"></canvas>
 <script>
-new Chart("devTimeline", {
+new Chart("{TimelineName}", {
   type: 'line',
   data: {
-    labels: [{grafanaColumns}],
+    labels: [{TimeStamps}],
     datasets: [{
-      label: '{grafanaLabel}',
-      data: [{grafanaData}],
+      label: '{Label}',
+      data: [{Data}],
       backgroundColor: [
-        'rgba({grafanaRGB},0.2)'
+        'rgba({RGB},0.2)'
       ],
       borderColor: [
-        'rgba({grafanaRGB},0.7)'
+        'rgba({RGB},0.7)'
       ],
       fill: true,
       lineTension: 0.1,
