@@ -1,0 +1,48 @@
+<div sOtyle="width:100%;height:600px;">
+<canvas id="devTimeline" style="width:100%;height:600px;"></canvas>
+<script>
+new Chart("devTimeline", {
+  type: 'line',
+  data: {
+    labels: [{grafanaColumns}],
+    datasets: [{
+      label: '{grafanaLabel1}',
+      data: [{grafanaData1}],
+      backgroundColor: [
+        'rgba({grafanaRGB1},0.2)'
+      ],
+      borderColor: [
+        'rgba({grafanaRGB1},0.7)'
+      ],
+      fill: true,
+      lineTension: 0.1,
+      borderWidth: 1,
+      pointRadius: 0
+    },
+    {
+      label: '{grafanaLabel2}',
+      data: [{grafanaData2}],
+      backgroundColor: [
+        'rgba({grafanaRGB2},0.2)'
+      ],
+      borderColor: [
+        'rgba({grafanaRGB2},0.7)'
+      ],
+      fill: true,
+      lineTension: 0.1,
+      borderWidth: 1,
+      pointRadius: 0
+    }]
+  },
+  options: {
+    maintainAspectRatio: false,
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+</script>
+</div>
