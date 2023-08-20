@@ -137,18 +137,20 @@ function DrawMenu($DBcnx) {
     $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"process.php?pause_page=start_run\"><span class=\"text-secondary\">Pause&nbsp;Run</span></a></li>";
     $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"?page=stop_run\"><span class=\"text-secondary\">Stop&nbsp;Run</span></a></li>";
   }
-  $Content .=             "<li><hr class=\"dropdown-divider\"></li>";
-  $Content .=             "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=100\">Heat&nbsp;Jump&nbsp;To&nbsp;100%</a></li>";
-  $Content .=             "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=90\">Heat&nbsp;Jump&nbsp;To&nbsp;90%</a></li>";
-  $Content .=             "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=80\">Heat&nbsp;Jump&nbsp;To&nbsp;80%</a></li>";
-  $Content .=             "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=70\">Heat&nbsp;Jump&nbsp;To&nbsp;70%</a></li>";
-  $Content .=             "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=60\">Heat&nbsp;Jump&nbsp;To&nbsp;60%</a></li>";
-  $Content .=             "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=50\">Heat&nbsp;Jump&nbsp;To&nbsp;50%</a></li>";
-  $Content .=             "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=40\">Heat&nbsp;Jump&nbsp;To&nbsp;40%</a></li>";
-  $Content .=             "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=30\">Heat&nbsp;Jump&nbsp;To&nbsp;30%</a></li>";
-  $Content .=             "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=20\">Heat&nbsp;Jump&nbsp;To&nbsp;20%</a></li>";
-  $Content .=             "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=10\">Heat&nbsp;Jump&nbsp;To&nbsp;10%</a></li>";
-  $Content .=             "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=0\">Heat&nbsp;Jump&nbsp;To&nbsp;0%</a></li>";
+  if ($Settings["heating_enabled"] == 1) {
+    $Content .=           "<li><hr class=\"dropdown-divider\"></li>";
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=100\">Heat&nbsp;Jump&nbsp;To&nbsp;100%</a></li>";
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=90\">Heat&nbsp;Jump&nbsp;To&nbsp;90%</a></li>";
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=80\">Heat&nbsp;Jump&nbsp;To&nbsp;80%</a></li>";
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=70\">Heat&nbsp;Jump&nbsp;To&nbsp;70%</a></li>";
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=60\">Heat&nbsp;Jump&nbsp;To&nbsp;60%</a></li>";
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=50\">Heat&nbsp;Jump&nbsp;To&nbsp;50%</a></li>";
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=40\">Heat&nbsp;Jump&nbsp;To&nbsp;40%</a></li>";
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=30\">Heat&nbsp;Jump&nbsp;To&nbsp;30%</a></li>";
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=20\">Heat&nbsp;Jump&nbsp;To&nbsp;20%</a></li>";
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=10\">Heat&nbsp;Jump&nbsp;To&nbsp;10%</a></li>";
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=0\">Heat&nbsp;Jump&nbsp;To&nbsp;0%</a></li>";
+  }
   $Content .=           "</ul>";
   $Content .=         "</li>";
   $Content .=         "<li class=\"nav-item\">";
