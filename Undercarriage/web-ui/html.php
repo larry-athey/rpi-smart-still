@@ -556,6 +556,31 @@ function ShowTemperatures($DBcnx) {
 }
 //---------------------------------------------------------------------------------------------------
 function ShowTimelines($DBcnx) {
+  /*
+new Chart("{TimelineName}", {
+  type: 'line',
+  data: {
+    labels: [{Timestamps}],
+    datasets: [{
+      label: '{Label1}',
+      data: [{Data1}],
+      backgroundColor: [
+        'rgba({RGB1},0.2)'
+      ],
+      borderColor: [
+        'rgba({RGB1},0.7)'
+      ],
+      fill: true,
+      lineTension: 0.1,
+      borderWidth: 1,
+      pointRadius: 0
+    },
+  */
+  $Timestamps = "";
+  $BoilerTemps = "";
+  $ColumnTemps = "";
+  $DephlegTemps = "";
+
   $Color[] = "38,166,68";
   $Color[] = "255,159,64";
   $Color[] = "153,102,255";
@@ -563,8 +588,38 @@ function ShowTimelines($DBcnx) {
   $Color[] = "3,112,251";
   $Color[] = "213,57,73";
   $Color[] = "140,140,140";
+
   $Chart   = file_get_contents("timeline_multiple.html");
-  return $Chart;
+  $Content = "";
+  $Result  = mysqli_query($DBcnx,"SELECT * FROM input_table ORDER BY ID");
+  if (mysqli_num_rows($Result) > 0) {
+    while ($RS = mysqli_fetch_assoc($Result)) {
+      $Timestamps .= "'" . $RS["timestamp"] . "',";
+      $BoilerTemps .= $RS["boiler_temp"] . ",";
+      $ColumnTemps .= $RS["column_temp"] . ",";
+      $DephlegTemps .= $RS["dephleg_temp"] . ",";
+    }
+    $Timestamps = trim($Timestamps,",");
+    $BoilerTemps = trim($BoilerTemps,",");
+    $ColumnTemps = trim($ColumnTemps,",");
+    $DephlegTemps = trim($DephlegTemps,",");
+
+    $Content .= $Chart;
+    $Content = str_replace("{TimelineName}","TempChart",$Content);
+    $Content = str_replace("{Timestamps}",$Timestamps,$Content);
+    $Content = str_replace("{Label1}","Boiler Temperature",$Content);
+    $Content = str_replace("{Data1}",$BoilerTemps,$Content);
+    $Content = str_replace("{RGB1}",$Color[5],$Content);
+    $Content = str_replace("{Label2}","Column Temperature",$Content);
+    $Content = str_replace("{Data2}",$ColumnTemps,$Content);
+    $Content = str_replace("{RGB2}",$Color[3],$Content);
+    $Content = str_replace("{Label3}","Dephleg Temperature",$Content);
+    $Content = str_replace("{Data3}",$DephlegTemps,$Content);
+    $Content = str_replace("{RGB3}",$Color[1],$Content);
+  } else {
+    $Content .= "<p>No data found in the sensor input database table</p>";
+  }
+  return $Content;
 }
 //---------------------------------------------------------------------------------------------------
 function ShowValves($DBcnx) {
