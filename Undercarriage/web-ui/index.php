@@ -127,6 +127,8 @@ if (! isset($_GET["page"])) {
     $Content .= DrawCard($DBcnx,"start_run",false);
   } elseif ($_GET["page"] == "stop_run") {
     $Content .= DrawCard($DBcnx,"stop_run",false);
+  } elseif ($_GET["page"] == "timeline") {
+    $Content .= ShowTimelines($DBcnx);
   }
 }
 
