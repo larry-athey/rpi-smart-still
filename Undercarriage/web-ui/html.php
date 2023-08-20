@@ -557,7 +557,7 @@ function ShowTemperatures($DBcnx) {
 //---------------------------------------------------------------------------------------------------
 function ShowTimelines($DBcnx) {
   /*
-new Chart("{TimelineName}", {
+  new Chart("{TimelineName}", {
   type: 'line',
   data: {
     labels: [{Timestamps}],
@@ -576,10 +576,17 @@ new Chart("{TimelineName}", {
       pointRadius: 0
     },
   */
-  $Timestamps = "";
+  $Timestamps1 = "";
+  $Timestamps2 = "";
   $BoilerTemps = "";
   $ColumnTemps = "";
   $DephlegTemps = "";
+  $DistillateTemps = "";
+  $DistillateABVs = "";
+  $DistillateFlows = "";
+  $HeatingSteps = "";
+  $Valve1Steps = "";
+  $Valve2Steps = "";
 
   $Color[] = "38,166,68";
   $Color[] = "255,159,64";
@@ -594,19 +601,53 @@ new Chart("{TimelineName}", {
   $Result  = mysqli_query($DBcnx,"SELECT * FROM input_table ORDER BY ID");
   if (mysqli_num_rows($Result) > 0) {
     while ($RS = mysqli_fetch_assoc($Result)) {
-      $Timestamps .= "'" . $RS["timestamp"] . "',";
+      $Timestamps1 .= "'" . $RS["timestamp"] . "',";
       $BoilerTemps .= $RS["boiler_temp"] . ",";
       $ColumnTemps .= $RS["column_temp"] . ",";
       $DephlegTemps .= $RS["dephleg_temp"] . ",";
+      $DistillateTemps .= $RS["distillate_temp"] . ",";
+      $DistillateABVs .= $RS["distillate_abv"] . ",";
+      $DistillateFlows .= $RS["distillate_flow"] . ",";
     }
-    $Timestamps = trim($Timestamps,",");
+    $Timestamps1 = trim($Timestamps1,",");
     $BoilerTemps = trim($BoilerTemps,",");
     $ColumnTemps = trim($ColumnTemps,",");
     $DephlegTemps = trim($DephlegTemps,",");
+    $DistillateTemps = trim($DistillateTemps,",");
+    $DistillateABVs = trim($DistillateABVs,",");
+    $DistillateFlows = trim($DistillateFlows,",");
+
+    $Valve1Prev = 0;
+    $Valve2Prev = 0;
+    $HeatingPrev = 0;
+    $Result = mysqli_query($DBcnx,"SELECT * FROM output_table WHERE valve_id <= 3 ORDER BY ID");
+    while ($RS = mysqli_fetch_assoc($Result)) {
+      $SaveIt =  false;
+      if ($RS["valve_id"] == 1) {
+        $Valve1Prev = $RS["position"];
+        $SaveIt = true;
+      } elseif ($RS["valve_id"] == 2) {
+        $Valve2Prev = $RS["position"];
+        $SaveIt = true;
+      } elseif ($RS["valve_id"] == 3) {
+        $HeatingPrev = $RS["position"] * 10;
+        $SaveIt = true;
+      }
+      if ($SaveIt) {
+        $Timestamps2 .= "'" . $RS["timestamp"] . "',";
+        $Valve1Steps .= $Valve1Prev . ",";
+        $Valve2Steps .= $Valve2Prev . ",";
+        $HeatingSteps .= $HeatingPrev . ",";
+      }
+    }
+    $Timestamps2 = trim($Timestamps2,",");
+    $Valve1Steps = trim($Valve1Steps,",");
+    $Valve2Steps = trim($Valve2Steps,",");
+    $HeatingSteps = trim($HeatingSteps,",");
 
     $Content .= $Chart;
     $Content = str_replace("{TimelineName}","TempChart",$Content);
-    $Content = str_replace("{Timestamps}",$Timestamps,$Content);
+    $Content = str_replace("{Timestamps}",$Timestamps1,$Content);
     $Content = str_replace("{Label1}","Boiler Temperature",$Content);
     $Content = str_replace("{Data1}",$BoilerTemps,$Content);
     $Content = str_replace("{RGB1}",$Color[5],$Content);
@@ -616,8 +657,21 @@ new Chart("{TimelineName}", {
     $Content = str_replace("{Label3}","Dephleg Temperature",$Content);
     $Content = str_replace("{Data3}",$DephlegTemps,$Content);
     $Content = str_replace("{RGB3}",$Color[1],$Content);
+
+    $Content .= $Chart;
+    $Content = str_replace("{TimelineName}","ValveChart",$Content);
+    $Content = str_replace("{Timestamps}",$Timestamps2,$Content);
+    $Content = str_replace("{Label1}","Condenser Valve",$Content);
+    $Content = str_replace("{Data1}",$Valve1Steps,$Content);
+    $Content = str_replace("{RGB1}",$Color[0],$Content);
+    $Content = str_replace("{Label2}","Dephleg Valve",$Content);
+    $Content = str_replace("{Data2}",$Valve2Steps,$Content);
+    $Content = str_replace("{RGB2}",$Color[4],$Content);
+    $Content = str_replace("{Label3}","Heating Stepper",$Content);
+    $Content = str_replace("{Data3}",$HeatingSteps,$Content);
+    $Content = str_replace("{RGB3}",$Color[2],$Content);
   } else {
-    $Content .= "<p>No data found in the sensor input database table</p>";
+    $Content .= "<p>No data found for any previous distillation run</p>";
   }
   return $Content;
 }
