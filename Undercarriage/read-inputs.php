@@ -56,7 +56,7 @@ if (($Hydrometer != "") && (mb_substr($Hydrometer,-1) == "#")) {
   }
 }
 
-// If we have an active run and a valid serial data block, create a record in the input_table every minute for the timeline graphs
+// If we have an active run, create a record in the input_table every minute for the timeline graphs
 $Sec = date("s",time());
 if (($Settings["active_run"] ==  1) && ($Sec <= 10)) {
   $Flow = 0;
