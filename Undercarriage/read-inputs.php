@@ -58,7 +58,7 @@ if (($Hydrometer != "") && (mb_substr($Hydrometer,-1) == "#")) {
 
 // If we have an active run and a valid serial data block, create a record in the input_table every minute for the timeline graphs
 $Sec = date("s",time());
-if (($Settings["active_run"] ==  1) && ($Sec <= 10) && (count($Data) == 5)) {
+if (($Settings["active_run"] ==  1) && ($Sec <= 10)) {
   $Flow = 0;
   $Data = explode("|",trim($Settings["distillate_flow"],"|"));
   if (count($Data) == 100) {
@@ -66,8 +66,14 @@ if (($Settings["active_run"] ==  1) && ($Sec <= 10) && (count($Data) == 5)) {
       if ($Data[$x] ==  1) $Flow ++;
     }
   }
-  $Insert = mysqli_query($DBcnx,"INSERT INTO input_table (timestamp,boiler_temp,dephleg_temp,column_temp,distillate_temp,distillate_abv,distillate_flow) " .
-                                "VALUES (now(),'$BoilerTemp','$DephlegTemp','$ColumnTemp','$DistillateTemp','$DistillateAbv','$Flow')");
+  if (count($Data) == 5) {
+    $Insert = mysqli_query($DBcnx,"INSERT INTO input_table (timestamp,boiler_temp,dephleg_temp,column_temp,distillate_temp,distillate_abv,distillate_flow) " .
+                                  "VALUES (now(),'$BoilerTemp','$DephlegTemp','$ColumnTemp','$DistillateTemp','$DistillateAbv','$Flow')");
+  } else {
+    echo("No hydrometer data\n");
+    $Insert = mysqli_query($DBcnx,"INSERT INTO input_table (timestamp,boiler_temp,dephleg_temp,column_temp,distillate_temp,distillate_abv,distillate_flow) " .
+                                  "VALUES (now(),'$BoilerTemp','$DephlegTemp','$ColumnTemp','" . $Settings["distillate_temp"] . "','" . $Settings["distillate_abv"] . "','$Flow')");
+  }
 }
 //---------------------------------------------------------------------------------------------
 mysqli_close($DBcnx);
