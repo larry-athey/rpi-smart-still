@@ -51,6 +51,8 @@ function SpeakMessage($ID) {
   $Msg[32]  = "Sending the command to recalibrate the hydrometer load cell";
   $Msg[33]  = "Sending the command to reboot the hydrometer";
   $Msg[34]  = "Distillate is too warm. Increasing condenser cooling water flow";
+  $Msg[35]  = "Pausing the current distillation run";
+  $Msg[36]  = "Resuming the currently paused distillation run";
 
   shell_exec("/usr/bin/espeak -v english-us -s 160 \"$Msg[$ID]\" 2> /dev/null &");
   mysqli_close($DBcnx);
