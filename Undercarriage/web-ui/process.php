@@ -84,19 +84,26 @@ elseif (isset($_GET["heat_jump"])) {
 elseif (isset($_GET["pause_run"])) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=" . $Settings["active_program"]);
+  $Program  = mysqli_fetch_assoc($Result);
   if ($_GET["pause_run"] == 1) {
     // Pause the current run
     $Difference = $Settings["valve2_total"] - $Settings["valve2_position"] + 500; // Extra 500 to guarantee that we hit the upper limit switch
     $Update = mysqli_query($DBcnx,"UPDATE settings SET paused='1',pause_return='" . $Settings["valve2_position"] . "',valve2_position='" . $Settings["valve2_total"] . "' WHERE ID=1");
-    $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_done='0',dephleg_note='Distillation run paused, increasing dephleg cooling valve to 100%'  WHERE ID=1");
+    $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_done='0',dephleg_note='Distillation run paused, increasing dephleg cooling valve to 100%' WHERE ID=1");
     $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                   "VALUES (now(),'1','99','0','0','3','0','0')," .
                                   "VALUES (now(),'1','2','1','$Difference','" . $Settings["valve2_total"] . "','1','0')");
   } else {
     // Resume run from pause
+    if ($Program["mode"] == 0) {
+      $Message = "Not managing the dephleg temperature in this program";
+    } else {
+      $Message = "Distillation resumed, restarting dephleg warmup";
+    }
     $Difference = $Settings["valve2_position"] - $Settings["pause_return"];
     $Update = mysqli_query($DBcnx,"UPDATE settings SET paused='0',pause_return='0',valve2_position='" . $Settings["pause_return"] . "' WHERE ID=1");
-    $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_done='0',dephleg_note='Distillation resumed, restarting dephleg warmup' WHERE ID=1");
+    $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_done='0',dephleg_note='$Message' WHERE ID=1");
     $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                   "VALUES (now(),'1','99','0','0','4','0','0')," .
                                   "VALUES (now(),'1','2','0','$Difference','" . $Settings["pause_return"] . "','1','0')");
