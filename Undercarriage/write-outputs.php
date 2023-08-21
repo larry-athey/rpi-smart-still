@@ -104,6 +104,10 @@ while ($RS = mysqli_fetch_assoc($Result)) {
         DebugMessage("Performing boiler heating stepper motor jump to " . $RS["duration"] . "%");
       } elseif ($RS["position"] == 2) {
         SpeakMessage(30);
+      } elseif ($RS["position"] == 3) {
+        SpeakMessage(35);
+      } elseif ($RS["position"] == 4) {
+        SpeakMessage(36);
       }
     }
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
