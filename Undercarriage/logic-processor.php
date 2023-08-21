@@ -258,7 +258,7 @@ if (mysqli_num_rows($Result) > 0) {
               if ($Settings["dephleg_temp"] < $Program["dephleg_temp_low"]) {
                 $TempError = $Program["dephleg_temp_low"] - $Settings["dephleg_temp"];
                 if ($TempError >= 1) {
-                  $Difference = $Settings["valve2_pulse"];
+                  $Difference = round($Settings["valve2_pulse"] * $TempError);
                 } else {
                   $Difference = round($Settings["valve2_pulse"] * .25,0,PHP_ROUND_HALF_UP);
                 }
@@ -277,7 +277,7 @@ if (mysqli_num_rows($Result) > 0) {
               } elseif ($Settings["dephleg_temp"] > $Program["dephleg_temp_high"]) {
                 $TempError = $Settings["dephleg_temp"] - $Program["dephleg_temp_high"];
                 if ($TempError >= 1) {
-                  $Difference = $Settings["valve2_pulse"];
+                  $Difference = round($Settings["valve2_pulse"] * $TempError);
                 } else {
                   $Difference = round($Settings["valve2_pulse"] * .25,0,PHP_ROUND_HALF_UP);
                 }
