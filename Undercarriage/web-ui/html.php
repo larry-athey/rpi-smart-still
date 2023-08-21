@@ -510,7 +510,11 @@ function ShowProgramTemps($DBcnx) {
   if ($Settings["active_run"] == 0) {
     $Content .= "<tr><td colspan=\"2\" align=\"right\"><span class=\"text-warning\">Distillation run not active, no temperature management</span></td></tr>";
   } else {
-    $Content .= "<tr><td colspan=\"2\" align=\"right\"><span class=\"text-success blink\">Distillation run active, temperatures are being managed</span></td></tr>";
+    if ($Settings["paused"] == 1) {
+      $Content .= "<tr><td colspan=\"2\" align=\"right\"><span class=\"text-danger blink\">The active distillation run is currently paused</span></td></tr>";
+    } else {
+      $Content .= "<tr><td colspan=\"2\" align=\"right\"><span class=\"text-success blink\">Distillation run active, temperatures are being managed</span></td></tr>";
+    }
   }
   $Content .= "</table>";
   return $Content;
