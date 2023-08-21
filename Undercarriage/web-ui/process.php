@@ -34,6 +34,7 @@ if (isset($_GET["active_run"])) {
     $Update = mysqli_query($DBcnx,"UPDATE settings SET active_run='0',run_end=now(),paused='0',pause_return='0' WHERE ID=1");
     if ($Program["abv_managed"] == 1) {
       $Update = mysqli_query($DBcnx,"UPDATE programs SET column_temp_low='" . $Settings["saved_lower"] . "',column_temp_high='" . $Settings["saved_upper"] . "' WHERE ID=" . $Program["ID"]);
+      $Update = mysqli_query($DBcnx,"UPDATE settings SET saved_lower='0',saved_upper='0' WHERE ID=1");
     }
   }
 }
