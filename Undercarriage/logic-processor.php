@@ -105,8 +105,8 @@ if (mysqli_num_rows($Result) > 0) {
         if (time() - strtotime($Logic["boiler_timer"]) >= 30) { // Primary timer "just in case"
           $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_timer=now() WHERE ID=1");
           // Boilers are super slow to reflect temperature changes due to the thermal mass of their contents
-          // Therefore, we only check every 10 minutes to see the result of the last adjustment
-          if (time() - strtotime($Logic["boiler_last_adjustment"]) >= 600) {
+          // Therefore, we only check every 15 minutes to see the result of the last adjustment
+          if (time() - strtotime($Logic["boiler_last_adjustment"]) >= 900) {
             if ($Settings["boiler_temp"] < $Program["boiler_temp_low"]) {
               if ($Settings["heating_enabled"] == 1) {
                 // Increase boiler power to the next higher 10% mark
@@ -170,7 +170,7 @@ if (mysqli_num_rows($Result) > 0) {
               // Update the user interface status message with a current time stamp
               $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now(),boiler_note='Boiler temperature is within the program\'s operating range' WHERE ID=1");
             } // $Settings["boiler_temp"] vs $Program["boiler_temp_low/high"] checks
-          } // $Logic["boiler_last_adjustment"]) >= 600 check
+          } // $Logic["boiler_last_adjustment"]) >= 900 check
         } //$Logic["boiler_timer"] >= 30 check
       } // $Program["boiler_managed"] == 1 check
       /***** COLUMN TEMPERATURE MANAGEMENT ROUTINES *****/
