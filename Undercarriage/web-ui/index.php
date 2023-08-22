@@ -41,11 +41,11 @@ require_once("html.php");
     function ToggleInputFields(ProgramType) {
       var Value = ProgramType.options[ProgramType.selectedIndex].value;
       if (Value == 0) {
-        DephlegDiv.style.display  = 'none';
-        ColumnDiv.style.display   = 'inline';
+        DephlegDiv.style.display = 'none';
+        ColumnDiv.style.display  = 'inline';
       } else {
-        DephlegDiv.style.display  = 'inline';
-        ColumnDiv.style.display   = 'none';
+        DephlegDiv.style.display = 'inline';
+        ColumnDiv.style.display  = 'none';
       }
     }
     //---------------------------------------------------------------------------------------------------
@@ -91,8 +91,8 @@ if (mysqli_num_rows($Result) > 0) {
     $Result = mysqli_query($DBcnx,"UPDATE settings SET active_program='" . $_GET["program_id"] . "' WHERE ID=1");
     $Settings["active_program"] = $_GET["program_id"];
   }
-  $Result   = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=" . $Settings["active_program"]);
-  $Program  = mysqli_fetch_assoc($Result);
+  $Result  = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=" . $Settings["active_program"]);
+  $Program = mysqli_fetch_assoc($Result);
 } else {
   echo("<br><h3>System settings record is missing, reinstall system from GitHub clone.</h3>");
   mysqli_close($DBcnx);
