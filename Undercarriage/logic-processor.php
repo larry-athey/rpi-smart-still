@@ -338,8 +338,8 @@ if (mysqli_num_rows($Result) > 0) {
               $Update = mysqli_query($DBcnx,"UPDATE settings SET active_run='0',run_end=now() WHERE ID=1");
             }
           } else {
-            // In reflux mode, we dynamically adjust the program's dephleg upper and lower temperature limits
-            // Remember, you can only adjust the ABV up, you can't adjust it down without adding water to it
+            // In reflux mode, we dynamically adjust the program's dephleg upper and lower temperature limits downward
+            // Remember, you can only adjust the ABV up, you can't adjust it down without adding distilled water to it
           }
         }
       }
