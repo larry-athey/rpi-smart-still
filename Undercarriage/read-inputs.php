@@ -39,17 +39,12 @@ if (($Hydrometer != "") && (mb_substr($Hydrometer,-1) == "#")) {
   if (count($Data) == 5) {
     print_r($Data);
     $Data2 = explode(": ",$Data[2]);
-    $DistillateFlowing = trim($Data2[1]);
+    $DistillateFlow = trim($Data2[1]);
     $Data2 = explode(": ",$Data[3]);
     $DistillateAbv = trim($Data2[1]);
     $Data2 = explode(": ",$Data[4]);
     $DistillateTemp = trim($Data2[1]);
-    if (strlen($Settings["distillate_flow"]) == 199) {
-      $Settings["distillate_flow"] = substr($Settings["distillate_flow"],2) . "|$DistillateFlowing";
-    } else {
-      $Settings["distillate_flow"] .= "|$DistillateFlowing";
-    }
-    $Update = mysqli_query($DBcnx,"UPDATE settings SET distillate_flow='" . $Settings["distillate_flow"] . "',distillate_abv='$DistillateAbv',distillate_temp='$DistillateTemp',serial_data='$Hydrometer' WHERE ID=1");
+    $Update = mysqli_query($DBcnx,"UPDATE settings SET distillate_flow='$DistillateFlow',distillate_abv='$DistillateAbv',distillate_temp='$DistillateTemp',serial_data='$Hydrometer' WHERE ID=1");
   } else {
     echo("$Hydrometer\n");
     $Update = mysqli_query($DBcnx,"UPDATE settings SET serial_data='$Hydrometer' WHERE ID=1");
