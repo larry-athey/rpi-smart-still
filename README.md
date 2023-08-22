@@ -9,7 +9,7 @@ Raspberry PI and Arduino/ESP32 powered smart still controller system. Designed a
 
 **NO, THERE IS NOTHING ILLEGAL ABOUT THIS PROJECT! IT DOESN'T MAKE YOU DO ILLEGAL THINGS OR PREVENT YOU FROM GETTING A DISTILLATION LICENSE IN THE USA! THIS IS ONLY A TOOL!**
 
-Let me start off by saying that I'm no master distiller and I don't pretend to be one. YouTube and other social media sites already have more than enough self-idolizing hacks and frauds who think that they're celebrities in the distilling world *(for example, Cyrus Mason and "Windsong", the Still'n The Clear charlatans)*. **I'm just a nobody hobby distiller, period. Not an internet celebrity or a deluded podcaster wannabe. I'm just a hobbyist.**
+Let me start off by saying that I'm no master distiller and I don't pretend to be one. YouTube and other social media sites already have more than enough self-idolizing hacks and frauds who think that they're celebrities in the distilling world and should be on the cast of Moonshiners *(for example, Cyrus Mason and "Windsong", the Still'n The Clear charlatans)*. **I'm just a nobody hobby distiller, period. Not an internet celebrity or a deluded podcaster wannabe, and I don't idolize reality TV "stars". I'm just a hobbyist, period.**
 
 I'm a veteran software engineer with over 43 years programming experience and a strong emphasis in the areas of automation and remote device management. Even though I'm only a hobby distiller, I know very well what needs to be done in order to automate a still and maintain a targeted output. It's all just a matter of temperature control and monitoring the results. Lather, rinse, repeat.
 
