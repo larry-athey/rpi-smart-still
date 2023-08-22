@@ -105,10 +105,10 @@ char Uptime[10];      // Global placeholder for uptime reading
 byte Ethanol = 0;     // Global placeholder for ethanol percentage
 float TempC = 0;      // Global placeholder for ethanol temperature reading
 float WeightBuf[50];  // Buffer for storing the last 50 load cell readings
+byte FlowBuf[100];    // Buffer for calculating the flow rate percentage
 bool eToggle = false; // Ethanol display toggle byte (false=%ABV or true=Proof)
 long ScreenCounter;   // Timekeeper for display updates
 long SerialCounter;   // Timekeeper for serial data output updates
-byte FlowSense = 1;   // Storage byte for the optical distillate flow sensor status
 byte eTest = 0;       // This is only used by the code block in loop() for display testing
 //------------------------------------------------------------------------------------------------
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS,TFT_DC,TFT_MOSI,TFT_CLK,TFT_RST,TFT_MISO);
@@ -119,6 +119,7 @@ DallasTemperature DT(&oneWire);
 void setup() {
   byte Counter;
   float Tare;
+  for (Counter = 0; Counter <= 99; Counter ++) FlowBuf[Counter] = 0;
   ScreenCounter = millis();
   SerialCounter = ScreenCounter;
   pinMode(FLOW_SENSOR,INPUT_PULLDOWN);
@@ -352,7 +353,8 @@ void loop() {
   int runMinutes = secsRemaining / 60;
   int runSeconds = secsRemaining % 60;
   sprintf(Uptime,"%02d:%02d:%02d",runHours,runMinutes,runSeconds);
-  if (digitalRead(FLOW_SENSOR) == 1) FlowSense = 0;
+  for (Data = 99; Data >= 1; Data --) FlowBuf[Data] = FlowBuf[Data - 1];
+  FlowBuf[0] = (digitalRead(FLOW_SENSOR) == 1);
 
   // Get the current weight of the steel ball and calculate the ethanol percentage from
   // the buoyancy offset of the reference weight. Higher ethanol makes the ball heavier.
@@ -397,19 +399,22 @@ void loop() {
   if (CurrentTime - SerialCounter >= 1000) {
     char WeightLog[25];
     sprintf(WeightLog,"%.2f %.2f",Weight,WeightAvg);
+    Data = 0;
+    for (byte x = 0; x <= 99; x ++) {
+      if (WeightBuf[x] > 0) Data ++;
+    }
     if (eTest > 0) TimeUpdate(WeightLog);
     Serial.print("Uptime: ");
     Serial.println(Uptime);
     Serial.print("Weight: ");
     Serial.println(WeightLog);
     Serial.print("Flow: ");
-    Serial.println(FlowSense);
+    Serial.println(Data);
     Serial.print("Ethanol: ");
     Serial.println(Ethanol);
     Serial.print("TempC: ");
     Serial.println(TempC,1);
     Serial.println("#"); // Pound signs mark the start and end of data blocks to the Raspberry PI
-    FlowSense = 1;
     SerialCounter = CurrentTime;
   }
 }
