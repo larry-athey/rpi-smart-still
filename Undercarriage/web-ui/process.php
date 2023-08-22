@@ -93,7 +93,7 @@ elseif (isset($_GET["pause_run"])) {
     $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_done='0',dephleg_note='Distillation run paused, increasing dephleg cooling valve to 100%' WHERE ID=1");
     $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                   "VALUES (now(),'1','99','0','0','3','0','0')," .
-                                  "VALUES (now(),'1','2','1','$Difference','" . $Settings["valve2_total"] . "','1','0')");
+                                         "(now(),'1','2','1','$Difference','" . $Settings["valve2_total"] . "','1','0')");
   } else {
     // Resume run from pause
     if ($Program["mode"] == 0) {
@@ -106,7 +106,7 @@ elseif (isset($_GET["pause_run"])) {
     $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_done='0',dephleg_note='$Message' WHERE ID=1");
     $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                   "VALUES (now(),'1','99','0','0','4','0','0')," .
-                                  "VALUES (now(),'1','2','0','$Difference','" . $Settings["pause_return"] . "','1','0')");
+                                         "(now(),'1','2','0','$Difference','" . $Settings["pause_return"] . "','1','0')");
   }
 }
 //---------------------------------------------------------------------------------------------------
@@ -123,9 +123,9 @@ elseif (isset($_POST["rss_edit_servos"])) {
   $Settings = mysqli_fetch_assoc($Result);
 
   // Safety nets just in case somebody is using a seriously outdated web browser that won't enforce form value limits
-  $Valve1 = round($_POST["Valve1"] * $Settings["valve1_pulse"],1,PHP_ROUND_HALF_UP);
+  $Valve1 = round($_POST["Valve1"] * $Settings["valve1_pulse"],1);
   if ($Valve1 > $Settings["valve1_total"]) $Valve1 = $Settings["valve1_total"]; // Prevents submissions > 100%
-  $Valve2 = round($_POST["Valve2"] * $Settings["valve2_pulse"],1,PHP_ROUND_HALF_UP);
+  $Valve2 = round($_POST["Valve2"] * $Settings["valve2_pulse"],1);
   if ($Valve2 > $Settings["valve2_total"]) $Valve2 = $Settings["valve2_total"]; // Prevents submissions > 100%
   if ($_POST["Heating"] > $Settings["heating_total"]) $_POST["Heating"] = $Settings["heating_total"]; // Same as above but different
 
@@ -138,6 +138,7 @@ elseif (isset($_POST["rss_edit_servos"])) {
     $Difference = $Settings["valve1_position"] - $Valve1;
     $Direction = 0;
   }
+  $Difference = round($Difference);
   if ($Difference > 0) {
     $Update = mysqli_query($DBcnx,"UPDATE settings SET valve1_position='$Valve1' WHERE ID=1");
     $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
@@ -153,6 +154,7 @@ elseif (isset($_POST["rss_edit_servos"])) {
     $Difference = $Settings["valve2_position"] - $Valve2;
     $Direction = 0;
   }
+  $Difference = round($Difference);
   if ($Difference > 0) {
     $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$Valve2' WHERE ID=1");
     $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
