@@ -276,6 +276,7 @@ function EditProgram($DBcnx,$ID) {
   }
 
   $Content  = "<form id=\"edit_program\" method=\"post\" action=\"process.php\">";
+  $Content .= "<input type=\"hidden\" name=\"ID\" value=\"$ID\">";
   $Content .= "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
   $Content .=     "<div>";
@@ -370,7 +371,7 @@ function EditProgram($DBcnx,$ID) {
   $Content .=       "<label for=\"Notes\" class=\"form-label\">Program Notes</label>";
   $Content .=       "<textarea class=\"form-control\" id=\"Notes\" name=\"Notes\" style=\"height: 150px;\">" . $Program["notes"] . "</textarea>";
   $Content .=     "</div>";
-  $Content .=     "<div style=\"margin-top: 1em; float: right;\"><a href=\"?page=programs\" class=\"btn btn-danger\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-primary\" name=\"rss_save_program\">Save Program</button></div>";
+  $Content .=     "<div style=\"margin-top: 1em; float: right;\"><a href=\"?page=programs\" class=\"btn btn-danger\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-primary\" name=\"rss_edit_program\">Save Program</button></div>";
   $Content .=   "</div>";
   $Content .= "</div>";
   $Content .= "</form>";
