@@ -118,16 +118,20 @@ elseif (isset($_GET["recalibrate_hydro"])) {
   $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','7','0','0')");
 }
 //---------------------------------------------------------------------------------------------------
+elseif (isset($_POST["rss_edit_heating"])) {
+
+}
+//---------------------------------------------------------------------------------------------------
+elseif (isset($_POST["rss_edit_program"])) {
+  
+}
+//---------------------------------------------------------------------------------------------------
 elseif (isset($_POST["rss_edit_servos"])) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
 
-  // Safety nets just in case somebody is using a seriously outdated web browser that won't enforce form value limits
   $Valve1 = round($_POST["Valve1"] * $Settings["valve1_pulse"],1);
-  if ($Valve1 > $Settings["valve1_total"]) $Valve1 = $Settings["valve1_total"]; // Prevents submissions > 100%
   $Valve2 = round($_POST["Valve2"] * $Settings["valve2_pulse"],1);
-  if ($Valve2 > $Settings["valve2_total"]) $Valve2 = $Settings["valve2_total"]; // Prevents submissions > 100%
-  if ($_POST["Heating"] > $Settings["heating_total"]) $_POST["Heating"] = $Settings["heating_total"]; // Same as above but different
 
   // Requires a difference in Valve1 position to process
   $Difference = 0;
