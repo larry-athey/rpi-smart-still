@@ -121,7 +121,7 @@ elseif (isset($_GET["recalibrate_hydro"])) {
 elseif (isset($_POST["rss_edit_heating"])) {
   //echo("<pre>\n");
   //print_r($_POST);
-  //echo("<pre>\n");
+  //echo("</pre>\n");
 
   $HeatingEnabled  = $_POST["HeatingEnabled"];
   $HeatingPolarity = $_POST["HeatingPolarity"];
@@ -154,7 +154,7 @@ elseif (isset($_POST["rss_edit_heating"])) {
 elseif (isset($_POST["rss_edit_program"])) {
   //echo("<pre>\n");
   //print_r($_POST);
-  //echo("<pre>\n");
+  //echo("</pre>\n");
 
   $ID              = $_POST["ID"];
   $ProgramName     = mysqli_escape_string($DBcnx,$_POST["ProgramName"]);
@@ -178,7 +178,8 @@ elseif (isset($_POST["rss_edit_program"])) {
   $Notes           = mysqli_escape_string($DBcnx,$_POST["Notes"]);
 
   if ($ID == 0) {
-
+    $Insert = mysqli_query($DBcnx,"INSERT INTO programs (program_name,mode,distillate_abv,abv_managed,minimum_flow,flow_managed,dephleg_start,condenser_rate,boiler_managed,boiler_temp_low,boiler_temp_high,dephleg_managed,dephleg_temp_low,dephleg_temp_high,column_managed,column_temp_low,column_temp_high,heating_idle,notes) " .
+    "VALUES ('$ProgramName','$ProgramType','$DistillateABV','$ABVmanaged','$MinimumFlow','$FlowManaged','$DephlegStart','$CondenserRate','$BoilerManaged','$BoilerTempLow','$BoilerTempHigh','$DephlegManaged','$DephlegTempLow','$DephlegTempHigh','$ColumnManaged','$ColumnTempLow','$ColumnTempHigh','$HeatingIdle','$Notes')");
   } else {
     $Update = mysqli_query($DBcnx,"UPDATE programs SET program_name='$ProgramName',mode='$ProgramType',abv_managed='$ABVmanaged',distillate_abv='$DistillateABV'," .
                                   "flow_managed='$FlowManaged',minimum_flow='$MinimumFlow',condenser_rate='$CondenserRate',dephleg_start='$DephlegStart'," .
