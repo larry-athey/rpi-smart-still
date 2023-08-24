@@ -175,7 +175,7 @@ function EditHeating($DBcnx) {
   $Content .=     "<div class=\"row\">";
   $Content .=       "<div class=\"col\">";
   $Content .=         "<label for=\"HeatingEnabled\" class=\"form-label\">Heat Management Enabled</label>";
-  $Content .=         YNselector($Settings["heating_enabled"],"HeatingEndabled");
+  $Content .=         YNselector($Settings["heating_enabled"],"HeatingEnabled");
   $Content .=       "</div>";
   $Content .=       "<div class=\"col\">";
   $Content .=         "<label for=\"HeatingPolarity\" class=\"form-label\">Inverted Stepper Rotation</label>";
