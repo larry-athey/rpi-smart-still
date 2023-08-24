@@ -119,12 +119,36 @@ elseif (isset($_GET["recalibrate_hydro"])) {
 }
 //---------------------------------------------------------------------------------------------------
 elseif (isset($_POST["rss_edit_heating"])) {
-  echo("<pre>\n");
-  print_r($_POST);
-  echo("<pre>\n");
+  //echo("<pre>\n");
+  //print_r($_POST);
+  //echo("<pre>\n");
 
+  $HeatingEnabled  = $_POST["HeatingEnabled"];
+  $HeatingPolarity = $_POST["HeatingPolarity"];
+  $HeatingAnalog   = $_POST["HeatingAnalog"];
+  $HeatingTotal    = $_POST["HeatingTotal"];
+  $Heating10       = $_POST["Heating10"];
+  $Heating20       = $_POST["Heating20"];
+  $Heating30       = $_POST["Heating30"];
+  $Heating40       = $_POST["Heating40"];
+  $Heating50       = $_POST["Heating50"];
+  $Heating60       = $_POST["Heating60"];
+  $Heating70       = $_POST["Heating70"];
+  $Heating80       = $_POST["Heating80"];
+  $Heating90       = $_POST["Heating90"];
 
-  exit;
+  $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_enabled='$HeatingEnabled',heating_polarity='$HeatingPolarity',heating_analog='$HeatingAnalog',heating_total='$HeatingTotal' WHERE ID=1");
+  $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating10' WHERE percent=10");
+  $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating20' WHERE percent=20");
+  $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating30' WHERE percent=30");
+  $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating40' WHERE percent=40");
+  $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating50' WHERE percent=50");
+  $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating60' WHERE percent=60");
+  $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating70' WHERE percent=70");
+  $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating80' WHERE percent=80");
+  $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating90' WHERE percent=90");
+
+  //exit;
 }
 //---------------------------------------------------------------------------------------------------
 elseif (isset($_POST["rss_edit_program"])) {
