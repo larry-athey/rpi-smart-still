@@ -156,6 +156,32 @@ elseif (isset($_POST["rss_edit_program"])) {
   print_r($_POST);
   echo("<pre>\n");
 
+  $ID              = $_POST["ID"];
+  $ProgramName     = mysqli_escape_string($DBcnx,$_POST["ProgramName"]);
+  $ProgramType     = $_POST["ProgramType"];
+  $ABVmanaged      = $_POST["ABVmanaged"];
+  $DistillateABV   = $_POST["DistillateABV"];
+  $FlowManaged     = $_POST["FlowManaged"];
+  $MinimumFlow     = $_POST["MinimumFlow"];
+  $CondenserRate   = $_POST["CondenserRate"];
+  $DephlegStart    = $_POST["DephlegStart"];
+  $HeatingIdle     = $_POST["HeatingIdle"];
+  $BoilerManaged   = $_POST["BoilerManaged"];
+  $BoilerTempLow   = $_POST["BoilerTempLow"];
+  $BoilerTempHigh  = $_POST["BoilerTempHigh"];
+  $ColumnManaged   = $_POST["ColumnManaged"];
+  $ColumnTempLow   = $_POST["ColumnTempLow"];
+  $ColumnTempHigh  = $_POST["ColumnTempHigh"];
+  $DephlegManaged  = $_POST["DephlegManaged"];
+  $DephlegTempLow  = $_POST["DephlegTempLow"];
+  $DephlegTempHigh = $_POST["DephlegTempHigh"];
+  $Notes           = mysqli_escape_string($DBcnx,$_POST["Notes"]);
+
+  if ($ID == 0) {
+
+  } else {
+
+  }
 
   exit;
 }
