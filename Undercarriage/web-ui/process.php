@@ -152,9 +152,9 @@ elseif (isset($_POST["rss_edit_heating"])) {
 }
 //---------------------------------------------------------------------------------------------------
 elseif (isset($_POST["rss_edit_program"])) {
-  echo("<pre>\n");
-  print_r($_POST);
-  echo("<pre>\n");
+  //echo("<pre>\n");
+  //print_r($_POST);
+  //echo("<pre>\n");
 
   $ID              = $_POST["ID"];
   $ProgramName     = mysqli_escape_string($DBcnx,$_POST["ProgramName"]);
@@ -180,9 +180,15 @@ elseif (isset($_POST["rss_edit_program"])) {
   if ($ID == 0) {
 
   } else {
-
+    $Update = mysqli_query($DBcnx,"UPDATE programs SET program_name='$ProgramName',mode='$ProgramType',abv_managed='$ABVmanaged',distillate_abv='$DistillateABV'," .
+                                  "flow_managed='$FlowManaged',minimum_flow='$MinimumFlow',condenser_rate='$CondenserRate',dephleg_start='$DephlegStart'," .
+                                  "heating_idle='$HeatingIdle',boiler_managed='$BoilerManaged',boiler_temp_low='$BoilerTempLow',boiler_temp_high='$BoilerTempHigh'," .
+                                  "column_managed='$ColumnManaged',column_temp_low='$ColumnTempLow',column_temp_high='$ColumnTempHigh',dephleg_managed='$DephlegManaged'," .
+                                  "dephleg_temp_low='$DephlegTempLow',dephleg_temp_high='$DephlegTempHigh',notes='$Notes' WHERE ID=$ID");
   }
 
+  mysqli_close($DBcnx);
+  header("Location: index.php?page=programs");
   exit;
 }
 //---------------------------------------------------------------------------------------------------
