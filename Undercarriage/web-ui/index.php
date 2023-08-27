@@ -109,8 +109,8 @@ if (! isset($_GET["page"])) {
   $Content .= DrawCard($DBcnx,"temperatures",true);
   $Content .= DrawCard($DBcnx,"valve_positions",true);
   $Content .= DrawCard($DBcnx,"program_temps",true);
-  $Content .= DrawLogicTracker($DBcnx);
   // Full width card to show run logic tracking info
+  $Content .= DrawLogicTracker($DBcnx);
 } else {
   if ($_GET["page"] == "edit_program") {
     $Content .= EditProgram($DBcnx,$_GET["ID"]);
