@@ -149,6 +149,7 @@ function SensorSelector($Selected,$ID) {
   $Sensors = getSensorList();
   if (count($Sensors) > 0) {
     $Content  = "<select style=\"width: 100%;\" size=\"1\" class=\"form-control form-select\" id=\"$ID\" name=\"$ID\" aria-describedby=\"$ID" . "Help\">";
+    $Content .= "<option value=\"\"></option>";
     for ($x = 0; $x <= (count($Sensors) - 1); $x++) {
       if ($Selected == $Sensors[$x]) {
         $OptionSelected = " selected";
