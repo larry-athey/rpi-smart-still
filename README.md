@@ -1,6 +1,9 @@
 # RPi Smart Still
 Raspberry PI and Arduino/ESP32 powered smart still controller system. Designed around the Still Spirits T-500 column and boiler, but can be easily added to any other gas or electric reflux still...Please refer to the [Wiki](https://github.com/larry-athey/rpi-smart-still/wiki) for more information and setup instructions.
 
+Subscribe to the official YouTube channel at https://www.youtube.com/@PanhandlePonics
+Contact me at https://panhandleponics.com
+
 <img width="1024" alt="2023-08-14 16-50-42-0" src="https://github.com/larry-athey/rpi-smart-still/assets/121518798/99d79efd-4ef9-46cd-ae24-7db2d0185869"><br><br>
 <img width="1024" alt="2023-08-15 12-07-20-0" src="https://github.com/larry-athey/rpi-smart-still/assets/121518798/dee64786-54f7-4628-b870-9a848907a846"><br><br>
 <img width="1024" alt="2023-08-15 12-06-19-0" src="https://github.com/larry-athey/rpi-smart-still/assets/121518798/443844d2-ec12-4a0a-9831-3e3e8a4ffdd7"><br><br>
