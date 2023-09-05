@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------
-// *** Currently incomplete, rebuilding this function with a fresh distillation run.
+// *** Currently rebuilding this function due to a change in load cell weight capacity.
 //
 // Calculations based on a 64 gram (2.4 ounce) stainless steel ball reference weight suspended
 // mid-way into a 125 ml (4 ounce) vessel of 18C/65F to 21C/70F distillate. Deviating from these
