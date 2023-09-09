@@ -1,5 +1,6 @@
 //------------------------------------------------------------------------------------------------
 // RPI-Smart-Still Hydrometer Serial Data Reader v1.0.1 released July 14, 2023
+// Written by Larry Athey (https://panhandleponics.com)
 //
 // Simple program to wait up to 10 seconds for data to arrive from the hydrometer and echo it to
 // stdout for the undercarriage to parse and record in the database. This isn't feasible to do in
