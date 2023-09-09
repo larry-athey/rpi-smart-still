@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------
-// Written by Larry Athey (Panhandle Ponics - https://3dgtower.com) v1.0.1 released July 4, 2023
+// Written by Larry Athey (https://panhandleponics.com) v1.0.1 released July 12, 2023
 //
 // NOTE: This project is no longer supported by the RPi Smart Still system. This code is merely
 // provided for example purposes to show another method for creating a digital hydrometer.
