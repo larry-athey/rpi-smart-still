@@ -1,5 +1,6 @@
 //------------------------------------------------------------------------------------------------
 // RPi-Smart-Still Heating Stepper Motor Driver v1.0.1 released July 14, 2023
+// Written by Larry Athey (https://panhandleponics.com)
 //
 // Unlike the cooling water valves, there are no limit switches to tell the system when the motor
 // is at its upper or lower limits. This requires you to manually zero your heating control valve
