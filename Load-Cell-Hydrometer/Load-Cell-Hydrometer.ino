@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------
-// Written by Larry Athey (Panhandle Ponics - https://3dgtower.com) v1.0.1 released July 12, 2023
+// Written by Larry Athey (https://panhandleponics.com) v1.0.1 released July 12, 2023
 //
 // This project is based on an Arduino Uno/Nano/Mega or ESP32 and an ILI9341 320x240 color LCD/TFT
 // display that uses SPI communications. Parallel shields are completely useless since they steal
