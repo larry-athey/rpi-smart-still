@@ -1,5 +1,6 @@
 //------------------------------------------------------------------------------------------------
 // RPi-Smart-Still Cooling Valve Driver v1.0.1 released July 14, 2023
+// Written by Larry Athey (https://panhandleponics.com)
 //
 // While the rest of the undercarriage runs on shell scripts the need for millisecond timing in
 // valve motor control requires that a separate compiled binary be used instead. The valves can
