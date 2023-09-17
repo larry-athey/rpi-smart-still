@@ -28,6 +28,7 @@ sudo service lighttpd force-reload
 
 sudo rm -f /var/www/html/index.lighttpd.html
 sudo cp -f ./web-ui/* /var/www/html
+sudo mkdir -p /var/www/html/voice_prompts
 sudo chown -R www-data:www-data /var/www/html
 sudo chmod g+w -R /var/www/html
 
