@@ -6,6 +6,10 @@ require_once("html.php");
 // into mobile view. Set the resolution to 1025x650 and it will condense the view to match the format
 // you see on an iPad Air in landscape orientation.
 //---------------------------------------------------------------------------------------------------
+if (! isset($_COOKIE["client_id"])) {
+  setcookie("client_id",generateRandomString(32),0,"/");
+  header("Location: index.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
