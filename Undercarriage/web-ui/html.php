@@ -433,14 +433,12 @@ function LogicTracker($DBcnx) {
     $Content = "<p>No distillation run currently active</p>" .
                "<p>Last run started at " . $Settings["run_start"] . " and ended at " . $Settings["run_end"] . "</p>";
   }
-  // Check for waiting voice prompts if speech is enabled
+  // Check for waiting voice prompts if speech is enabled (web browser must have autoplay enabled in its settings)
   if ($Settings["speech_enabled"] == 1) {
     $Result = mysqli_query($DBcnx,"SELECT * FROM voice_prompts WHERE seen_by NOT LIKE '%" . $_COOKIE["client_id"] . "%' ORDER BY ID LIMIT 1");
     if (mysqli_num_rows($Result) > 0) {
       $RS = mysqli_fetch_assoc($Result);
-      $Content .= "<audio controls autoplay>";
-      $Content .=   "<source src=\"voice_prompts/" . $RS["filename"] . "\" type=\"audio/mpeg\">";
-      $Content .= "</audio>";
+      $Content .= "<audio controls autoplay id=\"VoicePrompt\"><source src=\"voice_prompts/" . $RS["filename"] . "\" type=\"audio/mpeg\"></audio>";
       $Result = mysqli_query($DBcnx,"UPDATE voice_prompts SET seen_by=CONCAT('" . $_COOKIE["client_id"] . "|',seen_by) WHERE ID=" . $RS["ID"]);
     }
   }
