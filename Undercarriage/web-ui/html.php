@@ -435,7 +435,14 @@ function LogicTracker($DBcnx) {
   }
   // Check for waiting voice prompts if speech is enabled
   if ($Settings["speech_enabled"] == 1) {
-
+    $Result = mysqli_query($DBcnx,"SELECT * FROM voice_prompts WHERE seen_by NOT LIKE '%" . $_COOKIE["client_id"] . "%' ORDER BY ID LIMIT 1");
+    if (mysqli_num_rows($Result) > 0) {
+      $RS = mysqli_fetch_assoc($Result);
+      $Content .= "<audio autoplay>";
+      $Content .=   "<source src=\"voice_prompts/" . $RS["filename"] . "\" type=\"audio/mpeg\">";
+      $Content .= "</audio>";
+      $Result = mysqli_query($DBcnx,"UPDATE voice_prompts SET seen_by=CONCAT('" . $_COOKIE["client_id"] . "|',seen_by) WHERE ID=" . $RS["ID"]);
+    }
   }
   return $Content;
 }
