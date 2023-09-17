@@ -440,7 +440,7 @@ function LogicTracker($DBcnx) {
       $RS = mysqli_fetch_assoc($Result);
       $Content .= "<audio autoplay>";
       $Content .=   "<source src=\"voice_prompts/" . $RS["filename"] . "\" type=\"audio/mpeg\">";
-      $Content .=   "<p class=\"text-danger\">This browser does not support MP3 audio embedding</p>";
+      $Content .=   "<p class=\"text-danger\">Sorry, your web browser does not support MP3 audio embedding</p>";
       $Content .= "</audio>";
       $Result = mysqli_query($DBcnx,"UPDATE voice_prompts SET seen_by=CONCAT('" . $_COOKIE["client_id"] . "|',seen_by) WHERE ID=" . $RS["ID"]);
     }
