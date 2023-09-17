@@ -2,9 +2,18 @@
 //---------------------------------------------------------------------------------------------
 require_once("/var/www/html/subs.php");
 //---------------------------------------------------------------------------------------------
+function CreatePrompt($Msg) {
+  $DBcnx = mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
+  $FName = generateRandomString(20) . ".mp3";
+  shell_exec("/usr/bin/espeak -v english-us -s 160 \"$Msg\" --stdout | /usr/bin/ffmpeg -i - -ar 44100 -ac 2 -ab 192k -f mp3 /var/www/html/voice_prompts/$FName");
+  shell_exec("/usr/bin/chown www-data:www-data /var/www/html/voice_prompts/$FName");
+  $Insert = mysqli_query($DBcnx,"INSERT INTO voice_prompts (timestamp,filename,seen_by) VALUES (now(),'$FName','')");
+  mysqli_close($DBcnx);
+}
+//---------------------------------------------------------------------------------------------
 function DebugMessage($Msg) {
   if (trim($Msg) == "") exit;
-  shell_exec("/usr/bin/espeak -v english-us -s 160 \"$Msg\" 2> /dev/null &");
+  CreatePrompt($Msg);
 }
 //---------------------------------------------------------------------------------------------
 function SpeakMessage($ID) {
@@ -13,8 +22,6 @@ function SpeakMessage($ID) {
   $Settings = mysqli_fetch_assoc($Result);
   $Result   = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=" . $Settings["active_program"]);
   $Program  = mysqli_fetch_assoc($Result);
-  $Result   = mysqli_query($DBcnx,"SELECT * FROM logic_tracker WHERE ID=1");
-  $Logic    = mysqli_fetch_assoc($Result);
 
   $Msg[0]   = "Increasing condenser cooling valve position";
   $Msg[1]   = "Decreasing condenser cooling valve position";
@@ -54,8 +61,8 @@ function SpeakMessage($ID) {
   $Msg[35]  = "Pausing the current distillation run";
   $Msg[36]  = "Resuming the currently paused distillation run";
 
-  shell_exec("/usr/bin/espeak -v english-us -s 160 \"$Msg[$ID]\" 2> /dev/null &");
   mysqli_close($DBcnx);
+  CreatePrompt($Msg[$ID]);
 }
 //---------------------------------------------------------------------------------------------
 ?>
