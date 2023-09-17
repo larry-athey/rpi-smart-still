@@ -433,6 +433,10 @@ function LogicTracker($DBcnx) {
     $Content = "<p>No distillation run currently active</p>" .
                "<p>Last run started at " . $Settings["run_start"] . " and ended at " . $Settings["run_end"] . "</p>";
   }
+  // Check for waiting voice prompts if speech is enabled
+  if ($Settings["speech_enabled"] == 1) {
+
+  }
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
