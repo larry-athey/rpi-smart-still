@@ -155,3 +155,14 @@ INSERT INTO `settings` (`ID`, `boiler_addr`, `boiler_temp`, `dephleg_addr`, `dep
 ALTER TABLE `settings` ADD PRIMARY KEY (`ID`);
 
 ALTER TABLE `settings` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+CREATE TABLE `voice_prompts` (
+  `ID` int(11) NOT NULL,
+  `timestamp` timestamp NULL DEFAULT NULL,
+  `filename` varchar(25) DEFAULT NULL,
+  `seen_by` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+ALTER TABLE `voice_prompts` ADD PRIMARY KEY (`ID`);
+
+ALTER TABLE `voice_prompts` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
