@@ -13,7 +13,7 @@ if (mysqli_num_rows($Result) > 0) {
   mysqli_close($DBcnx);
   exit;
 }
-
+//---------------------------------------------------------------------------------------------
 if ($Settings["speech_enabled"] == 1) {
   $Result = mysqli_query($DBcnx,"SELECT * FROM voice_prompts WHERE seen_by NOT LIKE '%localhost%' ORDER BY ID LIMIT 1");
   if (mysqli_num_rows($Result) > 0) {
@@ -22,6 +22,12 @@ if ($Settings["speech_enabled"] == 1) {
     $Result = mysqli_query($DBcnx,"UPDATE voice_prompts SET seen_by=CONCAT('localhost|',seen_by) WHERE ID=" . $RS["ID"]);
   }
 }
+//---------------------------------------------------------------------------------------------
+$Result = mysqli_query($DBcnx,"SELECT * FROM voice_prompts WHERE timestamp < (NOW() - INTERVAL 5 MINUTE)");
+while ($RS = mysqli_fetch_assoc($Result)) {
+  unlink("/var/www/html/voice_prompts/" . $RS["filename"]);
+}
+$Result = mysqli_query($DBcnx,"DELETE FROM voice_prompts WHERE timestamp < (NOW() - INTERVAL 5 MINUTE)")
 //---------------------------------------------------------------------------------------------
 mysqli_close($DBcnx);
 //---------------------------------------------------------------------------------------------
