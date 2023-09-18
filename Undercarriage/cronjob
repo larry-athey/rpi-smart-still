@@ -11,6 +11,7 @@ Min=$(date +%M)
 
 if [ "$Hour" == "00" ] && [ "$Min" == "15" ]; then
   cd /usr/share/rpi-smart-still
+  pkill -f /usr/share/rpi-smart-still/rss-audio-loop
   pkill -f /usr/share/rpi-smart-still/rss-logic-loop
   pkill -f /usr/share/rpi-smart-still/rss-read-loop
   pkill -f /usr/share/rpi-smart-still/rss-write-loop
@@ -19,6 +20,11 @@ if [ "$Hour" == "00" ] && [ "$Min" == "15" ]; then
 fi
 
 LoopFailure=0
+
+ps cax | grep [r]ss-audio-loop
+if [ $? -ne 0 ]; then
+  LoopFailure=1
+fi
 
 ps cax | grep [r]ss-logic-loop
 if [ $? -ne 0 ]; then
@@ -36,9 +42,11 @@ if [ $? -ne 0 ]; then
 fi
 
 if [ $LoopFailure -eq 1 ]; then
+  pkill -f /usr/share/rpi-smart-still/rss-audio-loop
   pkill -f /usr/share/rpi-smart-still/rss-logic-loop
   pkill -f /usr/share/rpi-smart-still/rss-read-loop
   pkill -f /usr/share/rpi-smart-still/rss-write-loop
+  /usr/share/rpi-smart-still/rss-audio-loop &
   /usr/share/rpi-smart-still/rss-logic-loop &
   /usr/share/rpi-smart-still/rss-read-loop &
   /usr/share/rpi-smart-still/rss-write-loop &
