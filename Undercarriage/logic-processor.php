@@ -40,10 +40,7 @@ if (mysqli_num_rows($Result) > 0) {
     } else {
       if ($Settings["speech_enabled"] == 1) SpeakMessage(9);
     }
-    if ($Settings["speech_enabled"] == 1) {
-      sleep(10);
-      SpeakMessage(28);
-    }
+    if ($Settings["speech_enabled"] == 1) SpeakMessage(28);
     sleep(120);
     $Update = mysqli_query($DBcnx,"UPDATE settings SET valve1_position='0',valve2_position='0' WHERE ID=1");
     if ($Settings["speech_enabled"] == 1) SpeakMessage(1);
@@ -74,10 +71,7 @@ if (mysqli_num_rows($Result) > 0) {
                                         "boiler_note='Boiler has reached minimum operating temperature, please reduce your heat to " . $Program["heating_idle"] . "%' WHERE ID=1");
           if ($Settings["speech_enabled"] == 1) SpeakMessage(11);
         }
-        if ($Settings["speech_enabled"] == 1) {
-          sleep(10);
-          SpeakMessage(29);
-        }
+        if ($Settings["speech_enabled"] == 1) SpeakMessage(29);
         // Open the condenser valve to its programed position
         $Update = mysqli_query($DBcnx,"UPDATE settings SET valve1_position='" . round($Program["condenser_rate"] * $Settings["valve1_pulse"],0,PHP_ROUND_HALF_UP) . "' WHERE ID=1");
         // Open to 100% and pull down to the setting to evacuate any air in its water lines
