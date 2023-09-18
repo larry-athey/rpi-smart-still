@@ -9,9 +9,15 @@ $DBcnx = mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
 //---------------------------------------------------------------------------------------------
 $Counter  = 0;
 $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
-$Settings = mysqli_fetch_assoc($Result);
+if (mysqli_num_rows($Result) > 0) {
+  $Settings = mysqli_fetch_assoc($Result);
+} else {
+  echo("System settings record is missing, reinstall system from GitHub clone.\n");
+  mysqli_close($DBcnx);
+  exit;
+}
 
-$Result   = mysqli_query($DBcnx,"SELECT * FROM output_table WHERE executed=0");
+$Result = mysqli_query($DBcnx,"SELECT * FROM output_table WHERE executed=0");
 while ($RS = mysqli_fetch_assoc($Result)) {
   print_r($RS);
   $Counter ++;
