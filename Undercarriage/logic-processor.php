@@ -374,13 +374,6 @@ if (mysqli_num_rows($Result) > 0) {
   }
 }
 //---------------------------------------------------------------------------------------------
-// Clean up the voice_prompts table and any MP3 files that are more than 5 minutes old
-$Result = mysqli_query($DBcnx,"SELECT * FROM voice_prompts WHERE timestamp < (NOW() - INTERVAL 5 MINUTE)");
-while ($RS = mysqli_fetch_assoc($Result)) {
-  unlink("/var/www/html/voice_prompts/" . $RS["filename"]);
-}
-$Result = mysqli_query($DBcnx,"DELETE FROM voice_prompts WHERE timestamp < (NOW() - INTERVAL 5 MINUTE)");
-//---------------------------------------------------------------------------------------------
 mysqli_close($DBcnx);
 //---------------------------------------------------------------------------------------------
 ?>
