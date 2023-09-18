@@ -18,6 +18,8 @@ if ($_GET["ID"] == "hydrometer") {
   $Content = ShowTemperatures($DBcnx);
 } elseif ($_GET["ID"] == "valve_positions") {
   $Content = ShowValves($DBcnx);
+} elseif ($_GET["ID"] == "voice_prompter") {
+  $Content = VoicePrompter($DBcnx,false);
 }
 
 echo("$Content\n");
