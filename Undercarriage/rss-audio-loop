@@ -1,0 +1,16 @@
+#!/bin/bash
+
+cd /usr/share/rpi-smart-still
+
+while [ true ]; do
+  ScriptStart=$(date +%s)
+  ./play-prompts.php
+  ScriptEnd=$(date +%s)
+  Runtime=$(($ScriptEnd - $ScriptStart))
+  echo "Script Runtime: $Runtime seconds"
+  if [ $Runtime -lt 5 ]; then
+    Delay=$((5 - $Runtime))
+    echo "Sleeping $Delay seconds"
+    sleep $Delay
+  fi
+done
