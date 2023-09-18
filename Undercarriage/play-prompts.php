@@ -27,7 +27,7 @@ $Result = mysqli_query($DBcnx,"SELECT * FROM voice_prompts WHERE timestamp < (NO
 while ($RS = mysqli_fetch_assoc($Result)) {
   unlink("/var/www/html/voice_prompts/" . $RS["filename"]);
 }
-$Result = mysqli_query($DBcnx,"DELETE FROM voice_prompts WHERE timestamp < (NOW() - INTERVAL 5 MINUTE)")
+$Result = mysqli_query($DBcnx,"DELETE FROM voice_prompts WHERE timestamp < (NOW() - INTERVAL 5 MINUTE)");
 //---------------------------------------------------------------------------------------------
 mysqli_close($DBcnx);
 //---------------------------------------------------------------------------------------------
