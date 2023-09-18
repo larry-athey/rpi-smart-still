@@ -8,13 +8,13 @@ define("DB_NAME","rpismartstill");
 define("DB_USER","rssdbuser");
 define("DB_PASS","rssdbpasswd");
 //---------------------------------------------------------------------------------------------------
-function AjaxRefreshJS($ID,$RandID) {
+function AjaxRefreshJS($ID,$RandID,$Delay) {
   $Content  = "\n<script type=\"text/javascript\">\n";
-  //$Content .= "  // Random 4.5 to 5.5 second refresh time per card so things\n";
+  //$Content .= "  // Random $Delay milliseconds refresh time per card so things\n";
   //$Content .= "  // don't have such a robotic look by updating simultaneously.\n";
   //$Content .= "  // The sensor and logic loops run on 10 second delay cycles.\n";
   $Content .= "  jQuery(document).ready(function() {\n";
-  $Content .= "    RandomDelay = 4500 + Math.floor(Math.random() * 1000) + 1;\n";
+  $Content .= "    RandomDelay = $Delay + Math.floor(Math.random() * 1000) + 1;\n";
   $Content .= "    function refresh() {\n";
   $Content .= "      jQuery('#$RandID').load('./ajax.php?ID=$ID');\n";
   $Content .= "    }\n";
