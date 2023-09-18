@@ -115,6 +115,8 @@ if (! isset($_GET["page"])) {
   $Content .= DrawCard($DBcnx,"program_temps",true);
   // Full width card to show run logic tracking info
   $Content .= DrawLogicTracker($DBcnx);
+  // Hidden div to play voice prompts (web browser must have autoplay enabled in its settings)
+  $Content .= VoicePrompter($DBcnx,true);
 } else {
   if ($_GET["page"] == "edit_program") {
     $Content .= EditProgram($DBcnx,$_GET["ID"]);
