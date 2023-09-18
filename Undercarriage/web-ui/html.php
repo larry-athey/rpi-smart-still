@@ -24,7 +24,7 @@ function DrawCard($DBcnx,$Body,$DoAjax) {
   $RandID   = "card_" . generateRandomString();
   $Content  = "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
-  if ($DoAjax) $Content .= AjaxRefreshJS($Body,$RandID);
+  if ($DoAjax) $Content .= AjaxRefreshJS($Body,$RandID,4500);
   $Content .=     "<div id=\"$RandID\">";
   if ($Body == "hydrometer") {
     $Content .= ShowHydrometer($DBcnx);
@@ -55,7 +55,7 @@ function DrawLogicTracker($DBcnx) {
   $RandID   = "card_" . generateRandomString();
   $Content  = "<div class=\"card\" style=\"width: 98.5%; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
-  $Content .=     AjaxRefreshJS("logic_tracker",$RandID);
+  $Content .=     AjaxRefreshJS("logic_tracker",$RandID,4500);
   $Content .=     "<div id=\"$RandID\">";
   $Content .=     LogicTracker($DBcnx);
   $Content .=     "</div>";
@@ -433,15 +433,6 @@ function LogicTracker($DBcnx) {
     $Content = "<p>No distillation run currently active</p>" .
                "<p>Last run started at " . $Settings["run_start"] . " and ended at " . $Settings["run_end"] . "</p>";
   }
-  // Check for waiting voice prompts if speech is enabled (web browser must have autoplay enabled in its settings)
-  if ($Settings["speech_enabled"] == 1) {
-    $Result = mysqli_query($DBcnx,"SELECT * FROM voice_prompts WHERE seen_by NOT LIKE '%" . $_COOKIE["client_id"] . "%' ORDER BY ID LIMIT 1");
-    if (mysqli_num_rows($Result) > 0) {
-      $RS = mysqli_fetch_assoc($Result);
-      $Content .= "<audio controls autoplay id=\"VoicePrompt\"><source src=\"voice_prompts/" . $RS["filename"] . "\" type=\"audio/mpeg\"></audio>";
-      $Result = mysqli_query($DBcnx,"UPDATE voice_prompts SET seen_by=CONCAT('" . $_COOKIE["client_id"] . "|',seen_by) WHERE ID=" . $RS["ID"]);
-    }
-  }
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
@@ -712,6 +703,27 @@ function StartRun($DBcnx) {
 function StopRun($DBcnx) {
   $Content  = "<p class=\"text-light\">Are you sure that you want to stop the current run rather than pausing it? Starting a new distillation run will clear all data currently stored in the timeline.</p>";
   $Content .= "<div style=\"float: right;\"><a href=\"index.php\" class=\"btn btn-danger\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"process.php?active_run=0\" class=\"btn btn-primary\" name=\"start_run\">Stop Distillation Run</a></div>";
+  return $Content;
+}
+//---------------------------------------------------------------------------------------------------
+function VoicePrompter($DBcnx,$Ajax) {
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
+  $Settings = mysqli_fetch_assoc($Result);
+
+  $RandID   = "card_" . generateRandomString();
+  $Content  = "";
+  if ($Ajax) $Content .= AjaxRefreshJS("voice_prompter",$RandID,9500);
+  $Content .= "<div id=\"$RandID\">";
+  // Check for waiting voice prompts if speech is enabled (web browser must have autoplay enabled in its settings)
+  if ($Settings["speech_enabled"] == 1) {
+    $Result = mysqli_query($DBcnx,"SELECT * FROM voice_prompts WHERE seen_by NOT LIKE '%" . $_COOKIE["client_id"] . "%' ORDER BY ID LIMIT 1");
+    if (mysqli_num_rows($Result) > 0) {
+      $RS = mysqli_fetch_assoc($Result);
+      $Content .= "<audio controls autoplay id=\"VoicePrompt\"><source src=\"voice_prompts/" . $RS["filename"] . "\" type=\"audio/mpeg\"></audio>";
+      $Result = mysqli_query($DBcnx,"UPDATE voice_prompts SET seen_by=CONCAT('" . $_COOKIE["client_id"] . "|',seen_by) WHERE ID=" . $RS["ID"]);
+    }
+  }
+  $Content .= "</div>";
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
