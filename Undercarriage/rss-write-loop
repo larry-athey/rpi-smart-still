@@ -13,4 +13,5 @@ while [ true ]; do
     echo "Sleeping $Delay seconds"
     sleep $Delay
   fi
+  ./play-prompts.php
 done
