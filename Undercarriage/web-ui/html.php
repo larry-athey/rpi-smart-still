@@ -17,6 +17,7 @@ function CalibrateHydrometer($DBcnx) {
   $Content .=   "</div>";
   $Content .= "</div>";
   $Content .= "<div>" . DrawCard($DBcnx,"show_serial",true) . "<div>";
+  $Content .= VoicePrompter($DBcnx,true);
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
@@ -244,6 +245,7 @@ function EditHeating($DBcnx) {
   $Content .=   "</div>";
   $Content .= "</div>";
   $Content .= "</form>";
+  $Content .= VoicePrompter($DBcnx,true);
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
@@ -375,6 +377,7 @@ function EditProgram($DBcnx,$ID) {
   $Content .=   "</div>";
   $Content .= "</div>";
   $Content .= "</form>";
+  $Content .= VoicePrompter($DBcnx,true);
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
@@ -402,6 +405,7 @@ function EditSensors($DBcnx) {
   $Content .= "</div>";
   $Content .= "</form>";
   $Content .= "<div>" . DrawCard($DBcnx,"show_sensors",true) . "<div>";
+  $Content .= VoicePrompter($DBcnx,true);
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
@@ -449,6 +453,7 @@ function ServoPositionEditor($DBcnx) {
   $Content .= "<input type=\"number\" class=\"form-control\" id=\"Heating\" name=\"Heating\" min=\"0\" max=\"" . $Settings["heating_total"] . "\" step=\"1\" value=\"" . $Settings["heating_position"] . "\">";
   $Content .= "<div style=\"margin-top: 1em; float: right;\"><a href=\"index.php\" class=\"btn btn-danger\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-primary\" name=\"rss_edit_servos\">Submit</button></div>";
   $Content .= "</form>";
+  $Content .= VoicePrompter($DBcnx,true);
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
@@ -495,6 +500,7 @@ function ShowPrograms($DBcnx) {
   if ($Counter == 0) $Content .= "No programs found...";
   $Content .=   "</div>";
   $Content .= "</div>";
+  $Content .= VoicePrompter($DBcnx,true);
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
@@ -719,7 +725,7 @@ function VoicePrompter($DBcnx,$Ajax) {
     $Result = mysqli_query($DBcnx,"SELECT * FROM voice_prompts WHERE seen_by NOT LIKE '%" . $_COOKIE["client_id"] . "%' ORDER BY ID LIMIT 1");
     if (mysqli_num_rows($Result) > 0) {
       $RS = mysqli_fetch_assoc($Result);
-      $Content .= "<audio controls autoplay id=\"VoicePrompt\"><source src=\"voice_prompts/" . $RS["filename"] . "\" type=\"audio/mpeg\"></audio>";
+      $Content .= "<audio autoplay id=\"VoicePrompt\"><source src=\"voice_prompts/" . $RS["filename"] . "\" type=\"audio/mpeg\"></audio>";
       $Result = mysqli_query($DBcnx,"UPDATE voice_prompts SET seen_by=CONCAT('" . $_COOKIE["client_id"] . "|',seen_by) WHERE ID=" . $RS["ID"]);
     }
   }
