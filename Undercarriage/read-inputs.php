@@ -26,7 +26,11 @@ $Data = getOneWireTemp($Settings["column_addr"]);
 $ColumnTemp = $Data["C"];
 echo("Column: $ColumnTemp\n\n");
 
-$Update = mysqli_query($DBcnx,"UPDATE settings SET boiler_temp='$BoilerTemp',dephleg_temp='$DephlegTemp',column_temp='$ColumnTemp' WHERE ID=1");
+if (($BoilerTemp != 0) && ($DephlegTemp != 0) && ($ColumnTemp != 0)) {
+  // The OneWire bus will return zero if the device is detected, but the reading was missed
+  // If the sensor has physically failed, the getOneWireTemp function returns -1000
+  $Update = mysqli_query($DBcnx,"UPDATE settings SET boiler_temp='$BoilerTemp',dephleg_temp='$DephlegTemp',column_temp='$ColumnTemp' WHERE ID=1");
+}
 
 // Read any waiting serial data from the digital hydrometer
 $Hydrometer = str_replace("\r","",trim(shell_exec("/usr/share/rpi-smart-still/hydro-read")));
