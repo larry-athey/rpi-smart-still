@@ -461,7 +461,7 @@ function ShowHydrometer($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
 
-  $Content  = "<p>Hydrometer:</p>";
+  $Content  = "<p>Hydrometer Flow Rate: " . $Settings["distillate_flow"] . "%</p>";
   $Content .= FormatEthanol($Settings["distillate_abv"]);
   $Content .= FormatEthanolMeter($Settings["distillate_abv"]);
   return $Content;
