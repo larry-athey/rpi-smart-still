@@ -31,6 +31,8 @@ sudo cp -f ./web-ui/* /var/www/html
 sudo mkdir -p /var/www/html/voice_prompts
 sudo chown -R www-data:www-data /var/www/html
 sudo chmod g+w -R /var/www/html
+sudo usermod -a -G www-data pi
+ln -s /var/www/html /home/pi/webroot
 
 wget https://project-downloads.drogon.net/wiringpi-latest.deb
 sudo dpkg -i wiringpi-latest.deb
@@ -52,6 +54,7 @@ sudo chmod -x /usr/share/rpi-smart-still/*.c
 
 sudo chown -R www-data:www-data /usr/share/rpi-smart-still
 sudo chmod g+w -R /usr/share/rpi-smart-still
+ln -s /usr/share/rpi-smart-still /home/pi/undercarriage
 
 sudo systemctl enable mariadb > /dev/null 2>&1
 sudo systemctl start mariadb > /dev/null 2>&1
