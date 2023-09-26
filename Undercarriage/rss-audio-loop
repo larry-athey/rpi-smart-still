@@ -2,6 +2,8 @@
 
 cd /usr/share/rpi-smart-still
 
+sleep 0.3
+
 while [ true ]; do
   ScriptStart=$(date +%s)
   ./play-prompts.php
