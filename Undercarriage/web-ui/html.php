@@ -676,6 +676,7 @@ function ShowTimelines($DBcnx) {
   } else {
     $Content .= "<p></p><p>No data found for any previous distillation run</p>";
   }
+  $Content .= VoicePrompter($DBcnx,true);
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
