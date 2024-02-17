@@ -72,7 +72,7 @@ echo "have to worry about anything too complicated. THIS IS NOT A PUBLIC WEB SER
 echo
 
 sudo mysql_secure_installation
-sudo mysql < dbsetup.sql
+sudo mysql < db-setup.sql
 
 clear
 
