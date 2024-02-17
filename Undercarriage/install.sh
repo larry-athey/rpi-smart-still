@@ -37,7 +37,12 @@ ln -s /var/www/html /home/pi/webroot
 wget https://project-downloads.drogon.net/wiringpi-latest.deb
 sudo dpkg -i wiringpi-latest.deb
 sudo systemctl mask serial-getty@ttyAMA0.service
-sudo echo "dtoverlay=uart0" >> /boot/config.txt
+sudo cp /boot/config.txt /tmp/config.txt
+sudo chown pi:pi /tmp/config.txt
+sudo echo "dtoverlay=uart0" >> /tmp/config.txt
+sudo rm -f /boot/config.txt
+sudo mv /tmp/config.txt /boot/config.txt
+sudo chown root:root /boot/config.txt
 
 sudo mkdir -p /usr/share/rpi-smart-still
 sudo cp -f cronjob /usr/share/rpi-smart-still
