@@ -38,7 +38,7 @@ wget https://project-downloads.drogon.net/wiringpi-latest.deb
 sudo dpkg -i wiringpi-latest.deb
 sudo systemctl mask serial-getty@ttyAMA0.service
 sudo cp /boot/config.txt /tmp/config.txt
-sudo chown pi:pi /tmp/config.txt
+sudo chown $SUDO_USER:$SUDO_USER /tmp/config.txt
 sudo echo "dtoverlay=uart0" >> /tmp/config.txt
 sudo rm -f /boot/config.txt
 sudo mv /tmp/config.txt /boot/config.txt
