@@ -10,6 +10,10 @@ echo "Unless you have 4+ GB of RAM, a 64 bit OS is completely useless. You surel
 echo "will have problems compiling the servo valve driver under a 64 bit Raspbian"
 echo "on anything older than a Pi 4."
 echo
+echo "This installer script assumes that you are running it as the username 'pi'."
+echo "If you are using another user account, press CTRL-C to terminate the script"
+echo "and run it as 'pi'. Or edit this script to replace 'pi' with your username."
+echo
 read -p "Press ENTER to continue the installation or CTRL+C to cancel..." nothing
 
 sudo dpkg-reconfigure locales
