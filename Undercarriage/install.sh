@@ -10,6 +10,10 @@ echo "Unless you have 4+ GB of RAM, a 64 bit OS is completely useless. You surel
 echo "will have problems compiling the servo valve driver under a 64 bit Raspbian"
 echo "on anything older than a Pi 4."
 echo
+echo "This installer script assumes that you are running it as the username 'pi'."
+echo "If you are using another user account, press CTRL-C to terminate the script"
+echo "and run it as 'pi'. Or edit this script to replace 'pi' with your username."
+echo
 read -p "Press ENTER to continue the installation or CTRL+C to cancel..." nothing
 
 sudo dpkg-reconfigure locales
@@ -38,7 +42,7 @@ wget https://project-downloads.drogon.net/wiringpi-latest.deb
 sudo dpkg -i wiringpi-latest.deb
 sudo systemctl mask serial-getty@ttyAMA0.service
 sudo cp /boot/config.txt /tmp/config.txt
-sudo chown $SUDO_USER:$SUDO_USER /tmp/config.txt
+sudo chown pi:pi /tmp/config.txt
 sudo echo "dtoverlay=uart0" >> /tmp/config.txt
 sudo rm -f /boot/config.txt
 sudo mv /tmp/config.txt /boot/config.txt
