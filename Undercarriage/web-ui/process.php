@@ -193,6 +193,21 @@ elseif (isset($_POST["rss_edit_program"])) {
   exit;
 }
 //---------------------------------------------------------------------------------------------------
+elseif (isset($_POST["rss_edit_sensors"])) {
+  //echo("<pre>\n");
+  //print_r($_POST);
+  //echo("</pre>\n");
+
+  $BoilerAddr  = $_POST["BoilerAddr"];
+  $DephlegAddr = $_POST["DephlegAddr"];
+  $ColumnAddr  = $_POST["ColumnAddr"];
+  $Update = mysqli_query($DBcnx,"UPDATE settings SET boiler_addr='$BoilerAddr',dephleg_addr='$DephlegAddr',column_addr='$ColumnAddr' WHERE ID=1");
+
+  mysqli_close($DBcnx);
+  header("Location: index.php?page=sensors");
+  exit;
+}
+//---------------------------------------------------------------------------------------------------
 elseif (isset($_POST["rss_edit_servos"])) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
