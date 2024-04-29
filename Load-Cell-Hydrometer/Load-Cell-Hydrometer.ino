@@ -155,17 +155,27 @@ void setup() {
   tft.fillRect(0,74,320,95,ILI9341_BLACK);
 
   Scale.begin(I2C_SDA,I2C_SCL);
-  Scale.set_gain(64,true);
   while (! Scale.is_ready()) delay(250);
-  Tare = Scale.get_units(20);
+  Tare = Scale.get_units(10);
   Serial.println("#");
   Serial.print("Tare1: ");
   Serial.println(Tare);
 
+  /*
+  // Testing code block to display the unloaded load cell tare value on the screen
+  tft.setCursor(45,110);
+  tft.print("Tare: ");
+  tft.print(Tare);
+  delay(5000);
+  tft.fillRect(0,74,320,95,ILI9341_BLACK);
+  */
+
   // If you forget to remove the reference weight, it will halt the system start up until you do
-  if (Tare > -32000) {
+  if (Tare > 0) {
     tft.setCursor(45,110);
-    tft.print("Load cell detecting weight,");
+    //tft.print("Load cell detecting weight,");
+    tft.print("Tare: ");
+    tft.print(Tare);
     tft.setCursor(45,135);
     tft.print("Correct this and reboot...");
     while (true) {
@@ -179,8 +189,8 @@ void setup() {
   }
 
   Scale.tare();
-  Scale.set_average_mode();
-  Tare = Scale.get_units(20);
+  Scale.set_median_mode();
+  Tare = Scale.get_units(10);
   Serial.print("Tare2: ");
   Serial.println(Tare);
   Serial.println("#");
@@ -197,9 +207,9 @@ void setup() {
   }
   tft.fillRect(0,74,320,95,ILI9341_BLACK);
 
-  // NOTE: Barometric pressure can affect the stability of a load cell, especially during a rain
-  // storm. If Tare2 is outside of +/- 1..5 from zero, reset the unit and start over.
-  Scale.calibrate_scale(64,20);
+  // NOTE: Barometric pressure can affect the stability of a load cell, especially during a
+  // rain storm. If Tare2 is outside of +/- 1..5 from zero, reset the unit and start over.
+  Scale.calibrate_scale(64,10);
   for (byte x = 0; x <= 49; x ++) WeightBuf[x] = 64;
   tft.setTextColor(ILI9341_YELLOW);
   tft.setCursor(90,95);
@@ -370,7 +380,7 @@ void loop() {
         digitalWrite(TFT_LED,HIGH);
       }
     }
-    Weight = Scale.get_units(20);
+    Weight = Scale.get_units(10);
     for (byte x = 0; x <= 48; x ++) WeightBuf[x] = WeightBuf[x + 1];
     WeightBuf[49] = Weight;
     WeightAvg = 0;
@@ -379,13 +389,13 @@ void loop() {
     Ethanol = CalcEthanol(WeightAvg);
   }
 
-/*
+
   // Uncomment the following code block for display testing and load cell debugging
   TempC = random(18,25);
   eTest ++;
   if (eTest == 100) eTest = 0;
   Ethanol = eTest;
-*/
+
 
   // Complete screen redraw takes about 2.5 seconds with the Adafruit_ILI9341 library
   // This keeps all of the latest stats on the screen for 5 seconds before refreshing
@@ -401,7 +411,7 @@ void loop() {
     sprintf(WeightLog,"%.2f %.2f",Weight,WeightAvg);
     Data = 0;
     for (byte x = 0; x <= 99; x ++) {
-      if (WeightBuf[x] > 0) Data ++;
+      if (FlowBuf[x] > 0) Data ++;
     }
     if (eTest > 0) TimeUpdate(WeightLog);
     Serial.print("Uptime: ");
