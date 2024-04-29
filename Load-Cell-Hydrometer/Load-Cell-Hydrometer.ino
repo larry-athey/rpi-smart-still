@@ -189,6 +189,7 @@ void setup() {
   }
 
   // Wait for the HX711 amplifier to settle down, an upper limit of 5 is tolerable, reduce if you like
+  // Remember, load cells and the HX711 are analog devices and are affected by temperature and humidity
   tft.setCursor(55,110);
   tft.print("Stabilizing the load cell");
   Tare = -1;
