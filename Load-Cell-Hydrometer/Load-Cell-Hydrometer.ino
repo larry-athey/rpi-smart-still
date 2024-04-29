@@ -104,7 +104,7 @@
 char Uptime[10];      // Global placeholder for uptime reading
 byte Ethanol = 0;     // Global placeholder for ethanol percentage
 float TempC = 0;      // Global placeholder for ethanol temperature reading
-float WeightBuf[50];  // Buffer for storing the last 50 load cell readings
+float WeightBuf[100]; // Buffer for storing the last 100 load cell readings
 byte FlowBuf[100];    // Buffer for calculating the flow rate percentage
 bool eToggle = false; // Ethanol display toggle byte (false=%ABV or true=Proof)
 long ScreenCounter;   // Timekeeper for display updates
@@ -182,15 +182,21 @@ void setup() {
       while (Serial.available()) {
         Counter = Serial.read();
         if (Counter == 33) { // Reboot the hydrometer if a "!" is received
-          ESP.restart(); // For Arduinos, see https://arduinogetstarted.com/faq/how-to-reset-arduino-by-programming
+          RebootUnit();
         }
       }
     }
   }
 
-  Scale.tare();
-  Scale.set_median_mode();
-  Tare = Scale.get_units(10);
+  tft.setCursor(55,110);
+  tft.print("Stabilizing the load cell");
+  Tare = -1;
+  while ((Tare < 0) || (Tare > 5)) {
+    Scale.tare();
+    Scale.set_raw_mode();
+    Tare = Scale.get_units(10);
+  }
+  tft.fillRect(0,74,320,95,ILI9341_BLACK);
   Serial.print("Tare2: ");
   Serial.println(Tare);
   Serial.println("#");
@@ -216,10 +222,9 @@ void setup() {
   }
   tft.fillRect(0,74,320,95,ILI9341_BLACK);
 
-  // NOTE: Barometric pressure can affect the stability of a load cell, especially during a
-  // rain storm. If Tare2 is outside of +/- 1..5 from zero, reset the unit and start over.
+  // NOTE: Barometric pressure can affect the stability of a load cell, especially during a rain storm.
   Scale.calibrate_scale(64,10);
-  for (byte x = 0; x <= 49; x ++) WeightBuf[x] = 64;
+  for (byte x = 0; x <= 99; x ++) WeightBuf[x] = 64;
   tft.setTextColor(ILI9341_YELLOW);
   tft.setCursor(90,95);
   tft.print("Load Cell Calibrated");
@@ -234,6 +239,10 @@ void setup() {
     delay(1000);
     Counter ++;
   }
+}
+//------------------------------------------------------------------------------------------------
+void RebootUnit() {
+  ESP.restart(); // For Arduinos, see https://arduinogetstarted.com/faq/how-to-reset-arduino-by-programming
 }
 //------------------------------------------------------------------------------------------------
 void EthanolUpdate() { // Update the ethanol value on the display
@@ -363,7 +372,7 @@ void TimeUpdate(String Debug) {
 //------------------------------------------------------------------------------------------------
 void loop() {
   long CurrentTime = millis();
-  if (CurrentTime > 4200000000) ESP.restart();
+  if (CurrentTime > 4200000000) RebootUnit();
   float Weight,WeightAvg = 0;
   byte Data;
   unsigned long allSeconds = CurrentTime / 1000;
@@ -382,19 +391,19 @@ void loop() {
     while (Serial.available()) {
       Data = Serial.read();
       if (Data == 33) { // Reboot the hydrometer if a "!" is received
-        ESP.restart(); // For Arduinos, see https://arduinogetstarted.com/faq/how-to-reset-arduino-by-programming
+        RebootUnit();
       } else if (Data == 35) { // Recalibrate the load cell if a "#" is received
         digitalWrite(TFT_LED,LOW);
-        Scale.calibrate_scale(64,20);
+        Scale.calibrate_scale(64,10);
         digitalWrite(TFT_LED,HIGH);
       }
     }
     Weight = Scale.get_units(10);
-    for (byte x = 0; x <= 48; x ++) WeightBuf[x] = WeightBuf[x + 1];
-    WeightBuf[49] = Weight;
+    for (byte x = 0; x <= 98; x ++) WeightBuf[x] = WeightBuf[x + 1];
+    WeightBuf[99] = Weight;
     WeightAvg = 0;
-    for (byte x = 0; x <= 49; x ++) WeightAvg += WeightBuf[x];
-    WeightAvg /= 50;
+    for (byte x = 0; x <= 99; x ++) WeightAvg += WeightBuf[x];
+    WeightAvg /= 100;
     Ethanol = CalcEthanol(WeightAvg);
   }
 
