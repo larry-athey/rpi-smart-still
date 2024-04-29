@@ -188,8 +188,9 @@ void setup() {
     }
   }
 
-  // Wait for the HX711 amplifier to settle down, an upper limit of 5 is tolerable, reduce if you like
+  // Wait for the HX711 amplifier to settle down, an upper limit of 5 is tolerable, reduce this if you like
   // Remember, load cells and the HX711 are analog devices and are affected by temperature and humidity
+  // This is why the smart still controller sends a recalibrate command when the column/dephleg reach temperature
   tft.setCursor(55,110);
   tft.print("Stabilizing the load cell");
   Tare = -1;
@@ -402,7 +403,6 @@ void loop() {
     Weight = Scale.get_units();
     for (byte x = 0; x <= 98; x ++) WeightBuf[x] = WeightBuf[x + 1];
     WeightBuf[99] = Weight;
-    WeightAvg = 0;
     for (byte x = 0; x <= 99; x ++) WeightAvg += WeightBuf[x];
     WeightAvg /= 100; // HX711 library averaging modes wander far too much over time
     Ethanol = CalcEthanol(WeightAvg);
