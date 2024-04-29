@@ -10,6 +10,8 @@
 // to the realistic distillate range that you will actually be producing. As in, change the first
 // useful "else if" to an "if" and then comment out everything else outside of the range that you
 // expect to produce. Adjust as necessary until the code fits into the memory of your device.
+//
+// *** Sorry for the overly long if-else branch, it uses less memory than a switch-case branch.
 //------------------------------------------------------------------------------------------------
 byte CalcEthanol(float Weight) {
   if ((Weight >= 57.11) && (Weight < 57.15)) {
