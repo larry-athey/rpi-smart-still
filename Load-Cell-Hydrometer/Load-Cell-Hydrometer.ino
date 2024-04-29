@@ -162,9 +162,9 @@ void setup() {
   Serial.println(Tare);
 
   /*
-  // Testing code block to display the unloaded load cell tare value on the screen
+  // Testing code block to display the default load cell tare value on the screen
   tft.setCursor(45,110);
-  tft.print("Tare: ");
+  tft.print("Tare1: ");
   tft.print(Tare);
   delay(5000);
   tft.fillRect(0,74,320,95,ILI9341_BLACK);
@@ -173,7 +173,7 @@ void setup() {
   // If you forget to remove the reference weight, it will halt the system start up until you do
   if (Tare > 0) {
     tft.setCursor(45,110);
-    //tft.print("Load cell detecting weight,");
+    tft.print("Load cell detecting weight,");
     tft.print("Tare: ");
     tft.print(Tare);
     tft.setCursor(45,135);
@@ -194,6 +194,15 @@ void setup() {
   Serial.print("Tare2: ");
   Serial.println(Tare);
   Serial.println("#");
+
+  /*
+  // Testing code block to display the mode-adjusted load cell tare value on the screen
+  tft.setCursor(45,110);
+  tft.print("Tare2: ");
+  tft.print(Tare);
+  delay(5000);
+  tft.fillRect(0,74,320,95,ILI9341_BLACK);
+  */
 
   tft.setCursor(35,110);
   tft.print("Attach the reference weight,");
