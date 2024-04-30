@@ -384,7 +384,7 @@ void loop() {
   int runSeconds = secsRemaining % 60;
   sprintf(Uptime,"%02d:%02d:%02d",runHours,runMinutes,runSeconds);
   for (byte x = 0; x <= 98; x ++) FlowBuf[x] = FlowBuf[x + 1];
-  FlowBuf[99] = (digitalRead(FLOW_SENSOR) == 1);
+  FlowBuf[99] = digitalRead(FLOW_SENSOR);
 
   // Get the current weight of the steel ball and calculate the ethanol percentage from
   // the buoyancy offset of the reference weight. Higher ethanol makes the ball heavier.
@@ -411,7 +411,7 @@ void loop() {
 
   // Uncomment the following code block for display testing and load cell debugging
   eTest ++;
-  if (eTest == 100) eTest = 0;
+  if (eTest == 100) eTest = 1;
   Ethanol = eTest;
 
 
@@ -420,7 +420,7 @@ void loop() {
   if (CurrentTime - ScreenCounter >= 7500) {
     EthanolUpdate();
     TempUpdate();
-    TimeUpdate("");
+    if (eTest == 0) TimeUpdate("");
     ScreenCounter = CurrentTime;
   }
   // Communications to my Raspberry PI based still monitor/controller uses 9600 baud serial data
