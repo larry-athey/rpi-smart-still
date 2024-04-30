@@ -375,7 +375,7 @@ void TimeUpdate(String Debug) {
 void loop() {
   long CurrentTime = millis();
   if (CurrentTime > 4200000000) RebootUnit();
-  float Weight,WeightAvg = 0;
+  float WeightAvg;
   byte Data;
   unsigned long allSeconds = CurrentTime / 1000;
   int runHours = allSeconds / 3600;
@@ -400,9 +400,8 @@ void loop() {
         digitalWrite(TFT_LED,HIGH);
       }
     }
-    Weight = Scale.get_units();
     for (byte x = 0; x <= 98; x ++) WeightBuf[x] = WeightBuf[x + 1];
-    WeightBuf[99] = Weight;
+    WeightBuf[99] = Scale.get_units();
     for (byte x = 0; x <= 99; x ++) WeightAvg += WeightBuf[x];
     WeightAvg /= 100; // HX711 library averaging modes wander far too much over time
     Ethanol = CalcEthanol(WeightAvg);
@@ -426,7 +425,7 @@ void loop() {
   // Communications to my Raspberry PI based still monitor/controller uses 9600 baud serial data
   if (CurrentTime - SerialCounter >= 1000) {
     char WeightLog[25];
-    sprintf(WeightLog,"%.2f %.2f",Weight,WeightAvg);
+    sprintf(WeightLog,"%.2f %.2f",WeightBuf[99],WeightAvg);
     Data = 0;
     for (byte x = 0; x <= 99; x ++) {
       if (FlowBuf[x] > 0) Data ++;
