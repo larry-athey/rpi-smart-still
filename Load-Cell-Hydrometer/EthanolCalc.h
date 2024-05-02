@@ -14,6 +14,10 @@
 // *** Sorry for the overly long if-else branch, it uses less memory than a switch-case branch.
 //------------------------------------------------------------------------------------------------
 byte CalcEthanol(float Weight) {
+  // 57.35 = 90%
+  // 57.05 = 80%
+  // 56.83 = 70%
+  // 
   if ((Weight >= 57.11) && (Weight < 57.15)) {
     return 71;
   } else if ((Weight >= 57.15) && (Weight < 57.19)) {
@@ -22,7 +26,7 @@ byte CalcEthanol(float Weight) {
     return 73;
   } else if ((Weight >= 57.25) && (Weight < 57.30)) {
     return 74;
-  } else {
+  } else { // Pure distilled water is 56.00
     return 0;
   }
 }
