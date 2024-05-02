@@ -104,7 +104,7 @@
 char Uptime[10];      // Global placeholder for uptime reading
 byte Ethanol = 0;     // Global placeholder for ethanol percentage
 float TempC = 0;      // Global placeholder for ethanol temperature reading
-float WeightBuf[100]; // Buffer for storing the last 100 load cell readings to do my own averaging
+float WeightBuf[100]; // Buffer for storing the last 100 load cell readings
 byte FlowBuf[100];    // Buffer for calculating the flow rate percentage
 bool eToggle = false; // Ethanol display toggle byte (false=%ABV or true=Proof)
 long ScreenCounter;   // Timekeeper for display updates
