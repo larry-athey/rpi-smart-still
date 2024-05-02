@@ -9,8 +9,8 @@
 // calculate the density of your distillate. Ethanol is 6.53 pounds per gallon and water is 8.35
 // pounds per gallon. The density of the distillate will change the buoyancy of a reference weight
 // suspended in it from the load cell. In this case, we use a 64 gram stainless steel table cloth
-// weight suspended in an acrylic 128 ml laboratory overflow cup to replace a parrot. While the
-// distillate flows through the overflow cup, the buoyancy of the table cloth weight is tracked.
+// weight suspended half way into an overflow cup to replace a parrot. While the distillate flows
+// through the overflow cup, the buoyancy of the table cloth weight is tracked.
 //
 // While this design involves moving parts, the increased accuracy offsets that design downfall.
 // Another advantage to this project's design is the use of a more accurate temperature sensor.
@@ -26,10 +26,10 @@
 // out most of the noise. A grounded shield around its wires also wouldn't be a bad idea here.
 //
 // Beyond that, I'd recommend a decent 5 volt 2 amp power supply instead of running things off a
-// USB port since DS18B20 temperature sensors and HX711 load cell amplifiers need a regulated 5
-// volts or they'll fail to read accurately. For example, when powering an ESP32 by USB, the +5v
-// pin will read +4.64 volts and this will cause a load cell to progressively read a lower value
-// the longer it runs. They will also read higher over time if you feed them more than 5 volts.
+// USB port since an ESP32 and DS18B20 temperature sensors need a regulated 5 volts or they will
+// become very random in their operation. For example, when powering an ESP32 by a USB port, the
+// +5v pin will read +4.64 volts and this will cause the load cell to progressively read a lower
+// value the longer that it runs.
 //
 // At this time, I still don't have any suggestion for speeding up the SPI protocol used with the
 // Adafruit ILI9341 display library. I realize that the Bodmer TFT_eSPI library is faster, but it
@@ -37,12 +37,6 @@
 // forums and none of the suggestions have improved anything in my tests, not even with an ESP32.
 // The library is also the same dog slow speed in the WokWi simulator. I just considerer the slow
 // offscreen buffer display with an ESP32 an artistic feature here since speed isn't a necessity.
-//
-// NOTE: Since this hydrometer mounts to the large evaporator column above the still, you should
-// wait until the boiler is up to temp before you calibrate it. Since aluminum is an excellent
-// heat conductor, you want your load cell in an area with a stable temperature and the top of
-// the still is very consistent after the boiler is fully warmed up. Temperature also affects a
-// glass hydrometer the same way, but you've likely never noticed it. Watch it on video sometime.
 //------------------------------------------------------------------------------------------------
 #include "Adafruit_ILI9341.h"  // TFT display library add-on to Adafruit GFX (sadly, it's slow)
 #include "FreeSans10pt7b.h"    // https://github.com/moononournation/ArduinoFreeFontFile.git
@@ -101,8 +95,8 @@
 #define TFT_MOSI 23
 #define TFT_LED 4
 //------------------------------------------------------------------------------------------------
-char Uptime[10];      // Global placeholder for uptime reading
-byte Ethanol = 0;     // Global placeholder for ethanol percentage
+char Uptime[10];      // Global placeholder for the formatted uptime reading
+byte Ethanol = 0;     // Global placeholder for ethanol percentage reading
 float TempC = 0;      // Global placeholder for ethanol temperature reading
 float WeightBuf[100]; // Buffer for storing the last 100 load cell readings
 byte FlowBuf[100];    // Buffer for calculating the flow rate percentage
@@ -187,8 +181,9 @@ void setup() {
   }
 
   // Wait for the HX711 amplifier to settle down, an upper limit of 5 is tolerable, reduce this if you like
-  // Remember, load cells and the HX711 are analog devices and are affected by temperature and humidity
+  // Remember, load cells and the HX711 are analog devices and are affected by temperature and barrometric pressure
   // This is why the smart still controller sends a recalibrate command when the column/dephleg reach temperature
+  // Through all of my testing and debugging, I have found that they are the most reliable at 75F or higher
   tft.setCursor(55,110);
   tft.print("Stabilizing the load cell");
   Tare = -1;
