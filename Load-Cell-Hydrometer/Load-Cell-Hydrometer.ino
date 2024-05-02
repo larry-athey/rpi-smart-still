@@ -194,7 +194,7 @@ void setup() {
   Tare = -1;
   while ((Tare < 0) || (Tare > 5)) {
     Scale.tare();
-    Scale.set_median_mode();
+    Scale.set_average_mode();
     Tare = Scale.get_units();
   }
   tft.fillRect(0,74,320,95,ILI9341_BLACK);
@@ -373,7 +373,7 @@ void TimeUpdate(String Debug) {
 void loop() {
   long CurrentTime = millis();
   if (CurrentTime > 4200000000) RebootUnit();
-  float WeightAvg;
+  float WeightAvg = 0;
   byte Data;
   unsigned long allSeconds = CurrentTime / 1000;
   int runHours = allSeconds / 3600;
@@ -402,7 +402,7 @@ void loop() {
     for (byte x = 0; x <= 98; x ++) WeightBuf[x] = WeightBuf[x + 1];
     WeightBuf[99] = Scale.get_units();
     for (byte x = 0; x <= 99; x ++) WeightAvg += WeightBuf[x];
-    WeightAvg /= 100; // HX711 library averaging modes wander far too much over time
+    WeightAvg /= 100;
     Ethanol = CalcEthanol(WeightAvg);
   }
 
