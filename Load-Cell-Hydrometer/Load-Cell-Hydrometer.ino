@@ -174,8 +174,6 @@ void setup() {
   if (Tare > 0) {
     tft.setCursor(45,110);
     tft.print("Load cell detecting weight,");
-    tft.print("Tare: ");
-    tft.print(Tare);
     tft.setCursor(45,135);
     tft.print("Correct this and reboot...");
     while (true) {
@@ -397,6 +395,7 @@ void loop() {
       } else if (Data == 35) { // Recalibrate the load cell if a "#" is received
         digitalWrite(TFT_LED,LOW);
         Scale.calibrate_scale(64);
+        for (byte x = 0; x <= 99; x ++) WeightBuf[x] = 64;
         digitalWrite(TFT_LED,HIGH);
       }
     }
