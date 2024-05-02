@@ -1,6 +1,6 @@
 # Load Cell Hydrometer
 
-I am currently doing a physical re-design of this unit to make it easier to assemble and operate. The PDF file in the /Diagrams/ directory will be replaced.
+I am currently doing a physical re-design of this device to make it easier to assemble and operate. The PDF file in the /Diagrams/ directory will be replaced, so I wouldn't put too much focus on it.
 
 The code here works, but is still a work in progress since the flow monitor is still a bit buggy and is being replaced with a hall effect water flow sensor. https://www.amazon.com/gp/product/B07RF57QF8/
 
