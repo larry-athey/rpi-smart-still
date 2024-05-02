@@ -194,7 +194,7 @@ void setup() {
   Tare = -1;
   while ((Tare < 0) || (Tare > 5)) {
     Scale.tare();
-    Scale.set_raw_mode();
+    Scale.set_median_mode();
     Tare = Scale.get_units();
   }
   tft.fillRect(0,74,320,95,ILI9341_BLACK);
