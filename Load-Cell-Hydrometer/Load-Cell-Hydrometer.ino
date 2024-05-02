@@ -181,9 +181,9 @@ void setup() {
   }
 
   // Wait for the HX711 amplifier to settle down, an upper limit of 5 is tolerable, reduce this if you like
-  // Remember, load cells and the HX711 are analog devices and are affected by temperature and barrometric pressure
-  // This is why the smart still controller sends a recalibrate command when the column/dephleg reach temperature
+  // Remember, load cells and the HX711 are analog devices and are affected by temperature and barometric pressure
   // Through all of my testing and debugging, I have found that they are the most reliable at a stable 75F or higher
+  // This is why my smart still controller sends a recalibrate command when the column/dephleg reach temperature
   tft.setCursor(55,110);
   tft.print("Stabilizing the load cell");
   Tare = -1;
