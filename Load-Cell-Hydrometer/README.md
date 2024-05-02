@@ -6,4 +6,4 @@ The code here works, but is still a work in progress since the flow monitor is s
 
 The rest of the re-design plan is to make it easier to service the unit and flash the ESP32 without having to disassmble it.
 
-The whole physical structure will be 3D printed in order to simplify the build process.
+The whole physical structure will also be 3D printed in order to simplify the build process.
