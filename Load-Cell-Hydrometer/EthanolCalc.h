@@ -25,7 +25,7 @@
 byte CalcEthanol(float Weight) {
   // 100% = 57.42
   // 90% = 57.20
-  // 80% = 57.05
+  // 80% = 57.00
   // 70% = 56.83
   // 60% = 56.65
   // 50% = 56.50
@@ -35,9 +35,9 @@ byte CalcEthanol(float Weight) {
   // 10% = 56.06
   if ((Weight <= 57.42) && (Weight > 57.20)) {
     return 100;
-  } else if ((Weight <= 57.20) && (Weight > 57.05)) {
+  } else if ((Weight <= 57.20) && (Weight > 57.00)) {
     return 90;
-  } else if ((Weight <= 57.05) && (Weight > 56.83)) {
+  } else if ((Weight <= 57.00) && (Weight > 56.83)) {
     return 80;
   } else if ((Weight <= 56.83) && (Weight > 56.65)) {
     return 70;
