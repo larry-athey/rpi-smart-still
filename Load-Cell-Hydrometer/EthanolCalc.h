@@ -11,6 +11,12 @@
 // a glass hydrometer, this isn't a linear scale. Meaning, the distance between 100% and 90% is
 // much longer than the distance between 0 and 10%.
 //
+// Due to the precision of the HX711 library only working down to 1/100th of a gram, the ethanol
+// percentage calculation can't be dead accurate at really low ABV levels. This really shouldn't
+// be a problem since you're so far into unwanted tails at that point. If I'm doing a pot still
+// run, I stop at 35% and then start a new reflux mode run to strip out what's left at 90% with
+// absolutely no flavor. I usually dump that in with the rest of the distillate for an ABV bump.
+//
 // NOTE: If you are using an Arduino Uno or Nano, you'll need to trim down the calculation range
 // to the realistic distillate range that you will actually be producing. As in, change the first
 // useful "else if" to an "if" and then comment out everything else outside of the range that you
