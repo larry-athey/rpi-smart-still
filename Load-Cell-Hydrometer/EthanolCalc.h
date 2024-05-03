@@ -23,7 +23,7 @@ byte CalcEthanol(float Weight) {
   // 56.83 = 70%
   // 56.61 = 60%
   // 56.55 = 50%
-  // = 40%
+  // 56.40 = 40%
   // = 30%
   // = 20%
   // = 10%
@@ -35,7 +35,7 @@ byte CalcEthanol(float Weight) {
     return 73;
   } else if ((Weight >= 57.25) && (Weight < 57.30)) {
     return 74;
-  } else { // Pure distilled water is 56.00
+  } else { // Bouyancy in pure distilled water is 56.00
     return 0;
   }
 }
