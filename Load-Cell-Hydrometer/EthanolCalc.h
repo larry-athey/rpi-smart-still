@@ -9,10 +9,10 @@
 // Sorry for the overly long if-else branch, it uses less code space than a switch-case branch.
 // There is no math formula that I know of to calculate this, and as you can tell by looking at
 // a glass hydrometer, this isn't a linear scale. Meaning, the distance between 100% and 90% is
-// much longer than the distance between 0 and 10%.
+// much greater than the distance between 0 and 10%.
 //
 // Due to the precision of the HX711 library only working down to 1/100th of a gram, the ethanol
-// percentage calculation can't be dead accurate at really low ABV levels. This really shouldn't
+// percentage calculation can't be real accurate at really low ABV levels. This really shouldn't
 // be a problem since you're so far into unwanted tails at that point. If I'm doing a pot still
 // run, I stop at 35% and then start a new reflux mode run to strip out what's left at 90% with
 // absolutely no flavor. I usually dump that in with the rest of the distillate for an ABV bump.
@@ -27,26 +27,32 @@ byte CalcEthanol(float Weight) {
   // 90% = 57.27
   // 80% = 57.05
   // 70% = 56.83
-  // 60% = 56.61
-  // 50% = 56.55
-  // 40% = 56.40
-  // 30% =
-  // 20% =
-  // 10% =
+  // 60% = 56.65
+  // 50% = 56.50
+  // 40% = 56.30
+  // 30% = 56.20
+  // 20% = 56.12
+  // 10% = 56.06
   if ((Weight <= 57.49) && (Weight > 57.27)) {
     return 100;
   } else if ((Weight <= 57.27) && (Weight > 57.05)) {
     return 90;
   } else if ((Weight <= 57.05) && (Weight > 56.83)) {
     return 80;
-  } else if ((Weight <= 56.83) && (Weight > 56.61)) {
+  } else if ((Weight <= 56.83) && (Weight > 56.65)) {
     return 70;
-  } else if ((Weight <= 56.61) && (Weight > 56.55)) {
+  } else if ((Weight <= 56.65) && (Weight > 56.50)) {
     return 60;
-  } else if ((Weight <= 56.55) && (Weight > 56.40)) {
+  } else if ((Weight <= 56.50) && (Weight > 56.30)) {
     return 50;
-  } else if ((Weight <= 56.40) && (Weight > 56.30)) {
+  } else if ((Weight <= 56.30) && (Weight > 56.20)) {
     return 40;
+  } else if ((Weight <= 56.20) && (Weight > 56.12)) {
+    return 30;
+  } else if ((Weight <= 56.12) && (Weight > 56.06)) {
+    return 20;
+  } else if ((Weight <= 56.06) && (Weight > 56.01)) {
+    return 10;
   } else { // Bouyancy in pure distilled water is 56.00
     return 0;
   }
