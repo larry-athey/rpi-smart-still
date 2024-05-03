@@ -23,8 +23,8 @@
 // expect to produce. Adjust as necessary until the code fits into the memory of your device.
 //------------------------------------------------------------------------------------------------
 byte CalcEthanol(float Weight) {
-  // 100% = 57.49
-  // 90% = 57.27
+  // 100% = 57.42
+  // 90% = 57.20
   // 80% = 57.05
   // 70% = 56.83
   // 60% = 56.65
@@ -33,9 +33,9 @@ byte CalcEthanol(float Weight) {
   // 30% = 56.20
   // 20% = 56.12
   // 10% = 56.06
-  if ((Weight <= 57.49) && (Weight > 57.27)) {
+  if ((Weight <= 57.42) && (Weight > 57.20)) {
     return 100;
-  } else if ((Weight <= 57.27) && (Weight > 57.05)) {
+  } else if ((Weight <= 57.20) && (Weight > 57.05)) {
     return 90;
   } else if ((Weight <= 57.05) && (Weight > 56.83)) {
     return 80;
