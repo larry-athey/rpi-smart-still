@@ -23,24 +23,30 @@
 // expect to produce. Adjust as necessary until the code fits into the memory of your device.
 //------------------------------------------------------------------------------------------------
 byte CalcEthanol(float Weight) {
-  // 57.49 = 100%
-  // 57.27 = 90%
-  // 57.05 = 80%
-  // 56.83 = 70%
-  // 56.61 = 60%
-  // 56.55 = 50%
-  // 56.40 = 40%
-  // = 30%
-  // = 20%
-  // = 10%
-  if ((Weight >= 57.11) && (Weight < 57.15)) {
-    return 71;
-  } else if ((Weight >= 57.15) && (Weight < 57.19)) {
-    return 72;
-  } else if ((Weight >= 57.19) && (Weight < 57.25)) {
-    return 73;
-  } else if ((Weight >= 57.25) && (Weight < 57.30)) {
-    return 74;
+  // 100% = 57.49
+  // 90% = 57.27
+  // 80% = 57.05
+  // 70% = 56.83
+  // 60% = 56.61
+  // 50% = 56.55
+  // 40% = 56.40
+  // 30% =
+  // 20% =
+  // 10% =
+  if ((Weight <= 57.49) && (Weight > 57.27)) {
+    return 100;
+  } else if ((Weight <= 57.27) && (Weight > 57.05)) {
+    return 90;
+  } else if ((Weight <= 57.05) && (Weight > 56.83)) {
+    return 80;
+  } else if ((Weight <= 56.83) && (Weight > 56.61)) {
+    return 70;
+  } else if ((Weight <= 56.61) && (Weight > 56.55)) {
+    return 60;
+  } else if ((Weight <= 56.55) && (Weight > 56.40)) {
+    return 50;
+  } else if ((Weight <= 56.40) && (Weight > 56.30)) {
+    return 40;
   } else { // Bouyancy in pure distilled water is 56.00
     return 0;
   }
