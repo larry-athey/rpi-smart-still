@@ -397,6 +397,10 @@ void loop() {
     }
     for (byte x = 0; x <= 98; x ++) WeightBuf[x] = WeightBuf[x + 1];
     WeightBuf[99] = Scale.get_units(15);
+    if (WeightBuf[99] > 64) {
+      Scale.calibrate_scale(64);
+      WeightBuf[99] = Scale.get_units(15);
+    }
     for (byte x = 0; x <= 99; x ++) WeightAvg += WeightBuf[x];
     WeightAvg /= 100;
     Ethanol = CalcEthanol(WeightAvg);
