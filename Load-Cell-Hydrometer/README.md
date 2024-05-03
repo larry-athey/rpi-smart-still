@@ -7,3 +7,5 @@ The code here works, but is still a work in progress since the flow monitor is s
 The rest of the re-design plan is to make it easier to service the unit and flash the ESP32 without having to disassemble it.
 
 The whole physical structure will also be 3D printed in order to simplify the build process.
+
+**NOTE:** As requested, I am also looking into a way to electronically read the floating height of a glass hydrometer in a normal parrot. I realize that George Duncan already did this, but I'm not real keen on his design which requires the hydrometer to be hidden inside of another tube.
