@@ -2,7 +2,7 @@
 // *** Currently rebuilding this function due to a change in load cell weight capacity.
 //
 // Calculations based on a 64 gram (2.4 ounce) stainless steel ball reference weight suspended
-// mid-way into a 125 ml (4 ounce) vessel of 18C/65F to 21C/70F distillate. Deviating from these
+// mid-way into a 125 ml (4 ounce) vessel of 21C/70F to 24C/75F distillate. Deviating from these
 // specifications will render the hydrometer readings inaccurate. This shouldn't be a problem if
 // you have adequate ground/tap temperature water flowing through your condenser.
 //
@@ -14,10 +14,16 @@
 // *** Sorry for the overly long if-else branch, it uses less memory than a switch-case branch.
 //------------------------------------------------------------------------------------------------
 byte CalcEthanol(float Weight) {
-  // 57.35 = 90%
+  // 57.49 = 100%
+  // 57.27 = 90%
   // 57.05 = 80%
   // 56.83 = 70%
-  // 
+  // 56.61 = 60%
+  // 56.49 = 50%
+  // = 40%
+  // = 30%
+  // = 20%
+  // = 10%
   if ((Weight >= 57.11) && (Weight < 57.15)) {
     return 71;
   } else if ((Weight >= 57.15) && (Weight < 57.19)) {
