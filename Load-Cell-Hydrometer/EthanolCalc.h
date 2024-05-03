@@ -6,12 +6,15 @@
 // specifications will render the hydrometer readings inaccurate. This shouldn't be a problem if
 // you have adequate ground/tap temperature water flowing through your condenser.
 //
+// Sorry for the overly long if-else branch, it uses less code space than a switch-case branch.
+// There is no math formula that I know of to calculate this, and as you can tell by looking at
+// a glass hydrometer, this isn't a linear scale. Meaning, the distance between 100% and 90% is
+// much longer than the distance between 0 and 10%.
+//
 // NOTE: If you are using an Arduino Uno or Nano, you'll need to trim down the calculation range
 // to the realistic distillate range that you will actually be producing. As in, change the first
 // useful "else if" to an "if" and then comment out everything else outside of the range that you
 // expect to produce. Adjust as necessary until the code fits into the memory of your device.
-//
-// *** Sorry for the overly long if-else branch, it uses less memory than a switch-case branch.
 //------------------------------------------------------------------------------------------------
 byte CalcEthanol(float Weight) {
   // 57.49 = 100%
@@ -19,7 +22,7 @@ byte CalcEthanol(float Weight) {
   // 57.05 = 80%
   // 56.83 = 70%
   // 56.61 = 60%
-  // 56.49 = 50%
+  // 56.55 = 50%
   // = 40%
   // = 30%
   // = 20%
