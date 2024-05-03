@@ -149,6 +149,7 @@ void setup() {
   tft.fillRect(0,74,320,95,ILI9341_BLACK);
 
   Scale.begin(I2C_SDA,I2C_SCL);
+  Scale.set_gain(64,true);
   while (! Scale.is_ready()) delay(250);
   Tare = Scale.get_units();
   Serial.println("#");
@@ -189,7 +190,7 @@ void setup() {
   Tare = -1;
   while ((Tare < 0) || (Tare > 5)) {
     Scale.tare();
-    Scale.set_average_mode();
+    Scale.set_runavg_mode();
     Tare = Scale.get_units();
   }
   tft.fillRect(0,74,320,95,ILI9341_BLACK);
