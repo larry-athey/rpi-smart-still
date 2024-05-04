@@ -1,6 +1,7 @@
 //------------------------------------------------------------------------------------------------
 // Written by Larry Athey (https://panhandleponics.com) v1.0.1 released July 1, 2024
 //
+
 //------------------------------------------------------------------------------------------------
 #include "Adafruit_VL53L0X.h"  // VL53L0X LIDAR sensor library by Adafruit
 #include "OneWire.h"           // OneWire Network communications library
@@ -23,12 +24,13 @@ byte FlowBuf[100];  // Buffer for calculating the flow rate percentage
 //------------------------------------------------------------------------------------------------
 OneWire oneWire(ONE_WIRE);
 DallasTemperature DT(&oneWire);
-Adafruit_VL53L0X lox = Adafruit_VL53L0X();
+Adafruit_VL53L0X Lidar = Adafruit_VL53L0X();
 //------------------------------------------------------------------------------------------------
 void setup() {
   Serial.begin(9600);
   Serial.println("");
   DT.begin();
+  //Lidar.begin();
   for (byte x = 0; x <= 99; x ++) FlowBuf[x] = 0;
   SerialCounter = millis();
 
@@ -42,7 +44,13 @@ void TempUpdate() { // Update the distillate temperature
 }
 //------------------------------------------------------------------------------------------------
 byte CalcEthanol() { // Convert the Distance millimeters to ethanol ABV
+  for (byte x = 0; x <= 10; x ++) {
+    if (Divisions[x] == Distance) {
+      return x * 10;
+    } else {
 
+    }
+  }
 }
 //------------------------------------------------------------------------------------------------
 void RebootUnit() { // Reboot the device, write to flash memory here before restarting
@@ -50,6 +58,7 @@ void RebootUnit() { // Reboot the device, write to flash memory here before rest
 }
 //------------------------------------------------------------------------------------------------
 void loop() {
+  //VL53L0X_RangingMeasurementData_t measure;
   byte Data = 0;
   long CurrentTime = millis();
   if (CurrentTime > 4200000000) RebootUnit();
@@ -62,9 +71,16 @@ void loop() {
   for (byte x = 0; x <= 98; x ++) FlowBuf[x] = FlowBuf[x + 1];
   FlowBuf[99] = digitalRead(FLOW_SENSOR);
 
+  //Lidar.rangingTest(&measure,false);
+  //if (measure.RangeStatus != 4) {
+  //  Distance = measure.RangeMilliMeter;
+  //  Ethanol  = CalcEthanol();
+  //}
+
   // Communications to my Raspberry PI based still monitor/controller uses 9600 baud serial data
   if (CurrentTime - SerialCounter >= 1000) {
     digitalWrite(USER_LED,HIGH);
+    TempUpdate();
     for (byte x = 0; x <= 99; x ++) {
       if (FlowBuf[x] > 0) Data ++;
     }
@@ -79,11 +95,9 @@ void loop() {
     Serial.print("TempC: ");
     Serial.println(TempC,1);
     Serial.println("#"); // Pound signs mark the start and end of data blocks to the Raspberry PI
-    delay(100);
     digitalWrite(USER_LED,LOW);
     SerialCounter = CurrentTime;
-  } else {
-    delay(100);
   }
+  delay(100);
 }
 //------------------------------------------------------------------------------------------------
