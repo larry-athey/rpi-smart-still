@@ -147,6 +147,8 @@ void setup() {
   EthanolUpdate();
 
   Serial.begin(9600);
+  while (! Serial) delay(1);
+  Serial.println("");
   pinMode(IN_PIN,INPUT);
   setupTimer();
   EthanolCounter = millis();
