@@ -54,6 +54,7 @@ void TempUpdate() { // Update the distillate temperature value
 }
 //------------------------------------------------------------------------------------------------
 byte CalcEthanol() { // Convert the Distance millimeters to ethanol ABV value
+  float Tenth
   for (byte x = 0; x <= 10; x ++) {
     if (Divisions[x] == Distance) {
       return x * 10;
@@ -84,13 +85,21 @@ void loop() {
   for (byte x = 0; x <= 98; x ++) FlowBuf[x] = FlowBuf[x + 1];
   FlowBuf[99] = digitalRead(FLOW_SENSOR);
 
+  // Check for serial data commands from the RPi Smart Still controller
+  while (Serial.available()) {
+    delay(500);
+    Data = Serial.read();
+  
+    Data = 0;
+  }
+
   //Lidar.rangingTest(&measure,false);
   //if (measure.RangeStatus != 4) {
   //  Distance = measure.RangeMilliMeter;
   //  Ethanol  = CalcEthanol();
   //}
 
-  // Communications to my Raspberry PI based still monitor/controller uses 9600 baud serial data
+  // Build the data block to be sent to the RPi Smart Still Controller once every second
   if (CurrentTime - SerialCounter >= 1000) {
     digitalWrite(USER_LED,HIGH);
     TempUpdate();
