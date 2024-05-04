@@ -96,9 +96,12 @@ void loop() {
 
   // Check for serial data commands from the RPi Smart Still controller
   while (Serial.available()) {
-    delay(500);
     Data = Serial.read();
-  
+    if (Data == 33) { // Reboot the device if a "!" is received
+      RebootUnit();
+    } else if (Data == 35) { // Update a specific Divisions[x] slot if a "#" is received
+      delay(500);
+    }  
     Data = 0;
   }
 
