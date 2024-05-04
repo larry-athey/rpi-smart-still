@@ -38,9 +38,13 @@ Adafruit_VL53L0X Lidar = Adafruit_VL53L0X();
 //------------------------------------------------------------------------------------------------
 void setup() {
   Serial.begin(9600);
+  while (! Serial) delay(10);
   Serial.println("");
   DT.begin();
-  //Lidar.begin();
+  //if (! Lidar.begin()) {
+  //  Serial.println("Failed to initialize VL53L0X");
+  //  while(1);
+  //}
   for (byte x = 0; x <= 10; x ++) Divisions[x] = 0;
   for (byte x = 0; x <= 99; x ++) FlowBuf[x] = 0;
   SerialCounter = millis();
