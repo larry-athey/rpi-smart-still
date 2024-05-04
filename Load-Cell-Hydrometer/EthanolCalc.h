@@ -1,13 +1,13 @@
 //------------------------------------------------------------------------------------------------
 // Calculations based on a 64 gram (2.4 ounce) stainless steel ball reference weight suspended
-// mid-way into a 125 ml (4 ounce) vessel of 21C/70F to 24C/75F distillate. Deviating from these
+// mid-way into a 125 ml (4 ounce) vessel of 20C/68F to 21C/70F distillate. Deviating from these
 // specifications will affect the accuracy of the hydrometer readings inaccurate. This shouldn't
 // be a problem if you have adequate ground/tap temperature water flowing through your condenser.
 //
 // As you likely remember from elementary school science class, metals expand with heat and will
 // contract when cooled. With the load cell being made of aluminum, which is a heat conductor
 // used in electronics heat sinks, temperature will affect the load cell readings. You will want
-// to keep this hydrometer as close to the still as possible so it lives in a stable environment.
+// to keep this hydrometer a fair distance from your still so it lives in a stable environment.
 //
 // Sorry for the overly long if-else branch, it uses less code space than a switch-case branch.
 // There is no math formula that I know of to calculate this, and as you can tell by looking at
