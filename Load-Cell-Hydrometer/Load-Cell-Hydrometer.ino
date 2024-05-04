@@ -98,7 +98,7 @@
 char Uptime[10];      // Global placeholder for the formatted uptime reading
 byte Ethanol = 0;     // Global placeholder for ethanol percentage reading
 float TempC = 0;      // Global placeholder for ethanol temperature reading
-float WeightBuf[100]; // Buffer for storing the last 100 load cell readings
+float WeightBuf[50];  // Buffer for storing the last 50 load cell readings
 byte FlowBuf[100];    // Buffer for calculating the flow rate percentage
 bool eToggle = false; // Ethanol display toggle byte (false=%ABV or true=Proof)
 long ScreenCounter;   // Timekeeper for display updates
@@ -220,7 +220,7 @@ void setup() {
   tft.fillRect(0,74,320,95,ILI9341_BLACK);
 
   Scale.calibrate_scale(64);
-  for (byte x = 0; x <= 99; x ++) WeightBuf[x] = 64;
+  for (byte x = 0; x <= 49; x ++) WeightBuf[x] = 64;
   tft.setTextColor(ILI9341_YELLOW);
   tft.setCursor(90,95);
   tft.print("Load Cell Calibrated");
@@ -399,18 +399,18 @@ void loop() {
       } else if (Data == 35) { // Recalibrate the load cell if a "#" is received
         digitalWrite(TFT_LED,LOW);
         Scale.calibrate_scale(64);
-        for (byte x = 0; x <= 99; x ++) WeightBuf[x] = 64;
+        for (byte x = 0; x <= 49; x ++) WeightBuf[x] = 64;
         digitalWrite(TFT_LED,HIGH);
       }
     }
-    for (byte x = 0; x <= 98; x ++) WeightBuf[x] = WeightBuf[x + 1];
-    WeightBuf[99] = Scale.get_units(15);
-    if (WeightBuf[99] > 64) { // Train the runavg mode before ethanol starts running
+    for (byte x = 0; x <= 48; x ++) WeightBuf[x] = WeightBuf[x + 1];
+    WeightBuf[49] = Scale.get_units(15);
+    if (WeightBuf[49] > 64) { // Train the runavg mode before ethanol starts running
       Scale.calibrate_scale(64);
-      WeightBuf[99] = Scale.get_units(15);
+      WeightBuf[49] = Scale.get_units(15);
     }
-    for (byte x = 0; x <= 99; x ++) WeightAvg += WeightBuf[x];
-    WeightAvg /= 100;
+    for (byte x = 0; x <= 49; x ++) WeightAvg += WeightBuf[x];
+    WeightAvg /= 50;
     Ethanol = CalcEthanol(WeightAvg);
   }
 
