@@ -16,9 +16,9 @@
 char Uptime[10];    // Global placeholder for the formatted uptime reading
 byte Ethanol = 0;   // Global placeholder for ethanol percentage reading
 float TempC = 0;    // Global placeholder for ethanol temperature reading
-long LoopCounter;   // Timekeeper for distance measurement updates
-long SerialCounter; // Timekeeper for serial data output updates
+uint Distance = 0;  // Global placeholder for the LIDAR distance measurement
 uint Divisions[11]; // Measurements for the hydrometer's 10% divisions
+long SerialCounter; // Timekeeper for serial data output updates
 byte FlowBuf[100];  // Buffer for calculating the flow rate percentage
 //------------------------------------------------------------------------------------------------
 OneWire oneWire(ONE_WIRE);
@@ -30,12 +30,10 @@ void setup() {
   Serial.println("");
   DT.begin();
   for (byte x = 0; x <= 99; x ++) FlowBuf[x] = 0;
-  LoopCounter = millis();
-  SerialCounter = LoopCounter;
+  SerialCounter = millis();
 
   pinMode(FLOW_SENSOR,INPUT_PULLDOWN);
   pinMode(USER_LED,OUTPUT);
-  digitalWrite(USER_LED,HIGH);
 }
 //------------------------------------------------------------------------------------------------
 void TempUpdate() { // Update the distillate temperature
@@ -43,7 +41,7 @@ void TempUpdate() { // Update the distillate temperature
   TempC = DT.getTempCByIndex(0);
 }
 //------------------------------------------------------------------------------------------------
-byte CalcEthanol(uint Distance) { // Convert the distance to ethanol ABV
+byte CalcEthanol() { // Convert the Distance millimeters to ethanol ABV
 
 }
 //------------------------------------------------------------------------------------------------
@@ -52,6 +50,7 @@ void RebootUnit() { // Reboot the device, write to flash memory here before rest
 }
 //------------------------------------------------------------------------------------------------
 void loop() {
+  byte Data = 0;
   long CurrentTime = millis();
   if (CurrentTime > 4200000000) RebootUnit();
   unsigned long allSeconds = CurrentTime / 1000;
@@ -62,5 +61,29 @@ void loop() {
   sprintf(Uptime,"%02d:%02d:%02d",runHours,runMinutes,runSeconds);
   for (byte x = 0; x <= 98; x ++) FlowBuf[x] = FlowBuf[x + 1];
   FlowBuf[99] = digitalRead(FLOW_SENSOR);
+
+  // Communications to my Raspberry PI based still monitor/controller uses 9600 baud serial data
+  if (CurrentTime - SerialCounter >= 1000) {
+    digitalWrite(USER_LED,HIGH);
+    for (byte x = 0; x <= 99; x ++) {
+      if (FlowBuf[x] > 0) Data ++;
+    }
+    Serial.print("Uptime: ");
+    Serial.println(Uptime);
+    Serial.print("Distance: ");
+    Serial.println(Distance);
+    Serial.print("Flow: ");
+    Serial.println(Data);
+    Serial.print("Ethanol: ");
+    Serial.println(Ethanol);
+    Serial.print("TempC: ");
+    Serial.println(TempC,1);
+    Serial.println("#"); // Pound signs mark the start and end of data blocks to the Raspberry PI
+    delay(100);
+    digitalWrite(USER_LED,LOW);
+    SerialCounter = CurrentTime;
+  } else {
+    delay(100);
+  }
 }
 //------------------------------------------------------------------------------------------------
