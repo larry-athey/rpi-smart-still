@@ -412,14 +412,13 @@ void loop() {
     for (byte x = 0; x <= 49; x ++) WeightAvg += WeightBuf[x];
     WeightAvg /= 50;
     Ethanol = CalcEthanol(WeightAvg);
+    /*
+    // Uncomment the following code block for display testing with fake ethanol values
+    eTest ++;
+    if (eTest == 100) eTest = 0;
+    Ethanol = eTest;
+    */
   }
-
-  /*
-  // Uncomment the following code block for display testing and load cell debugging
-  eTest ++;
-  if (eTest == 100) eTest = 1;
-  Ethanol = eTest;
-  */
 
   // Complete screen redraw takes about 2.5 seconds with the Adafruit_ILI9341 library
   // This keeps all of the latest stats on the screen for 5 seconds before refreshing
