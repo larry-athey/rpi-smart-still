@@ -207,6 +207,7 @@ void setup() {
   tft.fillRect(0,74,320,95,ILI9341_BLACK);
   */
 
+  tft.setTextColor(ILI9341_YELLOW);
   tft.setCursor(35,110);
   tft.print("Attach the reference weight,");
   tft.setCursor(35,135);
@@ -221,7 +222,7 @@ void setup() {
 
   Scale.calibrate_scale(64);
   for (byte x = 0; x <= 49; x ++) WeightBuf[x] = 64;
-  tft.setTextColor(ILI9341_YELLOW);
+  tft.setTextColor(ILI9341_GREEN);
   tft.setCursor(90,95);
   tft.print("Load Cell Calibrated");
   tft.setCursor(90,120);
@@ -431,7 +432,7 @@ void loop() {
   // Communications to my Raspberry PI based still monitor/controller uses 9600 baud serial data
   if (CurrentTime - SerialCounter >= 1000) {
     char WeightLog[25];
-    sprintf(WeightLog,"%.2f %.2f",WeightBuf[99],WeightAvg);
+    sprintf(WeightLog,"%.2f %.2f",WeightBuf[49],WeightAvg);
     Data = 0;
     for (byte x = 0; x <= 99; x ++) {
       if (FlowBuf[x] > 0) Data ++;
