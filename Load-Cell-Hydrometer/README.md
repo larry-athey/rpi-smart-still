@@ -8,4 +8,4 @@ The rest of the re-design plan is to make it easier to service the unit and flas
 
 The whole physical structure will also be 3D printed in order to simplify the build process.
 
-**NOTE:** As requested, I am also looking into a way to electronically read the floating height of a glass hydrometer in a normal parrot. I realize that George Duncan already did this, but I'm not real keen on his design which requires the hydrometer to be hidden inside of another tube.
+**NOTE:** As requested, I am also looking into a way to electronically read the floating height of a glass hydrometer in a normal parrot, this will be done with a VL53L0X sensor and a lightweight reflector at the top of the hydrometer. I realize that George Duncan already did something similar, but I'm not real keen on his design which requires the hydrometer to be hidden inside of another tube. I believe that I can do this with the hydrometer out in the open.
