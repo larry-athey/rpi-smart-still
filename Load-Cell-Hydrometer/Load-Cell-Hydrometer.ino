@@ -119,6 +119,7 @@ void setup() {
   pinMode(FLOW_SENSOR,INPUT_PULLDOWN);
   DT.begin();
   Serial.begin(9600);
+  while (! Serial) delay(1);
   Serial.println("");
 
   pinMode(TFT_LED,OUTPUT);
