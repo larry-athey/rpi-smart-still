@@ -436,7 +436,7 @@ void loop() {
     for (byte x = 0; x <= 99; x ++) {
       if (FlowBuf[x] > 0) Data ++;
     }
-    if (eToggle > 0) TimeUpdate(WeightLog);
+    if (eToggle) TimeUpdate(WeightLog);
     Serial.print("Uptime: ");
     Serial.println(Uptime);
     Serial.print("Weight: ");
