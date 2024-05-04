@@ -5,6 +5,7 @@
 #include "Adafruit_VL53L0X.h"  // VL53L0X LIDAR sensor library by Adafruit
 #include "OneWire.h"           // OneWire Network communications library
 #include "DallasTemperature.h" // Dallas Temperature DS18B20 temperature sensor library
+#include "Preferences.h"       // ESP32 Flash memory read/write library
 //------------------------------------------------------------------------------------------------
 #define ONE_WIRE 15
 #define FLOW_SENSOR 39
@@ -22,6 +23,7 @@ byte FlowBuf[100];  // Buffer for calculating the flow rate percentage
 //------------------------------------------------------------------------------------------------
 OneWire oneWire(ONE_WIRE);
 DallasTemperature DT(&oneWire);
+Adafruit_VL53L0X lox = Adafruit_VL53L0X();
 //------------------------------------------------------------------------------------------------
 void setup() {
   Serial.begin(9600);
@@ -45,8 +47,8 @@ byte CalcEthanol(uint Distance) { // Convert the distance to ethanol ABV
 
 }
 //------------------------------------------------------------------------------------------------
-void RebootUnit() {
-  ESP.restart(); // For Arduinos, see https://arduinogetstarted.com/faq/how-to-reset-arduino-by-programming
+void RebootUnit() { // Reboot the device, write to flash memory here before restarting
+  ESP.restart();
 }
 //------------------------------------------------------------------------------------------------
 void loop() {
