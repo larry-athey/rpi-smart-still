@@ -418,7 +418,7 @@ void loop() {
   if (CurrentTime - ScreenCounter >= 7500) {
     EthanolUpdate();
     TempUpdate();
-    if (eTest == 0) TimeUpdate("");
+    TimeUpdate("");
     ScreenCounter = CurrentTime;
   }
   // Communications to my Raspberry PI based still monitor/controller uses 9600 baud serial data
@@ -429,7 +429,7 @@ void loop() {
     for (byte x = 0; x <= 99; x ++) {
       if (FlowBuf[x] > 0) Data ++;
     }
-    if (eTest > 0) TimeUpdate(WeightLog);
+    if (eToggle > 0) TimeUpdate(WeightLog);
     Serial.print("Uptime: ");
     Serial.println(Uptime);
     Serial.print("Weight: ");
