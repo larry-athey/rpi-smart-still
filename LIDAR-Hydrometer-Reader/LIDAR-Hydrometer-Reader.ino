@@ -41,6 +41,7 @@ void setup() {
   Serial.println("");
   DT.begin();
   //Lidar.begin();
+  for (byte x = 0; x <= 10; x ++) Divisions[x] = 0;
   for (byte x = 0; x <= 99; x ++) FlowBuf[x] = 0;
   SerialCounter = millis();
 
@@ -105,6 +106,7 @@ void loop() {
     Data = 0;
   }
 
+  // Get the current reflector distance and convert it to an ethanol ABV value
   //Lidar.rangingTest(&measure,false);
   //if (measure.RangeStatus != 4) {
   //  Distance = measure.RangeMilliMeter;
