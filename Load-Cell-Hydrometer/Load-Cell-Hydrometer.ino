@@ -430,7 +430,7 @@ void loop() {
     TimeUpdate("");
     ScreenCounter = CurrentTime;
   }
-  // Communications to my Raspberry PI based still monitor/controller uses 9600 baud serial data
+  // Build the data block to be sent to the RPi Smart Still Controller once every second
   if (CurrentTime - SerialCounter >= 1000) {
     char WeightLog[25];
     sprintf(WeightLog,"%.2f %.2f",WeightBuf[49],WeightAvg);
