@@ -315,10 +315,18 @@ void EthanolUpdate() { // Update the ethanol value on the display
 }
 //------------------------------------------------------------------------------------------------
 void TempUpdate() { // Update the distillate temperature on the display
+  uint16_t FG;
   DT.requestTemperatures();
   TempC = DT.getTempCByIndex(0);
   String cStr = String(TempC,1);
   String fStr = String(TempC * 9 / 5 + 32,1);
+  if (TempC < 20) {
+    FG = ILI9341_BLUE;
+  } else if (TempC > 21) {
+    FG = ILI9341_RED;
+  } else {
+    FG = ILI9341_DARKGREY;
+  }
   // Off-screen buffers only work with Arduino Mega and ESP32 due to the memory requirements
   GFXcanvas1 canvas(155,24);
   canvas.setTextWrap(false);
@@ -326,12 +334,12 @@ void TempUpdate() { // Update the distillate temperature on the display
   canvas.setTextSize(1);
   canvas.setCursor(1,19);
   canvas.print(cStr + "C / " + fStr + "F");
-  tft.drawBitmap(142,0,canvas.getBuffer(),canvas.width(),canvas.height(),ILI9341_DARKGREY,ILI9341_BLACK);
+  tft.drawBitmap(142,0,canvas.getBuffer(),canvas.width(),canvas.height(),FG,ILI9341_BLACK);
   /*
   // Old school screen updates for Arduino Uno/Nano (blank the area and redraw)
   tft.setFont(&FreeSans10pt7b);
   tft.setTextSize(1);
-  tft.setTextColor(ILI9341_DARKGREY);
+  tft.setTextColor(FG);
   tft.fillRect(140,1,155,24,ILI9341_BLACK);
   tft.setCursor(145,19);
   tft.print(cStr + "C / " + fStr + "F");
