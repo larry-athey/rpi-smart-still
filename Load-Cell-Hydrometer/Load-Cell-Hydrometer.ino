@@ -379,7 +379,7 @@ void loop() {
   long CurrentTime = millis();
   if (CurrentTime > 4200000000) RebootUnit();
   float WeightAvg = 0;
-  byte Data;
+  byte Data = 0;
   unsigned long allSeconds = CurrentTime / 1000;
   int runHours = allSeconds / 3600;
   int secsRemaining = allSeconds % 3600;
@@ -403,6 +403,7 @@ void loop() {
         for (byte x = 0; x <= 49; x ++) WeightBuf[x] = 64;
         digitalWrite(TFT_LED,HIGH);
       }
+      Data = 0;
     }
     for (byte x = 0; x <= 48; x ++) WeightBuf[x] = WeightBuf[x + 1];
     WeightBuf[49] = Scale.get_units(15);
@@ -433,7 +434,6 @@ void loop() {
   if (CurrentTime - SerialCounter >= 1000) {
     char WeightLog[25];
     sprintf(WeightLog,"%.2f %.2f",WeightBuf[49],WeightAvg);
-    Data = 0;
     for (byte x = 0; x <= 99; x ++) {
       if (FlowBuf[x] > 0) Data ++;
     }
