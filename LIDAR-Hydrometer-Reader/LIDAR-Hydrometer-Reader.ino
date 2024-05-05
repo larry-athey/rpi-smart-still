@@ -12,6 +12,17 @@
 // want to be able to see the hydrometer itself without the obstacle. You can just as easily shoot
 // the beam upward to the bottom side of the disc on the hydrometer and turn that ABV reading into
 // a digital signal that the RPi Smart Still Controller can use.
+//
+// The VL53L0X sensor is mounted to the side of the overflow cup of the parrot roughly even with
+// the top of the overflow tube aiming upwards. A paper disc equal to the diameter of the overflow
+// cup is attached to the top of the hydrometer, roughly even with the top of the label with about
+// a 10mm gap above the 100% line. You may have to tip the sensor inward a bit so that the beam is
+// always trained on the disc. Calibrate it with the RPis Smart Still Controller and you're ready.
+//
+// The disc can be made from a business card and have hardly any effect on the hydrometer, if even
+// half a percent. Having the sensor that close to distillate isn't dangerous at all. It only runs
+// on 3.3 volts and distillate isn't conductive, nor is distilled water. I've submerged one in 90%
+// ethanol and distilled water while running and nothing happened.
 //------------------------------------------------------------------------------------------------
 #include "Adafruit_VL53L0X.h"  // VL53L0X LIDAR sensor library by Adafruit
 #include "OneWire.h"           // OneWire Network communications library
