@@ -32,10 +32,10 @@
 // This device also utilizes the flow sensor and DS18B20 temperature sensor since features of the
 // RPi Smart Still Controller depend on them. So if the Load Cell Hydrometer seems to be far more
 // complicated than what you want to deal with, this should be a viable alternative and not leave
-// short on any features. I use the https://www.amazon.com/dp/B07RF57QF8 flow sensor connected to
-// the output spout of my parrot with silicone tubing and the temperature sensor plugged in a 3/8"
-// stainless steel barbed tee like I have on my dephleg discharge water output. So my parrot kind
-// of looks like a Frankenstein job with all of the wires zip tied to it. Oh well, I don't mind.
+// you short on features. I use the https://www.amazon.com/dp/B07RF57QF8 flow sensor connected to
+// the output spout of my parrot with silicone tubing and the temperature sensor on the condenser
+// output plugged into the side a 3/8" stainless steel barbed tee. So my parrot kind of looks like
+// a Frankenstein project with all of the wires zip tied to it. Oh well, I don't mind.
 //------------------------------------------------------------------------------------------------
 #include "Adafruit_VL53L0X.h"  // VL53L0X LIDAR sensor library by Adafruit
 #include "OneWire.h"           // OneWire Network communications library
