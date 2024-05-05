@@ -378,10 +378,10 @@ void TimeUpdate(String Debug) { // Update the uptime on the display or show debu
 byte CalcEthanol(float WeightAvg) { // Convert the weight average to an ethanol ABV value
   float Divisions[11],Tenth,TotalDivs = 0;
   byte ABV;
-  Divisions[0] = 56.00;
-  Divisions[1] = 56.06;
-  Divisions[2] = 56.12;
-  Divisions[3] = 56.20;
+  Divisions[0] = 56.00; // These are the weights for each of the ABV divisions that you would see
+  Divisions[1] = 56.06; // on a glass hydrometer. You may need to adjust these based on your load
+  Divisions[2] = 56.12; // cell. These were taken with 20C/68F to 21C/70F distillate in a room of
+  Divisions[3] = 56.20; // the same temperature.
   Divisions[4] = 56.35;
   Divisions[5] = 56.50;
   Divisions[6] = 56.65;
