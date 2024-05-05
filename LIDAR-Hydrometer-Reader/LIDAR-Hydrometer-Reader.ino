@@ -64,7 +64,7 @@ void setup() {
   for (byte x = 0; x <= 10; x ++) Divisions[x] = 0;
   for (byte x = 0; x <= 99; x ++) FlowBuf[x] = 0;
   SerialCounter = millis();
-
+  GetDivisions();
   pinMode(FLOW_SENSOR,INPUT_PULLDOWN);
   pinMode(USER_LED,OUTPUT);
 }
@@ -97,6 +97,14 @@ byte CalcEthanol() { // Convert the Distance millimeters to an ethanol ABV value
   return 0;
 }
 //------------------------------------------------------------------------------------------------
+void GetDivisions() {
+
+}
+//------------------------------------------------------------------------------------------------
+void UpdateDivision(byte Slot) {
+
+}
+//------------------------------------------------------------------------------------------------
 void RebootUnit() { // Reboot the device, write to flash memory here before restarting if needed
   ESP.restart();
 }
@@ -122,6 +130,7 @@ void loop() {
       RebootUnit();
     } else if (Data == 35) { // Update a specific Divisions[x] slot if a "#" is received
       Data = Serial.read();  // Formatted as #0 = 0%, #1 = 10% .. #9 = 90%, #a = 100%
+      UpdateDivision(Data);
     }  
     Data = 0;
   }
