@@ -232,5 +232,6 @@ void loop() {
     digitalWrite(USER_LED,LOW);
     SerialCounter = CurrentTime;
   }
+  delay(100);
 }
 //------------------------------------------------------------------------------------------------
