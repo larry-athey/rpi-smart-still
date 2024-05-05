@@ -23,6 +23,11 @@
 // half a percent. Having the sensor that close to distillate isn't dangerous at all. It only runs
 // on 3.3 volts and distillate isn't conductive, nor is distilled water. I've submerged one in 90%
 // ethanol and distilled water while running and nothing happened, it never stopped working.
+//
+// Calibration is as simple as putting the hydrometer in the parrot, add water until the 100% mark
+// is even with the top of the center tube, click the button in the RPi Smart Still Controller for
+// the 100% calibration, and repeat for every 10% mark including the 0% mark. The settings will be
+// stored in the flash memory and you won't have to do it again unless you replace your hydrometer.
 //------------------------------------------------------------------------------------------------
 #include "Adafruit_VL53L0X.h"  // VL53L0X LIDAR sensor library by Adafruit
 #include "OneWire.h"           // OneWire Network communications library
