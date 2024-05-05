@@ -83,7 +83,8 @@ void TempUpdate() { // Update the distillate temperature value
 }
 //------------------------------------------------------------------------------------------------
 byte CalcEthanol() { // Convert the Distance millimeters to an ethanol ABV value
-  float Tenth,Subtotal = 0,Total = 0;
+  float Tenth,TotalDivs = 0;
+  byte ABV;
   for (byte x = 0; x <= 10; x ++) {
     if (Divisions[x] > 0) {
       if (Divisions[x] == Distance) {
@@ -92,10 +93,10 @@ byte CalcEthanol() { // Convert the Distance millimeters to an ethanol ABV value
         if ((x < 10) && (Distance > Divisions[x]) && (Distance < Divisions[x + 1])) {
           Tenth = (Divisions[x + 1] - Divisions[x]) / 10;
           for (byte y = 1; y <= 9; y ++) {
-            Subtotal += Tenth;
-            if (Divisions[x] + Subtotal >= Distance) {
-              Total = (Divisions[x] * 10) + y;
-              return Total;
+            TotalDivs += Tenth;
+            if (Divisions[x] + TotalDivs >= Distance) {
+              ABV = (x * 10) + y;
+              return ABV;
             }
           }
         }
