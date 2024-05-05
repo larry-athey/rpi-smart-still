@@ -48,20 +48,21 @@ uint Divisions[11]; // Measurements for the hydrometer's 10% divisions
 long SerialCounter; // Timekeeper for serial data output updates
 byte FlowBuf[100];  // Buffer for calculating the flow rate percentage
 //------------------------------------------------------------------------------------------------
+Adafruit_VL53L0X Lidar = Adafruit_VL53L0X();
 OneWire oneWire(ONE_WIRE);
 DallasTemperature DT(&oneWire);
-Adafruit_VL53L0X Lidar = Adafruit_VL53L0X();
+Preferences preferences;
 //------------------------------------------------------------------------------------------------
 void setup() {
   Serial.begin(9600);
   while (! Serial) delay(10);
   Serial.println("");
   DT.begin();
+  preferences.begin("my-app",false);
   //if (! Lidar.begin()) {
   //  Serial.println("Failed to initialize VL53L0X");
   //  while(1);
   //}
-  for (byte x = 0; x <= 10; x ++) Divisions[x] = 0;
   for (byte x = 0; x <= 99; x ++) FlowBuf[x] = 0;
   SerialCounter = millis();
   GetDivisions();
@@ -97,12 +98,37 @@ byte CalcEthanol() { // Convert the Distance millimeters to an ethanol ABV value
   return 0;
 }
 //------------------------------------------------------------------------------------------------
-void GetDivisions() {
-
+void GetDivisions() { // Stuff the Divisions array with saved values stored in flash memory
+  Divisions[0] = preferences.getUInt("Div0",0);
+  Divisions[1] = preferences.getUInt("Div1",0);
+  Divisions[2] = preferences.getUInt("Div2",0);
+  Divisions[3] = preferences.getUInt("Div3",0);
+  Divisions[4] = preferences.getUInt("Div4",0);
+  Divisions[5] = preferences.getUInt("Div5",0);
+  Divisions[6] = preferences.getUInt("Div6",0);
+  Divisions[7] = preferences.getUInt("Div7",0);
+  Divisions[8] = preferences.getUInt("Div8",0);
+  Divisions[9] = preferences.getUInt("Div9",0);
+  Divisions[10] = preferences.getUInt("Div10",0);
 }
 //------------------------------------------------------------------------------------------------
-void UpdateDivision(byte Slot) {
-
+void UpdateDivision(byte Slot) { // Update a flash memory slot for a specific Divisions array item
+  char SlotName[5];
+  if (Slot == 97) {
+    Slot = 10;
+  } else {
+    Slot -= 48;
+  }
+  if ((Slot >= 0) && (Slot <= 10)) {
+    sprintf(SlotName,"Div%i",Slot);
+    preferences.putUInt(SlotName,Distance);
+    for (byte x = 0; x <= 9; x ++) {
+      digitalWrite(USER_LED,HIGH);
+      delay(100);
+      digitalWrite(USER_LED,LOW);
+      delay(100);
+    }
+  }
 }
 //------------------------------------------------------------------------------------------------
 void RebootUnit() { // Reboot the device, write to flash memory here before restarting if needed
