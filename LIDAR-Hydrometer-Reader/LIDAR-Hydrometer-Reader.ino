@@ -62,6 +62,7 @@ DallasTemperature DT(&oneWire);
 Preferences preferences;
 //------------------------------------------------------------------------------------------------
 void setup() {
+  boolean NewChip = true;
   Serial.begin(9600);
   while (! Serial) delay(10);
   Serial.println("");
@@ -74,6 +75,25 @@ void setup() {
   SerialCounter = millis();
   GetDivisions();
   // Check the flash memory to see if this is a new ESP32 and stuff it with default values if so
+  for (byte x = 0; x <= 10; x ++) {
+    if (Divisions[x] > 0) NewChip = false;
+  }
+  if (NewChip) {
+    preferences.begin("prefs",false);
+    preferences.putUInt("div0",0);
+    preferences.putUInt("div1",0);
+    preferences.putUInt("div2",0);
+    preferences.putUInt("div3",0);
+    preferences.putUInt("div4",0);
+    preferences.putUInt("div5",0);
+    preferences.putUInt("div6",0);
+    preferences.putUInt("div7",0);
+    preferences.putUInt("div8",0);
+    preferences.putUInt("div9",0);
+    preferences.putUInt("div10",0);  
+    preferences.end();
+    GetDivisions();
+  }
   pinMode(FLOW_SENSOR,INPUT_PULLDOWN);
   pinMode(USER_LED,OUTPUT);
 }
@@ -212,6 +232,6 @@ void loop() {
     digitalWrite(USER_LED,LOW);
     SerialCounter = CurrentTime;
   }
-  delay(100);
+  //delay(100);
 }
 //------------------------------------------------------------------------------------------------
