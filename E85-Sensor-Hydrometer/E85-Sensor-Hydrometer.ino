@@ -268,7 +268,7 @@ void loop() {
   int secsRemaining = allSeconds % 3600;
   int runMinutes = secsRemaining / 60;
   int runSeconds = secsRemaining % 60;
-  sprintf(Uptime,"%02d:%02d:%02d",runHours,runMinutes,runSeconds);
+  sprintf(Uptime,"%02u:%02u:%02u",runHours,runMinutes,runSeconds);
 
   if (revTick > 0) {      // Prevent division by zero, a zero is due to a timer1 overflow/timeout
     HZ = 63000 / revTick; // 3456000 ticks per minute, 57600 per second
