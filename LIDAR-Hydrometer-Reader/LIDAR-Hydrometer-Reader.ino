@@ -120,6 +120,13 @@ void GetDivisions() { // Stuff the Divisions array with saved values stored in f
   Divisions[9] = preferences.getUInt("Div9",0);
   Divisions[10] = preferences.getUInt("Div10",0);
   preferences.end();
+  for (byte x = 0; x <= 10; x ++) {
+    Serial.print("Div");
+    Serial.print(x);
+    Serial.print(": ");
+    Serial.println(Divisions[x]);
+  }
+  Serial.println("#");
 }
 //------------------------------------------------------------------------------------------------
 void UpdateDivision(byte Slot) { // Update a flash memory slot for a specific Divisions array item
@@ -131,15 +138,16 @@ void UpdateDivision(byte Slot) { // Update a flash memory slot for a specific Di
   }
   if ((Slot >= 0) && (Slot <= 10)) {
     preferences.begin("my-app",false);
-    sprintf(SlotName,"Div%i",Slot);
+    sprintf(SlotName,"Div%u",Slot);
     preferences.putUInt(SlotName,Distance);
+    preferences.end();
+    GetDivisions();
     for (byte x = 0; x <= 9; x ++) {
       digitalWrite(USER_LED,HIGH);
       delay(100);
       digitalWrite(USER_LED,LOW);
       delay(100);
     }
-    preferences.end();
   }
 }
 //------------------------------------------------------------------------------------------------
@@ -157,7 +165,7 @@ void loop() {
   int secsRemaining = allSeconds % 3600;
   int runMinutes = secsRemaining / 60;
   int runSeconds = secsRemaining % 60;
-  sprintf(Uptime,"%02d:%02d:%02d",runHours,runMinutes,runSeconds);
+  sprintf(Uptime,"%02u:%02u:%02u",runHours,runMinutes,runSeconds);
   for (byte x = 0; x <= 98; x ++) FlowBuf[x] = FlowBuf[x + 1];
   FlowBuf[99] = digitalRead(FLOW_SENSOR);
 
