@@ -2,7 +2,7 @@
 // RPI-Smart-Still Hydrometer Serial Data Writer v1.0.1 released July 14, 2023
 // Written by Larry Athey (https://panhandleponics.com)
 //
-// Simple program to send commands to the hydrometer to reboot it or recalibrate the load cell.
+// Simple program to send commands to the hydrometer to reboot or recalibrate it.
 //------------------------------------------------------------------------------------------------
 #include "stdio.h"
 #include "string.h"
@@ -14,7 +14,7 @@ int main(int argc,char **argv) {
   int UART;
 
   if (argc != 2) {
-    fprintf(stderr,"Invalid usage, requires a 1 character command to be passed");
+    fprintf(stderr,"Invalid usage, requires a 1 or 2 character command to be passed");
     return 1;
   }
 
