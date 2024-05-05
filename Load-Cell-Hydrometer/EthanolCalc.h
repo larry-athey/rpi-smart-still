@@ -1,4 +1,6 @@
 //------------------------------------------------------------------------------------------------
+// This is an experimental file used during initial development and will soon be deleted.
+//
 // Calculations based on a 64 gram (2.4 ounce) stainless steel ball reference weight suspended
 // mid-way into a 125 ml (4 ounce) vessel of 20C/68F to 21C/70F distillate. Deviating from these
 // specifications will affect the accuracy of the hydrometer readings inaccurate. This shouldn't
