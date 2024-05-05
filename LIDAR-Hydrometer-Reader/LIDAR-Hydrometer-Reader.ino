@@ -36,6 +36,17 @@
 // the output spout of my parrot with silicone tubing and the temperature sensor on the condenser
 // output plugged into the side a 3/8" stainless steel barbed tee. So my parrot kind of looks like
 // a Frankenstein project with all of the wires zip tied to it. Oh well, I don't mind.
+//
+// Bus connector layout below the ESP32
+// ------------------------------------
+// Power supply +5 volts 1A     1B VL53L0X +3.3 volts
+// Power supply negative 2A     2B VL53L0X negative
+// Serial comm jack gnd  3A     3B VL53L0X SCL
+// Serial comm jack TX   4A     4B VL53L0X SDA
+// Serial comm jack RX   5A     5B
+// DS18B20 +5 volts      6A     6A Flow sensor +5 volts
+// DS18B20 data          7A     7B Flow sensor pulse
+// DS18B20 negative      8A     8B Flow sensor negative
 //------------------------------------------------------------------------------------------------
 #include "Adafruit_VL53L0X.h"  // VL53L0X LIDAR sensor library by Adafruit
 #include "OneWire.h"           // OneWire Network communications library
