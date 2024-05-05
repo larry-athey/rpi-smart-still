@@ -94,14 +94,69 @@ while ($RS = mysqli_fetch_assoc($Result)) {
   } elseif ($RS["valve_id"] == 5) {
     // Control commands to pause and unpause a run
   } elseif ($RS["valve_id"] == 6) {
-    // Control commands to reboot the hydrometer
+    // Control command to reboot the hydrometer (Load cell and LIDAR versions)
     if ($RS["muted"] == 0) SpeakMessage(33);
     shell_exec("/usr/share/rpi-smart-still/hydro-write !");
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 7) {
-    // Control commands to recalibrate the hydrometer
+    // Control command to recalibrate the hydrometer (Load cell version)
     if ($RS["muted"] == 0) SpeakMessage(32);
     shell_exec("/usr/share/rpi-smart-still/hydro-write \#");
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+  } elseif ($RS["valve_id"] == 70) {
+    // Control command to calibrate the hydrometer 0% slot (LIDAR version)
+    if ($RS["muted"] == 0) SpeakMessage(37);
+    shell_exec("/usr/share/rpi-smart-still/hydro-write \#0");
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+  } elseif ($RS["valve_id"] == 71) {
+    // Control command to calibrate the hydrometer 10% slot (LIDAR version)
+    if ($RS["muted"] == 0) SpeakMessage(38);
+    shell_exec("/usr/share/rpi-smart-still/hydro-write \#1");
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+  } elseif ($RS["valve_id"] == 72) {
+    // Control command to calibrate the hydrometer 20% slot (LIDAR version)
+    if ($RS["muted"] == 0) SpeakMessage(39);
+    shell_exec("/usr/share/rpi-smart-still/hydro-write \#2");
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+  } elseif ($RS["valve_id"] == 73) {
+    // Control command to calibrate the hydrometer 30% slot (LIDAR version)
+    if ($RS["muted"] == 0) SpeakMessage(40);
+    shell_exec("/usr/share/rpi-smart-still/hydro-write \#3");
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+  } elseif ($RS["valve_id"] == 74) {
+    // Control command to calibrate the hydrometer 40% slot (LIDAR version)
+    if ($RS["muted"] == 0) SpeakMessage(41);
+    shell_exec("/usr/share/rpi-smart-still/hydro-write \#4");
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+  } elseif ($RS["valve_id"] == 75) {
+    // Control command to calibrate the hydrometer 50% slot (LIDAR version)
+    if ($RS["muted"] == 0) SpeakMessage(42);
+    shell_exec("/usr/share/rpi-smart-still/hydro-write \#5");
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+  } elseif ($RS["valve_id"] == 76) {
+    // Control command to calibrate the hydrometer 60% slot (LIDAR version)
+    if ($RS["muted"] == 0) SpeakMessage(43);
+    shell_exec("/usr/share/rpi-smart-still/hydro-write \#6");
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+  } elseif ($RS["valve_id"] == 77) {
+    // Control command to calibrate the hydrometer 70% slot (LIDAR version)
+    if ($RS["muted"] == 0) SpeakMessage(44);
+    shell_exec("/usr/share/rpi-smart-still/hydro-write \#7");
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+  } elseif ($RS["valve_id"] == 78) {
+    // Control command to calibrate the hydrometer 80% slot (LIDAR version)
+    if ($RS["muted"] == 0) SpeakMessage(45);
+    shell_exec("/usr/share/rpi-smart-still/hydro-write \#8");
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+  } elseif ($RS["valve_id"] == 79) {
+    // Control command to calibrate the hydrometer 90% slot (LIDAR version)
+    if ($RS["muted"] == 0) SpeakMessage(46);
+    shell_exec("/usr/share/rpi-smart-still/hydro-write \#9");
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+  } elseif ($RS["valve_id"] == 80) {
+    // Control command to calibrate the hydrometer 100% slot (LIDAR version)
+    if ($RS["muted"] == 0) SpeakMessage(47);
+    shell_exec("/usr/share/rpi-smart-still/hydro-write \#a");
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 99) {
     // Control commands to speak notifications with no other actions
