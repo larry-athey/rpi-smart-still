@@ -31,7 +31,7 @@
 //
 // This device also utilizes the flow sensor and DS18B20 temperature sensor since features of the
 // RPi Smart Still Controller depend on them. So if the Load Cell Hydrometer seems to be far more
-// complicated than what you want to deal with, this should be a viable substitute and not leave
+// complicated than what you want to deal with, this should be a viable alternative and not leave
 // short on any features. I use the https://www.amazon.com/dp/B07RF57QF8 flow sensor connected to
 // the output spout of my parrot with silicone tubing and the temperature sensor plugged in a 3/8"
 // stainless steel barbed tee like I have on my dephleg discharge water output. So my parrot kind
@@ -107,21 +107,21 @@ byte CalcEthanol() { // Convert the Distance millimeters to an ethanol ABV value
 }
 //------------------------------------------------------------------------------------------------
 void GetDivisions() { // Stuff the Divisions array with saved values stored in flash memory
-  preferences.begin("my-app",false);
-  Divisions[0] = preferences.getUInt("Div0",0);
-  Divisions[1] = preferences.getUInt("Div1",0);
-  Divisions[2] = preferences.getUInt("Div2",0);
-  Divisions[3] = preferences.getUInt("Div3",0);
-  Divisions[4] = preferences.getUInt("Div4",0);
-  Divisions[5] = preferences.getUInt("Div5",0);
-  Divisions[6] = preferences.getUInt("Div6",0);
-  Divisions[7] = preferences.getUInt("Div7",0);
-  Divisions[8] = preferences.getUInt("Div8",0);
-  Divisions[9] = preferences.getUInt("Div9",0);
-  Divisions[10] = preferences.getUInt("Div10",0);
+  preferences.begin("my-app",true);
+  Divisions[0] = preferences.getUInt("div0",0);
+  Divisions[1] = preferences.getUInt("div1",0);
+  Divisions[2] = preferences.getUInt("div2",0);
+  Divisions[3] = preferences.getUInt("div3",0);
+  Divisions[4] = preferences.getUInt("div4",0);
+  Divisions[5] = preferences.getUInt("div5",0);
+  Divisions[6] = preferences.getUInt("div6",0);
+  Divisions[7] = preferences.getUInt("div7",0);
+  Divisions[8] = preferences.getUInt("div8",0);
+  Divisions[9] = preferences.getUInt("div9",0);
+  Divisions[10] = preferences.getUInt("div10",0);
   preferences.end();
   for (byte x = 0; x <= 10; x ++) {
-    Serial.print("Div");
+    Serial.print("div");
     Serial.print(x);
     Serial.print(": ");
     Serial.println(Divisions[x]);
@@ -137,8 +137,9 @@ void UpdateDivision(byte Slot) { // Update a flash memory slot for a specific Di
     Slot -= 48;
   }
   if ((Slot >= 0) && (Slot <= 10)) {
+    if (Slot == 10) Distance = 178;
     preferences.begin("my-app",false);
-    sprintf(SlotName,"Div%u",Slot);
+    sprintf(SlotName,"div%u",Slot);
     preferences.putUInt(SlotName,Distance);
     preferences.end();
     GetDivisions();
