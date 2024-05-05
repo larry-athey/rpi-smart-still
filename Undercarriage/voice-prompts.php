@@ -60,6 +60,17 @@ function SpeakMessage($ID) {
   $Msg[34]  = "Distillate is too warm. Increasing condenser cooling water flow";
   $Msg[35]  = "Pausing the current distillation run";
   $Msg[36]  = "Resuming the currently paused distillation run";
+  $Msg[37]  = "Updating the hydrometer reader zero percent calibration slot";
+  $Msg[38]  = "Updating the hydrometer reader 10 percent calibration slot";
+  $Msg[39]  = "Updating the hydrometer reader 20 percent calibration slot";
+  $Msg[40]  = "Updating the hydrometer reader 30 percent calibration slot";
+  $Msg[41]  = "Updating the hydrometer reader 40 percent calibration slot";
+  $Msg[42]  = "Updating the hydrometer reader 50 percent calibration slot";
+  $Msg[43]  = "Updating the hydrometer reader 60 percent calibration slot";
+  $Msg[44]  = "Updating the hydrometer reader 70 percent calibration slot";
+  $Msg[45]  = "Updating the hydrometer reader 80 percent calibration slot";
+  $Msg[46]  = "Updating the hydrometer reader 90 percent calibration slot";
+  $Msg[47]  = "Updating the hydrometer reader 100 percent calibration slot";
 
   mysqli_close($DBcnx);
   CreatePrompt($Msg[$ID]);
