@@ -129,8 +129,10 @@ void loop() {
     if (Data == 33) { // Reboot the device if a "!" is received
       RebootUnit();
     } else if (Data == 35) { // Update a specific Divisions[x] slot if a "#" is received
-      Data = Serial.read();  // Formatted as #0 = 0%, #1 = 10% .. #9 = 90%, #a = 100%
-      UpdateDivision(Data);
+      if (Serial.available()) { // Formatted as #0 = 0%, #1 = 10% .. #9 = 90%, #a = 100%
+        Data = Serial.read();
+        UpdateDivision(Data);
+      }
     }  
     Data = 0;
   }
