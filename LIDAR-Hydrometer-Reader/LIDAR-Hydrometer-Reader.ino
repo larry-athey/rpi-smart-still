@@ -73,6 +73,7 @@ void setup() {
   for (byte x = 0; x <= 99; x ++) FlowBuf[x] = 0;
   SerialCounter = millis();
   GetDivisions();
+  // Check the flash memory to see if this is a new ESP32 and stuff it with default values if so
   pinMode(FLOW_SENSOR,INPUT_PULLDOWN);
   pinMode(USER_LED,OUTPUT);
 }
@@ -107,7 +108,7 @@ byte CalcEthanol() { // Convert the Distance millimeters to an ethanol ABV value
 }
 //------------------------------------------------------------------------------------------------
 void GetDivisions() { // Stuff the Divisions array with saved values stored in flash memory
-  preferences.begin("my-app",true);
+  preferences.begin("prefs",true);
   Divisions[0] = preferences.getUInt("div0",0);
   Divisions[1] = preferences.getUInt("div1",0);
   Divisions[2] = preferences.getUInt("div2",0);
@@ -130,15 +131,14 @@ void GetDivisions() { // Stuff the Divisions array with saved values stored in f
 }
 //------------------------------------------------------------------------------------------------
 void UpdateDivision(byte Slot) { // Update a flash memory slot for a specific Divisions array item
-  char SlotName[5];
+  char SlotName[6];
   if (Slot == 97) {
     Slot = 10;
   } else {
     Slot -= 48;
   }
   if ((Slot >= 0) && (Slot <= 10)) {
-    if (Slot == 10) Distance = 178;
-    preferences.begin("my-app",false);
+    preferences.begin("prefs",false);
     sprintf(SlotName,"div%u",Slot);
     preferences.putUInt(SlotName,Distance);
     preferences.end();
