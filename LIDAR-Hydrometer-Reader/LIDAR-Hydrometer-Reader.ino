@@ -58,7 +58,6 @@ void setup() {
   while (! Serial) delay(10);
   Serial.println("");
   DT.begin();
-  preferences.begin("my-app",false);
   //if (! Lidar.begin()) {
   //  Serial.println("Failed to initialize VL53L0X");
   //  while(1);
@@ -99,6 +98,7 @@ byte CalcEthanol() { // Convert the Distance millimeters to an ethanol ABV value
 }
 //------------------------------------------------------------------------------------------------
 void GetDivisions() { // Stuff the Divisions array with saved values stored in flash memory
+  preferences.begin("my-app",false);
   Divisions[0] = preferences.getUInt("Div0",0);
   Divisions[1] = preferences.getUInt("Div1",0);
   Divisions[2] = preferences.getUInt("Div2",0);
@@ -110,6 +110,7 @@ void GetDivisions() { // Stuff the Divisions array with saved values stored in f
   Divisions[8] = preferences.getUInt("Div8",0);
   Divisions[9] = preferences.getUInt("Div9",0);
   Divisions[10] = preferences.getUInt("Div10",0);
+  preferences.end();
 }
 //------------------------------------------------------------------------------------------------
 void UpdateDivision(byte Slot) { // Update a flash memory slot for a specific Divisions array item
@@ -120,6 +121,7 @@ void UpdateDivision(byte Slot) { // Update a flash memory slot for a specific Di
     Slot -= 48;
   }
   if ((Slot >= 0) && (Slot <= 10)) {
+    preferences.begin("my-app",false);
     sprintf(SlotName,"Div%i",Slot);
     preferences.putUInt(SlotName,Distance);
     for (byte x = 0; x <= 9; x ++) {
@@ -128,6 +130,7 @@ void UpdateDivision(byte Slot) { // Update a flash memory slot for a specific Di
       digitalWrite(USER_LED,LOW);
       delay(100);
     }
+    preferences.end();
   }
 }
 //------------------------------------------------------------------------------------------------
