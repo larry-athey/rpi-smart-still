@@ -44,7 +44,6 @@
 #include "HX711.h"             // Load cell library from https://github.com/RobTillaart/HX711
 #include "OneWire.h"           // OneWire Network communications library
 #include "DallasTemperature.h" // Dallas Temperature DS18B20 temperature sensor library
-#include "EthanolCalc.h"       // Long ass function to return ethanol % based on reference weight
 //------------------------------------------------------------------------------------------------
 // Arduino Uno GPIO pin mapping (See special note at the top of EthanolCalc.h)
 //#define ONE_WIRE 4
@@ -348,7 +347,7 @@ void TempUpdate() { // Update the distillate temperature on the display
   */
 }
 //------------------------------------------------------------------------------------------------
-void TimeUpdate(String Debug) {
+void TimeUpdate(String Debug) { // Update the uptime on the display or show debugging information
   // Off-screen buffers only work with Arduino Mega and ESP32 due to the memory requirements
   GFXcanvas1 canvas(105,24);
   canvas.setTextWrap(false);
@@ -374,6 +373,39 @@ void TimeUpdate(String Debug) {
     tft.print(Debug);
   }
   */
+}
+//------------------------------------------------------------------------------------------------
+byte CalcEthanol(float WeightAvg) { // Convert the weight average to an ethanol ABV value
+  float Divisions[11],Tenth,TotalDivs = 0;
+  byte ABV;
+  Divisions[0] = 56.00;
+  Divisions[1] = 56.06;
+  Divisions[2] = 56.12;
+  Divisions[3] = 56.20;
+  Divisions[4] = 56.35;
+  Divisions[5] = 56.50;
+  Divisions[6] = 56.65;
+  Divisions[7] = 56.80;
+  Divisions[8] = 57.00;
+  Divisions[9] = 57.20;
+  Divisions[10] = 57.42;
+  for (byte x = 0; x <= 10; x ++) {
+    if (Divisions[x] == WeightAvg) {
+      return x * 10;
+    } else {
+      if ((x < 10) && (WeightAvg > Divisions[x]) && (WeightAvg < Divisions[x + 1])) {
+        Tenth = (Divisions[x + 1] - Divisions[x]) / 10;
+        for (byte y = 1; y <= 9; y ++) {
+          TotalDivs += Tenth;
+          if (Divisions[x] + TotalDivs >= WeightAvg) {
+            ABV = (x * 10) + y;
+            return ABV;
+          }
+        }
+      }
+    }
+  }
+  return 0;
 }
 //------------------------------------------------------------------------------------------------
 void loop() {
