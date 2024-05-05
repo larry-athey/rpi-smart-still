@@ -22,7 +22,7 @@
 // The disc can be made from a business card and have hardly any effect on the hydrometer, if even
 // half a percent. Having the sensor that close to distillate isn't dangerous at all. It only runs
 // on 3.3 volts and distillate isn't conductive, nor is distilled water. I've submerged one in 90%
-// ethanol and distilled water while running and nothing happened.
+// ethanol and distilled water while running and nothing happened, it never stopped working.
 //------------------------------------------------------------------------------------------------
 #include "Adafruit_VL53L0X.h"  // VL53L0X LIDAR sensor library by Adafruit
 #include "OneWire.h"           // OneWire Network communications library
