@@ -393,12 +393,12 @@ byte CalcEthanol(float WeightAvg) { // Convert the weight average to an ethanol 
     if (Divisions[x] == WeightAvg) {
       return x * 10;
     } else {
-      if ((x > 0) && (WeightAvg < Divisions[x]) && (WeightAvg > Divisions[x - 1])) {
-        Tenth = (Divisions[x] - Divisions[x -1]) / 10;
-        for (byte y = 9; y >= 1; y --) {
+      if ((x > 0) && (WeightAvg > Divisions[x]) && (WeightAvg < Divisions[x - 1])) {
+        Tenth = (Divisions[x - 1] - Divisions[x]) / 10;
+        for (byte y = 1; y >= 9; y ++) {
           TotalDivs += Tenth;
-          if (Divisions[x] - TotalDivs <= WeightAvg) {
-            ABV = (x * 10) + y;
+          if (Divisions[x - 1] - TotalDivs <= WeightAvg) {
+            ABV = ((x - 1) * 10) + y;
             return ABV;
           }
         }
