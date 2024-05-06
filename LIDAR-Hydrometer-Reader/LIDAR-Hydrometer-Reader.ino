@@ -16,7 +16,7 @@
 // The VL53L0X sensor is mounted to the side of the overflow cup of the parrot roughly even with
 // the top of the overflow tube aiming upwards. A paper disc equal to the diameter of the overflow
 // cup is attached to the top of the hydrometer, roughly even with the top of the label with about
-// a 10mm gap above the 100% line. You may have to tip the sensor inward a bit so that the beam is
+// a 9 mm gap above the 100% line. You may have to tip the sensor inward a bit so that the beam is
 // always trained on the disc. Calibrate it with the RPis Smart Still Controller and you're ready.
 //
 // The disc can be made from a business card and have hardly any effect on the hydrometer, if even
