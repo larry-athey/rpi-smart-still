@@ -381,11 +381,11 @@ byte CalcEthanol(float WeightAvg) { // Convert the weight average to an ethanol 
   Divisions[0] = 56.00; // These are the weights for each of the ABV divisions that you would see
   Divisions[1] = 56.06; // on a glass hydrometer. You may need to adjust these based on your load
   Divisions[2] = 56.12; // cell. These were taken with 20C/68F to 21C/70F distillate in a room of
-  Divisions[3] = 56.20; // the same temperature.
-  Divisions[4] = 56.35;
-  Divisions[5] = 56.50;
-  Divisions[6] = 56.65;
-  Divisions[7] = 56.80;
+  Divisions[3] = 56.20; // the same temperature. Remember, with load cells being aluminum, they're
+  Divisions[4] = 56.35; // more affected by temperature and will expand/contract which will cause
+  Divisions[5] = 56.50; // their reading to drift. The temperature shown in the display will tell
+  Divisions[6] = 56.65; // you if you're outside of the acceptable range. If it's red or blue, you
+  Divisions[7] = 56.80; // will not be getting accurate readings.
   Divisions[8] = 57.00;
   Divisions[9] = 57.20;
   Divisions[10] = 57.42;
