@@ -40,9 +40,9 @@
 // Bus connector layout below the ESP32
 // ------------------------------------
 // Power supply +5 volts 1A     1B VL53L0X +3.3 volts
-// Power supply negative 2A     2B VL53L0X negative
+// Power supply negative 2A     2B VL53L0X SDA
 // Serial comm jack gnd  3A     3B VL53L0X SCL
-// Serial comm jack TX   4A     4B VL53L0X SDA
+// Serial comm jack TX   4A     4B VL53L0X negative
 // Serial comm jack RX   5A     5B
 // DS18B20 +5 volts      6A     6A Flow sensor +5 volts
 // DS18B20 data          7A     7B Flow sensor pulse
@@ -91,17 +91,17 @@ void setup() {
   }
   if (NewChip) {
     preferences.begin("prefs",false);
-    preferences.putUInt("div0",0);
-    preferences.putUInt("div1",0);
-    preferences.putUInt("div2",0);
-    preferences.putUInt("div3",0);
-    preferences.putUInt("div4",0);
-    preferences.putUInt("div5",0);
-    preferences.putUInt("div6",0);
-    preferences.putUInt("div7",0);
-    preferences.putUInt("div8",0);
-    preferences.putUInt("div9",0);
-    preferences.putUInt("div10",0);  
+    preferences.putUInt("div0",145); // 145
+    preferences.putUInt("div1",139); // 139
+    preferences.putUInt("div2",133); // 133
+    preferences.putUInt("div3",127); // 127
+    preferences.putUInt("div4",119); // 119
+    preferences.putUInt("div5",109); // 109
+    preferences.putUInt("div6",96); // 96
+    preferences.putUInt("div7",81); // 81
+    preferences.putUInt("div8",63); // 63
+    preferences.putUInt("div9",41); // 41
+    preferences.putUInt("div10",9); // 9
     preferences.end();
     GetDivisions();
   }
@@ -117,19 +117,17 @@ void TempUpdate() { // Update the distillate temperature value
 byte CalcEthanol() { // Convert the Distance millimeters to an ethanol ABV value
   float Tenth,TotalDivs = 0;
   byte ABV;
-  for (byte x = 0; x <= 10; x ++) {
-    if (Divisions[x] > 0) {
-      if (Divisions[x] == Distance) {
-        return x * 10;
-      } else {
-        if ((x < 10) && (Distance > Divisions[x]) && (Distance < Divisions[x + 1])) {
-          Tenth = (Divisions[x + 1] - Divisions[x]) / 10;
-          for (byte y = 1; y <= 9; y ++) {
-            TotalDivs += Tenth;
-            if (Divisions[x] + TotalDivs >= Distance) {
-              ABV = (x * 10) + y;
-              return ABV;
-            }
+  for (byte x = 10; x <= 0; x --) {
+    if (Divisions[x] == Distance) {
+      return x * 10;
+    } else {
+      if ((x > 0) && (Distance > Divisions[x]) && (Distance < Divisions[x - 1])) {
+        Tenth = (Divisions[x - 1] - Divisions[x]) / 10;
+        for (byte y = 1; y >= 9; y ++) {
+          TotalDivs += Tenth;
+          if (Divisions[x - 1] - TotalDivs <= Distance) {
+            ABV = ((x - 1) * 10) + y;
+            return ABV;
           }
         }
       }
