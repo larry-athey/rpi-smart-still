@@ -91,17 +91,17 @@ void setup() {
   }
   if (NewChip) {
     preferences.begin("prefs",false);
-    preferences.putUInt("div0",145); // 145
-    preferences.putUInt("div1",139); // 139
-    preferences.putUInt("div2",133); // 133
-    preferences.putUInt("div3",127); // 127
-    preferences.putUInt("div4",119); // 119
-    preferences.putUInt("div5",109); // 109
-    preferences.putUInt("div6",96); // 96
-    preferences.putUInt("div7",81); // 81
-    preferences.putUInt("div8",63); // 63
-    preferences.putUInt("div9",41); // 41
-    preferences.putUInt("div10",9); // 9
+    preferences.putUInt("div0",145); // 0%
+    preferences.putUInt("div1",139); // 10%
+    preferences.putUInt("div2",133); // 20%
+    preferences.putUInt("div3",127); // 30%
+    preferences.putUInt("div4",119); // 40%
+    preferences.putUInt("div5",109); // 50%
+    preferences.putUInt("div6",96);  // 60%
+    preferences.putUInt("div7",81);  // 70%
+    preferences.putUInt("div8",63);  // 80%
+    preferences.putUInt("div9",41);  // 90%
+    preferences.putUInt("div10",9);  // 100%
     preferences.end();
     GetDivisions();
   }
