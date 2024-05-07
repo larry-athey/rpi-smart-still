@@ -94,20 +94,25 @@
 #define TFT_MOSI 23
 #define TFT_LED 4
 //------------------------------------------------------------------------------------------------
-char Uptime[10];      // Global placeholder for the formatted uptime reading
-byte Ethanol = 0;     // Global placeholder for ethanol percentage reading
-float TempC = 0;      // Global placeholder for ethanol temperature reading
-float WeightBuf[50];  // Buffer for storing the last 50 load cell readings
-byte FlowBuf[100];    // Buffer for calculating the flow rate percentage
-bool eToggle = false; // Ethanol display toggle byte (false=%ABV or true=Proof)
-long ScreenCounter;   // Timekeeper for display updates
-long SerialCounter;   // Timekeeper for serial data output updates
-byte eTest = 0;       // This is only used by the code block in loop() for display testing
+char Uptime[10];            // Global placeholder for the formatted uptime reading
+byte Ethanol = 0;           // Global placeholder for ethanol percentage reading
+float TempC = 0;            // Global placeholder for ethanol temperature reading
+float WeightBuf[50];        // Buffer for storing the last 50 load cell readings
+byte FlowBuf[100];          // Buffer for calculating the flow rate percentage
+bool eToggle = false;       // Ethanol display toggle byte (false=%ABV or true=Proof)
+long ScreenCounter;         // Timekeeper for display updates
+long SerialCounter;         // Timekeeper for serial data output updates
+volatile byte PulseCounter; // Flow sensor pulse counter
+byte eTest = 0;             // This is only used by the code block in loop() for display testing
 //------------------------------------------------------------------------------------------------
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS,TFT_DC,TFT_MOSI,TFT_CLK,TFT_RST,TFT_MISO);
 HX711 Scale;
 OneWire oneWire(ONE_WIRE);
 DallasTemperature DT(&oneWire);
+//------------------------------------------------------------------------------------------------
+void IRAM_ATTR PulseCapture() { // Interupt hook function to capture flow sensor pulses
+  if (PulseCounter < 255) PulseCounter ++;
+}
 //------------------------------------------------------------------------------------------------
 void setup() {
   byte Counter;
@@ -115,11 +120,13 @@ void setup() {
   for (Counter = 0; Counter <= 99; Counter ++) FlowBuf[Counter] = 0;
   ScreenCounter = millis();
   SerialCounter = ScreenCounter;
-  pinMode(FLOW_SENSOR,INPUT_PULLDOWN);
+  PulseCounter  = 0;
   DT.begin();
   Serial.begin(9600);
   while (! Serial) delay(10);
   Serial.println("");
+  pinMode(FLOW_SENSOR,INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(FLOW_SENSOR),PulseCapture,FALLING);
 
   pinMode(TFT_LED,OUTPUT);
   digitalWrite(TFT_LED,HIGH);
@@ -382,9 +389,9 @@ byte CalcEthanol(float WeightAvg) { // Convert the weight average to an ethanol 
   Divisions[1] = 56.06; // on a glass hydrometer. You may need to adjust these based on your load
   Divisions[2] = 56.12; // cell. These were taken with 20C/68F to 21C/70F distillate in a room of
   Divisions[3] = 56.20; // the same temperature. Remember, with load cells being aluminum, they're
-  Divisions[4] = 56.35; // more affected by temperature and will expand/contract which will cause
+  Divisions[4] = 56.35; // more affected by temperature and will expand/contract, which will cause
   Divisions[5] = 56.50; // their reading to drift. The temperature shown in the display will tell
-  Divisions[6] = 56.65; // you if you're outside of the acceptable range. If it's red or blue, you
+  Divisions[6] = 56.65; // you if you're outside of the calibrated range. If it's red or blue, you
   Divisions[7] = 56.80; // will not be getting accurate readings.
   Divisions[8] = 57.00;
   Divisions[9] = 57.20;
@@ -412,6 +419,7 @@ void loop() {
   long CurrentTime = millis();
   if (CurrentTime > 4200000000) RebootUnit();
   float WeightAvg = 0;
+  float FlowTotal = 0;
   byte Data = 0;
   unsigned long allSeconds = CurrentTime / 1000;
   int runHours = allSeconds / 3600;
@@ -436,7 +444,6 @@ void loop() {
         for (byte x = 0; x <= 49; x ++) WeightBuf[x] = 64;
         digitalWrite(TFT_LED,HIGH);
       }
-      Data = 0;
     }
     for (byte x = 0; x <= 48; x ++) WeightBuf[x] = WeightBuf[x + 1];
     WeightBuf[49] = Scale.get_units(15);
@@ -467,16 +474,17 @@ void loop() {
   if (CurrentTime - SerialCounter >= 1000) {
     char WeightLog[25];
     sprintf(WeightLog,"%.2f %.2f",WeightBuf[49],WeightAvg);
-    for (byte x = 0; x <= 99; x ++) {
-      if (FlowBuf[x] > 0) Data ++;
-    }
+    for (byte x = 0; x <= 98; x ++) FlowBuf[x] = FlowBuf[x + 1];
+    FlowBuf[99] = PulseCounter;
+    for (byte x = 0; x <= 99; x ++) FlowTotal += FlowBuf[x];
+    FlowTotal /= 100;
     if (eToggle) TimeUpdate(WeightLog);
     Serial.print("Uptime: ");
     Serial.println(Uptime);
     Serial.print("Weight: ");
     Serial.println(WeightLog);
     Serial.print("Flow: ");
-    Serial.println(Data);
+    Serial.println(FlowTotal);
     Serial.print("Ethanol: ");
     Serial.println(Ethanol);
     Serial.print("TempC: ");
