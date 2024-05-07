@@ -195,7 +195,7 @@ void RebootUnit() { // Reboot the device, write to flash memory here before rest
 void loop() {
   //VL53L0X_RangingMeasurementData_t measure;
   byte Data = 0;
-  uint FlowTotal = 0;
+  float FlowTotal = 0;
   long CurrentTime = millis();
   if (CurrentTime > 4200000000) RebootUnit();
   unsigned long allSeconds = CurrentTime / 1000;
@@ -204,8 +204,6 @@ void loop() {
   int runMinutes = secsRemaining / 60;
   int runSeconds = secsRemaining % 60;
   sprintf(Uptime,"%02u:%02u:%02u",runHours,runMinutes,runSeconds);
-  //for (byte x = 0; x <= 98; x ++) FlowBuf[x] = FlowBuf[x + 1];
-  //FlowBuf[99] = digitalRead(FLOW_SENSOR);
 
   // Check for serial data commands from the RPi Smart Still controller
   while (Serial.available()) {
