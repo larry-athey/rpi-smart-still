@@ -138,6 +138,7 @@ CREATE TABLE `settings` (
   `distillate_abv` int(11) DEFAULT NULL,
   `distillate_flow` tinyint(4) DEFAULT NULL,
   `speech_enabled` tinyint(4) DEFAULT NULL,
+  `hydro_type` int(11) NOT NULL DEFAULT 1,
   `active_run` tinyint(4) DEFAULT NULL,
   `active_program` int(11) DEFAULT NULL,
   `paused` tinyint(4) DEFAULT NULL,
@@ -149,8 +150,8 @@ CREATE TABLE `settings` (
   `serial_data` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `settings` (`ID`, `boiler_addr`, `boiler_temp`, `dephleg_addr`, `dephleg_temp`, `column_addr`, `column_temp`, `valve1_total`, `valve1_pulse`, `valve1_position`, `valve2_total`, `valve2_pulse`, `valve2_position`, `heating_enabled`, `heating_polarity`, `heating_analog`, `heating_total`, `heating_position`, `distillate_temp`, `distillate_abv`, `distillate_flow`, `speech_enabled`, `active_run`, `active_program`, `paused`, `pause_return`, `saved_upper`, `saved_lower`, `run_start`, `run_end`, `serial_data`) VALUES
-(1, '28-3ce104578ab4', 37.4, '28-3ce1045767e2', 28.6, '28-3ce104572467', 29.4, 10310, 103, 0, 10289, 103, 0, 1, 1, 1, 140, 0, 28.6, 38, 0, 1, 0, 1, 0, 0, 0, 0, '2023-08-22 03:34:46', '2023-08-22 03:51:20', 'Uptime: 76:20:12\nWeight: 64.54 64.54\nFlow: 0\nEthanol: 38\nTempC: 28.6');
+INSERT INTO `settings` (`ID`, `boiler_addr`, `boiler_temp`, `dephleg_addr`, `dephleg_temp`, `column_addr`, `column_temp`, `valve1_total`, `valve1_pulse`, `valve1_position`, `valve2_total`, `valve2_pulse`, `valve2_position`, `heating_enabled`, `heating_polarity`, `heating_analog`, `heating_total`, `heating_position`, `distillate_temp`, `distillate_abv`, `distillate_flow`, `speech_enabled`, `hydro_type`, `active_run`, `active_program`, `paused`, `pause_return`, `saved_upper`, `saved_lower`, `run_start`, `run_end`, `serial_data`) VALUES
+(1, '28-000000038852', 20.3, '28-00000003a5e0', 20.6, '28-00000004499c', 20.6, 10381, 104, 0, 10161, 102, 0, 1, 1, 1, 140, 0, 21.2, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, '2024-02-23 21:27:11', '2024-02-24 00:36:10', 'Uptime: 00:31:11\nDistance: 0\nFlow: 0.00\nEthanol: 0\nTempC: 21.2');
 
 ALTER TABLE `settings` ADD PRIMARY KEY (`ID`);
 
