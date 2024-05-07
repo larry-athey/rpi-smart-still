@@ -491,6 +491,7 @@ void loop() {
     Serial.println(TempC,1);
     Serial.println("#"); // Pound signs mark the start and end of data blocks to the Raspberry PI
     SerialCounter = CurrentTime;
+    PulseCounter  = 0;
   }
 }
 //------------------------------------------------------------------------------------------------
