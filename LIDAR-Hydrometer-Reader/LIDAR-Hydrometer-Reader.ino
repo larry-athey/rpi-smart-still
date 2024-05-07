@@ -74,7 +74,7 @@ DallasTemperature DT(&oneWire);
 Preferences preferences;
 //------------------------------------------------------------------------------------------------
 void IRAM_ATTR PulseCapture() { // Interupt hook function to capture flow sensor pulses
-  PulseCounter ++;
+  if (PulseCounter < 255) PulseCounter ++;
 }
 //------------------------------------------------------------------------------------------------
 void setup() {
@@ -216,7 +216,6 @@ void loop() {
         UpdateDivision(Data);
       }
     }  
-    Data = 0;
   }
 
   // Get the current reflector distance and convert it to an ethanol ABV value
