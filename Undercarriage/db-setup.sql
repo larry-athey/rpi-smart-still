@@ -136,7 +136,7 @@ CREATE TABLE `settings` (
   `heating_position` int(11) DEFAULT NULL,
   `distillate_temp` float DEFAULT NULL,
   `distillate_abv` int(11) DEFAULT NULL,
-  `distillate_flow` tinyint(4) DEFAULT NULL,
+  `distillate_flow` float DEFAULT NULL,
   `speech_enabled` tinyint(4) DEFAULT NULL,
   `hydro_type` int(11) NOT NULL DEFAULT 1,
   `active_run` tinyint(4) DEFAULT NULL,
