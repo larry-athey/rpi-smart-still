@@ -59,18 +59,23 @@
 #define I2C_SDA 21
 #define USER_LED 2
 //------------------------------------------------------------------------------------------------
-char Uptime[10];    // Global placeholder for the formatted uptime reading
-byte Ethanol = 0;   // Global placeholder for ethanol percentage reading
-float TempC = 0;    // Global placeholder for ethanol temperature reading
-uint Distance = 0;  // Global placeholder for the LIDAR distance measurement
-uint Divisions[11]; // Measurements for the hydrometer's 10% divisions
-long SerialCounter; // Timekeeper for serial data output updates
-byte FlowBuf[100];  // Buffer for calculating the flow rate percentage
+char Uptime[10];            // Global placeholder for the formatted uptime reading
+byte Ethanol = 0;           // Global placeholder for ethanol percentage reading
+float TempC = 0;            // Global placeholder for ethanol temperature reading
+uint Distance = 0;          // Global placeholder for the LIDAR distance measurement
+uint Divisions[11];         // Measurements for the hydrometer's 10% divisions
+long SerialCounter;         // Timekeeper for serial data output updates
+volatile byte PulseCounter; // Flow sensor pulse counter
+byte FlowBuf[100];          // Buffer for calculating the flow rate percentage
 //------------------------------------------------------------------------------------------------
 Adafruit_VL53L0X Lidar = Adafruit_VL53L0X();
 OneWire oneWire(ONE_WIRE);
 DallasTemperature DT(&oneWire);
 Preferences preferences;
+//------------------------------------------------------------------------------------------------
+void IRAM_ATTR PulseCapture() { // Interupt hook function to capture flow sensor pulses
+  PulseCounter ++;
+}
 //------------------------------------------------------------------------------------------------
 void setup() {
   boolean NewChip = true;
@@ -84,6 +89,7 @@ void setup() {
   //}
   for (byte x = 0; x <= 99; x ++) FlowBuf[x] = 0;
   SerialCounter = millis();
+  PulseCounter  = 0;
   GetDivisions();
   // Check the flash memory to see if this is a new ESP32 and stuff it with default values if so
   for (byte x = 0; x <= 10; x ++) {
@@ -105,8 +111,9 @@ void setup() {
     preferences.end();
     GetDivisions();
   }
-  pinMode(FLOW_SENSOR,INPUT_PULLDOWN);
+  pinMode(FLOW_SENSOR,INPUT_PULLUP);
   pinMode(USER_LED,OUTPUT);
+  attachInterrupt(digitalPinToInterrupt(FLOW_SENSOR),PulseCapture,FALLING);
 }
 //------------------------------------------------------------------------------------------------
 void TempUpdate() { // Update the distillate temperature value
@@ -188,6 +195,7 @@ void RebootUnit() { // Reboot the device, write to flash memory here before rest
 void loop() {
   //VL53L0X_RangingMeasurementData_t measure;
   byte Data = 0;
+  uint FlowTotal = 0;
   long CurrentTime = millis();
   if (CurrentTime > 4200000000) RebootUnit();
   unsigned long allSeconds = CurrentTime / 1000;
@@ -196,8 +204,8 @@ void loop() {
   int runMinutes = secsRemaining / 60;
   int runSeconds = secsRemaining % 60;
   sprintf(Uptime,"%02u:%02u:%02u",runHours,runMinutes,runSeconds);
-  for (byte x = 0; x <= 98; x ++) FlowBuf[x] = FlowBuf[x + 1];
-  FlowBuf[99] = digitalRead(FLOW_SENSOR);
+  //for (byte x = 0; x <= 98; x ++) FlowBuf[x] = FlowBuf[x + 1];
+  //FlowBuf[99] = digitalRead(FLOW_SENSOR);
 
   // Check for serial data commands from the RPi Smart Still controller
   while (Serial.available()) {
@@ -224,15 +232,16 @@ void loop() {
   if (CurrentTime - SerialCounter >= 1000) {
     digitalWrite(USER_LED,HIGH);
     TempUpdate();
-    for (byte x = 0; x <= 99; x ++) {
-      if (FlowBuf[x] > 0) Data ++;
-    }
+    for (byte x = 0; x <= 98; x ++) FlowBuf[x] = FlowBuf[x + 1];
+    FlowBuf[99] = PulseCounter;
+    for (byte x = 0; x <= 99; x ++) FlowTotal += FlowBuf[x];
+    FlowTotal /= 100;
     Serial.print("Uptime: ");
     Serial.println(Uptime);
     Serial.print("Distance: ");
     Serial.println(Distance);
     Serial.print("Flow: ");
-    Serial.println(Data);
+    Serial.println(FlowTotal);
     Serial.print("Ethanol: ");
     Serial.println(Ethanol);
     Serial.print("TempC: ");
@@ -240,6 +249,7 @@ void loop() {
     Serial.println("#"); // Pound signs mark the start and end of data blocks to the Raspberry PI
     digitalWrite(USER_LED,LOW);
     SerialCounter = CurrentTime;
+    PulseCounter  = 0;
   }
   delay(100);
 }
