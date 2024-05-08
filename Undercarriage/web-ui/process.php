@@ -115,7 +115,33 @@ elseif (isset($_GET["reboot_hydro"])) {
 }
 //---------------------------------------------------------------------------------------------------
 elseif (isset($_GET["recalibrate_hydro"])) {
-  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','7','0','0')");
+  if (isset($_GET["slot"])) {
+    if ($_GET["slot"] == 0) {
+      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','70','0','0')");
+    } elseif ($_GET["slot"] == 1) {
+      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','71','0','0')");
+    } elseif ($_GET["slot"] == 2) {
+      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','72','0','0')");
+    } elseif ($_GET["slot"] == 3) {
+      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','73','0','0')");
+    } elseif ($_GET["slot"] == 4) {
+      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','74','0','0')");
+    } elseif ($_GET["slot"] == 5) {
+      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','75','0','0')");
+    } elseif ($_GET["slot"] == 6) {
+      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','76','0','0')");
+    } elseif ($_GET["slot"] == 7) {
+      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','77','0','0')");
+    } elseif ($_GET["slot"] == 8) {
+      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','78','0','0')");
+    } elseif ($_GET["slot"] == 9) {
+      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','79','0','0')");
+    } elseif ($_GET["slot"] == 10) {
+      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','80','0','0')");
+    }
+  } else {
+    $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','7','0','0')");
+  }
 }
 //---------------------------------------------------------------------------------------------------
 elseif (isset($_POST["rss_edit_heating"])) {
