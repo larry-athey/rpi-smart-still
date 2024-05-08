@@ -44,6 +44,9 @@ if (($Hydrometer != "") && (mb_substr($Hydrometer,-1) == "#")) {
     print_r($Data);
     $Data2 = explode(": ",$Data[2]);
     $DistillateFlow = trim($Data2[1]);
+    $DistillateFlow /= 255;
+    $DistillateFlow *= 100;
+    $DistillateFlow = round($DistillateFlow,2);
     $Data2 = explode(": ",$Data[3]);
     $DistillateAbv = trim($Data2[1]);
     $Data2 = explode(": ",$Data[4]);
