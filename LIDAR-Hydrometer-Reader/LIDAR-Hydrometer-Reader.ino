@@ -74,7 +74,7 @@ void setup() {
   DT.begin();
   //if (! Lidar.begin()) {
   //  Serial.println("Failed to initialize VL53L0X");
-  //  while(1);
+  //  while(true);
   //}
   for (byte x = 0; x <= 99; x ++) FlowBuf[x] = 0;
   SerialCounter = millis();
