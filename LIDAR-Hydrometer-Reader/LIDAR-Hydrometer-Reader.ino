@@ -16,7 +16,7 @@
 // The VL53L0X sensor is mounted to the side of the overflow cup of the parrot roughly even with
 // the top of the overflow tube aiming upwards. A paper disc equal to the diameter of the overflow
 // cup is attached to the top of the hydrometer, roughly even with the top of the label with about
-// a 9 mm gap above the 100% line. You may have to tip the sensor inward a bit so that the beam is
+// a 10mm gap above the 100% line. You may have to tip the sensor inward a bit so that the beam is
 // always trained on the disc. Calibrate it with the RPis Smart Still Controller and you're ready.
 //
 // The disc can be made from a business card and have hardly any effect on the hydrometer, if even
@@ -239,4 +239,20 @@ void loop() {
   }
   delay(100);
 }
+//------------------------------------------------------------------------------------------------
+/*
+// Create a new sketch with the following code to fully erase the flash memory of an ESP32
+
+#include <nvs_flash.h>
+
+void setup() {
+  nvs_flash_erase(); // erase the NVS partition and...
+  nvs_flash_init();  // initialize the NVS partition.
+  while(true);
+}
+
+void loop() {
+
+}
+*/
 //------------------------------------------------------------------------------------------------
