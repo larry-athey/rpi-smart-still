@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------
-// Written by Larry Athey (https://panhandleponics.com) v1.0.1 released July 1, 2024
+// Written by Larry Athey (https://panhandleponics.com) v1.0.1 released June 1, 2024
 //
 // If you have seen any of George Duncan's videos on YouTube from around 2020, you might remember
 // an Arduino project of his called the "Talking Parrot Head". It involved a black PVC tube on top
@@ -86,17 +86,17 @@ void setup() {
   }
   if (NewChip) {
     preferences.begin("prefs",false);
-    preferences.putUInt("div0",145); // 0%
-    preferences.putUInt("div1",139); // 10%
-    preferences.putUInt("div2",133); // 20%
-    preferences.putUInt("div3",127); // 30%
-    preferences.putUInt("div4",119); // 40%
-    preferences.putUInt("div5",109); // 50%
-    preferences.putUInt("div6",96);  // 60%
-    preferences.putUInt("div7",81);  // 70%
-    preferences.putUInt("div8",63);  // 80%
-    preferences.putUInt("div9",41);  // 90%
-    preferences.putUInt("div10",9);  // 100%
+    preferences.putUInt("div0",146); // 0%
+    preferences.putUInt("div1",140); // 10%
+    preferences.putUInt("div2",134); // 20%
+    preferences.putUInt("div3",128); // 30%
+    preferences.putUInt("div4",120); // 40%
+    preferences.putUInt("div5",110); // 50%
+    preferences.putUInt("div6",97);  // 60%
+    preferences.putUInt("div7",82);  // 70%
+    preferences.putUInt("div8",64);  // 80%
+    preferences.putUInt("div9",42);  // 90%
+    preferences.putUInt("div10",10);  // 100%
     preferences.end();
     GetDivisions();
   }
