@@ -97,7 +97,7 @@
 char Uptime[10];            // Global placeholder for the formatted uptime reading
 byte Ethanol = 0;           // Global placeholder for ethanol percentage reading
 float TempC = 0;            // Global placeholder for ethanol temperature reading
-float WeightBuf[50];        // Buffer for storing the last 50 load cell readings
+float WeightBuf[10];        // Buffer for storing the last 10 load cell readings
 byte FlowBuf[100];          // Buffer for calculating the flow rate percentage
 bool eToggle = false;       // Ethanol display toggle byte (false=%ABV or true=Proof)
 long ScreenCounter;         // Timekeeper for display updates
@@ -228,7 +228,7 @@ void setup() {
   tft.fillRect(0,74,320,95,ILI9341_BLACK);
 
   Scale.calibrate_scale(64);
-  for (byte x = 0; x <= 49; x ++) WeightBuf[x] = 64;
+  for (byte x = 0; x <= 9; x ++) WeightBuf[x] = 64;
   tft.setTextColor(ILI9341_GREEN);
   tft.setCursor(90,95);
   tft.print("Load Cell Calibrated");
@@ -401,7 +401,7 @@ byte CalcEthanol(float WeightAvg) { // Convert the weight average to an ethanol 
       return x * 10;
     } else {
       if ((x > 0) && (WeightAvg > Divisions[x]) && (WeightAvg < Divisions[x - 1])) {
-        Tenth = (Divisions[x - 1] - Divisions[x]) / 10;
+        Tenth = (Divisions[x - 1] - Divisions[x]) * 0.1;
         for (byte y = 1; y <= 9; y ++) {
           TotalDivs += Tenth;
           if (Divisions[x - 1] - TotalDivs <= WeightAvg) {
@@ -442,18 +442,18 @@ void loop() {
       } else if (Data == 35) { // Recalibrate the load cell if a "#" is received
         digitalWrite(TFT_LED,LOW);
         Scale.calibrate_scale(64);
-        for (byte x = 0; x <= 49; x ++) WeightBuf[x] = 64;
+        for (byte x = 0; x <= 9; x ++) WeightBuf[x] = 64;
         digitalWrite(TFT_LED,HIGH);
       }
     }
-    for (byte x = 0; x <= 48; x ++) WeightBuf[x] = WeightBuf[x + 1];
-    WeightBuf[49] = Scale.get_units(15);
-    if (WeightBuf[49] > 64) { // Train the runavg mode before ethanol starts running
+    for (byte x = 0; x <= 8; x ++) WeightBuf[x] = WeightBuf[x + 1];
+    WeightBuf[9] = Scale.get_units(15);
+    if (WeightBuf[9] > 64) { // Train the runavg mode before ethanol starts running
       Scale.calibrate_scale(64);
-      WeightBuf[49] = Scale.get_units(15);
+      WeightBuf[9] = Scale.get_units(15);
     }
-    for (byte x = 0; x <= 49; x ++) WeightAvg += WeightBuf[x];
-    WeightAvg /= 50;
+    for (byte x = 0; x <= 9; x ++) WeightAvg += WeightBuf[x];
+    WeightAvg /= 10;
     Ethanol = CalcEthanol(WeightAvg);
     /*
     // Uncomment the following code block for display testing with fake ethanol values
@@ -474,7 +474,7 @@ void loop() {
   // Build the data block to be sent to the RPi Smart Still Controller once every second
   if (CurrentTime - SerialCounter >= 1000) {
     char WeightLog[25];
-    sprintf(WeightLog,"%.2f %.2f",WeightBuf[49],WeightAvg);
+    sprintf(WeightLog,"%.2f %.2f",WeightBuf[9],WeightAvg);
     for (byte x = 0; x <= 98; x ++) FlowBuf[x] = FlowBuf[x + 1];
     FlowBuf[99] = PulseCounter;
     for (byte x = 0; x <= 99; x ++) FlowTotal += FlowBuf[x];
