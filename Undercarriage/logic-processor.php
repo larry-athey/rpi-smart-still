@@ -88,9 +88,11 @@ if (mysqli_num_rows($Result) > 0) {
                                         "VALUES (now(),'0','2','1','" . $Settings["valve2_total"] . "','" . $Settings["valve2_total"] . "','1','0')," .
                                                "(now(),'0','2','0','$Duration','" . round($Program["dephleg_start"] * $Settings["valve2_pulse"],0,PHP_ROUND_HALF_UP) . "','1','0')");
         }
-        // Recalibrate the hydrometer to its reference weight
-        $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+        if ($Settings["hydro-type"] == 0) {
+          // Recalibrate the load cell hydrometer to its reference weight
+          $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                       "VALUES (now(),'0','7','0','0','0','0','0')");
+        }
       }
     } else {
       /***** BOILER TEMPERATURE MANAGEMENT ROUTINES *****/
@@ -346,7 +348,7 @@ if (mysqli_num_rows($Result) > 0) {
         // Check the distillate temperature every 10 minutes after column or dephleg are up to temperature
         if ((time() - strtotime($Logic["hydrometer_timer"]) >= 600) && ($Settings["distillate_abv"] > 0)) {
           // If distillate is over 24C/75F, increment the $Logic["hydrometer_temp_error"] counter
-          // This is for both safety and to maintain the accuracy of the digital hydrometer, hot distillate is less dense
+          // This is for both safety and to maintain the accuracy of the hydrometer, hot distillate is less dense and reads a higher proof
           if ($Settings["distillate_temp"] > 24) {
             $Logic["hydrometer_temp_error"] ++;
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_temp_error='" . $Logic["hydrometer_temp_error"] . "' WHERE ID=1");
