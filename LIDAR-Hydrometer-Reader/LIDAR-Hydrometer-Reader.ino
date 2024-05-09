@@ -55,6 +55,7 @@ uint Distance = 0;          // Global placeholder for the LIDAR distance measure
 uint Divisions[11];         // Measurements for the hydrometer's 10% divisions
 long SerialCounter;         // Timekeeper for serial data output updates
 volatile byte PulseCounter; // Flow sensor pulse counter
+byte EthanolBuf[10];        // Buffer for smoothing out ethanol readings
 byte FlowBuf[100];          // Buffer for calculating the flow rate percentage
 //------------------------------------------------------------------------------------------------
 Adafruit_VL53L0X Lidar = Adafruit_VL53L0X();
@@ -77,6 +78,7 @@ void setup() {
     while(true);
   }
   for (byte x = 0; x <= 99; x ++) FlowBuf[x] = 0;
+  for (byte x = 0; x <= 9; x ++) EthanolBuf[x] = 0;
   SerialCounter = millis();
   PulseCounter  = 0;
   GetDivisions();
@@ -118,10 +120,10 @@ byte CalcEthanol() { // Convert the Distance millimeters to an ethanol ABV value
       return x * 10;
     } else {
       if ((x > 0) && (Distance > Divisions[x]) && (Distance < Divisions[x - 1])) {
-        Tenth = (Divisions[x - 1] - Divisions[x]) / 10;
+        Tenth = (Divisions[x - 1] - Divisions[x]) * 0.1;
         for (byte y = 1; y <= 9; y ++) {
           TotalDivs += Tenth;
-          if (Divisions[x - 1] - TotalDivs <= Distance) {
+          if (Divisions[x - 1] - round(TotalDivs) <= Distance) {
             ABV = ((x - 1) * 10) + y;
             return ABV;
           }
@@ -186,6 +188,7 @@ void loop() {
   VL53L0X_RangingMeasurementData_t measure;
   byte Data = 0;
   float FlowTotal = 0;
+  uint EthanolAvg = 0;
   long CurrentTime = millis();
   if (CurrentTime > 4200000000) RebootUnit();
   unsigned long allSeconds = CurrentTime / 1000;
@@ -212,7 +215,10 @@ void loop() {
   Lidar.rangingTest(&measure,false);
   if (measure.RangeStatus != 4) {
     Distance = measure.RangeMilliMeter;
-    Ethanol  = CalcEthanol();
+    for (byte x = 0; x <= 8; x ++) EthanolBuf[x] = EthanolBuf[x + 1];
+    EthanolBuf[9]  = CalcEthanol();
+    for (byte x = 0; x <= 9; x ++) EthanolAvg += EthanolBuf[x];
+    Ethanol = EthanolAvg / 10;
   }
 
   // Build the data block to be sent to the RPi Smart Still Controller once every second
