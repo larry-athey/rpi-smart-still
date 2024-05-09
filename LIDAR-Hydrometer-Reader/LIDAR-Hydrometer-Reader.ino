@@ -72,10 +72,10 @@ void setup() {
   while (! Serial) delay(10);
   Serial.println("");
   DT.begin();
-  //if (! Lidar.begin()) {
-  //  Serial.println("Failed to initialize VL53L0X");
-  //  while(true);
-  //}
+  if (! Lidar.begin()) {
+    Serial.println("Failed to initialize VL53L0X");
+    while(true);
+  }
   for (byte x = 0; x <= 99; x ++) FlowBuf[x] = 0;
   SerialCounter = millis();
   PulseCounter  = 0;
@@ -182,7 +182,7 @@ void RebootUnit() { // Reboot the device, write to flash memory here before rest
 }
 //------------------------------------------------------------------------------------------------
 void loop() {
-  //VL53L0X_RangingMeasurementData_t measure;
+  VL53L0X_RangingMeasurementData_t measure;
   byte Data = 0;
   float FlowTotal = 0;
   long CurrentTime = millis();
@@ -208,11 +208,11 @@ void loop() {
   }
 
   // Get the current reflector distance and convert it to an ethanol ABV value
-  //Lidar.rangingTest(&measure,false);
-  //if (measure.RangeStatus != 4) {
-  //  Distance = measure.RangeMilliMeter;
-  //  Ethanol  = CalcEthanol();
-  //}
+  Lidar.rangingTest(&measure,false);
+  if (measure.RangeStatus != 4) {
+    Distance = measure.RangeMilliMeter;
+    Ethanol  = CalcEthanol();
+  }
 
   // Build the data block to be sent to the RPi Smart Still Controller once every second
   if (CurrentTime - SerialCounter >= 1000) {
