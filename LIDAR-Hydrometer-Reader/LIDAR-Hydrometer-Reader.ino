@@ -96,8 +96,8 @@ void setup() {
     preferences.putUInt("div7",82);  // 70%
     preferences.putUInt("div8",64);  // 80%
     preferences.putUInt("div9",42);  // 90%
-    preferences.putUInt("div10",10);  // 100%
-    preferences.end();
+    preferences.putUInt("div10",10);  // 100% - No point in calibrating this one since the LIDAR
+    preferences.end();                //        sensor has a minimum functional range of 17mm
     GetDivisions();
   }
   pinMode(FLOW_SENSOR,INPUT_PULLUP);
@@ -113,13 +113,13 @@ void TempUpdate() { // Update the distillate temperature value
 byte CalcEthanol() { // Convert the Distance millimeters to an ethanol ABV value
   float Tenth,TotalDivs = 0;
   byte ABV;
-  for (byte x = 10; x <= 0; x --) {
+  for (byte x = 10; x >= 0; x --) {
     if (Divisions[x] == Distance) {
       return x * 10;
     } else {
       if ((x > 0) && (Distance > Divisions[x]) && (Distance < Divisions[x - 1])) {
         Tenth = (Divisions[x - 1] - Divisions[x]) / 10;
-        for (byte y = 1; y >= 9; y ++) {
+        for (byte y = 1; y <= 9; y ++) {
           TotalDivs += Tenth;
           if (Divisions[x - 1] - TotalDivs <= Distance) {
             ABV = ((x - 1) * 10) + y;
@@ -128,6 +128,7 @@ byte CalcEthanol() { // Convert the Distance millimeters to an ethanol ABV value
         }
       }
     }
+    if (x == 0) return 0; // Why the F??K is this necessary to prevent negative rollover to 255?
   }
   return 0;
 }
