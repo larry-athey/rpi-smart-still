@@ -396,13 +396,13 @@ byte CalcEthanol(float WeightAvg) { // Convert the weight average to an ethanol 
   Divisions[8] = 57.00;
   Divisions[9] = 57.20;
   Divisions[10] = 57.42;
-  for (byte x = 10; x <= 0; x --) {
+  for (byte x = 10; x >= 0; x --) {
     if (Divisions[x] == WeightAvg) {
       return x * 10;
     } else {
       if ((x > 0) && (WeightAvg > Divisions[x]) && (WeightAvg < Divisions[x - 1])) {
         Tenth = (Divisions[x - 1] - Divisions[x]) / 10;
-        for (byte y = 1; y >= 9; y ++) {
+        for (byte y = 1; y <= 9; y ++) {
           TotalDivs += Tenth;
           if (Divisions[x - 1] - TotalDivs <= WeightAvg) {
             ABV = ((x - 1) * 10) + y;
@@ -411,6 +411,7 @@ byte CalcEthanol(float WeightAvg) { // Convert the weight average to an ethanol 
         }
       }
     }
+    if (x == 0) return 0; // Why the F??K is this necessary to prevent negative rollover to 255?
   }
   return 0;
 }
