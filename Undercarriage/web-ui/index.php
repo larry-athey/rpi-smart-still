@@ -85,8 +85,12 @@ $DBcnx = mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
 $Result = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
 if (mysqli_num_rows($Result) > 0) {
   $Settings = mysqli_fetch_assoc($Result);
+  // Hydrometer type change requested, 0 = Load Cell, 1 = LIDAR
+  if ((isset($_GET["hydro_type"])) && ($_GET["hydro_type"] >= 0) && ($_GET["hydro_type"] <= 1)) {
+    $Result = mysqli_query($DBcnx,"UPDATE settings SET hydro_type='" . $_GET["hydro_type"] . "' WHERE ID=1");
+  }
   // Speech enable/disable requested
-  if (isset($_GET["speech"])) {
+  if ((isset($_GET["speech"])) && ($_GET["speech"] >= 0) && ($_GET["speech"] <= 1)) {
     $Result = mysqli_query($DBcnx,"UPDATE settings SET speech_enabled='" . $_GET["speech"] . "' WHERE ID=1");
     $Settings["speech_enabled"] = $_GET["speech"];
   }
