@@ -216,7 +216,7 @@ void loop() {
   if (measure.RangeStatus != 4) {
     Distance = measure.RangeMilliMeter;
     for (byte x = 0; x <= 8; x ++) EthanolBuf[x] = EthanolBuf[x + 1];
-    EthanolBuf[9]  = CalcEthanol();
+    EthanolBuf[9] = CalcEthanol();
     for (byte x = 0; x <= 9; x ++) EthanolAvg += EthanolBuf[x];
     Ethanol = EthanolAvg / 10;
   }
