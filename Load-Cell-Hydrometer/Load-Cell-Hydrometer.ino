@@ -453,7 +453,7 @@ void loop() {
       WeightBuf[9] = Scale.get_units(15);
     }
     for (byte x = 0; x <= 9; x ++) WeightAvg += WeightBuf[x];
-    WeightAvg /= 10;
+    WeightAvg *= 0.1;
     Ethanol = CalcEthanol(WeightAvg);
     /*
     // Uncomment the following code block for display testing with fake ethanol values
@@ -478,7 +478,7 @@ void loop() {
     for (byte x = 0; x <= 98; x ++) FlowBuf[x] = FlowBuf[x + 1];
     FlowBuf[99] = PulseCounter;
     for (byte x = 0; x <= 99; x ++) FlowTotal += FlowBuf[x];
-    FlowTotal /= 100;
+    FlowTotal *= 0.01;
     if (eToggle) TimeUpdate(WeightLog);
     Serial.print("Uptime: ");
     Serial.println(Uptime);
