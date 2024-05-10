@@ -211,24 +211,28 @@ void loop() {
     }  
   }
 
-  // Get the current reflector distance and convert it to an ethanol ABV value
-  Lidar.rangingTest(&measure,false);
-  if (measure.RangeStatus != 4) {
-    Distance = measure.RangeMilliMeter;
-    for (byte x = 0; x <= 8; x ++) EthanolBuf[x] = EthanolBuf[x + 1];
-    EthanolBuf[9] = CalcEthanol();
-    for (byte x = 0; x <= 9; x ++) EthanolAvg += EthanolBuf[x];
-    Ethanol = EthanolAvg / 10;
-  }
-
   // Build the data block to be sent to the RPi Smart Still Controller once every second
   if (CurrentTime - SerialCounter >= 1000) {
     digitalWrite(USER_LED,HIGH);
+    // Get the current distillate temperature
     TempUpdate();
+
+    // Get the current reflector distance and convert it to an ethanol ABV value
+    Lidar.rangingTest(&measure,false);
+    if (measure.RangeStatus != 4) {
+      Distance = measure.RangeMilliMeter;
+      for (byte x = 0; x <= 8; x ++) EthanolBuf[x] = EthanolBuf[x + 1];
+      EthanolBuf[9] = CalcEthanol();
+      for (byte x = 0; x <= 9; x ++) EthanolAvg += EthanolBuf[x];
+      Ethanol = EthanolAvg * 0.1;
+    }
+
+    // Get the current distillate flow rate
     for (byte x = 0; x <= 98; x ++) FlowBuf[x] = FlowBuf[x + 1];
     FlowBuf[99] = PulseCounter;
     for (byte x = 0; x <= 99; x ++) FlowTotal += FlowBuf[x];
-    FlowTotal /= 100;
+    FlowTotal *= 0.01;
+
     Serial.print("Uptime: ");
     Serial.println(Uptime);
     Serial.print("Distance: ");
