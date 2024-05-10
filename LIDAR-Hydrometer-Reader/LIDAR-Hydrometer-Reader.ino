@@ -16,13 +16,13 @@
 // The VL53L0X sensor is mounted to the side of the overflow cup of the parrot roughly even with
 // the top of the overflow tube aiming upwards. A paper disc equal to the diameter of the overflow
 // cup is attached to the top of the hydrometer, roughly even with the top of the label with about
-// a 10mm gap above the 100% line. You may have to tip the sensor inward a bit so that the beam is
-// always trained on the disc. Calibrate it with the RPis Smart Still Controller and you're ready.
+// a 10mm gap above the 100% line. The sensor mount that I've provided a 3D model for, places your
+// sensor at the perfect angle. Calibrate it with the RPis Smart Still Controller and you're ready.
 //
-// The disc can be made from a business card and have hardly any effect on the hydrometer, if even
+// The disc can be made out of printer paper and have hardly any effect on the hydrometer, if even
 // half a percent. Having the sensor that close to distillate isn't dangerous at all. It only runs
 // on 3.3 volts and distillate isn't conductive, nor is distilled water. I've submerged one in 90%
-// ethanol and distilled water while running and nothing happened, it never stopped working.
+// ethanol and distilled water while running and nothing happened, it never even stopped working.
 //
 // Calibration is as simple as putting the hydrometer in the parrot, add water until the 100% mark
 // is even with the top of the center tube, click the button in the RPi Smart Still Controller for
