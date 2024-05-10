@@ -98,8 +98,8 @@ void setup() {
     preferences.putUInt("div7",82);  // 70%
     preferences.putUInt("div8",64);  // 80%
     preferences.putUInt("div9",42);  // 90%
-    preferences.putUInt("div10",10);  // 100% - No point in calibrating this one since the LIDAR
-    preferences.end();                //        sensor has a minimum functional range of 17mm
+    preferences.putUInt("div10",10); // 100% - No point in calibrating this one since the LIDAR
+    preferences.end();               //        sensor has a minimum functional range of 17mm
     GetDivisions();
   }
   pinMode(FLOW_SENSOR,INPUT_PULLUP);
