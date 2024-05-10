@@ -117,7 +117,8 @@ void IRAM_ATTR PulseCapture() { // Interupt hook function to capture flow sensor
 void setup() {
   byte Counter;
   float Tare;
-  for (Counter = 0; Counter <= 99; Counter ++) FlowBuf[Counter] = 0;
+  for (byte x = 0; x <= 99; x ++) FlowBuf[x] = 0;
+  for (byte x = 0; x <= 9; x ++) WeightBuf[x] = 64;
   ScreenCounter = millis();
   SerialCounter = ScreenCounter;
   PulseCounter  = 0;
@@ -228,7 +229,6 @@ void setup() {
   tft.fillRect(0,74,320,95,ILI9341_BLACK);
 
   Scale.calibrate_scale(64);
-  for (byte x = 0; x <= 9; x ++) WeightBuf[x] = 64;
   tft.setTextColor(ILI9341_GREEN);
   tft.setCursor(90,95);
   tft.print("Load Cell Calibrated");
