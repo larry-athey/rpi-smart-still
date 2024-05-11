@@ -92,6 +92,10 @@ if (mysqli_num_rows($Result) > 0) {
           // Recalibrate the load cell hydrometer to its reference weight
           $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                         "VALUES (now(),'0','7','0','0','0','0','0')");
+        } else {
+          // Reboot the LIDAR hydrometer reader
+          $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                        "VALUES (now(),'0','6','0','0','0','0','0')");
         }
       }
     } else {
