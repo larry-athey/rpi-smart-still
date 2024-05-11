@@ -176,7 +176,7 @@ if (mysqli_num_rows($Result) > 0) {
           if ($Settings["column_temp"] >= $Program["column_temp_low"]) {
             if ($Settings["speech_enabled"] == 1) SpeakMessage(16);
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_timer=now(),column_done='1',column_last_adjustment=now()," .
-                                          "column_note='Column has reached minimum operating temperature',hydrometer_timer=now(),hydrometer_temp_errors='0' WHERE ID=1");
+                                          "column_note='Column has reached minimum operating temperature',hydrometer_timer=now(),hydrometer_abv_errors='0',hydrometer_temp_errors='0' WHERE ID=1");
           }
         } else {
           // Check column temperature every 30 seconds
@@ -243,7 +243,7 @@ if (mysqli_num_rows($Result) > 0) {
           if ($Settings["dephleg_temp"] >= $Program["dephleg_temp_low"]) {
             if ($Settings["speech_enabled"] == 1) SpeakMessage(17);
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_timer=now(),dephleg_done='1',dephleg_last_adjustment=now()," .
-                                          "dephleg_note='Dephleg has reached minimum operating temperature',hydrometer_timer=now(),hydrometer_temp_errors='0' WHERE ID=1");
+                                          "dephleg_note='Dephleg has reached minimum operating temperature',hydrometer_timer=now(),hydrometer_abv_errors='0',hydrometer_temp_errors='0' WHERE ID=1");
           }
         } else {
           // Check dephleg temperature every 30 seconds
@@ -351,10 +351,10 @@ if (mysqli_num_rows($Result) > 0) {
           // This is for both safety and to maintain the accuracy of the hydrometer, hot distillate is less dense and reads a higher proof
           if ($Settings["distillate_temp"] > 24) {
             $Logic["hydrometer_temp_error"] ++;
-            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_temp_error='" . $Logic["hydrometer_temp_error"] . "' WHERE ID=1");
+            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_timer=now(),hydrometer_temp_error='" . $Logic["hydrometer_temp_error"] . "' WHERE ID=1");
           } else {
             $Logic["hydrometer_temp_error"] = 0;
-            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_temp_error='0' WHERE ID=1");
+            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_timer=now(),hydrometer_temp_error='0' WHERE ID=1");
           }
           // If $Logic["hydrometer_temp_error"] has 3 errors, increase the condenser cooling flow 10%
           if ($Logic["hydrometer_temp_error"] == 3) {
@@ -365,7 +365,7 @@ if (mysqli_num_rows($Result) > 0) {
             } else {
               $NewPosition = $Settings["valve1_total"];
             }
-            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_temp_error='0' WHERE ID=1");
+            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_timer=now(),hydrometer_temp_error='0' WHERE ID=1");
             $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$NewPosition' WHERE ID=1");
             $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                           "VALUES (now(),'0','1','1','$Difference','$NewPosition','1','0')");
