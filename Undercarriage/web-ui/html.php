@@ -727,16 +727,25 @@ function ShowValves($DBcnx) {
 }
 //---------------------------------------------------------------------------------------------------
 function StartRun($DBcnx) {
-  $Content  = "<p class=\"text-light\">Before you start your run, you must complete the pre-flight checklist first. Failing to do so will guarantee poor results. " .
-              "Remember, you are making a computer perform the physical actions that a human being would manually perform. Make sure that you always start with a clean and accurate slate!</p>";
-  $Content .= "<ol>";
-  $Content .=   "<li>Make sure that your still is completely cooled down.</li>";
-  $Content .=   "<li>Zero the heating stepper motor (if enabled).</li>";
-  $Content .=   "<li>Confirm that your water lines are pressurized.</li>";
-  $Content .=   "<li>Calibrate the condenser and dephleg cooling valves.</li>";
-  $Content .=   "<li>Calibrate the hydrometer.</li>";
-  $Content .= "</ol>";
-  $Content .= "<div style=\"float: right;\"><a href=\"index.php\" class=\"btn btn-danger\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"process.php?active_run=1\" class=\"btn btn-primary\" name=\"start_run\">Start Distillation Run</a></div>";
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
+  $Settings = mysqli_fetch_assoc($Result);
+
+  if (($Settings["valve1_total"] == 0) || ($Settings["valve1_pulse"] == 0) || ($Settings["valve2_total"] == 0) || ($Settings["valve2_pulse"] == 0)) {
+    $Content  = "<p class=\"text-danger\"><b>SYSTEM ERROR</b></p>";
+    $Content .= "<p class=\"text-light\">The condenser and dephleg valve calibration is incomplete!</p>";
+    $Content .= "<p class=\"text-light\">Please run the \"Calibrate Valves\" function with your valves under water pressure and start the run again.</p>";
+  } else {
+    $Content  = "<p class=\"text-light\">Before you start your run, you must complete the pre-flight checklist first. Failing to do so will guarantee poor results. " .
+                "Remember, you are making a computer perform the physical actions that a human being would manually perform. Make sure that you always start with a clean and accurate slate!</p>";
+    $Content .= "<ol>";
+    $Content .=   "<li>Make sure that your still is completely cooled down.</li>";
+    $Content .=   "<li>Zero the heating stepper motor (if enabled).</li>";
+    $Content .=   "<li>Confirm that your water lines are pressurized.</li>";
+    $Content .=   "<li>Calibrate the condenser and dephleg cooling valves.</li>";
+    $Content .=   "<li>Calibrate the hydrometer.</li>";
+    $Content .= "</ol>";
+    $Content .= "<div style=\"float: right;\"><a href=\"index.php\" class=\"btn btn-danger\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"process.php?active_run=1\" class=\"btn btn-primary\" name=\"start_run\">Start Distillation Run</a></div>";
+  }
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
