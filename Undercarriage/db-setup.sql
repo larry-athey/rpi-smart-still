@@ -136,11 +136,13 @@ CREATE TABLE `settings` (
   `heating_analog` tinyint(4) DEFAULT NULL,
   `heating_total` int(11) DEFAULT NULL,
   `heating_position` int(11) DEFAULT NULL,
+  `relay1_state` tinyint(4) DEFAULT NULL,
+  `relay2_state` tinyint(4) DEFAULT NULL,
   `distillate_temp` float DEFAULT NULL,
   `distillate_abv` int(11) DEFAULT NULL,
   `distillate_flow` float DEFAULT NULL,
   `speech_enabled` tinyint(4) DEFAULT NULL,
-  `hydro_type` int(11) NOT NULL DEFAULT 1,
+  `hydro_type` int(11) DEFAULT NULL,
   `active_run` tinyint(4) DEFAULT NULL,
   `active_program` int(11) DEFAULT NULL,
   `paused` tinyint(4) DEFAULT NULL,
@@ -152,8 +154,8 @@ CREATE TABLE `settings` (
   `serial_data` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `settings` (`ID`, `boiler_addr`, `boiler_temp`, `dephleg_addr`, `dephleg_temp`, `column_addr`, `column_temp`, `valve1_total`, `valve1_pulse`, `valve1_position`, `valve2_total`, `valve2_pulse`, `valve2_position`, `heating_enabled`, `heating_polarity`, `heating_analog`, `heating_total`, `heating_position`, `distillate_temp`, `distillate_abv`, `distillate_flow`, `speech_enabled`, `hydro_type`, `active_run`, `active_program`, `paused`, `pause_return`, `saved_upper`, `saved_lower`, `run_start`, `run_end`, `serial_data`) VALUES
-(1, '28-000000038852', 20.3, '28-00000003a5e0', 20.6, '28-00000004499c', 20.6, 10381, 104, 0, 10161, 102, 0, 1, 1, 1, 140, 0, 21.2, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, '2024-02-23 21:27:11', '2024-02-24 00:36:10', 'Uptime: 00:31:11\nDistance: 0\nFlow: 0.00\nEthanol: 0\nTempC: 21.2');
+INSERT INTO `settings` (`ID`, `boiler_addr`, `boiler_temp`, `dephleg_addr`, `dephleg_temp`, `column_addr`, `column_temp`, `valve1_total`, `valve1_pulse`, `valve1_position`, `valve2_total`, `valve2_pulse`, `valve2_position`, `heating_enabled`, `heating_polarity`, `heating_analog`, `heating_total`, `heating_position`, `relay1_state`, `relay2_state`, `distillate_temp`, `distillate_abv`, `distillate_flow`, `speech_enabled`, `hydro_type`, `active_run`, `active_program`, `paused`, `pause_return`, `saved_upper`, `saved_lower`, `run_start`, `run_end`, `serial_data`) VALUES
+(1, '28-000000038852', 32.9, '28-00000003a5e0', 23.9, '28-00000004499c', 24.6, 10384, 104, 0, 10244, 102, 0, 1, 1, 1, 140, 0, 0, 0, 24.1, 8, 0, 1, 1, 0, 2, 0, 0, 0, 0, '2024-05-11 01:57:46', '2024-05-11 05:40:26', 'Uptime: 02:19:35\nDistance: 8191\nFlow: 0.00\nEthanol: 8\nTempC: 24.1');
 
 ALTER TABLE `settings` ADD PRIMARY KEY (`ID`);
 
