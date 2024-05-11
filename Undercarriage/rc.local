@@ -20,6 +20,9 @@ fi
 modprobe w1-gpio
 modprobe w1-therm
 
+gpio -g mode 27 output
+gpio -g write 27 0
+
 gpio -g mode 25 output
 gpio -g write 25 0
 gpio -g mode 24 output
@@ -37,6 +40,9 @@ gpio -g mode 19 input
 gpio -g write 19 1
 gpio -g mode 18 input
 gpio -g write 18 1
+
+gpio -g mode 17 output
+gpio -g write 17 0
 
 gpio -g mode 13 output
 gpio -g write 13 0
