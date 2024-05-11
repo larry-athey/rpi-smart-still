@@ -327,11 +327,20 @@ if (mysqli_num_rows($Result) > 0) {
           if ($Settings["distillate_abv"] > 0) $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_started='1' WHERE ID=1");
         } else {
           if ($Program["mode"] == 0) {
-            // In pot still mode, we stop the run when we hit the minimum ABV
-            if ($Settings["distillate_abv"] <= $Program["distillate_abv"]) {
-              if ($Settings["speech_enabled"] == 1) SpeakMessage(31);
-              $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET run_start='2' WHERE ID=1");
-              $Update = mysqli_query($DBcnx,"UPDATE settings SET active_run='0',run_end=now() WHERE ID=1");
+            if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Settings["distillate_abv"] > 0)) {
+              if ($Settings["distillate_abv"] <= $Program["distillate_abv"]) {
+                $Logic["hydrometer_abv_error"] ++;
+                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_error='" . $Logic["hydrometer_abv_error"] . "' WHERE ID=1");
+              }
+              // In pot still mode, we stop the run after 3 checks showing that we've hit or dropped below the minimum ABV
+              if ($Logic["hydrometer_abv_error"] == 3) {
+                if ($Settings["speech_enabled"] == 1) SpeakMessage(31);
+                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET run_start='2' WHERE ID=1");
+                $Update = mysqli_query($DBcnx,"UPDATE settings SET active_run='0',run_end=now() WHERE ID=1");
+              }
+            } else {
+              $Logic["hydrometer_abv_error"] = 0;
+              $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_error='0' WHERE ID=1");
             }
           } else {
             // In reflux mode, we dynamically adjust the program's dephleg upper and lower temperature limits downward
@@ -345,8 +354,8 @@ if (mysqli_num_rows($Result) > 0) {
       }
       /***** DISTILLATE TEMPERATURE MANAGEMENT ROUTINES *****/
       if (($Logic["column_done"] == 1) || ($Logic["column_done"] == 1)) {
-        // Check the distillate temperature every 10 minutes after column or dephleg are up to temperature
-        if ((time() - strtotime($Logic["hydrometer_timer"]) >= 600) && ($Settings["distillate_abv"] > 0)) {
+        // Check the distillate temperature every 5 minutes after column or dephleg are up to temperature
+        if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Settings["distillate_abv"] > 0)) {
           // If distillate is over 24C/75F, increment the $Logic["hydrometer_temp_error"] counter
           // This is for both safety and to maintain the accuracy of the hydrometer, hot distillate is less dense and reads a higher proof
           if ($Settings["distillate_temp"] > 24) {
