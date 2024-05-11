@@ -54,7 +54,7 @@ function SpeakMessage($ID) {
   $Msg[28]  = "Turning off the cooling valves in 2 minutes";
   $Msg[29]  = "Setting the cooling valves to their starting positions according to the current program";
   $Msg[30]  = "Manual adjustment of heating stepper motor to " . $Settings["heating_position"] . " steps";
-  $Msg[31]  = "Pot still mode minimum ABV has been reached";
+  $Msg[31]  = "Pot still mode minimum acceptable ABV level has been reached";
   $Msg[32]  = "Sending the command to recalibrate the hydrometer load cell";
   $Msg[33]  = "Sending the command to reboot the hydrometer";
   $Msg[34]  = "Distillate is too warm. Increasing condenser cooling water flow";
@@ -71,6 +71,7 @@ function SpeakMessage($ID) {
   $Msg[45]  = "Updating the hydrometer reader 80 percent calibration slot";
   $Msg[46]  = "Updating the hydrometer reader 90 percent calibration slot";
   $Msg[47]  = "Updating the hydrometer reader 100 percent calibration slot";
+  $Msg[48]  = "Distillate flow has dropped below the minimum acceptable level";
 
   mysqli_close($DBcnx);
   CreatePrompt($Msg[$ID]);
