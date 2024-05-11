@@ -354,9 +354,13 @@ if (mysqli_num_rows($Result) > 0) {
       }
       /***** DISTILLATE MINIMUM FLOW RATE MANAGEMENT ROUTINES *****/
       if ($Program["flow_managed"] == 1) {
+        // Flow management also uses the $Logic["hydrometer_timer"] for tracking $Logic["flow_sensor_errors"] counts
+        if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Settings["distillate_abv"] > 0)) {
 
+        }
       }
       /***** DISTILLATE TEMPERATURE MANAGEMENT ROUTINES *****/
+      /***** THIS FINAL CODE BRANCH CONTROLS THE RESET OF $Logic["hydrometer_timer"] *****/
       if (($Logic["column_done"] == 1) || ($Logic["column_done"] == 1)) {
         // Check the distillate temperature every 5 minutes after column or dephleg are up to temperature
         if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Settings["distillate_abv"] > 0)) {
