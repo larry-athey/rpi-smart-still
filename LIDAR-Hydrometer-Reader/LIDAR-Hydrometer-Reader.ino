@@ -87,19 +87,7 @@ void setup() {
     if (Divisions[x] > 0) NewChip = false;
   }
   if (NewChip) {
-    preferences.begin("prefs",false);
-    preferences.putUInt("div0",146); // 0%
-    preferences.putUInt("div1",140); // 10%
-    preferences.putUInt("div2",134); // 20%
-    preferences.putUInt("div3",128); // 30%
-    preferences.putUInt("div4",120); // 40%
-    preferences.putUInt("div5",110); // 50%
-    preferences.putUInt("div6",97);  // 60%
-    preferences.putUInt("div7",82);  // 70%
-    preferences.putUInt("div8",64);  // 80%
-    preferences.putUInt("div9",42);  // 90%
-    preferences.putUInt("div10",10); // 100% - No point in calibrating this one since the LIDAR
-    preferences.end();               //        sensor has a minimum functional range of 17mm
+    ResetDivisions();
     GetDivisions();
   }
   pinMode(FLOW_SENSOR,INPUT_PULLUP);
@@ -180,6 +168,22 @@ void UpdateDivision(byte Slot) { // Update a flash memory slot for a specific Di
   }
 }
 //------------------------------------------------------------------------------------------------
+void ResetDivisions() { // Restore all of the default reflector distance values
+  preferences.begin("prefs",false);
+  preferences.putUInt("div0",146); // 0%
+  preferences.putUInt("div1",140); // 10%
+  preferences.putUInt("div2",134); // 20%
+  preferences.putUInt("div3",128); // 30%
+  preferences.putUInt("div4",120); // 40%
+  preferences.putUInt("div5",110); // 50%
+  preferences.putUInt("div6",97);  // 60%
+  preferences.putUInt("div7",82);  // 70%
+  preferences.putUInt("div8",64);  // 80%
+  preferences.putUInt("div9",42);  // 90%
+  preferences.putUInt("div10",10); // 100% - No point in calibrating this one since the LIDAR
+  preferences.end();               //        sensor has a minimum functional range of 17mm
+}
+//------------------------------------------------------------------------------------------------
 void RebootUnit() { // Reboot the device, write to flash memory here before restarting if needed
   ESP.restart();
 }
@@ -208,6 +212,9 @@ void loop() {
         Data = Serial.read();
         UpdateDivision(Data);
       }
+    } else if (Data == 42) { // Restore default Divisions[x] values if a "*" is received
+      ResetDivisions();
+      GetDivisions();
     }  
   }
 
