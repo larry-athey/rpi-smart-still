@@ -88,10 +88,10 @@ if (mysqli_num_rows($Result) > 0) {
                                         "VALUES (now(),'0','2','1','" . $Settings["valve2_total"] . "','" . $Settings["valve2_total"] . "','1','0')," .
                                                "(now(),'0','2','0','$Duration','" . round($Program["dephleg_start"] * $Settings["valve2_pulse"],0,PHP_ROUND_HALF_UP) . "','1','0')");
         }
-        if ($Settings["hydro-type"] == 0) {
+        if ($Settings["hydro_type"] == 0) {
           // Recalibrate the load cell hydrometer to its reference weight
           $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                      "VALUES (now(),'0','7','0','0','0','0','0')");
+                                        "VALUES (now(),'0','7','0','0','0','0','0')");
         }
       }
     } else {
