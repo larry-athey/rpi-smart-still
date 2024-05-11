@@ -349,13 +349,25 @@ if (mysqli_num_rows($Result) > 0) {
           } else {
             // In reflux mode, we dynamically adjust the program's dephleg upper and lower temperature limits downward
             // Remember, you can only adjust the ABV up, you can't adjust it down without adding distilled water to it
+
           }
         }
       }
       /***** DISTILLATE MINIMUM FLOW RATE MANAGEMENT ROUTINES *****/
       if ($Program["flow_managed"] == 1) {
         if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Settings["distillate_abv"] > 0)) {
-
+          if ($Settings["distillate_flow"] < $Program["minimum_flow"]) {
+            $Logic["flow_sensor_errors"] ++;
+          } else {
+            $Logic["flow_sensor_errors"] = 0;
+          }
+          $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET flow_sensor_errors='" . $Logic["flow_sensor_errors"] . "' WHERE ID=1");
+          // If there are 3 distillate flow level failures in a row, stop the run
+          if ($Logic["flow_sensor_errors"] == 3) {
+            if ($Settings["speech_enabled"] == 1) SpeakMessage(48);
+            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET run_start='2' WHERE ID=1");
+            $Update = mysqli_query($DBcnx,"UPDATE settings SET active_run='0',run_end=now() WHERE ID=1");
+          }
         }
       }
       /***** DISTILLATE TEMPERATURE MANAGEMENT ROUTINES *****/
