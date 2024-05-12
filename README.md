@@ -4,7 +4,7 @@ Raspberry PI and Arduino/ESP32 powered smart still controller system. Designed a
 You may contact me at https://panhandleponics.com<br>
 Subscribe to the official YouTube channel at https://www.youtube.com/@PanhandlePonics<br><br>
 
-**NO, THERE IS NOTHING ILLEGAL ABOUT THIS PROJECT! IT DOESN'T MAKE YOU DO ILLEGAL THINGS OR PREVENT YOU FROM GETTING A DISTILLATION LICENSE IN THE USA! THIS IS ONLY A TOOL!**<br>
+**NO, THERE IS NOTHING ILLEGAL ABOUT THIS PROJECT! IT DOESN'T MAKE YOU DO ILLEGAL THINGS OR PREVENT YOU FROM GETTING A DISTILLATION LICENSE IN THE USA! THIS IS ONLY A TOOL!**<br><br>
 
 Let me start off by saying that I'm no master distiller and I don't pretend to be one. YouTube and other social media sites already have more than enough self-idolizing hacks and frauds who think that they're legends in the distilling world and should be on the cast of Moonshiners *(for example, Cyrus Mason and "Windsong", the Still'n The Clear charlatans)*. **I'm just a nobody hobby distiller, period. Not an internet celebrity or a deluded podcaster wannabe, and I don't idolize reality TV "stars". That kind of juvenile mentality is for posers.**
 
