@@ -27,13 +27,13 @@ if (isset($_GET["active_run"])) {
       $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_done='0',column_last_adjustment=now(),column_note='Not managing the column temperature in this program' WHERE ID=1");
     }
     if ($Program["abv_managed"] == 1) {
-      $Update = mysqli_query($DBcnx,"UPDATE settings SET saved_lower='" . $Program["column_temp_low"] . "',saved_upper='" . $Program["column_temp_high"] . "' WHERE ID=1");
+      $Update = mysqli_query($DBcnx,"UPDATE settings SET saved_lower='" . $Program["dephleg_temp_low"] . "',saved_upper='" . $Program["dephleg_temp_high"] . "' WHERE ID=1");
     }
   } elseif ($_GET["active_run"] == 0) {
     $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET run_start='2' WHERE ID=1");
     $Update = mysqli_query($DBcnx,"UPDATE settings SET active_run='0',run_end=now(),paused='0',pause_return='0' WHERE ID=1");
     if ($Program["abv_managed"] == 1) {
-      $Update = mysqli_query($DBcnx,"UPDATE programs SET column_temp_low='" . $Settings["saved_lower"] . "',column_temp_high='" . $Settings["saved_upper"] . "' WHERE ID=" . $Program["ID"]);
+      $Update = mysqli_query($DBcnx,"UPDATE programs SET dephleg_temp_low='" . $Settings["saved_lower"] . "',dephleg_temp_high='" . $Settings["saved_upper"] . "' WHERE ID=" . $Program["ID"]);
       $Update = mysqli_query($DBcnx,"UPDATE settings SET saved_lower='0',saved_upper='0' WHERE ID=1");
     }
   }
@@ -41,6 +41,10 @@ if (isset($_GET["active_run"])) {
 //---------------------------------------------------------------------------------------------------
 elseif (isset($_GET["calibrate_valves"])) {
   $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','4','0','0')");
+}
+//---------------------------------------------------------------------------------------------------
+elseif (isset($_GET["control_relay"])) {
+
 }
 //---------------------------------------------------------------------------------------------------
 elseif (isset($_GET["heat_jump"])) {
