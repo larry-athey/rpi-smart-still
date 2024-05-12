@@ -4,11 +4,6 @@ Raspberry PI and Arduino/ESP32 powered smart still controller system. Designed a
 You may contact me at https://panhandleponics.com<br>
 Subscribe to the official YouTube channel at https://www.youtube.com/@PanhandlePonics<br><br>
 
-<img width="1024" alt="2023-08-14 16-50-42-0" src="https://github.com/larry-athey/rpi-smart-still/assets/121518798/99d79efd-4ef9-46cd-ae24-7db2d0185869"><br><br>
-<img width="1024" alt="2023-08-15 12-07-20-0" src="https://github.com/larry-athey/rpi-smart-still/assets/121518798/dee64786-54f7-4628-b870-9a848907a846"><br><br>
-<img width="1024" alt="2023-08-15 12-06-19-0" src="https://github.com/larry-athey/rpi-smart-still/assets/121518798/443844d2-ec12-4a0a-9831-3e3e8a4ffdd7"><br><br>
-<img width="1024" alt="2023-08-20 14-34-02-0" src="https://github.com/larry-athey/rpi-smart-still/assets/121518798/03ad11e0-4699-4d16-a72b-26ed88820186"><br>
-
 **NO, THERE IS NOTHING ILLEGAL ABOUT THIS PROJECT! IT DOESN'T MAKE YOU DO ILLEGAL THINGS OR PREVENT YOU FROM GETTING A DISTILLATION LICENSE IN THE USA! THIS IS ONLY A TOOL!**
 
 Let me start off by saying that I'm no master distiller and I don't pretend to be one. YouTube and other social media sites already have more than enough self-idolizing hacks and frauds who think that they're legends in the distilling world and should be on the cast of Moonshiners *(for example, Cyrus Mason and "Windsong", the Still'n The Clear charlatans)*. **I'm just a nobody hobby distiller, period. Not an internet celebrity or a deluded podcaster wannabe, and I don't idolize reality TV "stars". That kind of juvenile mentality is for posers.**
@@ -23,4 +18,8 @@ The T-500 column in its default configuration that Still Spirits designed it is 
 
 This is a little bit of a juggling act to do manually, no matter what still you happen to use, but especially so with a T-500. But it's not hard to automate this and stop your run once the still can no longer deliver the target proof. From that point, you can flip the still controller over to maximum reflux mode to finish stripping out all of the remaining ethanol which can then be added to another run.
 
-<br><img width="1024" alt="2023-05-11 00-00-00-0" src="https://github.com/larry-athey/rpi-smart-still/assets/121518798/0bb3de80-8381-46cc-891a-b38762a76548">
+<br><img width="1024" alt="2023-08-14 16-50-42-0" src="https://github.com/larry-athey/rpi-smart-still/assets/121518798/99d79efd-4ef9-46cd-ae24-7db2d0185869"><br><br>
+<img width="1024" alt="2023-08-15 12-07-20-0" src="https://github.com/larry-athey/rpi-smart-still/assets/121518798/dee64786-54f7-4628-b870-9a848907a846"><br><br>
+<img width="1024" alt="2023-08-15 12-06-19-0" src="https://github.com/larry-athey/rpi-smart-still/assets/121518798/443844d2-ec12-4a0a-9831-3e3e8a4ffdd7"><br><br>
+<img width="1024" alt="2023-08-20 14-34-02-0" src="https://github.com/larry-athey/rpi-smart-still/assets/121518798/03ad11e0-4699-4d16-a72b-26ed88820186"><br><br>
+<img width="1024" alt="2023-05-11 00-00-00-0" src="https://github.com/larry-athey/rpi-smart-still/assets/121518798/0bb3de80-8381-46cc-891a-b38762a76548">
