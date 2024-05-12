@@ -54,6 +54,19 @@ function CalibrateHydrometer($DBcnx) {
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
+function ControlRelays($DBcnx) {
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
+  $Settings = mysqli_fetch_assoc($Result);
+
+  $Content  = "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\">";
+  $Content .=   "<div class=\"card-body\">";
+
+  $Content .=   "</div>";
+  $Content .= "</div>";
+  $Content .= VoicePrompter($DBcnx,true);
+  return $Content;
+}
+//---------------------------------------------------------------------------------------------------
 function DrawCard($DBcnx,$Body,$DoAjax) {
   $RandID   = "card_" . generateRandomString();
   $Content  = "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
@@ -152,6 +165,7 @@ function DrawMenu($DBcnx) {
   } else {
     $Content .=           "<li><a class=\"dropdown-item\" href=\"?page=hydrometer\">Calibrate&nbsp;Hydrometer</a></li>";
   }
+  $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=relays\">Control&nbsp;Relays</a></li>";
   if ($Settings["speech_enabled"] == 0) {
     $Content .=           "<li><a class=\"dropdown-item\" href=\"?speech=1\">Enable&nbsp;Speech</a></li>";
   } else {
