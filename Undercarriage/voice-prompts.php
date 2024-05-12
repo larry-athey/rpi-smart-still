@@ -77,6 +77,8 @@ function SpeakMessage($ID) {
   $Msg[51]  = "Deactivating auxiliary relay number one";
   $Msg[52]  = "Activating auxiliary relay number two";
   $Msg[53]  = "Deactivating auxiliary relay number two";
+  $Msg[54]  = "Dephlegmator is at it's minimum closed position. There is a potential water flow problem";
+  $Msg[55]  = "Dephlegmator is at it's maximum open position. There is a potential water flow problem";
 
   mysqli_close($DBcnx);
   CreatePrompt($Msg[$ID]);
