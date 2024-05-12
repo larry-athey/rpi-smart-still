@@ -333,36 +333,36 @@ if (mysqli_num_rows($Result) > 0) {
           if ($Program["mode"] == 0) {
             if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Logic["hydrometer_started"] == 1)) {
               if ($Settings["distillate_abv"] <= $Program["distillate_abv"]) {
-                $Logic["hydrometer_abv_error"] ++;
-                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_error='" . $Logic["hydrometer_abv_error"] . "' WHERE ID=1");
+                $Logic["hydrometer_abv_errors"] ++;
+                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_errors='" . $Logic["hydrometer_abv_errors"] . "' WHERE ID=1");
               }
               // In pot still mode, we stop the run after 3 checks showing that we've hit or dropped below the minimum ABV
-              if ($Logic["hydrometer_abv_error"] == 3) {
+              if ($Logic["hydrometer_abv_errors"] == 3) {
                 if ($Settings["speech_enabled"] == 1) SpeakMessage(31);
                 $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET run_start='2' WHERE ID=1");
                 $Update = mysqli_query($DBcnx,"UPDATE settings SET active_run='0',run_end=now() WHERE ID=1");
               }
             } else {
-              $Logic["hydrometer_abv_error"] = 0;
-              $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_error='0' WHERE ID=1");
+              $Logic["hydrometer_abv_errors"] = 0;
+              $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_errors='0' WHERE ID=1");
             }
           } else {
             // In reflux mode, we dynamically adjust the program's dephleg upper and lower temperature limits downward
             // Remember, you can only adjust the ABV up, you can't adjust it down without adding distilled water to it
             if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Logic["hydrometer_started"] == 1)) {
               if ($Settings["distillate_abv"] <= $Program["distillate_abv"]) {
-                $Logic["hydrometer_abv_error"] ++;
-                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_error='" . $Logic["hydrometer_abv_error"] . "' WHERE ID=1");
+                $Logic["hydrometer_abv_errors"] ++;
+                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_errors='" . $Logic["hydrometer_abv_errors"] . "' WHERE ID=1");
               }
-              if ($Logic["hydrometer_abv_error"] == 3) {
+              if ($Logic["hydrometer_abv_errors"] == 3) {
                 $NewLower = $Program["dephleg_temp_low"] - 0.5;
                 $NewUpper = $Program["dephleg_temp_high"] - 0.5;
                 $Update = mysqli_query($DBcnx,"UPDATE programs SET dephleg_temp_low='$NewLower',dephleg_temp_high='$NewUpper' WHERE ID = " . $Program["ID"]);
-                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_error='0' WHERE ID=1");
+                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_errors='0' WHERE ID=1");
               }
             } else {
-              $Logic["hydrometer_abv_error"] = 0;
-              $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_error='0' WHERE ID=1");
+              $Logic["hydrometer_abv_errors"] = 0;
+              $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_errors='0' WHERE ID=1");
             }
           }
         }
@@ -389,17 +389,17 @@ if (mysqli_num_rows($Result) > 0) {
       if (($Logic["column_done"] == 1) || ($Logic["column_done"] == 1)) {
         // Check the distillate temperature every 5 minutes after column or dephleg are up to temperature
         if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Logic["hydrometer_started"] == 1)) {
-          // If distillate is over 24C/75F, increment the $Logic["hydrometer_temp_error"] counter
+          // If distillate is over 24C/75F, increment the $Logic["hydrometer_temp_errors"] counter
           // This is for both safety and to maintain the accuracy of the hydrometer, hot distillate is less dense and reads a higher proof
           if ($Settings["distillate_temp"] > 24) {
-            $Logic["hydrometer_temp_error"] ++;
-            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_timer=now(),hydrometer_temp_error='" . $Logic["hydrometer_temp_error"] . "' WHERE ID=1");
+            $Logic["hydrometer_temp_errors"] ++;
+            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_timer=now(),hydrometer_temp_errors='" . $Logic["hydrometer_temp_errors"] . "' WHERE ID=1");
           } else {
-            $Logic["hydrometer_temp_error"] = 0;
-            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_timer=now(),hydrometer_temp_error='0' WHERE ID=1");
+            $Logic["hydrometer_temp_errors"] = 0;
+            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_timer=now(),hydrometer_temp_errors='0' WHERE ID=1");
           }
-          // If $Logic["hydrometer_temp_error"] has 3 errors, increase the condenser cooling flow 10%
-          if ($Logic["hydrometer_temp_error"] == 3) {
+          // If $Logic["hydrometer_temp_errors"] has 3 errors, increase the condenser cooling flow 10%
+          if ($Logic["hydrometer_temp_errors"] == 3) {
             if ($Settings["speech_enabled"] == 1) SpeakMessage(34);
             $Difference = round($Settings["valve1_total"] * 0.1);
             if ($Settings["valve1_position"] + $Difference > $Settings["valve1_total"]) {
@@ -407,7 +407,7 @@ if (mysqli_num_rows($Result) > 0) {
             } else {
               $NewPosition = $Settings["valve1_total"];
             }
-            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_timer=now(),hydrometer_temp_error='0' WHERE ID=1");
+            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_timer=now(),hydrometer_temp_errors='0' WHERE ID=1");
             $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$NewPosition' WHERE ID=1");
             $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                           "VALUES (now(),'0','1','1','$Difference','$NewPosition','1','0')");
