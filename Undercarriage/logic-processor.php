@@ -328,10 +328,10 @@ if (mysqli_num_rows($Result) > 0) {
       /***** DISTILLATE MINIMUM ABV MANAGEMENT ROUTINES *****/
       if ($Program["abv_managed"] == 1) {
         if ($Logic["hydrometer_started"] == 0) {
-          if ($Settings["distillate_abv"] > 0) $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_started='1' WHERE ID=1");
+          if ($Settings["distillate_abv"] > 20) $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_started='1' WHERE ID=1");
         } else {
           if ($Program["mode"] == 0) {
-            if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Settings["distillate_abv"] > 0)) {
+            if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Logic["hydrometer_started"] == 1)) {
               if ($Settings["distillate_abv"] <= $Program["distillate_abv"]) {
                 $Logic["hydrometer_abv_error"] ++;
                 $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_error='" . $Logic["hydrometer_abv_error"] . "' WHERE ID=1");
@@ -349,13 +349,27 @@ if (mysqli_num_rows($Result) > 0) {
           } else {
             // In reflux mode, we dynamically adjust the program's dephleg upper and lower temperature limits downward
             // Remember, you can only adjust the ABV up, you can't adjust it down without adding distilled water to it
-
+            if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Logic["hydrometer_started"] == 1)) {
+              if ($Settings["distillate_abv"] <= $Program["distillate_abv"]) {
+                $Logic["hydrometer_abv_error"] ++;
+                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_error='" . $Logic["hydrometer_abv_error"] . "' WHERE ID=1");
+              }
+              if ($Logic["hydrometer_abv_error"] == 3) {
+                $NewLower = $Program["dephleg_temp_low"] - 0.5;
+                $NewUpper = $Program["dephleg_temp_high"] - 0.5;
+                $Update = mysqli_query($DBcnx,"UPDATE programs SET dephleg_temp_low='$NewLower',dephleg_temp_high='$NewUpper' WHERE ID = " . $Program["ID"]);
+                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_error='0' WHERE ID=1");
+              }
+            } else {
+              $Logic["hydrometer_abv_error"] = 0;
+              $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_error='0' WHERE ID=1");
+            }
           }
         }
       }
       /***** DISTILLATE MINIMUM FLOW RATE MANAGEMENT ROUTINES *****/
       if ($Program["flow_managed"] == 1) {
-        if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Settings["distillate_abv"] > 0)) {
+        if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Logic["hydrometer_started"] == 1)) {
           if ($Settings["distillate_flow"] < $Program["minimum_flow"]) {
             $Logic["flow_sensor_errors"] ++;
           } else {
@@ -374,7 +388,7 @@ if (mysqli_num_rows($Result) > 0) {
       /***** THIS FINAL CODE BRANCH CONTROLS THE RESET OF $Logic["hydrometer_timer"] *****/
       if (($Logic["column_done"] == 1) || ($Logic["column_done"] == 1)) {
         // Check the distillate temperature every 5 minutes after column or dephleg are up to temperature
-        if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Settings["distillate_abv"] > 0)) {
+        if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Logic["hydrometer_started"] == 1)) {
           // If distillate is over 24C/75F, increment the $Logic["hydrometer_temp_error"] counter
           // This is for both safety and to maintain the accuracy of the hydrometer, hot distillate is less dense and reads a higher proof
           if ($Settings["distillate_temp"] > 24) {
