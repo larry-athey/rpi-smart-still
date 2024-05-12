@@ -58,9 +58,35 @@ function ControlRelays($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
 
+  $OnLabel  = "<span class=\"text-success blink\">On</span>";
+  $OffLabel = "<span class=\"text-danger\">Off</span>";
+  if ($Settings["relay1_state"] == 1) {
+    $Relay1 = $OnLabel;
+  } else {
+    $Relay1 = $OffLabel;
+  }
+  if ($Settings["relay2_state"] == 1) {
+    $Relay2 = $OnLabel;
+  } else {
+    $Relay2 = $OffLabel;
+  }
+
   $Content  = "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
-
+  $Content .=     "<p>Auxilliary relays can be connected to Pi GPIO pins 17 and 27 for controlling pumps independent of a program's settings.</p>";
+  $Content .=     "<p>You should always perform your valve calibration with water pressure against them since this can cause resistance which will affect the timing calculation.</p>";
+  $Content .=     "<div class=\"row\" style=\"margin-top: 1.5em;\">";
+  $Content .=       "<div class=\"col\">Auxilliary&nbsp;Relay&nbsp;#1</div>";
+  $Content .=       "<div class=\"col\"><a style=\"float: right;\" href=\"process.php?control_relay=1&state=0\" class=\"btn btn-danger btn-sm\">Deactivate</a></div>";
+  $Content .=       "<div class=\"col\"><a href=\"process.php?control_relay=1&state=1\" class=\"btn btn-primary btn-sm\">Activate</a></div>";
+  $Content .=       "<div class=\"col\">$Relay1</div>";
+  $Content .=     "</div>";
+  $Content .=     "<div class=\"row\" style=\"margin-top: 0.5em;\">";
+  $Content .=       "<div class=\"col\">Auxilliary&nbsp;Relay&nbsp;#2</div>";
+  $Content .=       "<div class=\"col\"><a style=\"float: right;\" href=\"process.php?control_relay=2&state=0\" class=\"btn btn-danger btn-sm\">Deactivate</a></div>";
+  $Content .=       "<div class=\"col\"><a href=\"process.php?control_relay=2&state=1\" class=\"btn btn-primary btn-sm\">Activate</a></div>";
+  $Content .=       "<div class=\"col\">$Relay2</div>";
+  $Content .=     "</div>";
   $Content .=   "</div>";
   $Content .= "</div>";
   $Content .= VoicePrompter($DBcnx,true);
