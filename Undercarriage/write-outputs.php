@@ -103,6 +103,22 @@ while ($RS = mysqli_fetch_assoc($Result)) {
     if ($RS["muted"] == 0) SpeakMessage(32);
     shell_exec("/usr/share/rpi-smart-still/hydro-write \#");
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+  } elseif ($RS["valve_id"] == 50) {
+    // Only play a voice prompt if relay 1 is activated
+    if ($RS["muted"] == 0) SpeakMessage(50);
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+  } elseif ($RS["valve_id"] == 51) {
+    // Only play a voice prompt if relay 1 is deactivated
+    if ($RS["muted"] == 0) SpeakMessage(51);
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+  } elseif ($RS["valve_id"] == 52) {
+    // Only play a voice prompt if relay 2 is activated
+    if ($RS["muted"] == 0) SpeakMessage(52);
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+  } elseif ($RS["valve_id"] == 53) {
+    // Only play a voice prompt if relay 2 is deactivated
+    if ($RS["muted"] == 0) SpeakMessage(53);
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 70) {
     // Control command to calibrate the hydrometer 0% slot (LIDAR version)
     if ($RS["muted"] == 0) SpeakMessage(37);
@@ -176,7 +192,7 @@ while ($RS = mysqli_fetch_assoc($Result)) {
 }
 //---------------------------------------------------------------------------------------------
 if ($Counter == 0) {
-  // If there were no waiting tasks executed, check the limit switches on the valves
+  // If there were no waiting tasks executed, check the limit switches on the valves and update the auxilliary relay states
   for ($x = 1; $x <= 2; $x ++) {
     $Status = trim(shell_exec("/usr/share/rpi-smart-still/valve $x status"));
     if ($Status == 0) {
@@ -190,6 +206,8 @@ if ($Counter == 0) {
       $Update = mysqli_query($DBcnx,"UPDATE settings SET valve" . $x . "_position ='$Total' WHERE ID=1");
     }
   }
+  shell_exec("gpio -g write 17 " . $Settings["relay1_state"]);
+  shell_exec("gpio -g write 27 " . $Settings["relay2_state"]);
 }
 //---------------------------------------------------------------------------------------------
 mysqli_close($DBcnx);
