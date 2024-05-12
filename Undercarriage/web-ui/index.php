@@ -131,7 +131,9 @@ if (! isset($_GET["page"])) {
   } elseif ($_GET["page"] == "hydrometer") {
     $Content .= CalibrateHydrometer($DBcnx);
   } elseif ($_GET["page"] == "programs") {
-    $Content = ShowPrograms($DBcnx);
+    $Content .= ShowPrograms($DBcnx);
+  } elseif ($_GET["page"] == "relays") {
+    $Content .= ControlRelays($DBcnx);
   } elseif ($_GET["page"] == "sensors") {
     $Content .= EditSensors($DBcnx);
   } elseif ($_GET["page"] == "start_run") {
