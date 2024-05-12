@@ -44,7 +44,21 @@ elseif (isset($_GET["calibrate_valves"])) {
 }
 //---------------------------------------------------------------------------------------------------
 elseif (isset($_GET["control_relay"])) {
-
+  if ($_GET["control_relay"] == 1) {
+    if ($_GET["state"] == 0) {
+      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','51','0','0')");
+    } else {
+      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','50','0','0')");
+    }
+    $Update = mysqli_query($DBcnx,"UPDATE settings SET relay1_state='" . $_GET["state"] . "' WHERE ID=1");
+  } else {
+    if ($_GET["state"] == 0) {
+      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','53','0','0')");
+    } else {
+      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','52','0','0')");
+    }
+    $Update = mysqli_query($DBcnx,"UPDATE settings SET relay2_state='" . $_GET["state"] . "' WHERE ID=1");
+  }
 }
 //---------------------------------------------------------------------------------------------------
 elseif (isset($_GET["heat_jump"])) {
