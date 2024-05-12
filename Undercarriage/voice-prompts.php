@@ -73,10 +73,10 @@ function SpeakMessage($ID) {
   $Msg[47]  = "Updating the hydrometer reader 100 percent calibration slot";
   $Msg[48]  = "Distillate flow has dropped below the minimum acceptable level";
   $Msg[49]  = "Distillate ABV is under proof. Adjusting dephlegmator temperature range downward";
-  $Msg[50]  = "Activating auxilliary relay number one";
-  $Msg[51]  = "Deactivating auxilliary relay number one";
-  $Msg[52]  = "Activating auxilliary relay number two";
-  $Msg[53]  = "Deactivating auxilliary relay number two";
+  $Msg[50]  = "Activating auxiliary relay number one";
+  $Msg[51]  = "Deactivating auxiliary relay number one";
+  $Msg[52]  = "Activating auxiliary relay number two";
+  $Msg[53]  = "Deactivating auxiliary relay number two";
 
   mysqli_close($DBcnx);
   CreatePrompt($Msg[$ID]);
