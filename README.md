@@ -23,4 +23,4 @@ The T-500 column in its default configuration that Still Spirits designed it is 
 
 This is a little bit of a juggling act to do manually, no matter what still you happen to use, but especially so with a T-500. But it's not hard to automate this and stop your run once the still can no longer deliver the target proof. From that point, you can flip the still controller over to maximum reflux mode to finish stripping out all of the remaining ethanol which can then be added to another run.
 
-<img width="1024" alt="2023-05-11 00-00-00-0" src="https://github.com/larry-athey/rpi-smart-still/assets/121518798/0bb3de80-8381-46cc-891a-b38762a76548">
+<br><img width="1024" alt="2023-05-11 00-00-00-0" src="https://github.com/larry-athey/rpi-smart-still/assets/121518798/0bb3de80-8381-46cc-891a-b38762a76548">
