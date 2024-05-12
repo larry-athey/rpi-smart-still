@@ -22,3 +22,5 @@ Even though the still that I'm working with is the Still Spirits boiler and thei
 The T-500 column in its default configuration that Still Spirits designed it is a one-trick-pony. Reflux only, no pot still flavor, pretty much only good for making neutral spirits. Once a person controls the condenser and dephleg cooling separately, it's then possible to run a T-500 in pot still mode and have a more controlled reflux system. This allows you to target a higher proof than the constantly declining proof in pot still mode, while still retaining pot still flavor.
 
 This is a little bit of a juggling act to do manually, no matter what still you happen to use, but especially so with a T-500. But it's not hard to automate this and stop your run once the still can no longer deliver the target proof. From that point, you can flip the still controller over to maximum reflux mode to finish stripping out all of the remaining ethanol which can then be added to another run.
+
+<img width="1024" alt="2023-05-11 00-00-00-0" src="https://github.com/larry-athey/rpi-smart-still/assets/121518798/0bb3de80-8381-46cc-891a-b38762a76548">
