@@ -471,6 +471,7 @@ void loop() {
     TimeUpdate("");
     ScreenCounter = CurrentTime;
   }
+
   // Build the data block to be sent to the RPi Smart Still Controller once every second
   if (CurrentTime - SerialCounter >= 1000) {
     char WeightLog[25];
