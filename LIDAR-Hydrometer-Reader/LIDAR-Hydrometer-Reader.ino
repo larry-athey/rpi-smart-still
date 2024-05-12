@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------
-// Written by Larry Athey (https://panhandleponics.com) v1.0.1 released June 1, 2024
+// Written by Larry Athey (https://panhandleponics.com) v1.0.1 released May 11, 2024
 //
 // If you have seen any of George Duncan's videos on YouTube from around 2020, you might remember
 // an Arduino project of his called the "Talking Parrot Head". It involved a black PVC tube on top
