@@ -402,7 +402,7 @@ if (mysqli_num_rows($Result) > 0) {
           if ($Logic["hydrometer_temp_errors"] == 3) {
             if ($Settings["speech_enabled"] == 1) SpeakMessage(34);
             $Difference = round($Settings["valve1_total"] * 0.1);
-            if ($Settings["valve1_position"] + $Difference > $Settings["valve1_total"]) {
+            if ($Settings["valve1_position"] + $Difference < $Settings["valve1_total"]) {
               $NewPosition = $Settings["valve1_position"] + $Difference;
             } else {
               $NewPosition = $Settings["valve1_total"];
