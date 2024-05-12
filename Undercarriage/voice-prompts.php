@@ -72,6 +72,7 @@ function SpeakMessage($ID) {
   $Msg[46]  = "Updating the hydrometer reader 90 percent calibration slot";
   $Msg[47]  = "Updating the hydrometer reader 100 percent calibration slot";
   $Msg[48]  = "Distillate flow has dropped below the minimum acceptable level";
+  $Msg[49]  = "Distillate ABV is under proof. Adjusting dephlegmator temperature range downward";
 
   mysqli_close($DBcnx);
   CreatePrompt($Msg[$ID]);
