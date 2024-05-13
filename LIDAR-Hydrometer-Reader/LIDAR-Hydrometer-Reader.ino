@@ -182,6 +182,12 @@ void ResetDivisions() { // Restore all of the default reflector distance values
   preferences.putUInt("div9",42);  // 90%
   preferences.putUInt("div10",10); // 100% - No point in calibrating this one since the LIDAR
   preferences.end();               //        sensor has a minimum functional range of 17mm
+  for (byte x = 0; x <= 9; x ++) {
+    digitalWrite(USER_LED,HIGH);
+    delay(100);
+    digitalWrite(USER_LED,LOW);
+    delay(100);
+  }
 }
 //------------------------------------------------------------------------------------------------
 void RebootUnit() { // Reboot the device, write to flash memory here before restarting if needed
