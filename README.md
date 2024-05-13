@@ -20,7 +20,7 @@ The T-500 column in its default configuration that Still Spirits designed it is 
 
 This is a little bit of a juggling act to do manually, no matter what still you happen to use, but especially so with a T-500. But it's not hard to automate this and stop your run once the still can no longer deliver the target proof. From that point, you can flip the still controller over to maximum reflux mode to finish stripping out all of the remaining ethanol which can then be added to another run.
 
-**NOTE:** _This is only intended for hobbyist and small business micro distillers. Commercial distilleries use continuous column stills, this system would be of no value or use in that kind of setting. The target audience for this system are those who want to have the convenience of hands-free reproducability or just want to tame down a touchy still._
+**NOTE:** _This is only intended for hobbyist and small business micro distillers. Commercial distilleries use continuous column stills, this system would be of no value or use in that kind of setting. The target audience for this system are those who want to have the convenience of hands-free reproducibility or just want to tame down a touchy still._
 
 <br><img width="1024" alt="2023-08-14 16-50-42-0" src="https://github.com/larry-athey/rpi-smart-still/assets/121518798/99d79efd-4ef9-46cd-ae24-7db2d0185869"><br><br>
 <img width="1024" alt="2023-08-15 12-07-20-0" src="https://github.com/larry-athey/rpi-smart-still/assets/121518798/dee64786-54f7-4628-b870-9a848907a846"><br><br>
