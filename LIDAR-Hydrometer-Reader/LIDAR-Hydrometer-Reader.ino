@@ -220,7 +220,7 @@ void loop() {
       }
     } else if (Data == 42) { // Restore default Divisions[x] values if a "*" is received
       ResetDivisions();
-      GetDivisions();
+      RebootUnit();
     }  
   }
 
