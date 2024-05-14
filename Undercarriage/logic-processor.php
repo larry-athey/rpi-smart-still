@@ -101,7 +101,7 @@ if (mysqli_num_rows($Result) > 0) {
     } else {
       /***** BOILER TEMPERATURE MANAGEMENT ROUTINES *****/
       if ($Program["boiler_managed"] == 1) {
-        // Check boiler temperature every 60 seconds
+        // Check boiler temperature every 30 seconds
         if (time() - strtotime($Logic["boiler_timer"]) >= 30) { // Primary timer, in case it's needed for future development
           $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_timer=now() WHERE ID=1");
           // Boilers are super slow to reflect temperature changes due to the thermal mass of their contents
