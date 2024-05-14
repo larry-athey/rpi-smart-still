@@ -16,7 +16,7 @@
 // The VL53L0X sensor is mounted to the side of the overflow cup of the parrot roughly even with
 // the top of the overflow tube aiming upwards. A paper disc equal to the diameter of the overflow
 // cup is attached to the top of the hydrometer, roughly even with the top of the label with about
-// a 10mm gap above the 100% line. The sensor mount that I've provided a 3D model for, places your
+// a 20mm gap above the 100% line. The sensor mount that I've provided a 3D model for, places your
 // sensor at the perfect angle. Calibrate it with the RPis Smart Still Controller and you're ready.
 //
 // The disc can be made out of printer paper and have hardly any effect on the hydrometer, if even
@@ -170,18 +170,18 @@ void UpdateDivision(byte Slot) { // Update a flash memory slot for a specific Di
 //------------------------------------------------------------------------------------------------
 void ResetDivisions() { // Restore all of the default reflector distance values
   preferences.begin("prefs",false);
-  preferences.putUInt("div0",146); // 0%
-  preferences.putUInt("div1",140); // 10%
-  preferences.putUInt("div2",134); // 20%
-  preferences.putUInt("div3",128); // 30%
-  preferences.putUInt("div4",120); // 40%
-  preferences.putUInt("div5",110); // 50%
-  preferences.putUInt("div6",97);  // 60%
-  preferences.putUInt("div7",82);  // 70%
-  preferences.putUInt("div8",64);  // 80%
-  preferences.putUInt("div9",42);  // 90%
-  preferences.putUInt("div10",10); // 100% - No point in calibrating this one since the LIDAR
-  preferences.end();               //        sensor has a minimum functional range of 17mm
+  preferences.putUInt("div0",156); // 0%
+  preferences.putUInt("div1",150); // 10%
+  preferences.putUInt("div2",144); // 20%
+  preferences.putUInt("div3",138); // 30%
+  preferences.putUInt("div4",130); // 40%
+  preferences.putUInt("div5",120); // 50%
+  preferences.putUInt("div6",107); // 60%
+  preferences.putUInt("div7",92);  // 70%
+  preferences.putUInt("div8",74);  // 80%
+  preferences.putUInt("div9",52);  // 90%
+  preferences.putUInt("div10",20); // 100%
+  preferences.end();
   for (byte x = 0; x <= 9; x ++) {
     digitalWrite(USER_LED,HIGH);
     delay(100);
