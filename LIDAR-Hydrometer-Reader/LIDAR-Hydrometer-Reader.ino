@@ -170,16 +170,16 @@ void UpdateDivision(byte Slot) { // Update a flash memory slot for a specific Di
 //------------------------------------------------------------------------------------------------
 void ResetDivisions() { // Restore all of the default reflector distance values
   preferences.begin("prefs",false);
-  preferences.putUInt("div0",156); // 0%
-  preferences.putUInt("div1",150); // 10%
-  preferences.putUInt("div2",144); // 20%
-  preferences.putUInt("div3",138); // 30%
-  preferences.putUInt("div4",130); // 40%
-  preferences.putUInt("div5",120); // 50%
-  preferences.putUInt("div6",107); // 60%
-  preferences.putUInt("div7",92);  // 70%
-  preferences.putUInt("div8",74);  // 80%
-  preferences.putUInt("div9",52);  // 90%
+  preferences.putUInt("div0",132); // 0%
+  preferences.putUInt("div1",126); // 10%
+  preferences.putUInt("div2",122); // 20%
+  preferences.putUInt("div3",117); // 30%
+  preferences.putUInt("div4",110); // 40%
+  preferences.putUInt("div5",101); // 50%
+  preferences.putUInt("div6",90);  // 60%
+  preferences.putUInt("div7",78);  // 70%
+  preferences.putUInt("div8",63);  // 80%
+  preferences.putUInt("div9",45);  // 90%
   preferences.putUInt("div10",20); // 100%
   preferences.end();
   for (byte x = 0; x <= 9; x ++) {
