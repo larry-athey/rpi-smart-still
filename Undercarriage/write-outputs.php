@@ -92,7 +92,7 @@ while ($RS = mysqli_fetch_assoc($Result)) {
     if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(27);
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 5) {
-    // Control commands to pause and unpause a run
+    // Unused, my plans changed for pausing/unpausing a run and I forgot about this valve_id, LOL!!!
   } elseif ($RS["valve_id"] == 6) {
     // Control command to reboot the hydrometer (Load cell and LIDAR versions)
     if ($RS["muted"] == 0) SpeakMessage(33);
