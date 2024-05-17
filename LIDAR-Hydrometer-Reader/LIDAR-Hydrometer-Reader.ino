@@ -169,6 +169,9 @@ void UpdateDivision(byte Slot) { // Update a flash memory slot for a specific Di
 }
 //------------------------------------------------------------------------------------------------
 void ResetDivisions() { // Restore all of the default reflector distance values
+  // The measurements below are for this hydrometer -> https://www.amazon.com/dp/B013S1VAM4
+  // If you have a different hydrometer, you should measure the scale and add 20mm to each
+  // division and mark 20mm above the 100% line so you know where the reflector needs to be
   preferences.begin("prefs",false);
   preferences.putUInt("div0",132); // 0%
   preferences.putUInt("div1",126); // 10%
