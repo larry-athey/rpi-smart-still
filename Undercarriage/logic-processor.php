@@ -408,7 +408,7 @@ if (mysqli_num_rows($Result) > 0) {
               $NewPosition = $Settings["valve1_total"];
             }
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_timer=now(),hydrometer_temp_errors='0' WHERE ID=1");
-            $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$NewPosition' WHERE ID=1");
+            $Update = mysqli_query($DBcnx,"UPDATE settings SET valve1_position='$NewPosition' WHERE ID=1");
             $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                           "VALUES (now(),'0','1','1','$Difference','$NewPosition','1','0')");
           }
