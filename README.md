@@ -14,7 +14,7 @@ I'm a veteran software engineer with over 43 years programming experience and a 
 
 The main focus of this project is to read temperatures and control the heating & cooling water via servos while monitoring the results based on whether it's a pot still or reflux run. Also, be able to control these actions if a person wants to maintain a minimum proof in a pot still run. Plus, be able to shut down a pot still run once a minimum proof has been reached, in order to eliminate tails from the distillate.
 
-**NOTE:** _It's upon on the distiller themselves to take cuts because there is no way to make those determinations electronically without a gas chromatograph / mass spectrometer. Seriously, ChatGPT can't even do this without tastebuds. Seriously, how could a computer know what tastes you like?_
+**NOTE:** _It's upon on the distiller themselves to take cuts because there is no way to make those determinations electronically without a gas chromatograph / mass spectrometer. Seriously, ChatGPT can't even do this without tastebuds. Seriously, how could a computer know what tastes you prefer and find them in your distillate?_
 
 Even though the still that I'm working with is the Still Spirits boiler and their copper T-500 column, this system will work with any other personal still as long as it has a dephlegmator. I don't have the room for anything larger and don't need to upgrade because of how little I actually drink. I just do distilling as a hobby, electronics and programming are also hobbies of mine. So, here we are. LOL!!!
 
