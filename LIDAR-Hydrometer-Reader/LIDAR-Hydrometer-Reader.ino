@@ -15,19 +15,20 @@
 //
 // The VL53L0X sensor is mounted to the side of the overflow cup of the parrot roughly even with
 // the top of the overflow tube aiming upwards. A paper disc equal to the diameter of the overflow
-// cup is attached to the top of the hydrometer, roughly even with the top of the label with about
-// a 20mm gap above the 100% line. The sensor mount that I've provided a 3D model for, places your
-// sensor at the perfect angle. Calibrate it with the RPis Smart Still Controller and you're ready.
+// cup is attached to the top of the hydrometer, about 20mm above the 100% line. The sensor mount
+// that I've provided a 3D model for, places your sensor at the perfect angle so that it's sloped
+// inward but doesn't hit the glass and cause erroneous readings. Calibrate it with the RPis Smart
+// Still Controller and you're off to the races.
 //
-// The disc can be made out of printer paper and have hardly any effect on the hydrometer, if even
-// half a percent. Having the sensor that close to distillate isn't dangerous at all. It only runs
+// The disc can be made out of construction paper and have hardly any effect on the hydrometer, if
+// even .5 percent. Having the sensor that close to distillate isn't dangerous at all. It only runs
 // on 3.3 volts and distillate isn't conductive, nor is distilled water. I've submerged one in 90%
 // ethanol and distilled water while running and nothing happened, it never even stopped working.
 //
 // Calibration is as simple as putting the hydrometer in the parrot, add water until the 100% mark
 // is even with the top of the center tube, click the button in the RPi Smart Still Controller for
 // the 100% calibration, and repeat for every 10% mark including the 0% mark. The settings will be
-// stored in the flash memory and you won't have to do it again unless you replace your hydrometer.
+// stored in the flash memory and you won't have to do it again unless you change your hydrometer.
 //
 // This device also utilizes the flow sensor and DS18B20 temperature sensor since features of the
 // RPi Smart Still Controller depend on them. So if the Load Cell Hydrometer seems to be far more
