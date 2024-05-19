@@ -207,7 +207,7 @@ void loop() {
   if (CurrentTime > 4200000000) {
     RebootUnit();
   } else if (CurrentTime < 1000) {
-     // Purge VL53L0X any garbage readings after a reboot or power cycle
+     // Purge VL53L0X of any garbage readings after a reboot or power cycle
      for (byte x = 0; x <= 9; x ++) {
        Lidar.rangingTest(&measure,false);
        delay(100);
