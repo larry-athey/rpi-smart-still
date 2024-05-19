@@ -204,7 +204,15 @@ void loop() {
   float FlowTotal = 0;
   uint EthanolAvg = 0;
   long CurrentTime = millis();
-  if (CurrentTime > 4200000000) RebootUnit();
+  if (CurrentTime > 4200000000) {
+    RebootUnit();
+  } else if (CurrentTime < 1000) {
+     // Purge VL53L0X any garbage readings after a reboot or power cycle
+     for (byte x = 0; x <= 9; x ++) {
+       Lidar.rangingTest(&measure,false);
+       delay(100);
+     }
+  }
   unsigned long allSeconds = CurrentTime / 1000;
   int runHours = allSeconds / 3600;
   int secsRemaining = allSeconds % 3600;
