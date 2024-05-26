@@ -74,7 +74,7 @@ void setup() {
   while (! Serial) delay(10);
   Serial.println("");
   DT.begin();
-  if (! Lidar.begin()) {
+  if (! Lidar.begin(VL53L0X_I2C_ADDR,false,&Wire,Lidar.VL53L0X_SENSE_HIGH_ACCURACY)) {
     Serial.println("Failed to initialize VL53L0X");
     while(true);
   }
