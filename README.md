@@ -18,7 +18,7 @@ This project is also not intended to replace things like the **AirStill Pro** or
 
 **NOTE:** _It's upon on the distiller themselves to take cuts because there is no way to make those determinations electronically without a gas chromatograph / mass spectrometer. Seriously, ChatGPT can't even do this without tastebuds. Honestly, how could a $35 computer know what tastes **you** prefer and find them in your distillate?_
 
-Even though the still that I'm working with is the Still Spirits boiler and their copper T-500 column, this system will work with any other personal still as long as it has a dephlegmator. I don't have the room for anything larger and don't need to upgrade because of how little I actually drink. I just do distilling as a hobby and for this project, electronics, robotics, and programming are also hobbies of mine. So, here we are. LOL!!!
+Even though the still that I'm working with is the Still Spirits boiler and their copper T-500 column, this system will work with any other personal still as long as it has a dephlegmator. I don't have the room for anything larger and don't need to upgrade because of how little I actually drink. I just do distilling as a hobby and for this project. Electronics, robotics, and programming are also hobbies of mine. So, here we are. LOL!!!
 
 Yes, contrary to what you see in YouTube videos and in that T-500 users group on Facebook, it actually can be used for more than just making flavored distilled sugar wash. I'm not on Facebook anymore, but when I was, I just had to shake my head at all of those T-500 users who thought they were actually making whiskey by dumping a bottle of essence in some 90% lighter fluid and then complaining about how bad it tastes. LOL!!!
 
