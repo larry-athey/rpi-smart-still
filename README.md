@@ -14,7 +14,7 @@ I'm a veteran software engineer with over 43 years programming experience and a 
 
 The main focus of this project is to read temperatures and control the heating & cooling water via servos while monitoring the results based on whether it's a pot still or reflux run. Also, be able to control these actions if a person wants to maintain a minimum proof in a pot still run. Plus, be able to shut down a pot still run once a minimum proof or output flow rate has been reached, in order to eliminate tails from the distillate.
 
-This project is also not intended to replace things like the **AirStill Pro** or **MyVodkaMaker**, this is meant to be added to an existing higher volume still that can deliver more product per hour. If anything, it's intended to give a person most of the conveniences of a Genio or iStill using your own existing equipment and save you from a $15,000 (or more) investment.
+This project is also not intended to replace things like the **AirStill Pro** or **MyVodkaMaker**, this is meant to be added to an existing higher volume still that can deliver more product per hour. If anything, it's intended to provide a person most of the conveniences of a Genio or iStill using your own existing equipment and save you from a $15,000 (or more) investment.
 
 **NOTE:** _It's upon on the distiller themselves to take cuts because there is no way to make those determinations electronically without a gas chromatograph / mass spectrometer. Seriously, ChatGPT can't even do this without tastebuds. Honestly, how could a computer know what tastes **you** prefer and find them in your distillate?_
 
