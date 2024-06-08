@@ -45,7 +45,7 @@
 #include "OneWire.h"           // OneWire Network communications library
 #include "DallasTemperature.h" // Dallas Temperature DS18B20 temperature sensor library
 //------------------------------------------------------------------------------------------------
-// Arduino Uno GPIO pin mapping (See special note at the top of EthanolCalc.h)
+// Arduino Uno GPIO pin mapping
 //#define ONE_WIRE 4
 //#define I2C_SCL A5
 //#define I2C_SDA A4
@@ -57,7 +57,7 @@
 //#define TFT_CLK 13
 //#define TFT_LED A0
 
-// Arduino Nano GPIO pin mapping (See special note at the top of EthanolCalc.h)
+// Arduino Nano GPIO pin mapping
 //#define ONE_WIRE 4
 //#define I2C_SCL A5
 //#define I2C_SDA A4
