@@ -94,6 +94,7 @@ echo
 read -p "Press ENTER to continue..." nothing
 
 sudo apt install -y phpmyadmin
+sudo apt purge -y apache2
 sudo service lighttpd force-reload
 
 clear
