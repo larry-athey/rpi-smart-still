@@ -98,6 +98,7 @@ sudo apt install -y phpmyadmin
 sudo apt purge -y apache2
 sudo service lighttpd force-reload
 sudo rm -f /usr/share/rpi-smart-still/rpi-smart-still
+sudo rm -f /var/www/html/html
 
 clear
 
