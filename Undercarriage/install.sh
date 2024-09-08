@@ -56,6 +56,7 @@ sudo mkdir -p /usr/share/rpi-smart-still
 sudo cp -f cronjob /usr/share/rpi-smart-still
 sudo cp -f rss* /usr/share/rpi-smart-still
 sudo cp -f *.c /usr/share/rpi-smart-still
+sudo cp -f *.php /usr/share/rpi-smart-still
 
 sudo gcc -o /usr/share/rpi-smart-still/heating /usr/share/rpi-smart-still/heating.c -l wiringPi
 sudo gcc -o /usr/share/rpi-smart-still/hydro-read /usr/share/rpi-smart-still/hydro-read.c -l wiringPi
