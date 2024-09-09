@@ -59,6 +59,9 @@ elseif (isset($_GET["control_relay"])) {
     }
     $Update = mysqli_query($DBcnx,"UPDATE settings SET relay2_state='" . $_GET["state"] . "' WHERE ID=1");
   }
+  mysqli_close($DBcnx);
+  header("Location: index.php?page=relays");
+  exit;
 }
 //---------------------------------------------------------------------------------------------------
 elseif (isset($_GET["heat_jump"])) {
