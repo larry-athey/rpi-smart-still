@@ -59,6 +59,7 @@ elseif (isset($_GET["control_relay"])) {
     }
     $Update = mysqli_query($DBcnx,"UPDATE settings SET relay2_state='" . $_GET["state"] . "' WHERE ID=1");
   }
+
   mysqli_close($DBcnx);
   header("Location: index.php?page=relays");
   exit;
@@ -163,6 +164,10 @@ elseif (isset($_GET["recalibrate_hydro"])) {
   } else {
     $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','7','0','0')");
   }
+
+  mysqli_close($DBcnx);
+  header("Location: index.php?page=hydrometer");
+  exit;
 }
 //---------------------------------------------------------------------------------------------------
 elseif (isset($_POST["rss_edit_heating"])) {
