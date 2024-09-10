@@ -58,7 +58,7 @@ function ControlRelays($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
 
-  $OnLabel  = "<span class=\"text-danger blink\">On</span>";
+  $OnLabel  = "<span class=\"text-success blink\">On</span>";
   $OffLabel = "<span class=\"text-warning\">Off</span>";
   if ($Settings["relay1_state"] == 1) {
     $Relay1 = $OnLabel;
