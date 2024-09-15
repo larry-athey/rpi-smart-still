@@ -42,14 +42,14 @@ wget https://project-downloads.drogon.net/wiringpi-latest.deb
 sudo dpkg -i wiringpi-latest.deb
 sudo systemctl mask serial-getty@ttyAMA0.service
 
-cat /boot/config.txt | grep "dtoverlay=uart0"
+cat /boot/firmware/config.txt | grep "dtoverlay=uart0"
 if [ ! $? -eq 0 ]; then
-  sudo cp /boot/config.txt /tmp/config.txt
+  sudo cp /boot/firmware/config.txt /tmp/config.txt
   sudo chown pi:pi /tmp/config.txt
   sudo echo "dtoverlay=uart0" >> /tmp/config.txt
   sudo rm -f /boot/config.txt
-  sudo mv /tmp/config.txt /boot/config.txt
-  sudo chown root:root /boot/config.txt
+  sudo mv /tmp/config.txt /boot/firmware/config.txt
+  sudo chown root:root /boot/firmware/config.txt
 fi
 
 sudo mkdir -p /usr/share/rpi-smart-still
