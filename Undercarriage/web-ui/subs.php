@@ -124,7 +124,7 @@ function PosToPct($Total,$Position) {
 function ProgramTypeSelector($Selected) {
   $PType[] = "Pot Still Mode (No Dephleg Management)";
   $PType[] = "Reflux Mode (No Column Management)";
-  $Content = "<select style=\"width: 100%;margin-bottom: 0.5em;\" size=\"1\" class=\"form-control form-select\" id=\"ProgramType\" name=\"ProgramType\" onChange=\"ToggleInputFields(this)\">";
+  $Content = "<select style=\"width: 100%;margin-bottom: 0.5em;\" size=\"1\" class=\"form-control form-select fw-bolder\" id=\"ProgramType\" name=\"ProgramType\" onChange=\"ToggleInputFields(this)\">";
   for ($x = 0; $x <= 1; $x ++) {
     if ($x == $Selected) {
       $Content .= "<option selected value=\"$x\">$PType[$x]</option>";
@@ -148,7 +148,7 @@ function SecsToTime($Seconds) {
 function SensorSelector($Selected,$ID) {
   $Sensors = getSensorList();
   if (count($Sensors) > 0) {
-    $Content  = "<select style=\"width: 100%;\" size=\"1\" class=\"form-control form-select\" id=\"$ID\" name=\"$ID\" aria-describedby=\"$ID" . "Help\">";
+    $Content  = "<select style=\"width: 100%;\" size=\"1\" class=\"form-control form-select fw-bolder\" id=\"$ID\" name=\"$ID\" aria-describedby=\"$ID" . "Help\">";
     $Content .= "<option value=\"\"></option>";
     for ($x = 0; $x <= (count($Sensors) - 1); $x++) {
       if ($Selected == $Sensors[$x]) {
@@ -173,7 +173,7 @@ function YNSelector($Selected,$ID) {
     $S0 = "";
     $S1 = "selected";
   }
-  $Content  = "<select style=\"width: 100%;\" size=\"1\" class=\"form-control form-select\" id=\"$ID\" name=\"$ID\" aria-describedby=\"$ID" . "Help\">";
+  $Content  = "<select style=\"width: 100%;\" size=\"1\" class=\"form-control form-select fw-bolder\" id=\"$ID\" name=\"$ID\" aria-describedby=\"$ID" . "Help\">";
   $Content .= "<option $S1 value=\"1\">Yes</option>";
   $Content .= "<option $S0 value=\"0\">No</option>";
   $Content .= "</select>";
