@@ -160,7 +160,7 @@ function SensorSelector($Selected,$ID) {
     }
     $Content .= "</select>";
   } else {
-    $Content = "No DS18B20 temperature sensors found";
+    $Content = "<p>No DS18B20 temperature sensors found</p>";
   }
   return $Content;
 }
