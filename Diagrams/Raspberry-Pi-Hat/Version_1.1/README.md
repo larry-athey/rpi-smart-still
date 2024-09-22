@@ -9,4 +9,4 @@ Refer to the photo Hacked_RPI-Smart-Still-V1.1_2024-08-17.jpg in this folder for
 
 You will also notice by the photo of the top of the assembled hat, I use a 5 volt buck regulator instead of the LM7805 and the filter inductor to reduce heat and bulk. This is now the standard design in the version 1.2 boards.
 
-In version 1.2 of these boards, the red LEDs on the relays have gone away. You should install green LEDs in the place of the red relay LEDs and leave the original greem LED mounting pads open. This will make version 1.1 boards functionally identical to the version 1.2 boards.
+In version 1.2 of these boards, the red LEDs on the relays have gone away. You should install green LEDs in the place of the red relay LEDs and leave the original green LED mounting pads open. This will make version 1.1 boards functionally identical to the version 1.2 boards.
