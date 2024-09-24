@@ -609,7 +609,7 @@ function ShowSensors($DBcnx) {
       $Content .= "<tr><td><span class=\"fw-bolder\">$Sensors[$x]</span></td><td align=\"right\"><span class=\"fw-bolder\">" . $Data["C"] . "C / " . $Data["F"] . "F</span></td></tr>";
     }
   } else {
-    $Content .= "<tr><td><span class=\"fw-bolder\">No DS18B20 temperature sensors found</span></td></tr>";
+    $Content .= "<tr><td><span class=\"fw-bolder\">No DS18B20 sensors found</span></td></tr>";
   }
   $Content .= "</table>";
   return $Content;
