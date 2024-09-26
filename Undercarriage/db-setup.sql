@@ -155,7 +155,7 @@ CREATE TABLE `settings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `settings` (`ID`, `boiler_addr`, `boiler_temp`, `dephleg_addr`, `dephleg_temp`, `column_addr`, `column_temp`, `valve1_total`, `valve1_pulse`, `valve1_position`, `valve2_total`, `valve2_pulse`, `valve2_position`, `heating_enabled`, `heating_polarity`, `heating_analog`, `heating_total`, `heating_position`, `relay1_state`, `relay2_state`, `distillate_temp`, `distillate_abv`, `distillate_flow`, `speech_enabled`, `hydro_type`, `active_run`, `active_program`, `paused`, `pause_return`, `saved_upper`, `saved_lower`, `run_start`, `run_end`, `serial_data`) VALUES
-(1, '28-000000038852', 32.9, '28-00000003a5e0', 23.9, '28-00000004499c', 24.6, 10384, 104, 0, 10244, 102, 0, 1, 1, 1, 140, 0, 0, 0, 21.1, 0, 0, 1, 1, 0, 2, 0, 0, 0, 0, '2024-05-11 01:57:46', '2024-05-11 05:40:26', 'Uptime: 02:19:35\nDistance: 8191\nFlow: 0.00\nEthanol: 0\nTempC: 21.1');
+(1, '28-000000038852', -1000, '28-00000003a5e0', -1000, '28-00000004499c', -1000, 10221, 102, 0, 10450, 105, 0, 1, 0, 1, 140, 0, 0, 0, 21.1, 0, 0, 1, 1, 0, 2, 0, 0, 0, 0, '2024-05-11 07:57:46', '2024-05-11 11:40:26', 'Uptime: 02:19:35\nDistance: 8191\nFlow: 0.00\nEthanol: 0\nTempC: 21.1');
 
 ALTER TABLE `settings` ADD PRIMARY KEY (`ID`);
 
