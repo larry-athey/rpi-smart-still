@@ -32,5 +32,5 @@ This is a little bit of a juggling act to do manually, no matter what still you 
 <img width="1024" alt="2023-08-15 12-07-20-0" src="https://github.com/larry-athey/rpi-smart-still/assets/121518798/dee64786-54f7-4628-b870-9a848907a846"><br><br>
 <img width="1024" alt="2023-08-15 12-06-19-0" src="https://github.com/larry-athey/rpi-smart-still/assets/121518798/443844d2-ec12-4a0a-9831-3e3e8a4ffdd7"><br><br>
 <img width="1024" alt="2023-08-20 14-34-02-0" src="https://github.com/larry-athey/rpi-smart-still/assets/121518798/03ad11e0-4699-4d16-a72b-26ed88820186"><br><br>
-<img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/a50c213f-ad78-442e-b8c8-27e7e2f2200b"><br><br>
+<img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/fbde1696-560b-4bf5-b7ab-8872883ebedf"><br><br>
 <img width="1024" alt="2023-05-11 00-00-00-0" src="https://github.com/larry-athey/rpi-smart-still/assets/121518798/0bb3de80-8381-46cc-891a-b38762a76548">
