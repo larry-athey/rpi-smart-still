@@ -18,7 +18,7 @@ int main(int argc,char **argv) {
     return 1;
   }
 
-  if ((UART = serialOpen("/dev/ttyS0",9600)) < 0) {
+  if ((UART = serialOpen("/dev/ttyAMA0",9600)) < 0) {
     fprintf(stderr,"Unable to open serial device: %s\n",strerror(errno));
     return 1;
   }
