@@ -801,7 +801,7 @@ function VoicePrompter($DBcnx,$Ajax) {
 
   $RandID   = "card_" . generateRandomString();
   $Content  = "";
-  if ($Ajax) $Content .= AjaxRefreshJS("voice_prompter",$RandID,9500);
+  if ($Ajax) $Content .= AjaxRefreshJS("voice_prompter",$RandID,9000);
   $Content .= "<div id=\"$RandID\">";
   // Check for waiting voice prompts if speech is enabled (web browser must have autoplay enabled in its settings)
   if ($Settings["speech_enabled"] == 1) {
