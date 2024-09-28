@@ -54,6 +54,7 @@ fi
 
 sudo mkdir -p /usr/share/rpi-smart-still
 sudo cp -f cronjob /usr/share/rpi-smart-still
+sudo cp -f hydro-port /usr/share/rpi-smart-still
 sudo cp -f rss* /usr/share/rpi-smart-still
 sudo cp -f *.c /usr/share/rpi-smart-still
 sudo cp -f *.php /usr/share/rpi-smart-still
