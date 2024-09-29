@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ "$USER" != "pi" ]; then
+  echo "This script needs to be ran as the user 'pi', terminating script."
+  exit 1
+fi
+
 clear
 
 echo "THIS INSTALLER EXPECTS YOU TO BE USING A RAW UNMODIFIED OS INSTALLATION!!!!"
