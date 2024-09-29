@@ -40,16 +40,21 @@ ln -s /var/www/html /home/pi/webroot
 
 wget https://project-downloads.drogon.net/wiringpi-latest.deb
 sudo dpkg -i wiringpi-latest.deb
-sudo systemctl mask serial-getty@ttyAMA0.service
 
-cat /boot/config.txt | grep "dtoverlay=uart0"
-if [ ! $? -eq 0 ]; then
-  sudo cp /boot/config.txt /tmp/config.txt
-  sudo chown pi:pi /tmp/config.txt
-  sudo echo "dtoverlay=uart0" >> /tmp/config.txt
-  sudo rm -f /boot/config.txt
-  sudo mv /tmp/config.txt /boot/config.txt
-  sudo chown root:root /boot/config.txt
+if [ -e /boot/config.txt ]; then
+  # This is strictly for Raspbian 11 "Legacy" systems, this file has moved to /boot/firmare/config.txt
+  # on Raspbian 12 which breaks serial communications on GPIO pins 14/15 with anything before a model 5.
+  # This file also doesn't exist on Armbian and standard Debian for ARM systems.
+  sudo systemctl mask serial-getty@ttyAMA0.service
+  cat /boot/config.txt | grep "dtoverlay=uart0"
+  if [ ! $? -eq 0 ]; then
+    sudo cp /boot/config.txt /tmp/config.txt
+    sudo chown pi:pi /tmp/config.txt
+    sudo echo "dtoverlay=uart0" >> /tmp/config.txt
+    sudo rm -f /boot/config.txt
+    sudo mv /tmp/config.txt /boot/config.txt
+    sudo chown root:root /boot/config.txt
+  fi
 fi
 
 sudo mkdir -p /usr/share/rpi-smart-still
