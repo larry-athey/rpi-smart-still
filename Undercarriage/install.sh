@@ -69,7 +69,13 @@ wget https://project-downloads.drogon.net/wiringpi-latest.deb
 sudo dpkg -i wiringpi-latest.deb
 
 if [ $Raspbian -eq 0 ]; then
-  echo "Installing Debian for ARM 1-Wire support."
+  echo "Configuring Debian for ARM (Armbian) services."
+  if [ $Bullseye -eq 1 ]; then
+    sudo systemctl stop serial-getty@ttyAMA0.service
+    sudo systemctl disable serial-getty@ttyAMA0.service
+  fi
+  echo "w1-gpio" | sudo tee -a /etc/modules
+  echo "options w1-gpio pin=4" | sudo tee -a /etc/modprobe.d/w1-gpio.conf
 fi
 
 if [ $Raspbian -eq 1 ] && [ $Bullseye -eq 1 ]; then
