@@ -169,6 +169,7 @@ else
   echo "https://github.com/BPI-SINOVOIP/BPI-WiringPi"
   echo
   echo "Compile Commands:"
+  echo
   echo "sudo gcc -o /usr/share/rpi-smart-still/heating /usr/share/rpi-smart-still/heating.c -l wiringPi"
   echo "sudo gcc -o /usr/share/rpi-smart-still/hydro-read /usr/share/rpi-smart-still/hydro-read.c -l wiringPi"
   echo "sudo gcc -o /usr/share/rpi-smart-still/hydro-write /usr/share/rpi-smart-still/hydro-write.c -l wiringPi"
