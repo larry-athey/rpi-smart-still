@@ -1,10 +1,5 @@
 #!/bin/bash
 
-if [ "$USER" != "pi" ]; then
-  echo "This script needs to be ran as the user 'pi', terminating script."
-  exit 1
-fi
-
 clear
 
 echo "THIS INSTALLER EXPECTS YOU TO BE USING A RAW UNMODIFIED OS INSTALLATION!!!!"
@@ -20,6 +15,12 @@ echo "If you are using another user account, press CTRL-C to terminate the scrip
 echo "create a 'pi' user with sudo access and run this script again."
 echo
 read -p "Press ENTER to continue the installation or CTRL+C to cancel..." nothing
+
+if [ "$USER" != "pi" ]; then
+  echo
+  echo "This script needs to be ran as the user 'pi', terminating script."
+  exit 1
+fi
 
 sudo dpkg-reconfigure locales
 
