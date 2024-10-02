@@ -65,10 +65,10 @@ sudo chmod g+w -R /var/www/html
 sudo usermod -a -G www-data pi
 ln -s /var/www/html /home/pi/webroot
 
-if [ $Raspbian -eq 1 ]; then
-  wget https://project-downloads.drogon.net/wiringpi-latest.deb
-  sudo dpkg -i wiringpi-latest.deb
-else
+wget https://project-downloads.drogon.net/wiringpi-latest.deb
+sudo dpkg -i wiringpi-latest.deb
+
+if [ $Raspbian -eq 0 ]; then
   echo "Installing Debian for ARM 1-Wire support."
 fi
 
@@ -95,12 +95,10 @@ sudo cp -f rss* /usr/share/rpi-smart-still
 sudo cp -f *.c /usr/share/rpi-smart-still
 sudo cp -f *.php /usr/share/rpi-smart-still
 
-if [ $Raspbian -eq 1 ]; then
-  sudo gcc -o /usr/share/rpi-smart-still/heating /usr/share/rpi-smart-still/heating.c -l wiringPi
-  sudo gcc -o /usr/share/rpi-smart-still/hydro-read /usr/share/rpi-smart-still/hydro-read.c -l wiringPi
-  sudo gcc -o /usr/share/rpi-smart-still/hydro-write /usr/share/rpi-smart-still/hydro-write.c -l wiringPi
-  sudo gcc -o /usr/share/rpi-smart-still/valve /usr/share/rpi-smart-still/valve.c -l wiringPi
-fi
+sudo gcc -o /usr/share/rpi-smart-still/heating /usr/share/rpi-smart-still/heating.c -l wiringPi
+sudo gcc -o /usr/share/rpi-smart-still/hydro-read /usr/share/rpi-smart-still/hydro-read.c -l wiringPi
+sudo gcc -o /usr/share/rpi-smart-still/hydro-write /usr/share/rpi-smart-still/hydro-write.c -l wiringPi
+sudo gcc -o /usr/share/rpi-smart-still/valve /usr/share/rpi-smart-still/valve.c -l wiringPi
 
 sudo chmod +x /usr/share/rpi-smart-still/*
 sudo chmod -x /usr/share/rpi-smart-still/*.c
@@ -160,20 +158,7 @@ if [ $Raspbian -eq 1 ]; then
   echo "over serial and leave the serial port enabled. Then exit raspi-config, this"
   echo "will cause your Raspberry PI to be rebooted."
 else
-  echo "Debian for ARM detected, things are a little different with this OS. You'll"
-  echo "need to manually install WiringPI for your OS and compile the binaries that"
-  echo "I have written in C. Not a big deal, just copy and paste the commands below"
-  echo "after WiringPI is installed and tested with 'gpio readall'."
-  echo
-  echo "If you are using a Banana PI board, go to the following URL for WiringPI."
-  echo "https://github.com/BPI-SINOVOIP/BPI-WiringPi"
-  echo
-  echo "Compile Commands:"
-  echo
-  echo "sudo gcc -o /usr/share/rpi-smart-still/heating /usr/share/rpi-smart-still/heating.c -l wiringPi"
-  echo "sudo gcc -o /usr/share/rpi-smart-still/hydro-read /usr/share/rpi-smart-still/hydro-read.c -l wiringPi"
-  echo "sudo gcc -o /usr/share/rpi-smart-still/hydro-write /usr/share/rpi-smart-still/hydro-write.c -l wiringPi"
-  echo "sudo gcc -o /usr/share/rpi-smart-still/valve /usr/share/rpi-smart-still/valve.c -l wiringPi"
+  echo "Debian for ARM detected, things are a little different with this OS."
 fi
 
 if [ $Bullseye -eq 0 ]; then
