@@ -50,7 +50,7 @@ fi
 
 sudo lighttpd-enable-mod fastcgi
 sudo lighttpd-enable-mod fastcgi-php
-if [ $Raspbian -eq 1 ] && [ $Bullseye -eq 0 ]; then
+if [ $Bullseye -eq 0 ]; then
   sed -i "s/7.4:/8.2:/g" ./15-fastcgi-php.conf 
 fi
 sudo cp -f ./15-fastcgi-php.conf /etc/lighttpd/conf-available/15-fastcgi-php.conf
@@ -168,6 +168,12 @@ else
   echo "need to manually install WiringPI for your OS and compile the binaries that"
   echo "I have written in C. Not a big deal, just copy and paste the commands below"
   echo "after WiringPI is installed and tested with 'gpio readall'."
+  if [ $Bullseye -eq 0 ]; then
+    echo
+    echo "Since you are not running Debian Bullseye, the serial communications bus on GPIO"
+    echo "pins 14/15 will not work. This will prevent you from using the LIDAR Hydrometer"
+    echo "Reader or the Load Cell hydrometer. All other features will still work normally."
+  fi
   echo
   echo "If you are using a Banana PI board, go to the following URL for WiringPI."
   echo "https://github.com/BPI-SINOVOIP/BPI-WiringPi"
