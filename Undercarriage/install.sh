@@ -159,9 +159,9 @@ if [ $Raspbian -eq 1 ]; then
   echo "will cause your Raspberry PI to be rebooted."
   if [ $Bullseye -eq 0 ]; then
     echo
-    echo "Since you aren't running Raspbian 11, the serial communications bus on GPIO"
-    echo "pins 14/15 will not work. This will prevent you from using the LIDAR hydrometer"
-    echo "reader or the Load Cell hydrometer. All other features will still work normally."
+    echo "Since you are not running Raspbian 11, the serial communications bus on GPIO"
+    echo "pins 14/15 will not work. This will prevent you from using the LIDAR Hydrometer"
+    echo "Reader or the Load Cell hydrometer. All other features will still work normally."
   fi
 else
   echo "Debian for ARM detected, things are a little different with this OS. You'll"
