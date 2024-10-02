@@ -67,6 +67,8 @@ ln -s /var/www/html /home/pi/webroot
 if [ $Raspbian -eq 1 ]; then
   wget https://project-downloads.drogon.net/wiringpi-latest.deb
   sudo dpkg -i wiringpi-latest.deb
+else
+  echo "Installing Debian for ARM 1-Wire support."
 fi
 
 if [ $Raspbian -eq 1 ] && [ $Bullseye -eq 1 ]; then
@@ -148,12 +150,19 @@ echo
 echo "The CRON job shown in the above fires off every minute to verify that all 3"
 echo "of the process scripts are running for input, output, and logic control."
 echo
+echo
 
 if [ $Raspbian -eq 1 ]; then
   echo "You will also need to run 'sudo raspi-config' and go to Interface Options to"
   echo "enable 1-Wire support. Then go to Serial Port and turn off the login shell"
   echo "over serial and leave the serial port enabled. Then exit raspi-config, this"
   echo "will cause your Raspberry PI to be rebooted."
+  if [ $Bullseye -eq 0 ]; then
+    echo
+    echo "Since you aren't running Raspbian 11, the serial communications bus on GPIO"
+    echo "pins 14/15 will not work. This will prevent you from using the LIDAR hydrometer"
+    echo "reader or the Load Cell hydrometer. All other features will still work normally."
+  fi
 else
   echo "Debian for ARM detected, things are a little different with this OS. You'll"
   echo "need to manually install WiringPI for your OS and compile the binaries that"
