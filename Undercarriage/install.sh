@@ -103,6 +103,7 @@ fi
 
 sudo chmod +x /usr/share/rpi-smart-still/*
 sudo chmod -x /usr/share/rpi-smart-still/*.c
+sudo chmod -x /usr/share/rpi-smart-still/hydro-port
 
 sudo chown -R www-data:www-data /usr/share/rpi-smart-still
 sudo chmod g+w -R /usr/share/rpi-smart-still
@@ -157,23 +158,11 @@ if [ $Raspbian -eq 1 ]; then
   echo "enable 1-Wire support. Then go to Serial Port and turn off the login shell"
   echo "over serial and leave the serial port enabled. Then exit raspi-config, this"
   echo "will cause your Raspberry PI to be rebooted."
-  if [ $Bullseye -eq 0 ]; then
-    echo
-    echo "Since you are not running Raspbian 11, the serial communications bus on GPIO"
-    echo "pins 14/15 will not work. This will prevent you from using the LIDAR Hydrometer"
-    echo "Reader or the Load Cell hydrometer. All other features will still work normally."
-  fi
 else
   echo "Debian for ARM detected, things are a little different with this OS. You'll"
   echo "need to manually install WiringPI for your OS and compile the binaries that"
   echo "I have written in C. Not a big deal, just copy and paste the commands below"
   echo "after WiringPI is installed and tested with 'gpio readall'."
-  if [ $Bullseye -eq 0 ]; then
-    echo
-    echo "Since you are not running Debian Bullseye, the serial communications bus on GPIO"
-    echo "pins 14/15 will not work. This will prevent you from using the LIDAR Hydrometer"
-    echo "Reader or the Load Cell hydrometer. All other features will still work normally."
-  fi
   echo
   echo "If you are using a Banana PI board, go to the following URL for WiringPI."
   echo "https://github.com/BPI-SINOVOIP/BPI-WiringPi"
@@ -183,6 +172,15 @@ else
   echo "sudo gcc -o /usr/share/rpi-smart-still/hydro-read /usr/share/rpi-smart-still/hydro-read.c -l wiringPi"
   echo "sudo gcc -o /usr/share/rpi-smart-still/hydro-write /usr/share/rpi-smart-still/hydro-write.c -l wiringPi"
   echo "sudo gcc -o /usr/share/rpi-smart-still/valve /usr/share/rpi-smart-still/valve.c -l wiringPi"
+fi
+
+if [ $Bullseye -eq 0 ]; then
+  echo
+  echo "NOTE: Since you are not running Raspbian 11 or Debian Bullseye for ARM on"
+  echo "this device, you will need to use a USB serial interface if you intend to"
+  echo "use LIDAR Hydrometer Reader or Load Cell Hydrometer. Simply edit the file"
+  echo "/usr/share/rpi-smart-still/hydro-port and update the port device to point"
+  echo "to the correct device for your USB serial interface."
 fi
 
 echo
