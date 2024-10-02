@@ -17,7 +17,7 @@ echo "on anything older than a Pi 4."
 echo
 echo "This installer script assumes that you are running it as the username 'pi'."
 echo "If you are using another user account, press CTRL-C to terminate the script"
-echo "and run it as 'pi'. Or edit this script to replace 'pi' with your username."
+echo "create a 'pi' user with sudo access and run this script again."
 echo
 read -p "Press ENTER to continue the installation or CTRL+C to cancel..." nothing
 
