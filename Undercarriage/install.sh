@@ -73,24 +73,30 @@ if [ $Raspbian -eq 0 ]; then
   if [ $Bullseye -eq 1 ]; then
     sudo systemctl stop serial-getty@ttyAMA0.service
     sudo systemctl disable serial-getty@ttyAMA0.service
+    cat /boot/armbianEnv.txt | grep "console=ttyS0,115200 console=ttyAMA0"
+    if [ ! $? -eq 0 ]; then
+      echo "console=ttyS0,115200 console=ttyAMA0" | sudo tee -a /boot/armbianEnv.txt
+    fi
   fi
-  echo "w1-gpio" | sudo tee -a /etc/modules
-  echo "options w1-gpio pin=4" | sudo tee -a /etc/modprobe.d/w1-gpio.conf
+  cat /etc/modules | grep "w1-gpio"
+  if [ ! $? -eq 0 ]; then
+    echo "w1-gpio" | sudo tee -a /etc/modules
+  fi
+  cat /etc/modprobe.d/w1-gpio.conf | grep "options w1-gpio pin=4"
+  if [ ! $? -eq 0 ]; then
+    echo "options w1-gpio pin=4" | sudo tee -a /etc/modprobe.d/w1-gpio.conf
+  fi
 fi
 
 if [ $Raspbian -eq 1 ] && [ $Bullseye -eq 1 ]; then
   # This is strictly for Raspbian 11 "Legacy" systems, this file has moved to /boot/firmare/config.txt
   # on Raspbian 12 which breaks serial communications on GPIO pins 14/15 with anything before a model 5.
   # This file also doesn't exist on Armbian and standard Debian for ARM systems.
-  sudo systemctl mask serial-getty@ttyAMA0.service
+  sudo systemctl stop serial-getty@ttyAMA0.service
+  sudo systemctl disable serial-getty@ttyAMA0.service
   cat /boot/config.txt | grep "dtoverlay=uart0"
   if [ ! $? -eq 0 ]; then
-    sudo cp /boot/config.txt /tmp/config.txt
-    sudo chown pi:pi /tmp/config.txt
-    sudo echo "dtoverlay=uart0" >> /tmp/config.txt
-    sudo rm -f /boot/config.txt
-    sudo mv /tmp/config.txt /boot/config.txt
-    sudo chown root:root /boot/config.txt
+    echo "dtoverlay=uart0" | sudo tee -a /boot/config.txt
   fi
 fi
 
@@ -164,7 +170,8 @@ if [ $Raspbian -eq 1 ]; then
   echo "over serial and leave the serial port enabled. Then exit raspi-config, this"
   echo "will cause your Raspberry PI to be rebooted."
 else
-  echo "Debian for ARM detected, things are a little different with this OS."
+  echo "Debian for ARM detected, things are a little different with this OS than it"
+  echo "is with Raspbian. Just run 'sudo reboot' and you're done. Isn't that better?"
 fi
 
 if [ $Bullseye -eq 0 ]; then
