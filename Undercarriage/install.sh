@@ -26,12 +26,33 @@ sudo dpkg-reconfigure locales
 sudo apt update
 sudo apt upgrade -y
 sudo apt autoremove -y
-sudo apt install -y alsa-utils espeak ffmpeg mpg123 lighttpd php php-common php-fpm php-mysql mariadb-server mariadb-client
+sudo apt install -y lshw alsa-utils espeak ffmpeg mpg123 lighttpd php php-common php-fpm php-mysql mariadb-server mariadb-client
 sudo apt --fix-broken install -y
 sudo apt clean
 
+OS=$(cat /etc/issue)
+Bullseye=0
+
+echo $OS | grep "Raspbian" > /dev/null
+if [ $? -eq 0 ]; then
+  Raspbian=1
+  echo $OS | grep "11" > /dev/null
+  if [ $? -eq 0 ]; then
+    Bullseye=1
+  fi
+else
+  Raspbian=0
+  echo $OS | grep "bullseye" > /dev/null
+  if [ $? -eq 0 ]; then
+    Bullseye=1
+  fi
+fi
+
 sudo lighttpd-enable-mod fastcgi
 sudo lighttpd-enable-mod fastcgi-php
+if [ $Raspbian -eq 1 ] && [ $Bullseye -eq 0 ]; then
+  sed -i "s/7.4:/8.2:/g" ./15-fastcgi-php.conf 
+fi
 sudo cp -f ./15-fastcgi-php.conf /etc/lighttpd/conf-available/15-fastcgi-php.conf
 sudo service lighttpd force-reload
 
@@ -43,10 +64,12 @@ sudo chmod g+w -R /var/www/html
 sudo usermod -a -G www-data pi
 ln -s /var/www/html /home/pi/webroot
 
-wget https://project-downloads.drogon.net/wiringpi-latest.deb
-sudo dpkg -i wiringpi-latest.deb
+if [ $Raspbian -eq 1 ]; then
+  wget https://project-downloads.drogon.net/wiringpi-latest.deb
+  sudo dpkg -i wiringpi-latest.deb
+fi
 
-if [ -e /boot/config.txt ]; then
+if [ $Raspbian -eq 1 ] && [ $Bullseye -eq 1 ]; then
   # This is strictly for Raspbian 11 "Legacy" systems, this file has moved to /boot/firmare/config.txt
   # on Raspbian 12 which breaks serial communications on GPIO pins 14/15 with anything before a model 5.
   # This file also doesn't exist on Armbian and standard Debian for ARM systems.
@@ -69,10 +92,12 @@ sudo cp -f rss* /usr/share/rpi-smart-still
 sudo cp -f *.c /usr/share/rpi-smart-still
 sudo cp -f *.php /usr/share/rpi-smart-still
 
-sudo gcc -o /usr/share/rpi-smart-still/heating /usr/share/rpi-smart-still/heating.c -l wiringPi
-sudo gcc -o /usr/share/rpi-smart-still/hydro-read /usr/share/rpi-smart-still/hydro-read.c -l wiringPi
-sudo gcc -o /usr/share/rpi-smart-still/hydro-write /usr/share/rpi-smart-still/hydro-write.c -l wiringPi
-sudo gcc -o /usr/share/rpi-smart-still/valve /usr/share/rpi-smart-still/valve.c -l wiringPi
+if [ $Raspbian -eq 1 ]; then
+  sudo gcc -o /usr/share/rpi-smart-still/heating /usr/share/rpi-smart-still/heating.c -l wiringPi
+  sudo gcc -o /usr/share/rpi-smart-still/hydro-read /usr/share/rpi-smart-still/hydro-read.c -l wiringPi
+  sudo gcc -o /usr/share/rpi-smart-still/hydro-write /usr/share/rpi-smart-still/hydro-write.c -l wiringPi
+  sudo gcc -o /usr/share/rpi-smart-still/valve /usr/share/rpi-smart-still/valve.c -l wiringPi
+fi
 
 sudo chmod +x /usr/share/rpi-smart-still/*
 sudo chmod -x /usr/share/rpi-smart-still/*.c
@@ -123,10 +148,28 @@ echo
 echo "The CRON job shown in the above fires off every minute to verify that all 3"
 echo "of the process scripts are running for input, output, and logic control."
 echo
-echo "You will also need to run 'sudo raspi-config' and go to Interface Options to"
-echo "enable 1-Wire support. Then go to Serial Port and turn off the login shell"
-echo "over serial and leave the serial port enabled. Then exit raspi-config, this"
-echo "will cause your Raspberry PI to be rebooted."
+
+if [ $Raspbian -eq 1 ]; then
+  echo "You will also need to run 'sudo raspi-config' and go to Interface Options to"
+  echo "enable 1-Wire support. Then go to Serial Port and turn off the login shell"
+  echo "over serial and leave the serial port enabled. Then exit raspi-config, this"
+  echo "will cause your Raspberry PI to be rebooted."
+else
+  echo "Debian for ARM detected, things are a little different with this OS. You'll"
+  echo "need to manually install WiringPI for your OS and compile the binaries that"
+  echo "I have written in C. Not a big deal, just copy and paste the commands below"
+  echo "after WiringPI is installed and tested with 'gpio readall'."
+  echo
+  echo "If you are using a Banana PI board, go to the following URL for WiringPI."
+  echo "https://github.com/BPI-SINOVOIP/BPI-WiringPi"
+  echo
+  echo "Compile Commands:"
+  echo "sudo gcc -o /usr/share/rpi-smart-still/heating /usr/share/rpi-smart-still/heating.c -l wiringPi"
+  echo "sudo gcc -o /usr/share/rpi-smart-still/hydro-read /usr/share/rpi-smart-still/hydro-read.c -l wiringPi"
+  echo "sudo gcc -o /usr/share/rpi-smart-still/hydro-write /usr/share/rpi-smart-still/hydro-write.c -l wiringPi"
+  echo "sudo gcc -o /usr/share/rpi-smart-still/valve /usr/share/rpi-smart-still/valve.c -l wiringPi"
+fi
+
 echo
 echo
 echo "You can delete this git clone after you are done, it is no longer needed."
