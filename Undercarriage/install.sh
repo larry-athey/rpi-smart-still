@@ -27,23 +27,23 @@ sudo dpkg-reconfigure locales
 sudo apt update
 sudo apt upgrade -y
 sudo apt autoremove -y
-sudo apt install -y lshw alsa-utils espeak ffmpeg mpg123 lighttpd php php-common php-fpm php-mysql mariadb-server mariadb-client
+sudo apt install -y lshw libgpiod-dev alsa-utils espeak ffmpeg mpg123 lighttpd php php-common php-fpm php-mysql mariadb-server mariadb-client
 sudo apt --fix-broken install -y
 sudo apt clean
 
 OS=$(cat /etc/issue)
 Bullseye=0
 
-echo $OS | grep "Raspbian" > /dev/null
+echo $OS | grep "Raspbian" > /dev/null 2>&1
 if [ $? -eq 0 ]; then
   Raspbian=1
-  echo $OS | grep "11" > /dev/null
+  echo $OS | grep "11" > /dev/null 2>&1
   if [ $? -eq 0 ]; then
     Bullseye=1
   fi
 else
   Raspbian=0
-  echo $OS | grep "bullseye" > /dev/null
+  echo $OS | grep "bullseye" > /dev/null 2>&1
   if [ $? -eq 0 ]; then
     Bullseye=1
   fi
@@ -103,6 +103,9 @@ if [ $Raspbian -eq 0 ]; then
   fi
 else
   # Raspbian specific configuration procedures.
+  # Currently modifying all C code to use libgpiod since WiringPi is specific to the Raspberry Pi and
+  # the author has zero intentions of supporting any non-Broadcom clones. Which is perfectly fine with
+  # me since Allwinner based clones such as the Banana Pi out-perform the Raspberry Pi for less money.
   wget https://project-downloads.drogon.net/wiringpi-latest.deb
   sudo dpkg -i wiringpi-latest.deb
   sudo gcc -o /usr/share/rpi-smart-still/heating /usr/share/rpi-smart-still/heating.c -l wiringPi
