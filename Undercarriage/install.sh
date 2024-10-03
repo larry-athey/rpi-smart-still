@@ -65,14 +65,29 @@ sudo chmod g+w -R /var/www/html
 sudo usermod -a -G www-data pi
 ln -s /var/www/html /home/pi/webroot
 
-wget https://project-downloads.drogon.net/wiringpi-latest.deb
-sudo dpkg -i wiringpi-latest.deb
+sudo mkdir -p /usr/share/rpi-smart-still
+sudo cp -f cronjob /usr/share/rpi-smart-still
+sudo cp -f hydro-port /usr/share/rpi-smart-still
+sudo cp -f rss* /usr/share/rpi-smart-still
+sudo cp -f *.c /usr/share/rpi-smart-still
+sudo cp -f *.php /usr/share/rpi-smart-still
+
+sudo chmod +x /usr/share/rpi-smart-still/*
+sudo chmod -x /usr/share/rpi-smart-still/*.c
+sudo chmod -x /usr/share/rpi-smart-still/hydro-port
+
+sudo chown -R www-data:www-data /usr/share/rpi-smart-still
+sudo chmod g+w -R /usr/share/rpi-smart-still
+ln -s /usr/share/rpi-smart-still /home/pi/undercarriage
+
+sudo cp -f rc.local /etc/rc.local
+sudo chmod +x /etc/rc.local
 
 if [ $Raspbian -eq 0 ]; then
-  echo "Configuring Debian for ARM (Armbian) services."
+  # Debian for ARM (Armbian) configuration procedures.
   if [ $Bullseye -eq 1 ]; then
-    sudo systemctl stop serial-getty@ttyAMA0.service
-    sudo systemctl disable serial-getty@ttyAMA0.service
+    sudo systemctl stop serial-getty@ttyAMA0.service > /dev/null 2>&1
+    sudo systemctl disable serial-getty@ttyAMA0.service > /dev/null 2>&1
     cat /boot/armbianEnv.txt | grep "console=ttyS0,115200 console=ttyAMA0"
     if [ ! $? -eq 0 ]; then
       echo "console=ttyS0,115200 console=ttyAMA0" | sudo tee -a /boot/armbianEnv.txt
@@ -86,45 +101,29 @@ if [ $Raspbian -eq 0 ]; then
   if [ ! $? -eq 0 ]; then
     echo "options w1-gpio pin=4" | sudo tee -a /etc/modprobe.d/w1-gpio.conf
   fi
-fi
-
-if [ $Raspbian -eq 1 ] && [ $Bullseye -eq 1 ]; then
-  # This is strictly for Raspbian 11 "Legacy" systems, this file has moved to /boot/firmare/config.txt
-  # on Raspbian 12 which breaks serial communications on GPIO pins 14/15 with anything before a model 5.
-  # This file also doesn't exist on Armbian and standard Debian for ARM systems.
-  sudo systemctl stop serial-getty@ttyAMA0.service
-  sudo systemctl disable serial-getty@ttyAMA0.service
-  cat /boot/config.txt | grep "dtoverlay=uart0"
-  if [ ! $? -eq 0 ]; then
-    echo "dtoverlay=uart0" | sudo tee -a /boot/config.txt
+else
+  # Raspbian specific configuration procedures.
+  wget https://project-downloads.drogon.net/wiringpi-latest.deb
+  sudo dpkg -i wiringpi-latest.deb
+  sudo gcc -o /usr/share/rpi-smart-still/heating /usr/share/rpi-smart-still/heating.c -l wiringPi
+  sudo gcc -o /usr/share/rpi-smart-still/hydro-read /usr/share/rpi-smart-still/hydro-read.c -l wiringPi
+  sudo gcc -o /usr/share/rpi-smart-still/hydro-write /usr/share/rpi-smart-still/hydro-write.c -l wiringPi
+  sudo gcc -o /usr/share/rpi-smart-still/valve /usr/share/rpi-smart-still/valve.c -l wiringPi
+  if [ $Bullseye -eq 1 ]; then
+    # This is strictly for Raspbian 11 "Legacy" systems, this file has moved to /boot/firmare/config.txt
+    # on Raspbian 12 and UART serial communications on GPIO pins 14/15 is now broken with anything before
+    # a model 5 in Raspbian 12. You will need a USB serial adapter instead, or live without a hydrometer.
+    sudo systemctl stop serial-getty@ttyAMA0.service > /dev/null 2>&1
+    sudo systemctl disable serial-getty@ttyAMA0.service > /dev/null 2>&1
+    cat /boot/config.txt | grep "dtoverlay=uart0"
+    if [ ! $? -eq 0 ]; then
+      echo "dtoverlay=uart0" | sudo tee -a /boot/config.txt
+    fi
   fi
 fi
 
-sudo mkdir -p /usr/share/rpi-smart-still
-sudo cp -f cronjob /usr/share/rpi-smart-still
-sudo cp -f hydro-port /usr/share/rpi-smart-still
-sudo cp -f rss* /usr/share/rpi-smart-still
-sudo cp -f *.c /usr/share/rpi-smart-still
-sudo cp -f *.php /usr/share/rpi-smart-still
-
-sudo gcc -o /usr/share/rpi-smart-still/heating /usr/share/rpi-smart-still/heating.c -l wiringPi
-sudo gcc -o /usr/share/rpi-smart-still/hydro-read /usr/share/rpi-smart-still/hydro-read.c -l wiringPi
-sudo gcc -o /usr/share/rpi-smart-still/hydro-write /usr/share/rpi-smart-still/hydro-write.c -l wiringPi
-sudo gcc -o /usr/share/rpi-smart-still/valve /usr/share/rpi-smart-still/valve.c -l wiringPi
-
-sudo chmod +x /usr/share/rpi-smart-still/*
-sudo chmod -x /usr/share/rpi-smart-still/*.c
-sudo chmod -x /usr/share/rpi-smart-still/hydro-port
-
-sudo chown -R www-data:www-data /usr/share/rpi-smart-still
-sudo chmod g+w -R /usr/share/rpi-smart-still
-ln -s /usr/share/rpi-smart-still /home/pi/undercarriage
-
 sudo systemctl enable mariadb > /dev/null 2>&1
 sudo systemctl start mariadb > /dev/null 2>&1
-
-sudo cp -f rc.local /etc/rc.local
-sudo chmod +x /etc/rc.local
 
 clear
 
