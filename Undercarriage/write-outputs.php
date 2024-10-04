@@ -17,7 +17,8 @@ if (mysqli_num_rows($Result) > 0) {
   exit;
 }
 
-$HydroPort = file_get_contents("/usr/share/rpi-smart-still/hydro-port");
+$Config    = parse_ini_file("/usr/share/rpi-smart-still/config.ini");
+$HydroPort = $Config["HYDRO_PORT"];
 
 $Result = mysqli_query($DBcnx,"SELECT * FROM output_table WHERE executed=0");
 while ($RS = mysqli_fetch_assoc($Result)) {
