@@ -1,1 +1,1 @@
-As of October 1, 2024 I am now only encouraging and supporting builds based on the Raspberry Pi Hat.
+As of October 1, 2024 I am now only encouraging and supporting builds based on the Raspberry Pi Hat. If you are the adventurous type, you are still more than welcome to build a prototype system. I'm only maintaining that information here and the original videos on that system so people can get a better understanding of how things work at a low level.
