@@ -74,7 +74,7 @@ sudo cp -f *.php /usr/share/rpi-smart-still
 
 sudo chmod +x /usr/share/rpi-smart-still/*
 sudo chmod -x /usr/share/rpi-smart-still/*.c
-sudo chmod -x /usr/share/rpi-smart-still/hydro-port
+sudo chmod -x /usr/share/rpi-smart-still/config.ini
 
 sudo chown -R www-data:www-data /usr/share/rpi-smart-still
 sudo chmod g+w -R /usr/share/rpi-smart-still
@@ -109,8 +109,6 @@ else
   wget https://project-downloads.drogon.net/wiringpi-latest.deb
   sudo dpkg -i wiringpi-latest.deb
   sudo gcc -o /usr/share/rpi-smart-still/heating /usr/share/rpi-smart-still/heating.c -l wiringPi
-  sudo gcc -o /usr/share/rpi-smart-still/hydro-read /usr/share/rpi-smart-still/hydro-read.c -l wiringPi
-  sudo gcc -o /usr/share/rpi-smart-still/hydro-write /usr/share/rpi-smart-still/hydro-write.c -l wiringPi
   sudo gcc -o /usr/share/rpi-smart-still/valve /usr/share/rpi-smart-still/valve.c -l wiringPi
   if [ $Bullseye -eq 1 ]; then
     # This is strictly for Raspbian 11 "Legacy" systems, this file has moved to /boot/firmare/config.txt
@@ -181,8 +179,8 @@ if [ $Bullseye -eq 0 ]; then
   echo "NOTE: Since you are not running Raspbian 11 or Debian Bullseye for ARM on"
   echo "this device, you will need to use a USB serial interface if you intend to"
   echo "use LIDAR Hydrometer Reader or Load Cell Hydrometer. Simply edit the file"
-  echo "/usr/share/rpi-smart-still/hydro-port and update the port device to point"
-  echo "to the correct device for your USB serial interface."
+  echo "/usr/share/rpi-smart-still/config.ini and update the HYDRO_PORT device to"
+  echo "point to the correct device for your USB serial interface."
 fi
 
 echo
