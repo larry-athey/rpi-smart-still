@@ -15,71 +15,71 @@ fi
 
 # Begin heating stepper motor configuration
 ThePin=$(ini_extract "STEPPER_ENABLE" "$INI_FILE")
-echo $ThePin >/sys/class/gpio/export
-echo out >/sys/class/gpio/gpio$ThePin/direction
-echo 0 >/sys/class/gpio/gpio$ThePin/value
+echo $ThePin > /sys/class/gpio/export
+echo out > /sys/class/gpio/gpio$ThePin/direction
+echo 0 > /sys/class/gpio/gpio$ThePin/value
 
 ThePin=$(ini_extract "STEPPER_PULSE" "$INI_FILE")
-echo $ThePin >/sys/class/gpio/export
-echo out >/sys/class/gpio/gpio$ThePin/direction
-echo 0 >/sys/class/gpio/gpio$ThePin/value
+echo $ThePin > /sys/class/gpio/export
+echo out > /sys/class/gpio/gpio$ThePin/direction
+echo 0 > /sys/class/gpio/gpio$ThePin/value
 
 ThePin=$(ini_extract "STEPPER_DIR" "$INI_FILE")
-echo $ThePin >/sys/class/gpio/export
-echo out >/sys/class/gpio/gpio$ThePin/direction
-echo 0 >/sys/class/gpio/gpio$ThePin/value
+echo $ThePin > /sys/class/gpio/export
+echo out > /sys/class/gpio/gpio$ThePin/direction
+echo 0 > /sys/class/gpio/gpio$ThePin/value
 # End heating stepper motor configuration
 
 # Begin valve 1 (condenser) configuration
 ThePin=$(ini_extract "VALVE1_OPEN" "$INI_FILE")
-echo $ThePin >/sys/class/gpio/export
-echo out >/sys/class/gpio/gpio$ThePin/direction
-echo 0 >/sys/class/gpio/gpio$ThePin/value
+echo $ThePin > /sys/class/gpio/export
+echo out > /sys/class/gpio/gpio$ThePin/direction
+echo 0 > /sys/class/gpio/gpio$ThePin/value
 
 ThePin=$(ini_extract "VALVE1_CLOSE" "$INI_FILE")
-echo $ThePin >/sys/class/gpio/export
-echo out >/sys/class/gpio/gpio$ThePin/direction
-echo 0 >/sys/class/gpio/gpio$ThePin/value
+echo $ThePin > /sys/class/gpio/export
+echo out > /sys/class/gpio/gpio$ThePin/direction
+echo 0 > /sys/class/gpio/gpio$ThePin/value
 
 ThePin=$(ini_extract "VALVE1_LIMIT_OPEN" "$INI_FILE")
-echo $ThePin >/sys/class/gpio/export
-echo in >/sys/class/gpio/gpio$ThePin/direction
+echo $ThePin > /sys/class/gpio/export
+echo in > /sys/class/gpio/gpio$ThePin/direction
 
 ThePin=$(ini_extract "VALVE1_LIMIT_CLOSE" "$INI_FILE")
-echo $ThePin >/sys/class/gpio/export
-echo in >/sys/class/gpio/gpio$ThePin/direction
+echo $ThePin > /sys/class/gpio/export
+echo in > /sys/class/gpio/gpio$ThePin/direction
 # End valve 1 (condenser) configuration
 
 # Begin valve 2 (dephlegmator) configuration
 ThePin=$(ini_extract "VALVE2_OPEN" "$INI_FILE")
-echo $ThePin >/sys/class/gpio/export
-echo out >/sys/class/gpio/gpio$ThePin/direction
-echo 0 >/sys/class/gpio/gpio$ThePin/value
+echo $ThePin > /sys/class/gpio/export
+echo out > /sys/class/gpio/gpio$ThePin/direction
+echo 0 > /sys/class/gpio/gpio$ThePin/value
 
 ThePin=$(ini_extract "VALVE2_CLOSE" "$INI_FILE")
-echo $ThePin >/sys/class/gpio/export
-echo out >/sys/class/gpio/gpio$ThePin/direction
-echo 0 >/sys/class/gpio/gpio$ThePin/value
+echo $ThePin > /sys/class/gpio/export
+echo out > /sys/class/gpio/gpio$ThePin/direction
+echo 0 > /sys/class/gpio/gpio$ThePin/value
 
 ThePin=$(ini_extract "VALVE2_LIMIT_OPEN" "$INI_FILE")
-echo $ThePin >/sys/class/gpio/export
-echo in >/sys/class/gpio/gpio$ThePin/direction
+echo $ThePin > /sys/class/gpio/export
+echo in > /sys/class/gpio/gpio$ThePin/direction
 
 ThePin=$(ini_extract "VALVE2_LIMIT_CLOSE" "$INI_FILE")
-echo $ThePin >/sys/class/gpio/export
-echo in >/sys/class/gpio/gpio$ThePin/direction
+echo $ThePin > /sys/class/gpio/export
+echo in > /sys/class/gpio/gpio$ThePin/direction
 # End valve 2 (dephlegmator) configuration
 
 # Begin auxilliary relay configuration
 ThePin=$(ini_extract "RELAY1" "$INI_FILE")
-echo $ThePin >/sys/class/gpio/export
-echo out >/sys/class/gpio/gpio$ThePin/direction
-echo 0 >/sys/class/gpio/gpio$ThePin/value
+echo $ThePin > /sys/class/gpio/export
+echo out > /sys/class/gpio/gpio$ThePin/direction
+echo 0 > /sys/class/gpio/gpio$ThePin/value
 
 ThePin=$(ini_extract "RELAY2" "$INI_FILE")
-echo $ThePin >/sys/class/gpio/export
-echo out >/sys/class/gpio/gpio$ThePin/direction
-echo 0 >/sys/class/gpio/gpio$ThePin/value
+echo $ThePin > /sys/class/gpio/export
+echo out > /sys/class/gpio/gpio$ThePin/direction
+echo 0 > /sys/class/gpio/gpio$ThePin/value
 # End auxilliary relay configuration
 
 cat /etc/issue | grep "Raspbian" > /dev/null 2>&1
