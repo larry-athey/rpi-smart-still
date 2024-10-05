@@ -88,12 +88,12 @@ if [ $Raspbian -eq 0 ]; then
   # Debian for ARM (Armbian) configuration procedures.
   git clone https://github.com/BPI-SINOVOIP/RPi.GPIO
   cd RPi.GPIO
-  python3 setup.py install                 
-  sudo python3 setup.py install
+  python3 setup.py install > /dev/null 2>&1
+  sudo python3 setup.py install > /dev/null 2>&1
   cd ..
   git clone https://github.com/LeMaker/WiringBP.git -b bananapro
   cd WiringBP
-  sudo ./build
+  sudo ./build > /dev/null 2>&1
   cd ..
   if [ $Bullseye -eq 1 ]; then
     sudo systemctl stop serial-getty@ttyAMA0.service > /dev/null 2>&1
