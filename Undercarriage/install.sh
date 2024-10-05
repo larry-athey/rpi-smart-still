@@ -113,9 +113,10 @@ if [ $Raspbian -eq 0 ]; then
   fi
 else
   # Raspbian specific configuration procedures.
-  # Currently rewriting all of my C code in Python since WiringPi is specific to the Raspberry Pi and
-  # the author has zero intentions of supporting any non-Broadcom clones. Which is perfectly fine with
-  # me since Allwinner based clones such as the Banana Pi out-perform all Raspberry Pi for less money.
+  # Currently rewriting all of my C code in Python since the Raspberry Pi Foundation sabotaged
+  # the functionality of pre-Model 5 units with Raspbian 12, in order to get people to purchase
+  # Model 5 units. Sorry, Banana Pi clones blow away all Raspberry Pi systems at a lower price.
+  # Switching from C to Python will also make this easier to port to other Raspberry Pi clones.
   wget https://project-downloads.drogon.net/wiringpi-latest.deb
   sudo dpkg -i wiringpi-latest.deb
   sudo gcc -o /usr/share/rpi-smart-still/heating /usr/share/rpi-smart-still/heating.c -l wiringPi
