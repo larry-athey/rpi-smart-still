@@ -86,7 +86,7 @@ sudo chmod +x /etc/rc.local
 
 if [ $Raspbian -eq 0 ]; then
   # Debian for ARM (Armbian) configuration procedures. (Banana Pi M5/M2pro/M2S/CM4/M4B/M4Z/F3)
-  git clone https://github.com/Dangku/RPi.GPIO.git
+  git clone https://github.com/Dangku/RPi.GPIO
   cd RPi.GPIO
   sudo python3 setup.py clean --all
   sudo python3 setup.py build install
