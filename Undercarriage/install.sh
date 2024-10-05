@@ -91,6 +91,10 @@ if [ $Raspbian -eq 0 ]; then
   python3 setup.py install                 
   sudo python3 setup.py install
   cd ..
+  git clone https://github.com/LeMaker/WiringBP.git -b bananapro
+  cd WiringBP
+  sudo ./build
+  cd ..
   if [ $Bullseye -eq 1 ]; then
     sudo systemctl stop serial-getty@ttyAMA0.service > /dev/null 2>&1
     sudo systemctl disable serial-getty@ttyAMA0.service > /dev/null 2>&1
