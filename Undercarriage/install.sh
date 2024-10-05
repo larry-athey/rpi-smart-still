@@ -93,7 +93,7 @@ if [ $Raspbian -eq 0 ]; then
   cd ..
   git clone https://github.com/Dangku/WiringPi
   cd WiringPi
-  sudo ./build > /dev/null 2>&1
+  sudo ./build
   cd ..
   if [ $Bullseye -eq 1 ]; then
     sudo systemctl stop serial-getty@ttyAMA0.service > /dev/null 2>&1
