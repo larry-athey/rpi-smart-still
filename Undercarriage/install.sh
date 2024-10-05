@@ -52,7 +52,8 @@ fi
 sudo lighttpd-enable-mod fastcgi
 sudo lighttpd-enable-mod fastcgi-php
 if [ $Bullseye -eq 0 ]; then
-  sed -i "s/7.4:/8.2:/g" ./15-fastcgi-php.conf 
+  sed -i "s/7.4:/8.2:/g" ./15-fastcgi-php.conf
+  sed -i "s/ttyAMA0:/serial0:/g" ./config.ini
 fi
 sudo cp -f ./15-fastcgi-php.conf /etc/lighttpd/conf-available/15-fastcgi-php.conf
 sudo service lighttpd force-reload
