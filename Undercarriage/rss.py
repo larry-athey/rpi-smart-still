@@ -7,6 +7,9 @@
 # porting from one language to the other. I honestly detest Python and have no idea how it ever
 # became a standard. Whitespace aware unencapsulated shit language, reminds me of 1980's BASIC.
 #----------------------------------------------------------------------------------------------
+import time
+import RPi.GPIO as GPIO
+
 # Dictionary to hold config.ini key=value pairs
 config = {}
 #----------------------------------------------------------------------------------------------
@@ -59,5 +62,56 @@ def readConfig():
 
   return True
 #----------------------------------------------------------------------------------------------
+def disposeApp():
 
+  return True
+#----------------------------------------------------------------------------------------------
+def initValveController():
+
+  return True
+#----------------------------------------------------------------------------------------------
+def initHeatingController():
+
+  return True
+#----------------------------------------------------------------------------------------------
+def stepperEnable(Status):
+
+  return True
+#----------------------------------------------------------------------------------------------
+def stepperPulse(Direction,Steps):
+
+  return True
+#----------------------------------------------------------------------------------------------
+def valveFullPosition(WhichOne,Direction):
+
+  return True
+#----------------------------------------------------------------------------------------------
+def valveCalibrate(WhichOne,Direction):
+
+  # Start of event
+  start_time = time.perf_counter()
+
+  # Simulating some delay or event 2
+  time.sleep(2)
+
+  # End of event
+  end_time = time.perf_counter()
+
+  # Calculate the difference in seconds
+  time_difference_seconds = end_time - start_time
+
+  # Convert to milliseconds
+  time_difference_ms = time_difference_seconds * 1000
+
+  print(f"Time difference in milliseconds: {time_difference_ms:.0f}")
+
+  return True
+#----------------------------------------------------------------------------------------------
+def valvePulse(WhichOne,Direction,Duration):
+
+  return True
+#----------------------------------------------------------------------------------------------
+def valveStatus(WhichOne):
+
+  return True
 #----------------------------------------------------------------------------------------------
