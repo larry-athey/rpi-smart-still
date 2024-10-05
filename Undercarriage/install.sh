@@ -85,7 +85,7 @@ sudo cp -f rc.local /etc/rc.local
 sudo chmod +x /etc/rc.local
 
 if [ $Raspbian -eq 0 ]; then
-  # Debian for ARM (Armbian) configuration procedures.
+  # Debian for ARM (Armbian/Banana Pi) configuration procedures.
   git clone https://github.com/BPI-SINOVOIP/RPi.GPIO
   cd RPi.GPIO
   python3 setup.py install > /dev/null 2>&1
