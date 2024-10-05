@@ -85,14 +85,14 @@ sudo cp -f rc.local /etc/rc.local
 sudo chmod +x /etc/rc.local
 
 if [ $Raspbian -eq 0 ]; then
-  # Debian for ARM (Armbian/Banana Pi) configuration procedures.
+  # Debian for ARM (Armbian) configuration procedures. (Banana Pi M5/M2pro/M2S/CM4/M4B/M4Z/F3)
   git clone https://github.com/Dangku/RPi.GPIO.git
   cd RPi.GPIO
   sudo python3 setup.py clean --all
   sudo python3 setup.py build install
   cd ..
-  git clone https://github.com/LeMaker/WiringBP.git -b bananapro
-  cd WiringBP
+  git clone https://github.com/Dangku/WiringPi
+  cd WiringPi
   sudo ./build > /dev/null 2>&1
   cd ..
   if [ $Bullseye -eq 1 ]; then
