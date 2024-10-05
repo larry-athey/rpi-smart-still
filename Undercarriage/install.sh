@@ -86,9 +86,10 @@ sudo chmod +x /etc/rc.local
 
 if [ $Raspbian -eq 0 ]; then
   # Debian for ARM (Armbian/Banana Pi) configuration procedures.
-  git clone https://github.com/rlatn1234/pyGPIO2
-  cd pyGPIO2
-  sudo python3 setup.py install
+  git clone https://github.com/Dangku/RPi.GPIO.git
+  cd RPi.GPIO
+  sudo python3 setup.py clean --all
+  sudo python3 setup.py build install
   cd ..
   git clone https://github.com/LeMaker/WiringBP.git -b bananapro
   cd WiringBP
