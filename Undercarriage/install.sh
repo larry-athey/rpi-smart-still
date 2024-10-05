@@ -27,7 +27,7 @@ sudo dpkg-reconfigure locales
 sudo apt update
 sudo apt upgrade -y
 sudo apt autoremove -y
-sudo apt install -y alsa-utils espeak ffmpeg mpg123 lighttpd python3 python3-pip python3-rpi.gpio php php-common php-fpm php-mysql mariadb-server mariadb-client
+sudo apt install -y alsa-utils espeak ffmpeg mpg123 lighttpd python3 python3-pip python3-dev php php-common php-fpm php-mysql mariadb-server mariadb-client
 sudo apt --fix-broken install -y
 sudo apt clean
 
@@ -86,6 +86,11 @@ sudo chmod +x /etc/rc.local
 
 if [ $Raspbian -eq 0 ]; then
   # Debian for ARM (Armbian) configuration procedures.
+  git clone https://github.com/BPI-SINOVOIP/RPi.GPIO
+  cd RPi.GPIO
+  python3 setup.py install                 
+  sudo python3 setup.py install
+  cd ..
   if [ $Bullseye -eq 1 ]; then
     sudo systemctl stop serial-getty@ttyAMA0.service > /dev/null 2>&1
     sudo systemctl disable serial-getty@ttyAMA0.service > /dev/null 2>&1
