@@ -103,23 +103,25 @@ if [ $Raspbian -eq 0 ]; then
   fi
 else
   # Raspbian specific configuration procedures.
-  # Currently modifying all C code to use libgpiod since WiringPi is specific to the Raspberry Pi and
+  # Currently rewriting all of my C code in Python since WiringPi is specific to the Raspberry Pi and
   # the author has zero intentions of supporting any non-Broadcom clones. Which is perfectly fine with
-  # me since Allwinner based clones such as the Banana Pi out-perform the Raspberry Pi for less money.
+  # me since Allwinner based clones such as the Banana Pi out-perform all Raspberry Pi for less money.
   wget https://project-downloads.drogon.net/wiringpi-latest.deb
   sudo dpkg -i wiringpi-latest.deb
   sudo gcc -o /usr/share/rpi-smart-still/heating /usr/share/rpi-smart-still/heating.c -l wiringPi
   sudo gcc -o /usr/share/rpi-smart-still/valve /usr/share/rpi-smart-still/valve.c -l wiringPi
   if [ $Bullseye -eq 1 ]; then
-    # This is strictly for Raspbian 11 "Legacy" systems, this file has moved to /boot/firmare/config.txt
-    # on Raspbian 12 and UART serial communications on GPIO pins 14/15 is now broken with anything before
-    # a model 5 in Raspbian 12. You will need a USB serial adapter instead, or live without a hydrometer.
     sudo systemctl stop serial-getty@ttyAMA0.service > /dev/null 2>&1
     sudo systemctl disable serial-getty@ttyAMA0.service > /dev/null 2>&1
-    cat /boot/config.txt | grep "dtoverlay=uart0"
-    if [ ! $? -eq 0 ]; then
-      echo "dtoverlay=uart0" | sudo tee -a /boot/config.txt
-    fi
+    Config="/boot/config.txt"
+  else
+    sudo systemctl stop serial-getty@ttyS0.service > /dev/null 2>&1
+    sudo systemctl disable serial-getty@ttyS0.service > /dev/null 2>&1
+    Config="/boot/firmware/config.txt"
+  fi
+  cat $Config | grep "dtoverlay=uart0"
+  if [ ! $? -eq 0 ]; then
+    echo "dtoverlay=uart0" | sudo tee -a $Config
   fi
 fi
 
