@@ -21,6 +21,9 @@ BOARD = 0
 BCM = 0
 PUD_UP = 1
 PUD_DOWN = 2
+RPI_INFO = "Generic RPi Clone"
+RPI_REVISION = RPI_INFO
+VERSION = RPI_INFO
 #----------------------------------------------------------------------------------------------
 def getPort(channel):
   if channel == 2:
@@ -78,6 +81,10 @@ def getPort(channel):
   else:
     return 0
 #----------------------------------------------------------------------------------------------
+def cleanup(**kwargs):
+  # This function does nothing, it's just here to mask an RPi.GPIO function
+  return True
+#----------------------------------------------------------------------------------------------
 def input(channel):
   channel = getPort(channel)
   return gpio.input(channel)
@@ -101,5 +108,9 @@ def setmode(Ignored):
 def setup(channel,direction):
   channel = getPort(channel)
   gpio.setcfg(channel,direction)
+  return True
+#----------------------------------------------------------------------------------------------
+def setwarnings(Ignored):
+  # This function does nothing, it's just here to mask an RPi.GPIO function
   return True
 #----------------------------------------------------------------------------------------------
