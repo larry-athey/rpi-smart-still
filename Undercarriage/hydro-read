@@ -11,6 +11,7 @@
 # became a standard. Whitespace aware unencapsulated shit language, reminds me of 1980's BASIC.
 #----------------------------------------------------------------------------------------------
 import serial
+from time import sleep
 import rss
 #----------------------------------------------------------------------------------------------
 def clean_utf8(buffer):
@@ -60,6 +61,7 @@ def read_until_hash(dev_name):
   buffer = bytearray()
 
   # Clear the UART input buffer
+  sleep(.5)
   ser.reset_input_buffer()
 
   # Attempt to read until '#' is received
