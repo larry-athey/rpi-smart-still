@@ -57,7 +57,7 @@ fi
 sudo lighttpd-enable-mod fastcgi
 sudo lighttpd-enable-mod fastcgi-php
 if [ $Bullseye -eq 0 ]; then
-  sed -i "s/7.4:/8.2:/g" ./15-fastcgi-php.conf
+  sed -i "s/7.4/8.2/g" ./15-fastcgi-php.conf
 fi
 sudo cp -f 15-fastcgi-php.conf /etc/lighttpd/conf-available/15-fastcgi-php.conf
 sudo service lighttpd force-reload
@@ -71,10 +71,10 @@ sudo usermod -a -G www-data pi
 ln -s /var/www/html /home/pi/webroot
 
 if [ Raspbian -eq 0 ]; then
-  sed -i "s/ttyAMA0:/ttyS0:/g" ./config.ini
+  sed -i "s/ttyAMA0/ttyS0/g" ./config.ini
 else
   if [ $Bullseye -eq 0 ]; then
-    sed -i "s/ttyAMA0:/serial0:/g" ./config.ini
+    sed -i "s/ttyAMA0/serial0/g" ./config.ini
   fi
 fi
 
