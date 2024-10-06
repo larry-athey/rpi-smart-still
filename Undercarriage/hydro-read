@@ -13,6 +13,37 @@
 import serial
 import rss
 #----------------------------------------------------------------------------------------------
+def clean_utf8(buffer):
+  valid_utf8 = []
+  i = 0
+  while i < len(buffer):
+    # Check for ASCII range
+    if buffer[i] < 128:
+      valid_utf8.append(buffer[i])
+    elif buffer[i] >= 194 and buffer[i] < 245:  # Start of multi-byte sequence
+      seq_length = 0
+      if buffer[i] >= 224: seq_length = 3
+      elif buffer[i] >= 208: seq_length = 2
+      elif buffer[i] >= 194: seq_length = 2
+      # Check if there are enough bytes left for the sequence
+      if i + seq_length <= len(buffer):
+        # Check if all following bytes are valid UTF-8 continuations
+        if all(byte & 192 == 128 for byte in buffer[i+1:i+seq_length]):
+          valid_utf8.extend(buffer[i:i+seq_length])
+          i += seq_length - 1
+        else:
+          # Invalid UTF-8 sequence, replace or skip
+          # Here, we'll skip (you might want to replace with a space or another character)
+          pass
+      else:
+        # Not enough bytes for the sequence, skip
+        pass
+    else:
+      # Invalid start byte for UTF-8, skip or replace
+      pass
+    i += 1
+  return bytes(valid_utf8)
+#----------------------------------------------------------------------------------------------
 def read_until_hash(dev_name):
   # Initialize serial connection
   ser = serial.Serial(
@@ -44,9 +75,8 @@ def read_until_hash(dev_name):
 
       # Check if '#' is in the buffer
       if b'#' in buffer:
-        # If the first character isn't ASCII printable, we got some leading garbage data
-        if buffer[0] < 32 or buffer[0] > 126:
-          buffer[0] = 0
+        # Clean the buffer of any characters that aren't ASCII printable
+        buffer = clean_utf8(buffer)
         # Find the position of '#' and slice the buffer accordingly
         hash_index = buffer.index(b'#')
         data = buffer[:hash_index + 1]
