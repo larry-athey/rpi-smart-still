@@ -11,7 +11,6 @@
 # became a standard. Whitespace aware unencapsulated shit language, reminds me of 1980's BASIC.
 #----------------------------------------------------------------------------------------------
 import serial
-import time
 import rss
 #----------------------------------------------------------------------------------------------
 def read_until_hash(dev_name):
