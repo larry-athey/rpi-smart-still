@@ -58,9 +58,8 @@ sudo lighttpd-enable-mod fastcgi
 sudo lighttpd-enable-mod fastcgi-php
 if [ $Bullseye -eq 0 ]; then
   sed -i "s/7.4:/8.2:/g" ./15-fastcgi-php.conf
-  sed -i "s/ttyAMA0:/serial0:/g" ./config.ini
 fi
-sudo cp -f ./15-fastcgi-php.conf /etc/lighttpd/conf-available/15-fastcgi-php.conf
+sudo cp -f 15-fastcgi-php.conf /etc/lighttpd/conf-available/15-fastcgi-php.conf
 sudo service lighttpd force-reload
 
 sudo rm -f /var/www/html/index.lighttpd.html
@@ -70,6 +69,14 @@ sudo chown -R www-data:www-data /var/www/html
 sudo chmod g+w -R /var/www/html
 sudo usermod -a -G www-data pi
 ln -s /var/www/html /home/pi/webroot
+
+if [ Raspbian -eq 0 ]; then
+  sed -i "s/ttyAMA0:/ttyS0:/g" ./config.ini
+else
+  if [ $Bullseye -eq 0 ]; then
+    sed -i "s/ttyAMA0:/serial0:/g" ./config.ini
+  fi
+fi
 
 sudo mkdir -p /usr/share/rpi-smart-still
 sudo cp -f config.ini /usr/share/rpi-smart-still
@@ -94,6 +101,11 @@ if [ $Raspbian -eq 0 ]; then
   # Debian for ARM (Armbian) configuration procedures. (Banana Pi M5/M2pro/M2S/CM4/M4B/M4Z/F3)
   if [ $Legacy -eq 1 ]; then
     echo "Legacy device installation requested"
+    sudo cp -rf ./RPi-GPIO-BPiZero/RPi /usr/share/rpi-smart-still
+    git clone https://github.com/rlatn1234/pyGPIO2
+    cd pyGPIO2
+    sudo python3 setup.py build install
+    cd ,,
   else
     git clone https://github.com/Dangku/RPi.GPIO
     cd RPi.GPIO
@@ -105,14 +117,9 @@ if [ $Raspbian -eq 0 ]; then
     sudo ./build
     cd ..
   fi
-  if [ $Bullseye -eq 1 ]; then
-    sudo systemctl stop serial-getty@ttyAMA0.service > /dev/null 2>&1
-    sudo systemctl disable serial-getty@ttyAMA0.service > /dev/null 2>&1
-    cat /boot/armbianEnv.txt | grep "console=ttyS0,115200 console=ttyAMA0"
-    if [ ! $? -eq 0 ]; then
-      echo "console=ttyS0,115200 console=ttyAMA0" | sudo tee -a /boot/armbianEnv.txt
-    fi
-  fi
+  sudo systemctl stop serial-getty@ttyS0.service > /dev/null 2>&1
+  sudo systemctl disable serial-getty@ttyS0.service > /dev/null 2>&1
+  sudo pip3 install pyserial
   cat /etc/modules | grep "w1-gpio"
   if [ ! $? -eq 0 ]; then
     echo "w1-gpio" | sudo tee -a /etc/modules
