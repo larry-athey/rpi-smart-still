@@ -70,7 +70,7 @@ sudo chmod g+w -R /var/www/html
 sudo usermod -a -G www-data pi
 ln -s /var/www/html /home/pi/webroot
 
-if [ Raspbian -eq 0 ]; then
+if [ $Raspbian -eq 0 ]; then
   sed -i "s/ttyAMA0/ttyS0/g" ./config.ini
 else
   if [ $Bullseye -eq 0 ]; then
