@@ -14,6 +14,8 @@ import serial
 import rss
 #----------------------------------------------------------------------------------------------
 def clean_utf8(buffer):
+  # Unlike normal programming languages and async/uart communications libraries, Python needs a
+  # babysitter to filter out initial garbage that usually appears at the start of a connection.
   valid_utf8 = []
   i = 0
   while i < len(buffer):
@@ -32,8 +34,7 @@ def clean_utf8(buffer):
           valid_utf8.extend(buffer[i:i+seq_length])
           i += seq_length - 1
         else:
-          # Invalid UTF-8 sequence, replace or skip
-          # Here, we'll skip (you might want to replace with a space or another character)
+          # Invalid UTF-8 sequence, skip or replace with a space or another character
           pass
       else:
         # Not enough bytes for the sequence, skip
