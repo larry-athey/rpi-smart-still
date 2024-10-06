@@ -1,7 +1,7 @@
 #----------------------------------------------------------------------------------------------
 # RPi-Smart-Still | (CopyLeft) 2023-Present | Larry Athey (https://panhandleponics.com)
 #
-# Don't rag on my for weird Python code, it's not my primary language. All this was originally
+# Don't rag on my weird ass Python code, it's not my primary language. All this was originally
 # in C, but the WiringPi library only supports Raspberry Pi (Broadcom) boards, not clones. I've
 # had to rewrite everything in Python with the assistance of the Grok AI (x.com) to coach me on
 # porting from one language to the other. I honestly detest Python and have no idea how it ever
