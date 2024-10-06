@@ -106,7 +106,7 @@ if [ $Raspbian -eq 0 ]; then
     git clone https://github.com/rlatn1234/pyGPIO2
     cd pyGPIO2
     sudo python3 setup.py build install
-    cd ,,
+    cd ..
   else
     git clone https://github.com/Dangku/RPi.GPIO
     cd RPi.GPIO
