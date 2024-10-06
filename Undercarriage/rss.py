@@ -10,7 +10,6 @@
 import time
 import RPi.GPIO as GPIO
 
-# Dictionary to hold config.ini key=value pairs
 config = {}
 #----------------------------------------------------------------------------------------------
 def readConfig():
