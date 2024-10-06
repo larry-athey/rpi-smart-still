@@ -1,0 +1,68 @@
+#!/usr/bin/python3
+#----------------------------------------------------------------------------------------------
+# RPi-Smart-Still | (CopyLeft) 2023-Present | Larry Athey (https://panhandleponics.com)
+#
+# Hydrometer serial data reader, reads from the device specified in config.ini->HYDRO_PORT
+#
+# Don't rag on my for weird Python code, it's not my primary language. All this was originally
+# in C, but the WiringPi library only supports Raspberry Pi (Broadcom) boards, not clones. I've
+# had to rewrite everything in Python with the assistance of the Grok AI (x.com) to coach me on
+# porting from one language to the other. I honestly detest Python and have no idea how it ever
+# became a standard. Whitespace aware unencapsulated shit language, reminds me of 1980's BASIC.
+#----------------------------------------------------------------------------------------------
+import serial
+import time
+import rss
+#----------------------------------------------------------------------------------------------
+def read_until_hash(dev_name):
+  # Initialize serial connection
+  ser = serial.Serial(
+    port=dev_name,
+    baudrate=9600,
+    parity=serial.PARITY_NONE,
+    stopbits=serial.STOPBITS_ONE,
+    bytesize=serial.EIGHTBITS,
+    timeout=None
+  )
+
+  # Buffer to accumulate received data
+  buffer = bytearray()
+
+  # Clear the UART input buffer
+  ser.reset_input_buffer()
+
+  # Attempt to read until '#' is received
+  try:
+    while True:
+      # Read a byte from the serial connection
+      byte = ser.read(1)
+
+      # If byte is empty, we've timed out
+      if not byte:
+        continue
+
+      buffer.extend(byte)
+
+      # Check if '#' is in the buffer
+      if b'#' in buffer:
+        # Find the position of '#' and slice the buffer accordingly
+        hash_index = buffer.index(b'#')
+        buffer[0] = 0
+        data = buffer[:hash_index + 1]
+        return data.decode('utf-8')
+
+  except KeyboardInterrupt:
+    print("\nOperation interrupted by user.")
+    return None
+
+  finally:
+    # Close the serial connection
+    ser.close()
+#----------------------------------------------------------------------------------------------
+if rss.readConfig():
+  received_data = read_until_hash(rss.config.get("HYDRO_PORT"))
+  if received_data:
+    print(received_data)
+else:
+  print("Cannot read the RPi Smart Still configuration file, terminating script.")
+#----------------------------------------------------------------------------------------------
