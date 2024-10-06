@@ -87,15 +87,21 @@ sudo chmod +x /etc/rc.local
 
 if [ $Raspbian -eq 0 ]; then
   # Debian for ARM (Armbian) configuration procedures. (Banana Pi M5/M2pro/M2S/CM4/M4B/M4Z/F3)
-  git clone https://github.com/Dangku/RPi.GPIO
-  cd RPi.GPIO
-  sudo python3 setup.py clean --all
-  sudo python3 setup.py build install
-  cd ..
-  git clone https://github.com/Dangku/WiringPi
-  cd WiringPi
-  sudo ./build
-  cd ..
+  CPU=$(sudo lscpu | grep "Model name")
+  echo $CPU | grep "Cortex-A7"
+  if [ $? -eq 0 ]; then
+    echo "Older RPi clone detected"
+  else
+    git clone https://github.com/Dangku/RPi.GPIO
+    cd RPi.GPIO
+    sudo python3 setup.py clean --all
+    sudo python3 setup.py build install
+    cd ..
+    git clone https://github.com/Dangku/WiringPi
+    cd WiringPi
+    sudo ./build
+    cd ..
+  fi
   if [ $Bullseye -eq 1 ]; then
     sudo systemctl stop serial-getty@ttyAMA0.service > /dev/null 2>&1
     sudo systemctl disable serial-getty@ttyAMA0.service > /dev/null 2>&1
