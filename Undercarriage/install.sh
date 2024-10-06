@@ -22,6 +22,11 @@ if [ "$USER" != "pi" ]; then
   exit 1
 fi
 
+Legacy=0
+if [ $1 == "legacy" ]; then
+  Legacy=1
+fi
+
 sudo dpkg-reconfigure locales
 
 sudo apt update
@@ -87,10 +92,8 @@ sudo chmod +x /etc/rc.local
 
 if [ $Raspbian -eq 0 ]; then
   # Debian for ARM (Armbian) configuration procedures. (Banana Pi M5/M2pro/M2S/CM4/M4B/M4Z/F3)
-  CPU=$(sudo lscpu | grep "Model name")
-  echo $CPU | grep "Cortex-A7"
-  if [ $? -eq 0 ]; then
-    echo "Older RPi clone detected"
+  if [ $Legacy -eq 1 ]; then
+    echo "Legacy device installation requested"
   else
     git clone https://github.com/Dangku/RPi.GPIO
     cd RPi.GPIO
