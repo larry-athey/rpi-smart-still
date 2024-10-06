@@ -21,7 +21,7 @@ def read_until_hash(dev_name):
     parity=serial.PARITY_NONE,
     stopbits=serial.STOPBITS_ONE,
     bytesize=serial.EIGHTBITS,
-    timeout=None
+    timeout=1
   )
 
   # Buffer to accumulate received data
@@ -44,9 +44,11 @@ def read_until_hash(dev_name):
 
       # Check if '#' is in the buffer
       if b'#' in buffer:
+        # If the first character isn't ASCII printable, we got some leading garbage data
+        if buffer[0] < 32 or buffer[0] > 126:
+          buffer[0] = 0
         # Find the position of '#' and slice the buffer accordingly
         hash_index = buffer.index(b'#')
-        buffer[0] = 0
         data = buffer[:hash_index + 1]
         return data.decode('utf-8')
 
