@@ -23,7 +23,7 @@ if [ "$USER" != "pi" ]; then
 fi
 
 Legacy=0
-if [ $1 == "legacy" ]; then
+if [ $# -gt 0 ] && [ $1 == "legacy" ]; then
   Legacy=1
 fi
 
