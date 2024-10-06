@@ -11,6 +11,7 @@ import time
 import RPi.GPIO as GPIO
 
 config = {}
+STEPPER_MS = 5 # 5 ms sleep time between Nema 17 heating stepper motor pulses
 #----------------------------------------------------------------------------------------------
 def readConfig():
   global config
@@ -61,56 +62,141 @@ def readConfig():
 
   return True
 #----------------------------------------------------------------------------------------------
+def sleep_ms(milliseconds):
+  seconds = milliseconds / 1000.0
+  sleep(seconds)
+
+  return True
+#----------------------------------------------------------------------------------------------
 def disposeApp():
 
   return True
 #----------------------------------------------------------------------------------------------
 def initValveController():
+  GPIO.setmode(GPIO.BCM)
+  GPIO.setup(config.get("VALVE1_OPEN"),GPIO.OUT)
+  GPIO.setup(config.get("VALVE1_CLOSE"),GPIO.OUT)
+  GPIO.setup(config.get("VALVE1_LIMIT_OPEN"),GPIO.IN)
+  GPIO.setup(config.get("VALVE1_LIMIT_CLOSE"),GPIO.IN)
+  GPIO.setup(config.get("VALVE2_OPEN"),GPIO.OUT)
+  GPIO.setup(config.get("VALVE2_CLOSE"),GPIO.OUT)
+  GPIO.setup(config.get("VALVE2_LIMIT_OPEN"),GPIO.IN)
+  GPIO.setup(config.get("VALVE2_LIMIT_CLOSE"),GPIO.IN)
 
   return True
 #----------------------------------------------------------------------------------------------
 def initHeatingController():
+  GPIO.setmode(GPIO.BCM)
+  GPIO.setup(config.get("STEPPER_ENABLE"),GPIO.OUT)
+  GPIO.setup(config.get("STEPPER_PULSE"),GPIO.OUT)
+  GPIO.setup(config.get("STEPPER_DIR"),GPIO.OUT)
 
   return True
 #----------------------------------------------------------------------------------------------
 def stepperEnable(Status):
+  if Status == 1:
+    GPIO.output(config.get("STEPPER_ENABLE"),GPIO.HIGH)
+  else:
+    GPIO.output(config.get("STEPPER_ENABLE"),GPIO.LOW)
 
   return True
 #----------------------------------------------------------------------------------------------
 def stepperPulse(Direction,Steps):
+  if Direction == 1:
+    GPIO.output(config.get("STEPPER_DIR"),GPIO.HIGH)
+  else:
+    GPIO.output(config.get("STEPPER_DIR"),GPIO.LOW)
+  for x in range(1,Steps + 1):
+    GPIO.output(config.get("STEPPER_PULSE"),GPIO.HIGH)
+    sleep_ms(STEPPER_MS)
+    GPIO.output(config.get("STEPPER_PULSE"),GPIO.LOW)
+    sleep_ms(STEPPER_MS)
 
   return True
 #----------------------------------------------------------------------------------------------
 def valveFullPosition(WhichOne,Direction):
+  if WhichOne == 1:
+    if Direction == 0:
+      GPIO.output(config.get("VALVE1_CLOSE"),GPIO.HIGH)
+      while GPIO.input(config.get("VALVE1_LIMIT_CLOSE")) == GPIO.HIGH:
+        sleep_ms(10)
+      GPIO.output(config.get("VALVE1_CLOSE"),GPIO.LOW)
+    else:
+      GPIO.output(config.get("VALVE1_OPEN"),GPIO.HIGH)
+      while GPIO.input(config.get("VALVE1_LIMIT_CLOSE")) == GPIO.HIGH:
+        sleep_ms(10)
+      GPIO.output(config.get("VALVE1_OPEN"),GPIO.LOW)
+  else:
+    if Direction == 0:
+      GPIO.output(config.get("VALVE2_CLOSE"),GPIO.HIGH)
+      while GPIO.input(config.get("VALVE2_LIMIT_CLOSE")) == GPIO.HIGH:
+        sleep_ms(10)
+      GPIO.output(config.get("VALVE2_CLOSE"),GPIO.LOW)
+    else:
+      GPIO.output(config.get("VALVE2_OPEN"),GPIO.HIGH)
+      while GPIO.input(config.get("VALVE2_LIMIT_CLOSE")) == GPIO.HIGH:
+        sleep_ms(10)
+      GPIO.output(config.get("VALVE2_OPEN"),GPIO.LOW)
 
   return True
 #----------------------------------------------------------------------------------------------
 def valveCalibrate(WhichOne,Direction):
-
-  # Start of event
-  start_time = time.perf_counter()
-
-  # Simulating some delay or event 2
-  time.sleep(2)
-
-  # End of event
-  end_time = time.perf_counter()
-
-  # Calculate the difference in seconds
-  time_difference_seconds = end_time - start_time
-
-  # Convert to milliseconds
-  time_difference_ms = time_difference_seconds * 1000
-
-  print(f"Time difference in milliseconds: {time_difference_ms:.0f}")
+  if Direction == 0:
+    valveFullPosition(WhichOne,1)
+    start_time = perf_counter()
+    valveFullPosition(WhichOne,0)
+    end_time = perf_counter()
+    time_difference_seconds = end_time - start_time
+    time_difference_ms = time_difference_seconds * 1000
+    print(f"{time_difference_ms:.0f}")
+  else:
+    valveFullPosition(WhichOne,0)
+    start_time = perf_counter()
+    valveFullPosition(WhichOne,1)
+    end_time = perf_counter()
+    time_difference_seconds = end_time - start_time
+    time_difference_ms = time_difference_seconds * 1000
+    print(f"{time_difference_ms:.0f}")
 
   return True
 #----------------------------------------------------------------------------------------------
 def valvePulse(WhichOne,Direction,Duration):
+  if WhichOne == 1:
+    if Direction == 1:
+      GPIO.output(config.get("VALVE1_CLOSE"),GPIO.HIGH)
+      sleep_ms(Duration)
+      GPIO.output(config.get("VALVE1_CLOSE"),GPIO.LOW)
+    else:
+      GPIO.output(config.get("VALVE1_OPEN"),GPIO.HIGH)
+      sleep_ms(Duration)
+      GPIO.output(config.get("VALVE1_OPEN"),GPIO.LOW)
+  else:
+    if Direction == 1:
+      GPIO.output(config.get("VALVE2_CLOSE"),GPIO.HIGH)
+      sleep_ms(Duration)
+      GPIO.output(config.get("VALVE2_CLOSE"),GPIO.LOW)
+    else:
+      GPIO.output(config.get("VALVE2_OPEN"),GPIO.HIGH)
+      sleep_ms(Duration)
+      GPIO.output(config.get("VALVE2_OPEN"),GPIO.LOW)
 
   return True
 #----------------------------------------------------------------------------------------------
 def valveStatus(WhichOne):
+  if WhichOne == 1:
+    if GPIO.input(config.get("VALVE1_LIMIT_OPEN")) == GPIO.LOW:
+      print("1")
+    elif GPIO.input(config.get("VALVE1_LIMIT_CLOSE")) == GPIO.LOW:
+      print("0")
+    else:
+      print("10")
+  else:
+    if GPIO.input(config.get("VALVE2_LIMIT_OPEN")) == GPIO.LOW:
+      print("1")
+    elif GPIO.input(config.get("VALVE2_LIMIT_CLOSE")) == GPIO.LOW:
+      print("0")
+    else:
+      print("10")
 
   return True
 #----------------------------------------------------------------------------------------------
