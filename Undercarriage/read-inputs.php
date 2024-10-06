@@ -33,9 +33,7 @@ if (($BoilerTemp != 0) && ($DephlegTemp != 0) && ($ColumnTemp != 0)) {
 }
 
 // Read any waiting serial data from the digital hydrometer
-$Config     = parse_ini_file("/usr/share/rpi-smart-still/config.ini");
-$HydroPort  = $Config["HYDRO_PORT"];
-$Hydrometer = str_replace("\r","",trim(shell_exec("/usr/bin/timeout 10s /usr/bin/head -n6 $HydroPort")));
+$Hydrometer = str_replace("\r","",trim(shell_exec("/usr/bin/timeout 10s /usr/share/rpi-smart-still/hydro-read")));
 
 // If we got a valid data block from the hydrometer, explode it and update the settings table
 if (($Hydrometer != "") && (mb_substr($Hydrometer,-1) == "#")) {
