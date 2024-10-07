@@ -3,9 +3,15 @@
 require_once("/var/www/html/subs.php");
 //---------------------------------------------------------------------------------------------
 function CreatePrompt($Msg) {
-  $DBcnx = mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
-  $FName = generateRandomString(20) . ".mp3";
-  shell_exec("/usr/bin/espeak -v english-us -s 160 \"$Msg\" --stdout | /usr/bin/ffmpeg -i - -ar 44100 -ac 2 -ab 192k -f mp3 /var/www/html/voice_prompts/$FName");
+  $Config = parse_ini_file("/usr/share/rpi-smart-still/config.ini");
+  $DBcnx  = mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
+  $FName  = generateRandomString(20) . ".mp3";
+  if (isset($Config["VOICE_PROMPTER"])) {
+    $Config["VOICE_PROMPTER"] = str_replace("{MSG}",$Msg,$Config["VOICE_PROMPTER"]);
+    shell_exec($Config["VOICE_PROMPTER"] . " | /usr/bin/ffmpeg -i - -ar 44100 -ac 2 -ab 192k -f mp3 /var/www/html/voice_prompts/$FName");
+  } else {
+    shell_exec("/usr/bin/espeak -v english-us -s 160 \"$Msg\" --stdout | /usr/bin/ffmpeg -i - -ar 44100 -ac 2 -ab 192k -f mp3 /var/www/html/voice_prompts/$FName");
+  }
   shell_exec("/usr/bin/chown www-data:www-data /var/www/html/voice_prompts/$FName");
   $Insert = mysqli_query($DBcnx,"INSERT INTO voice_prompts (timestamp,filename,seen_by) VALUES (now(),'$FName','')");
   mysqli_close($DBcnx);
