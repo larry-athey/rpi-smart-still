@@ -1,0 +1,57 @@
+#!/usr/bin/python3
+#----------------------------------------------------------------------------------------------
+# RPi-Smart-Still | (CopyLeft) 2023-Present | Larry Athey (https://panhandleponics.com)
+#
+# Auxilliary Relay Driver
+#
+# Don't rag on my weird ass Python code, it's not my primary language. All this was originally
+# in C, but the WiringPi library only supports Raspberry Pi (Broadcom) boards, not clones. I've
+# had to rewrite everything in Python with the assistance of the Grok AI (x.com) to coach me on
+# porting from one language to the other. I honestly detest Python and have no idea how it ever
+# became a standard. Whitespace aware unencapsulated shit language, reminds me of 1980's BASIC.
+#----------------------------------------------------------------------------------------------
+import sys
+import rss
+#----------------------------------------------------------------------------------------------
+# Python doesn't have this basic function already built in? Have I mentioned that I hate Python?
+def is_numeric(value):
+  try:
+    # Try to convert to int first
+    int(value)
+    return True
+  except ValueError:
+    try:
+      # If int conversion fails, try float
+      float(value)
+      return True
+    except ValueError:
+      return False
+#----------------------------------------------------------------------------------------------
+
+if len(sys.argv) != 3:
+  print("")
+  print("RPi-Smart-Still Auxilliary Relay Driver | (CopyLeft) 2023-Present | Larry Athey (https://panhandleponics.com)")
+  print("")
+  print("Usage:")
+  print("  relay 1 1 {Turns relay 1 on}")
+  print("  relay 1 0 {Turns relay 1 off}")
+  print("  relay 2 1 {Turns relay 2 on}")
+  print("  relay 2 0 {Turns relay 2 off}")
+  print("")
+  sys.exit(1)
+
+if is_numeric(sys.argv[1]) == False or is_numeric(sys.argv[2]) == False:
+  print("")
+  print("Relay parameters must be numeric!")
+  print("")
+  sys.exit(1)
+
+if int(sys.argv[1]) < 1 or int(sys.argv[1]) > 2 or int(sys.argv[2]) < 0 or int(sys.argv[2]) > 1:
+  print("")
+  print("Relay parameters values out of range!")
+  print("")
+  sys.exit(1)
+
+rss.readConfig()
+rss.initRelayController()
+rss.relayToggle(int(sys.argv[1]),int(sys.argv[2]))
