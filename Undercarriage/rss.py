@@ -125,7 +125,7 @@ def valveFullPosition(WhichOne,Direction):
       GPIO.output(config.get("VALVE1_CLOSE"),GPIO.LOW)
     else:
       GPIO.output(config.get("VALVE1_OPEN"),GPIO.HIGH)
-      while GPIO.input(config.get("VALVE1_LIMIT_CLOSE")) == GPIO.HIGH:
+      while GPIO.input(config.get("VALVE1_LIMIT_OPEN")) == GPIO.HIGH:
         sleep_ms(10)
       GPIO.output(config.get("VALVE1_OPEN"),GPIO.LOW)
   else:
@@ -136,7 +136,7 @@ def valveFullPosition(WhichOne,Direction):
       GPIO.output(config.get("VALVE2_CLOSE"),GPIO.LOW)
     else:
       GPIO.output(config.get("VALVE2_OPEN"),GPIO.HIGH)
-      while GPIO.input(config.get("VALVE2_LIMIT_CLOSE")) == GPIO.HIGH:
+      while GPIO.input(config.get("VALVE2_LIMIT_OPEN")) == GPIO.HIGH:
         sleep_ms(10)
       GPIO.output(config.get("VALVE2_OPEN"),GPIO.LOW)
 
