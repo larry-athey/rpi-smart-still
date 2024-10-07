@@ -64,7 +64,7 @@ def readConfig():
 #----------------------------------------------------------------------------------------------
 def sleep_ms(milliseconds):
   seconds = milliseconds / 1000.0
-  sleep(seconds)
+  time.sleep(seconds)
 
   return True
 #----------------------------------------------------------------------------------------------
@@ -145,17 +145,17 @@ def valveFullPosition(WhichOne,Direction):
 def valveCalibrate(WhichOne,Direction):
   if Direction == 0:
     valveFullPosition(WhichOne,1)
-    start_time = perf_counter()
+    start_time = time.perf_counter()
     valveFullPosition(WhichOne,0)
-    end_time = perf_counter()
+    end_time = time.perf_counter()
     time_difference_seconds = end_time - start_time
     time_difference_ms = time_difference_seconds * 1000
     print(f"{time_difference_ms:.0f}")
   else:
     valveFullPosition(WhichOne,0)
-    start_time = perf_counter()
+    start_time = time.perf_counter()
     valveFullPosition(WhichOne,1)
-    end_time = perf_counter()
+    end_time = time.perf_counter()
     time_difference_seconds = end_time - start_time
     time_difference_ms = time_difference_seconds * 1000
     print(f"{time_difference_ms:.0f}")
