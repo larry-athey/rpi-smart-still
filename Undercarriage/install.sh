@@ -97,9 +97,6 @@ sudo chown -R www-data:www-data /usr/share/rpi-smart-still
 sudo chmod g+w -R /usr/share/rpi-smart-still
 ln -s /usr/share/rpi-smart-still /home/pi/undercarriage
 
-sudo cp -f rc.local /etc/rc.local
-sudo chmod +x /etc/rc.local
-
 if [ $Raspbian -eq 0 ]; then
   # Debian for ARM (Armbian) configuration procedures. (Banana Pi M5/M2pro/M2S/CM4/M4B/M4Z/F3)
   if [ $Legacy -eq 1 ]; then
@@ -120,6 +117,8 @@ if [ $Raspbian -eq 0 ]; then
     sudo ./build
     cd ..
   fi
+  sudo cp -f rc.local.armbian /etc/rc.local
+  sudo chmod +x /etc/rc.local
   sudo systemctl stop serial-getty@ttyS0.service > /dev/null 2>&1
   sudo systemctl disable serial-getty@ttyS0.service > /dev/null 2>&1
   sudo pip3 install pyserial
@@ -133,6 +132,8 @@ if [ $Raspbian -eq 0 ]; then
   fi
 else
   # Raspbian specific configuration procedures.
+  sudo cp -f rc.local /etc/rc.local
+  sudo chmod +x /etc/rc.local
   wget https://project-downloads.drogon.net/wiringpi-latest.deb
   sudo dpkg -i wiringpi-latest.deb
   if [ $Bullseye -eq 1 ]; then
