@@ -81,9 +81,10 @@ fi
 sudo mkdir -p /usr/share/rpi-smart-still
 sudo cp -f config.ini /usr/share/rpi-smart-still
 sudo cp -f cronjob /usr/share/rpi-smart-still
+sudo cp -f heating /usr/share/rpi-smart-still
 sudo cp -f hydro-read /usr/share/rpi-smart-still
+sudo cp -f valve /usr/share/rpi-smart-still
 sudo cp -f rss* /usr/share/rpi-smart-still
-sudo cp -f *.c /usr/share/rpi-smart-still
 sudo cp -f *.php /usr/share/rpi-smart-still
 
 sudo chmod +x /usr/share/rpi-smart-still/*
@@ -131,14 +132,8 @@ if [ $Raspbian -eq 0 ]; then
   fi
 else
   # Raspbian specific configuration procedures.
-  # Currently rewriting all of my C code in Python since the Raspberry Pi Foundation sabotaged
-  # the functionality of pre-Model 5 units with Raspbian 12, in order to get people to purchase
-  # Model 5 units. Sorry, Banana Pi clones blow away all Raspberry Pi systems at a lower price.
-  # Switching from C to Python will also make this easier to port to other Raspberry Pi clones.
   wget https://project-downloads.drogon.net/wiringpi-latest.deb
   sudo dpkg -i wiringpi-latest.deb
-  sudo gcc -o /usr/share/rpi-smart-still/heating /usr/share/rpi-smart-still/heating.c -l wiringPi
-  sudo gcc -o /usr/share/rpi-smart-still/valve /usr/share/rpi-smart-still/valve.c -l wiringPi
   if [ $Bullseye -eq 1 ]; then
     sudo systemctl stop serial-getty@ttyAMA0.service > /dev/null 2>&1
     sudo systemctl disable serial-getty@ttyAMA0.service > /dev/null 2>&1
