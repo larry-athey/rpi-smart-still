@@ -1,0 +1,72 @@
+#!/usr/bin/python3
+#----------------------------------------------------------------------------------------------
+# RPi-Smart-Still | (CopyLeft) 2023-Present | Larry Athey (https://panhandleponics.com)
+#
+# Heating Stepper Motor Driver
+#
+# Don't rag on my weird ass Python code, it's not my primary language. All this was originally
+# in C, but the WiringPi library only supports Raspberry Pi (Broadcom) boards, not clones. I've
+# had to rewrite everything in Python with the assistance of the Grok AI (x.com) to coach me on
+# porting from one language to the other. I honestly detest Python and have no idea how it ever
+# became a standard. Whitespace aware unencapsulated shit language, reminds me of 1980's BASIC.
+#----------------------------------------------------------------------------------------------
+import sys
+import rss
+#----------------------------------------------------------------------------------------------
+# Python doesn't have this basic function already built in? Have I mentioned that I hate Python?
+def is_numeric(value):
+  try:
+    # Try to convert to int first
+    int(value)
+    return True
+  except ValueError:
+    try:
+      # If int conversion fails, try float
+      float(value)
+      return True
+    except ValueError:
+      return False
+#----------------------------------------------------------------------------------------------
+
+if len(sys.argv) == 1 or len(sys.argv) > 3:
+  print("")
+  print("RPi-Smart-Still Heating Stepper Motor Driver | (CopyLeft) 2023-Present | Larry Athey (https://panhandleponics.com)")
+  print("")
+  print("Usage:")
+  print("  heating enable {Enables the stepper motor controller and locks the motor}")
+  print("  heating disable {Disables the stepper motor controller and unlocks the motor}")
+  print("  heating [cw or ccw] [steps] {Rotates the stepper up or down X number of steps}")
+  print("  heating cw 100 {Turns your heating dial/valve clockwise 100 steps}")
+  print("")
+  sys.exit(1)
+
+if sys.argv[1] != "cw" and sys.argv[1] != "ccw" and sys.argv[1] != "enable" and sys.argv[1] != "disable":
+  print("")
+  print("Invalid stepper motor command!")
+  print("")
+  sys.exit(1)
+
+if len(sys.argv) == 3 and is_numeric(sys.argv[2]) == False:
+  print("")
+  print("Invalid stepper motor step value specified!")
+  print("")
+  sys.exit(1)
+
+rss.readConfig()
+rss.initHeatingController()
+
+if len(sys.argv) == 2:
+  # Heating stepper motor enable or disable requested
+  if sys.argv[1] == "enable":
+    rss.stepperEnable(1)
+  elif sys.argv[1] == "disable":
+    rss.stepperEnable(0)
+elif len(sys.argv) == 3:
+  if sys.argv[1] == "cw":
+    # Heating stepper motor pulse up requested
+    rss.stepperEnable(1)
+    rss.stepperPulse(1,int(sys.argv[2]))
+  elif sys.argv[1] == "ccw":
+    # Heating stepper motor pulse down requested
+    rss.stepperEnable(1)
+    rss.stepperPulse(0,int(sys.argv[2]))
