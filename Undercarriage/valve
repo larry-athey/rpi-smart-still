@@ -1,0 +1,84 @@
+#!/usr/bin/python3
+#----------------------------------------------------------------------------------------------
+# RPi-Smart-Still | (CopyLeft) 2023-Present | Larry Athey (https://panhandleponics.com)
+#
+# Cooling Valve Driver
+#
+# Don't rag on my weird ass Python code, it's not my primary language. All this was originally
+# in C, but the WiringPi library only supports Raspberry Pi (Broadcom) boards, not clones. I've
+# had to rewrite everything in Python with the assistance of the Grok AI (x.com) to coach me on
+# porting from one language to the other. I honestly detest Python and have no idea how it ever
+# became a standard. Whitespace aware unencapsulated shit language, reminds me of 1980's BASIC.
+#----------------------------------------------------------------------------------------------
+import sys
+import rss
+#----------------------------------------------------------------------------------------------
+# Python doesn't have this basic function already built in? Have I mentioned that I hate Python?
+def is_numeric(value):
+  try:
+    # Try to convert to int first
+    int(value)
+    return True
+  except ValueError:
+    try:
+      # If int conversion fails, try float
+      float(value)
+      return True
+    except ValueError:
+      return False
+#----------------------------------------------------------------------------------------------
+
+if len(sys.argv) == 1 or len(sys.argv) > 4:
+  print("")
+  print("RPi-Smart-Still Cooling Valve Driver | (CopyLeft) 2023-Present | Larry Athey (https://panhandleponics.com)")
+  print("")
+  print("Usage:")
+  print("  valve [1 or 2] [open/close/status] [time in ms, or calibrate, or nothing to fully open/close]");
+  print("  valve 1 open 2500 {Run valve #1 forward for 2.5 seconds}");
+  print("  valve 1 status {Read valve #1 limit switches. 0=full closed, 1=full open, 10=in between}");
+  print("  valve 2 open calibrate {Run valve #2 from full closed to open and echo the total time in ms}");
+  print("")
+  sys.exit(1)
+
+if sys.argv[1] != "1" and sys.argv[1] != "2":
+  print("")
+  print("Invalid valve number specified!")
+  print("")
+  sys.exit(1)
+
+if sys.argv[2] != "open" and sys.argv[2] != "close" and sys.argv[2] != "status":
+  print("")
+  print("Invalid valve direction specified!")
+  print("")
+  sys.exit(1)
+
+rss.readConfig()
+rss.initValveController()
+
+if len(sys.argv) == 3:
+  # Valve full open or full close or status requested
+  if sys.argv[2] == "open":
+    rss.valveFullPosition(int(sys.argv[1]),1)
+  elif sys.argv[2] == "close":
+    rss.valveFullPosition(int(sys.argv[1]),0)
+  else:
+    rss.valveStatus(int(sys.argv[1]))
+else:
+  if sys.argv[3] == "calibrate":
+    # Valve calibrate requested
+    if sys.argv[2] == "open":
+      rss.valveCalibrate(int(sys.argv[1]),1)
+    else:
+      rss.valveCalibrate(int(sys.argv[1]),0)
+  else:
+    # Valve pulse requested
+    if int(sys.argv[3]) > 0:
+      if sys.argv[2] == "open":
+        rss.valvePulse(int(sys.argv[1]),1,int(sys.argv[3]))
+      else:
+        rss.valvePulse(int(sys.argv[1]),0,int(sys.argv[3]))
+    else:
+      print("")
+      print("Invalid valve duration time specified!")
+      print("")
+      sys.exit(1)
