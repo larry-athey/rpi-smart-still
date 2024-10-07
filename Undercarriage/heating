@@ -28,7 +28,7 @@ def is_numeric(value):
       return False
 #----------------------------------------------------------------------------------------------
 
-if len(sys.argv) == 1 or len(sys.argv) > 3:
+if len(sys.argv) != 3:
   print("")
   print("RPi-Smart-Still Heating Stepper Motor Driver | (CopyLeft) 2023-Present | Larry Athey (https://panhandleponics.com)")
   print("")
