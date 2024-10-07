@@ -7,7 +7,7 @@ function CreatePrompt($Msg) {
   $DBcnx  = mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
   $FName  = generateRandomString(20) . ".mp3";
   if (isset($Config["VOICE_PROMPTER"])) {
-    $Config["VOICE_PROMPTER"] = str_replace("{MSG}",$Msg,$Config["VOICE_PROMPTER"]);
+    $Config["VOICE_PROMPTER"] = str_replace("{MSG}","\"$Msg\"",$Config["VOICE_PROMPTER"]);
     shell_exec($Config["VOICE_PROMPTER"] . " | /usr/bin/ffmpeg -i - -ar 44100 -ac 2 -ab 192k -f mp3 /var/www/html/voice_prompts/$FName");
   } else {
     shell_exec("/usr/bin/espeak -v english-us -s 160 \"$Msg\" --stdout | /usr/bin/ffmpeg -i - -ar 44100 -ac 2 -ab 192k -f mp3 /var/www/html/voice_prompts/$FName");
