@@ -74,6 +74,7 @@ def disposeApp():
 #----------------------------------------------------------------------------------------------
 def initValveController():
   GPIO.setmode(GPIO.BCM)
+  GPIO.setwarnings(False)
   GPIO.setup(config.get("VALVE1_OPEN"),GPIO.OUT)
   GPIO.setup(config.get("VALVE1_CLOSE"),GPIO.OUT)
   GPIO.setup(config.get("VALVE1_LIMIT_OPEN"),GPIO.IN)
@@ -87,6 +88,7 @@ def initValveController():
 #----------------------------------------------------------------------------------------------
 def initHeatingController():
   GPIO.setmode(GPIO.BCM)
+  GPIO.setwarnings(False)
   GPIO.setup(config.get("STEPPER_ENABLE"),GPIO.OUT)
   GPIO.setup(config.get("STEPPER_PULSE"),GPIO.OUT)
   GPIO.setup(config.get("STEPPER_DIR"),GPIO.OUT)
