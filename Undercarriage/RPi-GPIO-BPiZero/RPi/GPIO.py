@@ -101,7 +101,10 @@ def pullup(channel,direction):
 #----------------------------------------------------------------------------------------------
 def setmode(Ignored):
   if not os.getegid() == 0:
-    sys.exit("GPIO access scripts must be run as root on this device, terminating script.")
+    print("")
+    print("GPIO access scripts must be run as root on this device, terminating script.")
+    print("")
+    sys.exit(1)
   gpio.init()
   return True
 #----------------------------------------------------------------------------------------------
