@@ -209,8 +209,8 @@ if ($Counter == 0) {
       $Update = mysqli_query($DBcnx,"UPDATE settings SET valve" . $x . "_position ='$Total' WHERE ID=1");
     }
   }
-  shell_exec("gpio -g write 17 " . $Settings["relay1_state"]);
-  shell_exec("gpio -g write 27 " . $Settings["relay2_state"]);
+  shell_exec("/usr/share/rpi-smart-still/relay 1 " . $Settings["relay1_state"]);
+  shell_exec("/usr/share/rpi-smart-still/relay 2 " . $Settings["relay2_state"]);
 }
 //---------------------------------------------------------------------------------------------
 mysqli_close($DBcnx);
