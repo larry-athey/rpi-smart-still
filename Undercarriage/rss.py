@@ -95,6 +95,27 @@ def initHeatingController():
 
   return True
 #----------------------------------------------------------------------------------------------
+def initRelayController():
+  GPIO.setmode(GPIO.BCM)
+  GPIO.setwarnings(False)
+  GPIO.setup(config.get("RELAY1"),GPIO.OUT)
+  GPIO.setup(config.get("RELAY2"),GPIO.OUT)
+  return True
+#----------------------------------------------------------------------------------------------
+def relayToggle(WhichOne,Status):
+  if WhichOne == 1:
+    if Status == 1:
+      GPIO.output(config.get("RELAY1"),GPIO.HIGH)
+    else:
+      GPIO.output(config.get("RELAY1"),GPIO.LOW)
+  else:
+    if Status == 1:
+      GPIO.output(config.get("RELAY2"),GPIO.HIGH)
+    else:
+      GPIO.output(config.get("RELAY2"),GPIO.LOW)
+
+  return True
+#----------------------------------------------------------------------------------------------
 def stepperEnable(Status):
   if Status == 1:
     GPIO.output(config.get("STEPPER_ENABLE"),GPIO.HIGH)
