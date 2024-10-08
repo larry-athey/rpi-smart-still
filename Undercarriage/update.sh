@@ -11,6 +11,12 @@ echo "        \/                       \/      \/     \/                      \/
 echo
 
 if [ -d /usr/share/rpi-smart-still ]; then
+  if [ ! -f /usr/share/rpi-smart-still/config.ini ]; then
+    echo "Your software installation is outdated, you will need to run ./install.sh instead."
+    echo
+    exit 1
+  fi
+
   echo "Updating RPi Smart Still software on this system..."
   echo
 
