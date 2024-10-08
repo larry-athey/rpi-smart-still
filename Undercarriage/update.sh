@@ -14,6 +14,14 @@ echo
 if [ -d /usr/share/rpi-smart-still ]; then
   echo "Updating RPi Smart Still software on this system..."
   echo
+
+  echo "Updating undercarriage source code"
+  echo
+
+  echo "Updating web root source code"
+  echo
+
+  echo
 else
   echo "No existing RPi Smart Still installation found, run ./install.sh instead."
   echo
