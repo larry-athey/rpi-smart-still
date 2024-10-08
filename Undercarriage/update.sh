@@ -29,6 +29,10 @@ if [ -d /usr/share/rpi-smart-still ]; then
 
   echo "Updating web root source code"
   echo
+  sudo cp -f ./web-ui/* /var/www/html
+  sudo mkdir -p /var/www/html/voice_prompts
+  sudo chown -R www-data:www-data /var/www/html
+  sudo chmod g+w -R /var/www/html
 
   echo
 else
