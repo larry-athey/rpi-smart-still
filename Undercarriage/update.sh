@@ -25,6 +25,7 @@ if [ -d /usr/share/rpi-smart-still ]; then
   sudo cp -f *.php /usr/share/rpi-smart-still
 
   sudo chmod +x /usr/share/rpi-smart-still/*
+  sudo chmod -x /usr/share/rpi-smart-still/config.ini
   sudo chmod -x /usr/share/rpi-smart-still/rss.py
 
   echo "Updating web root source code"
