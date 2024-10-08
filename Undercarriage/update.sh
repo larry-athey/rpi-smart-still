@@ -11,6 +11,9 @@ echo "        \/                       \/      \/     \/                      \/
 echo
 
 if [ -d /usr/share/rpi-smart-still ]; then
+  # Get rid of any leftover C code from the pre-Python version
+  rm -f /usr/share/rpi-smart-still/*.c
+
   if [ ! -f /usr/share/rpi-smart-still/config.ini ]; then
     echo "Your software installation is too outdated, you will need to run ./install.sh instead."
     echo
