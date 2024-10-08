@@ -16,13 +16,13 @@ if [ -d /usr/share/rpi-smart-still ]; then
 
   echo "Updating undercarriage source code"
   echo
-  sudo cp -f cronjob /usr/share/rpi-smart-still
-  sudo cp -f heating /usr/share/rpi-smart-still
-  sudo cp -f hydro-read /usr/share/rpi-smart-still
-  sudo cp -f relay /usr/share/rpi-smart-still
-  sudo cp -f valve /usr/share/rpi-smart-still
-  sudo cp -f rss* /usr/share/rpi-smart-still
-  sudo cp -f *.php /usr/share/rpi-smart-still
+  sudo cp -fv cronjob /usr/share/rpi-smart-still
+  sudo cp -fv heating /usr/share/rpi-smart-still
+  sudo cp -fv hydro-read /usr/share/rpi-smart-still
+  sudo cp -fv relay /usr/share/rpi-smart-still
+  sudo cp -fv valve /usr/share/rpi-smart-still
+  sudo cp -fv rss* /usr/share/rpi-smart-still
+  sudo cp -fv *.php /usr/share/rpi-smart-still
 
   sudo chmod +x /usr/share/rpi-smart-still/*
   sudo chmod -x /usr/share/rpi-smart-still/config.ini
@@ -30,11 +30,13 @@ if [ -d /usr/share/rpi-smart-still ]; then
 
   echo "Updating web root source code"
   echo
-  sudo cp -f ./web-ui/* /var/www/html
+  sudo cp -fv ./web-ui/* /var/www/html
   sudo mkdir -p /var/www/html/voice_prompts
   sudo chown -R www-data:www-data /var/www/html
   sudo chmod g+w -R /var/www/html
 
+  echo
+  echo "All Done"
   echo
 else
   echo "No existing RPi Smart Still installation found, run ./install.sh instead."
