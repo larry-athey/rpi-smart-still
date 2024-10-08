@@ -16,6 +16,16 @@ if [ -d /usr/share/rpi-smart-still ]; then
 
   echo "Updating undercarriage source code"
   echo
+  sudo cp -f cronjob /usr/share/rpi-smart-still
+  sudo cp -f heating /usr/share/rpi-smart-still
+  sudo cp -f hydro-read /usr/share/rpi-smart-still
+  sudo cp -f relay /usr/share/rpi-smart-still
+  sudo cp -f valve /usr/share/rpi-smart-still
+  sudo cp -f rss* /usr/share/rpi-smart-still
+  sudo cp -f *.php /usr/share/rpi-smart-still
+
+  sudo chmod +x /usr/share/rpi-smart-still/*
+  sudo chmod -x /usr/share/rpi-smart-still/rss.py
 
   echo "Updating web root source code"
   echo
