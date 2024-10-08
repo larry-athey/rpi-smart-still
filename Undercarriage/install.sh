@@ -56,6 +56,9 @@ else
   fi
 fi
 
+# Get rid of any leftover C code from the pre-Python version
+rm -f /usr/share/rpi-smart-still/*.c
+
 sudo lighttpd-enable-mod fastcgi
 sudo lighttpd-enable-mod fastcgi-php
 if [ $Bullseye -eq 0 ]; then
