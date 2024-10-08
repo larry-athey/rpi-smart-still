@@ -32,12 +32,13 @@ sudo dpkg-reconfigure locales
 sudo apt update
 sudo apt upgrade -y
 sudo apt autoremove -y
-sudo apt install -y alsa-utils espeak ffmpeg mpg123 lighttpd python3 python3-pip python3-dev php php-common php-fpm php-mysql mariadb-server mariadb-client
+sudo apt install -y lshw alsa-utils espeak ffmpeg mpg123 lighttpd python3 python3-pip python3-dev php php-common php-fpm php-mysql mariadb-server mariadb-client
 sudo apt --fix-broken install -y
 sudo apt clean
 
 OS=$(cat /etc/issue)
 Bullseye=0
+OrangePi=0
 
 echo $OS | grep "Raspbian" > /dev/null 2>&1
 if [ $? -eq 0 ]; then
@@ -98,24 +99,29 @@ sudo chmod g+w -R /usr/share/rpi-smart-still
 ln -s /usr/share/rpi-smart-still /home/pi/undercarriage
 
 if [ $Raspbian -eq 0 ]; then
-  # Debian for ARM (Armbian) configuration procedures. (Banana Pi M5/M2pro/M2S/CM4/M4B/M4Z/F3)
-  if [ $Legacy -eq 1 ]; then
-    echo "Legacy device installation requested"
-    sudo cp -rf ./RPi-GPIO-BPiZero/RPi /usr/share/rpi-smart-still
-    git clone https://github.com/rlatn1234/pyGPIO2
-    cd pyGPIO2
-    sudo python3 setup.py build install
-    cd ..
+  # Debian for ARM (Armbian) configuration procedures.
+  if [ $OrangePi -eq 1 ] && [ $Legacy -eq 0 ]; then
+    echo "Orange Pi configuration procedures."
   else
-    git clone https://github.com/Dangku/RPi.GPIO
-    cd RPi.GPIO
-    sudo python3 setup.py clean --all
-    sudo python3 setup.py build install
-    cd ..
-    git clone https://github.com/Dangku/WiringPi
-    cd WiringPi
-    sudo ./build
-    cd ..
+    # Banana Pi M5/M2pro/M2S/CM4/M4B/M4Z/F3 and Legacy Models (including old Orange Pi units)
+    if [ $Legacy -eq 1 ]; then
+      echo "Legacy device installation requested"
+      sudo cp -rf ./RPi-GPIO-BPiZero/RPi /usr/share/rpi-smart-still
+      git clone https://github.com/rlatn1234/pyGPIO2
+      cd pyGPIO2
+      sudo python3 setup.py build install
+      cd ..
+    else
+      git clone https://github.com/Dangku/RPi.GPIO
+      cd RPi.GPIO
+      sudo python3 setup.py clean --all
+      sudo python3 setup.py build install
+      cd ..
+      git clone https://github.com/Dangku/WiringPi
+      cd WiringPi
+      sudo ./build
+      cd ..
+    fi
   fi
   sudo cp -f rc.local.armbian /etc/rc.local
   sudo chmod +x /etc/rc.local
