@@ -25,7 +25,7 @@ if [ -d /usr/share/rpi-smart-still ]; then
   sudo cp -fv *.php /usr/share/rpi-smart-still
 
   if [ -d /usr/share/rpi-smart-still/RPi ]; then
-
+    sudo cp -rfv ./RPi-GPIO-BPiZero/RPi /usr/share/rpi-smart-still
   fi
 
   sudo chmod +x /usr/share/rpi-smart-still/*
