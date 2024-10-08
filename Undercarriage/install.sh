@@ -2,6 +2,13 @@
 
 clear
 
+echo "____________________.__    _________                      __      _________ __  .__.__  .__   "
+echo "\______   \______   \__|  /   _____/ _____ _____ ________/  |_   /   _____//  |_|__|  | |  |  "
+echo " |       _/|     ___/  |  \_____  \ /     \\\\__  \\\\_  __ \   __\  \_____  \\\\   __\  |  | |  |  "
+echo " |    |   \|    |   |  |  /        \  Y Y  \/ __ \|  | \/|  |    /        \|  | |  |  |_|  |__"
+echo " |____|_  /|____|   |__| /_______  /__|_|  (____  /__|   |__|   /_______  /|__| |__|____/____/"
+echo "        \/                       \/      \/     \/                      \/                    "
+echo
 echo "THIS INSTALLER EXPECTS YOU TO BE USING A RAW UNMODIFIED OS INSTALLATION!!!!"
 echo
 echo "This installer script assumes that you are running it as the username 'pi'."
@@ -156,6 +163,13 @@ sudo systemctl start mariadb > /dev/null 2>&1
 
 clear
 
+echo "____________________.__    _________                      __      _________ __  .__.__  .__   "
+echo "\______   \______   \__|  /   _____/ _____ _____ ________/  |_   /   _____//  |_|__|  | |  |  "
+echo " |       _/|     ___/  |  \_____  \ /     \\\\__  \\\\_  __ \   __\  \_____  \\\\   __\  |  | |  |  "
+echo " |    |   \|    |   |  |  /        \  Y Y  \/ __ \|  | \/|  |    /        \|  | |  |  |_|  |__"
+echo " |____|_  /|____|   |__| /_______  /__|_|  (____  /__|   |__|   /_______  /|__| |__|____/____/"
+echo "        \/                       \/      \/     \/                      \/                    "
+echo
 echo "Time to secure the MySQL server, you will want to answer Yes to all questions"
 echo "EXCEPT for the one about using a Unix socket for authentication. Just be sure"
 echo "to set the root password to one that you can remember, simple is fine. Keep in"
@@ -168,6 +182,13 @@ sudo mysql < db-setup.sql
 
 clear
 
+echo "____________________.__    _________                      __      _________ __  .__.__  .__   "
+echo "\______   \______   \__|  /   _____/ _____ _____ ________/  |_   /   _____//  |_|__|  | |  |  "
+echo " |       _/|     ___/  |  \_____  \ /     \\\\__  \\\\_  __ \   __\  \_____  \\\\   __\  |  | |  |  "
+echo " |    |   \|    |   |  |  /        \  Y Y  \/ __ \|  | \/|  |    /        \|  | |  |  |_|  |__"
+echo " |____|_  /|____|   |__| /_______  /__|_|  (____  /__|   |__|   /_______  /|__| |__|____/____/"
+echo "        \/                       \/      \/     \/                      \/                    "
+echo
 echo "Now installing phpMyAdmin, be sure to select the lighttpd configuration!"
 echo
 read -p "Press ENTER to continue..." nothing
@@ -180,6 +201,13 @@ sudo rm -f /var/www/html/html
 
 clear
 
+echo "____________________.__    _________                      __      _________ __  .__.__  .__   "
+echo "\______   \______   \__|  /   _____/ _____ _____ ________/  |_   /   _____//  |_|__|  | |  |  "
+echo " |       _/|     ___/  |  \_____  \ /     \\\\__  \\\\_  __ \   __\  \_____  \\\\   __\  |  | |  |  "
+echo " |    |   \|    |   |  |  /        \  Y Y  \/ __ \|  | \/|  |    /        \|  | |  |  |_|  |__"
+echo " |____|_  /|____|   |__| /_______  /__|_|  (____  /__|   |__|   /_______  /|__| |__|____/____/"
+echo "        \/                       \/      \/     \/                      \/                    "
+echo
 echo "Installation is now complete, but you still need to create the CRON job that"
 echo "runs the undercarriage of the system."
 echo
