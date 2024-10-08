@@ -4,12 +4,6 @@ clear
 
 echo "THIS INSTALLER EXPECTS YOU TO BE USING A RAW UNMODIFIED OS INSTALLATION!!!!"
 echo
-echo "If you are using anything prior to a Raspberry Pi 4, you need to be running"
-echo "a 32 bit version of Raspbian, even though there are 64 bit versions for it."
-echo "Unless you have 4+ GB of RAM, a 64 bit OS is completely useless. You surely"
-echo "will have problems compiling the servo valve driver under a 64 bit Raspbian"
-echo "on anything older than a Pi 4."
-echo
 echo "This installer script assumes that you are running it as the username 'pi'."
 echo "If you are using another user account, press CTRL-C to terminate the script"
 echo "create a 'pi' user with sudo access and run this script again."
