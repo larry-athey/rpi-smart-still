@@ -91,7 +91,6 @@ sudo cp -f rss* /usr/share/rpi-smart-still
 sudo cp -f *.php /usr/share/rpi-smart-still
 
 sudo chmod +x /usr/share/rpi-smart-still/*
-sudo chmod -x /usr/share/rpi-smart-still/*.c
 sudo chmod -x /usr/share/rpi-smart-still/rss.py
 sudo chmod -x /usr/share/rpi-smart-still/config.ini
 
