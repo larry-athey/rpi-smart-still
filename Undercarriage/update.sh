@@ -24,6 +24,10 @@ if [ -d /usr/share/rpi-smart-still ]; then
   sudo cp -fv rss* /usr/share/rpi-smart-still
   sudo cp -fv *.php /usr/share/rpi-smart-still
 
+  if [ -d /usr/share/rpi-smart-still/RPi ]; then
+
+  fi
+
   sudo chmod +x /usr/share/rpi-smart-still/*
   sudo chmod -x /usr/share/rpi-smart-still/config.ini
   sudo chmod -x /usr/share/rpi-smart-still/rss.py
