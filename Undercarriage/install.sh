@@ -235,7 +235,7 @@ fi
 if [ $Bullseye -eq 0 ]; then
   echo
   echo "NOTE: Since you are not running Raspbian 11 or Debian Bullseye for ARM on"
-  echo "this device, you will need to use a USB serial interface if you intend to"
+  echo "this device - you may need to use a USB serial interface if you intend to"
   echo "use LIDAR Hydrometer Reader or Load Cell Hydrometer. Simply edit the file"
   echo "/usr/share/rpi-smart-still/config.ini and update the HYDRO_PORT device to"
   echo "point to the correct device for your USB serial interface."
