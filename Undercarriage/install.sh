@@ -248,18 +248,18 @@ if [ $Raspbian -eq 1 ]; then
   echo "enable 1-Wire support. Then go to Serial Port and turn off the login shell"
   echo "over serial and leave the serial port enabled. Then exit raspi-config, this"
   echo "will cause your Raspberry PI to be rebooted."
+
+  if [ $Bullseye -eq 0 ]; then
+    echo
+    echo "NOTE: Since you are not running Raspbian 11 you will need to rely on a USB"
+    echo "serial interface if you intend to use LIDAR Hydrometer Reader or Load Cell"
+    echo "Hydrometer. Simply edit the file /usr/share/rpi-smart-still/config.ini and"
+    echo "update the HYDRO_PORT variable to point to the correct device for your USB"
+    echo "serial interface."
+  fi
 else
   echo "Debian for ARM detected, things are a little different with this OS than it"
   echo "is with Raspbian. Just run 'sudo reboot' and you're done. Isn't that better?"
-fi
-
-if [ $Bullseye -eq 0 ]; then
-  echo
-  echo "NOTE: Since you are not running Raspbian 11 or Debian Bullseye for ARM on"
-  echo "this device - you may need to use a USB serial interface if you intend to"
-  echo "use LIDAR Hydrometer Reader or Load Cell Hydrometer. Simply edit the file"
-  echo "/usr/share/rpi-smart-still/config.ini and update the HYDRO_PORT device to"
-  echo "point to the correct device for your USB serial interface."
 fi
 
 echo
