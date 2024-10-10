@@ -58,7 +58,7 @@ else
   if [ $? -eq 0 ]; then
     Bullseye=1
   fi
-  Brand=$(sudo lshw -C system | grep "Orange")
+  sudo lshw -C system | grep "Orange"
   if [ $? -eq 0 ]; then
     OrangePi=1
   fi
