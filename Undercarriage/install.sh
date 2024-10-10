@@ -73,7 +73,8 @@ sudo systemctl start lighttpd.service
 sudo lighttpd-enable-mod fastcgi
 sudo lighttpd-enable-mod fastcgi-php
 if [ $Bullseye -eq 0 ]; then
-  sed -i "s/7.4/8.2/g" ./15-fastcgi-php.conf
+  PHPversion=$(ls /etc/php)
+  sed -i "s/7.4/$PHPversion/g" ./15-fastcgi-php.conf
 fi
 sudo cp -f 15-fastcgi-php.conf /etc/lighttpd/conf-available/15-fastcgi-php.conf
 sudo chown -R www-data:www-data /var/log/lighttpd
