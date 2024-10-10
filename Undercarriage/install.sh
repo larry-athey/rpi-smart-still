@@ -37,7 +37,7 @@ fi
 sudo dpkg-reconfigure locales
 
 sudo apt update
-sudo apt install -y lshw alsa-utils espeak ffmpeg mpg123 lighttpd python3 python3-pip python3-dev php php-common php-fpm php-mysql mariadb-server mariadb-client
+sudo apt install -y alsa-utils espeak ffmpeg mpg123 lighttpd python3 python3-pip python3-dev php php-common php-fpm php-mysql mariadb-server mariadb-client
 sudo apt --fix-broken install -y
 sudo apt autoremove -y
 
@@ -58,7 +58,7 @@ else
   if [ $? -eq 0 ]; then
     Bullseye=1
   fi
-  sudo lshw -C system | grep "Orange" > /dev/null 2>&1
+  uname -a | grep "orange" > /dev/null 2>&1
   if [ $? -eq 0 ]; then
     OrangePi=1
   fi
