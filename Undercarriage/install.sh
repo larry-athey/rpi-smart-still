@@ -31,7 +31,6 @@ fi
 sudo dpkg-reconfigure locales
 
 sudo apt update
-sudo apt upgrade -y
 sudo apt autoremove -y
 sudo apt install -y lshw alsa-utils espeak ffmpeg mpg123 lighttpd python3 python3-pip python3-dev php php-common php-fpm php-mysql mariadb-server mariadb-client
 sudo apt --fix-broken install -y
