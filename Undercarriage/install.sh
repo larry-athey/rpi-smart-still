@@ -105,7 +105,12 @@ ln -s /usr/share/rpi-smart-still /home/pi/undercarriage
 if [ $Raspbian -eq 0 ]; then
   # Debian for ARM (Armbian) configuration procedures.
   if [ $OrangePi -eq 1 ] && [ $Legacy -eq 0 ]; then
-    echo "Orange Pi configuration procedures."
+    # Orange Pi configuration procedures.
+    sudo pip3 install OPi.GPIO
+    git clone https://github.com/orangepi-xunlong/wiringOP
+    cd wiringOP
+    sudo ./build
+    cd ..
   else
     # Banana Pi M5/M2pro/M2S/CM4/M4B/M4Z/F3 and Legacy Models (including old Orange Pi units)
     if [ $Legacy -eq 1 ]; then
