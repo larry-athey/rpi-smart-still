@@ -25,7 +25,7 @@ fi
 
 apt=$(which apt)
 if [ "$apt" != "/usr/bin/apt" ]; then
-  echo "This software requires a Debian derivative operating system."
+  echo "The RPi Smart Still software requires a Debian derivative operating system."
   exit 1
 fi
 
