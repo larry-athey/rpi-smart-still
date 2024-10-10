@@ -23,6 +23,12 @@ if [ "$USER" != "pi" ]; then
   exit 1
 fi
 
+apt=$(which apt)
+if [ "$apt" != "/usr/bin/apt" ]; then
+  echo "This software requires a Debian derivative operating system."
+  exit 1
+fi
+
 Legacy=0
 if [ $# -gt 0 ] && [ $1 == "legacy" ]; then
   Legacy=1
