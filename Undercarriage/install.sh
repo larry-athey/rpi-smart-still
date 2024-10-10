@@ -34,7 +34,6 @@ sudo apt update
 sudo apt install -y lshw alsa-utils espeak ffmpeg mpg123 lighttpd python3 python3-pip python3-dev php php-common php-fpm php-mysql mariadb-server mariadb-client
 sudo apt --fix-broken install -y
 sudo apt autoremove -y
-sudo apt clean
 
 OS=$(cat /etc/issue)
 Bullseye=0
@@ -206,6 +205,7 @@ sudo apt purge -y apache2
 sudo service lighttpd force-reload
 sudo rm -f /usr/share/rpi-smart-still/rpi-smart-still
 sudo rm -f /var/www/html/html
+sudo apt clean
 
 clear
 
