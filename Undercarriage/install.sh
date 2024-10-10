@@ -67,8 +67,8 @@ if [ $Bullseye -eq 0 ]; then
   sed -i "s/7.4/8.2/g" ./15-fastcgi-php.conf
 fi
 sudo cp -f 15-fastcgi-php.conf /etc/lighttpd/conf-available/15-fastcgi-php.conf
-sudo chown -R www-data:www-data /var/log/lighttpd/
-sudo service lighttpd force-reload
+sudo chown -R www-data:www-data /var/log/lighttpd
+sudo systemctl restart lighttpd.service
 
 sudo rm -f /var/www/html/index.lighttpd.html
 sudo cp -f ./web-ui/* /var/www/html
