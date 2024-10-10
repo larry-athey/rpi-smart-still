@@ -59,7 +59,7 @@ else
   if [ $? -eq 0 ]; then
     Bullseye=1
   fi
-  uname -a | grep "orange" > /dev/null 2>&1
+  uname -a | grep "[O|o]range" > /dev/null 2>&1
   if [ $? -eq 0 ]; then
     OrangePi=1
   fi
