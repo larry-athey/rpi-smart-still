@@ -117,10 +117,11 @@ if [ $Raspbian -eq 0 ]; then
   # Debian for ARM (Armbian) configuration procedures.
   if [ $OrangePi -eq 1 ] && [ $Legacy -eq 0 ]; then
     # Orange Pi configuration procedures.
-    sudo pip3 install OPi.GPIO
-    if [ ! $? -eq 0 ]; then
-      sudo apt install python3-opi-gpio -y
-    fi
+    git clone https://github.com/rm-hull/OPi.GPIO
+    cd OPi.GPIO
+    sudo python3 setup.py clean --all
+    sudo python3 setup.py build install
+    cd ..
     sudo sed -i "s/RPi.GPIO/OPi.GPIO/g" /usr/share/rpi-smart-still/rss.py
     git clone https://github.com/orangepi-xunlong/wiringOP
     cd wiringOP
