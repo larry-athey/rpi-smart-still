@@ -128,6 +128,7 @@ if [ $Raspbian -eq 0 ]; then
   fi
   sudo cp -f rc.local.armbian /etc/rc.local
   sudo chmod +x /etc/rc.local
+  sudo apt purge brltty -y
   sudo systemctl stop serial-getty@ttyS0.service > /dev/null 2>&1
   sudo systemctl disable serial-getty@ttyS0.service > /dev/null 2>&1
   sudo pip3 install pyserial
