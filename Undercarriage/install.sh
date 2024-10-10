@@ -117,6 +117,7 @@ if [ $Raspbian -eq 0 ]; then
   if [ $OrangePi -eq 1 ] && [ $Legacy -eq 0 ]; then
     # Orange Pi configuration procedures.
     sudo pip3 install OPi.GPIO
+    sudo sed -i "s/RPi.GPIO/OPi.GPIO/g" /usr/share/rpi-smart-still/rss.py
     git clone https://github.com/orangepi-xunlong/wiringOP
     cd wiringOP
     sudo ./build
