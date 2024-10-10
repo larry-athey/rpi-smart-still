@@ -58,6 +58,10 @@ else
   if [ $? -eq 0 ]; then
     Bullseye=1
   fi
+  Brand=$(sudo lshw -C system | grep "Orange")
+  if [ $? -eq 0 ]; then
+    OrangePi=1
+  fi
 fi
 
 # Get rid of any leftover C code from the pre-Python version
