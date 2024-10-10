@@ -58,7 +58,7 @@ else
   if [ $? -eq 0 ]; then
     Bullseye=1
   fi
-  sudo lshw -C system | grep "Orange"
+  sudo lshw -C system | grep "Orange" > /dev/null 2>&1
   if [ $? -eq 0 ]; then
     OrangePi=1
   fi
