@@ -132,6 +132,9 @@ if [ $Raspbian -eq 0 ]; then
   sudo systemctl stop serial-getty@ttyS0.service > /dev/null 2>&1
   sudo systemctl disable serial-getty@ttyS0.service > /dev/null 2>&1
   sudo pip3 install pyserial
+  if [ ! $? -eq 0 ]; then
+    sudo apt install python3-serial -y
+  fi
   cat /etc/modules | grep "w1-gpio"
   if [ ! $? -eq 0 ]; then
     echo "w1-gpio" | sudo tee -a /etc/modules
