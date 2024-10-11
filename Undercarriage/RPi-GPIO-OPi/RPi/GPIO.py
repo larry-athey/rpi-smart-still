@@ -27,8 +27,8 @@ RPI_REVISION = RPI_INFO
 VERSION = RPI_INFO
 #----------------------------------------------------------------------------------------------
 def getPort(channel):
-
-    return 0
+  # Oddly enough, this works like WiringPi in reverse (converts RPi GPIO to WiringPi numbers)
+  return 0
 #----------------------------------------------------------------------------------------------
 def cleanup(**kwargs):
   # This function does nothing, it's just here to mask an RPi.GPIO function
