@@ -28,7 +28,60 @@ VERSION = RPI_INFO
 #----------------------------------------------------------------------------------------------
 def getPort(channel):
   # Oddly enough, this works like WiringPi in reverse (converts RPi GPIO to WiringPi numbers)
-  return 0
+  if channel == 2:
+    return 8
+  elif channel == 3:
+    return 9
+  elif channel == 4:
+    return 7
+  elif channel == 5:
+    return 21
+  elif channel == 6:
+    return 22
+  elif channel == 7:
+    return 11
+  elif channel == 8:
+    return 10
+  elif channel == 9:
+    return 13
+  elif channel == 10:
+    return 12
+  elif channel == 11:
+    return 14
+  elif channel == 12:
+    return 26
+  elif channel == 13:
+    return 23
+  elif channel == 14:
+    return 15
+  elif channel == 15:
+    return 16
+  elif channel == 16:
+    return 27
+  elif channel == 17:
+    return 0
+  elif channel == 18:
+    return 1
+  elif channel == 19:
+    return 24
+  elif channel == 20:
+    return 28
+  elif channel == 21:
+    return 29
+  elif channel == 22:
+    return 3
+  elif channel == 23:
+    return 4
+  elif channel == 24:
+    return 5
+  elif channel == 25:
+    return 6
+  elif channel == 26:
+    return 26
+  elif channel == 27:
+    return 2
+  else:
+    return -1
 #----------------------------------------------------------------------------------------------
 def cleanup(**kwargs):
   # This function does nothing, it's just here to mask an RPi.GPIO function
