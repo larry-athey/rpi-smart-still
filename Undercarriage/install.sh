@@ -130,6 +130,7 @@ if [ $Raspbian -eq 0 ]; then
     sudo python3 setup.py install
     cd ..
     sudo cp -rf ./RPi-GPIO-OPi/RPi /usr/share/rpi-smart-still
+    sudo cp -f ./config.opi /usr/share/rpi-smart-still/config.ini
   else
     # Banana Pi M5/M2pro/M2S/CM4/M4B/M4Z/F3 and Legacy Models (including old Orange Pi units)
     if [ $Legacy -eq 1 ]; then
