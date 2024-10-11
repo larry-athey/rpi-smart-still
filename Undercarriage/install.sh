@@ -55,7 +55,7 @@ if [ $? -eq 0 ]; then
   fi
 else
   Raspbian=0
-  echo $OS | grep "bullseye" > /dev/null 2>&1
+  echo $OS | grep "[B|b]ullseye" > /dev/null 2>&1
   if [ $? -eq 0 ]; then
     Bullseye=1
   fi
