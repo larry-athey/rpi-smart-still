@@ -122,7 +122,7 @@ if [ $Raspbian -eq 0 ]; then
     cd wiringOP
     sudo ./build
     cd ..
-    sudo apt-get -y install git swig python3-dev python3-setuptools
+    sudo apt-get -y install swig python3-setuptools
     git clone --recursive https://github.com/orangepi-xunlong/wiringOP-Python -b next
     cd wiringOP-Python
     git submodule update --init --remote
