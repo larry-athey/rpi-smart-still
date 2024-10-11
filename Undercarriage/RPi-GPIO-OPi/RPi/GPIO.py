@@ -14,14 +14,14 @@ import os,sys
 import wiringpi
 from wiringpi import GPIO as WPI
 
-HIGH = 1
-LOW = 0
-IN = 0
-OUT = 1
+HIGH = WPI.HIGH
+LOW = WPI.LOW
+IN = WPI.INPUT
+OUT = WPI.OUTPUT
 BOARD = 0
 BCM = 0
-PUD_UP = 1
-PUD_DOWN = 2
+PUD_UP = WPI.PUD_UP
+PUD_DOWN = WPI.PUD_DOWN
 RPI_INFO = "Generic RPi Clone"
 RPI_REVISION = RPI_INFO
 VERSION = RPI_INFO
@@ -36,31 +36,31 @@ def cleanup(**kwargs):
 #----------------------------------------------------------------------------------------------
 def input(channel):
   channel = getPort(channel)
-  #return gpio.input(channel)
+  wiringpi.digitalRead(channel)
   return 0
 #----------------------------------------------------------------------------------------------
 def output(channel,state):
   channel = getPort(channel)
-  #gpio.output(channel,state)
+  wiringpi.digitalWrite(channel,state)
   return True
 #----------------------------------------------------------------------------------------------
 def pullup(channel,direction):
   channel = getPort(channel)
-  #gpio.pullup(channel,direction)
+  wiringpi.pullUpDnControl(channel,direction)
   return True
 #----------------------------------------------------------------------------------------------
 def setmode(Ignored):
-  #if not os.getegid() == 0:
-  #  print("")
-  #  print("GPIO access scripts must be run as root on this device, terminating script.")
-  #  print("")
-  #  sys.exit(1)
-  #gpio.init()
+  if not os.getegid() == 0:
+    print("")
+    print("GPIO access scripts must be run as root on this device, terminating script.")
+    print("")
+    sys.exit(1)
+  wiringpi.wiringPiSetup()
   return True
 #----------------------------------------------------------------------------------------------
 def setup(channel,direction):
   channel = getPort(channel)
-  #gpio.setcfg(channel,direction)
+  wiringpi.pinMode(channel,direction)
   return True
 #----------------------------------------------------------------------------------------------
 def setwarnings(Ignored):
