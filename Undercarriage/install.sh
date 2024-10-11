@@ -118,16 +118,18 @@ if [ $Raspbian -eq 0 ]; then
   # Debian for ARM (Armbian) configuration procedures.
   if [ $OrangePi -eq 1 ] && [ $Legacy -eq 0 ]; then
     # Orange Pi configuration procedures.
-    git clone https://github.com/rm-hull/OPi.GPIO
-    cd OPi.GPIO
-    sudo python3 setup.py clean --all
-    sudo python3 setup.py build install
-    cd ..
-    sudo sed -i "s/RPi.GPIO/OPi.GPIO/g" /usr/share/rpi-smart-still/rss.py
     git clone https://github.com/orangepi-xunlong/wiringOP
     cd wiringOP
     sudo ./build
     cd ..
+    sudo apt-get -y install git swig python3-dev python3-setuptools
+    git clone --recursive https://github.com/orangepi-xunlong/wiringOP-Python -b next
+    cd wiringOP-Python
+    git submodule update --init --remote
+    python3 generate-bindings.py > bindings.i
+    sudo python3 setup.py install
+    cd ..
+    #sudo cp -rf ./RPi-GPIO-OPi/RPi /usr/share/rpi-smart-still
   else
     # Banana Pi M5/M2pro/M2S/CM4/M4B/M4Z/F3 and Legacy Models (including old Orange Pi units)
     if [ $Legacy -eq 1 ]; then
