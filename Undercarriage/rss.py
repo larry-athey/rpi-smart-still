@@ -80,15 +80,11 @@ def initValveController():
   GPIO.setup(config.get("VALVE1_CLOSE"),GPIO.OUT)
   GPIO.setup(config.get("VALVE1_LIMIT_OPEN"),GPIO.IN)
   GPIO.setup(config.get("VALVE1_LIMIT_CLOSE"),GPIO.IN)
-  GPIO.pullup(config.get("VALVE1_LIMIT_OPEN"),GPIO.PUD_UP)
-  GPIO.pullup(config.get("VALVE1_LIMIT_CLOSE"),GPIO.PUD_UP)
 
   GPIO.setup(config.get("VALVE2_OPEN"),GPIO.OUT)
   GPIO.setup(config.get("VALVE2_CLOSE"),GPIO.OUT)
   GPIO.setup(config.get("VALVE2_LIMIT_OPEN"),GPIO.IN)
   GPIO.setup(config.get("VALVE2_LIMIT_CLOSE"),GPIO.IN)
-  GPIO.pullup(config.get("VALVE2_LIMIT_OPEN"),GPIO.PUD_UP)
-  GPIO.pullup(config.get("VALVE2_LIMIT_CLOSE"),GPIO.PUD_UP)
 
   return True
 #----------------------------------------------------------------------------------------------
