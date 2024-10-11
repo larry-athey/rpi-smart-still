@@ -17,7 +17,6 @@
 ; desire to be 100% compatible at the GPIO level when they certainly could, with
 ; not a whole lot of extra effort.
 ;
-
 ; Heating stepper motor
 STEPPER_ENABLE=22
 STEPPER_PULSE=21
