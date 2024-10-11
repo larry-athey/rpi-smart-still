@@ -34,7 +34,12 @@ if [ -d /usr/share/rpi-smart-still ]; then
   sudo cp -fv *.php /usr/share/rpi-smart-still
 
   if [ -d /usr/share/rpi-smart-still/RPi ]; then
-    sudo cp -rfv ./RPi-GPIO-BPiZero/RPi /usr/share/rpi-smart-still
+    cat /usr/share/rpi-smart-still/RPi/GPIO.py | grep "pyGPIO2"
+    if [ $? -eq 0 ]; then
+      sudo cp -rfv ./RPi-GPIO-BPiZero/RPi /usr/share/rpi-smart-still
+    else
+      sudo cp -rfv ./RPi-GPIO-OPi/RPi /usr/share/rpi-smart-still
+    fi
   fi
 
   sudo chmod +x /usr/share/rpi-smart-still/*
