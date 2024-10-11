@@ -1,0 +1,41 @@
+; RPi Smart Still Configuration File
+; ----------------------------------
+;
+; The makers of the Orange Pi maintain their own version of WiringPi, whish is
+; used here instead of a ported version of RPi.GPIO since there is no version of
+; it that works with all Orange Pi boards. They also maintain their own Python
+; interface to WiringPi, which is used here instead of a ported RPi.GPIO library.
+;
+; In which case, we are no longer addressing ports by Raspberry Pi port numbers.
+; Instead, ports are addressed by WiringPi port numbers. To do that, you need to
+; execute `gpio readall` on a Raspberry Pi and an Orange Pi. Match GPIO ports on
+; the Raspberry Pi to their physical pin numbers, then match those physical pin 
+; numbers to their WiringPi ports on the Orange Pi.
+;
+; Yes, I realize this is a convoluted pain in the ass. But everybody wants to be
+; a Raspberry Pi clone at the board footprint only. They don't seem to have any
+; desire to be 100% compatible at the GPIO level when they certainly could, with
+; not a whole lot of extra effort.
+;
+
+; Heating stepper motor
+STEPPER_ENABLE=22
+STEPPER_PULSE=21
+STEPPER_DIR=14
+; Valve 1 is the condenser valve
+VALVE1_OPEN=26
+VALVE1_CLOSE=27
+VALVE1_LIMIT_OPEN=6
+VALVE1_LIMIT_CLOSE=23
+; Valve 2 is the dephlegmator valve
+VALVE2_OPEN=10
+VALVE2_CLOSE=13
+VALVE2_LIMIT_OPEN=8
+VALVE2_LIMIT_CLOSE=9
+; Auxilliary relays
+RELAY1=5
+RELAY2=7
+; Hydrometer serial port device
+HYDRO_PORT=/dev/ttyFIQ0
+; Command to use for text-to-speech synthesis (must output to stdout)
+VOICE_PROMPTER=/usr/bin/espeak -v english-us -s 160 {MSG} --stdout
