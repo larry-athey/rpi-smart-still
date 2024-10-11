@@ -129,7 +129,7 @@ if [ $Raspbian -eq 0 ]; then
     python3 generate-bindings.py > bindings.i
     sudo python3 setup.py install
     cd ..
-    #sudo cp -rf ./RPi-GPIO-OPi/RPi /usr/share/rpi-smart-still
+    sudo cp -rf ./RPi-GPIO-OPi/RPi /usr/share/rpi-smart-still
   else
     # Banana Pi M5/M2pro/M2S/CM4/M4B/M4Z/F3 and Legacy Models (including old Orange Pi units)
     if [ $Legacy -eq 1 ]; then
