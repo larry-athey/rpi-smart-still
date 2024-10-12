@@ -35,7 +35,8 @@ def cleanup(**kwargs):
   return True
 #----------------------------------------------------------------------------------------------
 def input(channel):
-  return wiringpi.digitalRead(channel)
+  wiringpi.digitalRead(channel)
+  return 0
 #----------------------------------------------------------------------------------------------
 def output(channel,state):
   wiringpi.digitalWrite(channel,state)
