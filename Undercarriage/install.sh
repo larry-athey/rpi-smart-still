@@ -165,10 +165,10 @@ if [ $Raspbian -eq 0 ]; then
   if [ ! $? -eq 0 ]; then
     echo "w1-gpio" | sudo tee -a /etc/modules
   fi
-  cat /etc/modprobe.d/w1-gpio.conf | grep "options w1-gpio pin=4"
-  if [ ! $? -eq 0 ]; then
-    echo "options w1-gpio pin=4" | sudo tee -a /etc/modprobe.d/w1-gpio.conf
-  fi
+  #cat /etc/modprobe.d/w1-gpio.conf | grep "options w1-gpio pin=4"
+  #if [ ! $? -eq 0 ]; then
+  #  echo "options w1-gpio pin=4" | sudo tee -a /etc/modprobe.d/w1-gpio.conf
+  #fi
 else
   # Raspbian specific configuration procedures.
   sudo cp -f rc.local /etc/rc.local
