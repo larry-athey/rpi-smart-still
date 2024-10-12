@@ -170,7 +170,7 @@ if [ $Raspbian -eq 0 ]; then
     echo "w1-therm" | sudo tee -a /etc/modules
   fi
   Comfig="/boot/armbianEnv.txt"
-  if [ -f /boot/armbianEnv.txt ]; then
+  if [ -f $Config ]; then
     cat $Config | grep "overlays=w1-gpio"
     if [ ! $? -eq 0 ]; then
       echo "overlays=w1-gpio" | sudo tee -a $Config
