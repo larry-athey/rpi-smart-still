@@ -165,6 +165,10 @@ if [ $Raspbian -eq 0 ]; then
   if [ ! $? -eq 0 ]; then
     echo "w1-gpio" | sudo tee -a /etc/modules
   fi
+  cat /etc/modules | grep "w1-therm"
+  if [ ! $? -eq 0 ]; then
+    echo "w1-therm" | sudo tee -a /etc/modules
+  fi
   #cat /etc/modprobe.d/w1-gpio.conf | grep "options w1-gpio pin=4"
   #if [ ! $? -eq 0 ]; then
   #  echo "options w1-gpio pin=4" | sudo tee -a /etc/modprobe.d/w1-gpio.conf
