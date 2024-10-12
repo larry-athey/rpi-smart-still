@@ -169,6 +169,21 @@ if [ $Raspbian -eq 0 ]; then
   if [ ! $? -eq 0 ]; then
     echo "w1-therm" | sudo tee -a /etc/modules
   fi
+  Comfig="/boot/armbianEnv.txt"
+  if [ -f /boot/armbianEnv.txt ]; then
+    cat $Config | grep "overlays=w1-gpio"
+    if [ ! $? -eq 0 ]; then
+      echo "overlays=w1-gpio" | sudo tee -a $Config
+    fi
+    cat $Config | grep "param_w1_pin=PA6"
+    if [ ! $? -eq 0 ]; then
+      echo "param_w1_pin=PA6" | sudo tee -a $Config
+    fi
+    cat $Config | grep "param_w1_pin_int_pullup=1"
+    if [ ! $? -eq 0 ]; then
+      echo "param_w1_pin_int_pullup=1" | sudo tee -a $Config
+    fi
+  fi
 else
   # Raspbian specific configuration procedures.
   sudo cp -f rc.local /etc/rc.local
