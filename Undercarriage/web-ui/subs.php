@@ -98,15 +98,29 @@ function generateRandomString($length = 10) {
 }
 //---------------------------------------------------------------------------------------------------
 function getOneWireTemp($Address) {
-  if (file_exists("/sys/bus/w1/devices/$Address/w1_slave")) {
-    $Poll = file_get_contents("/sys/bus/w1/devices/$Address/w1_slave");
-    preg_match("/.*?t=(.*)/i",$Poll,$M);
-    $Temp = $M[1];
-    $Data["C"] = round($Temp * .001,1);
-    $Data["F"] = round(($Data["C"] * (9 / 5)) + 32,1);
+  if (file_exists("/tmp/rss_ds18b20")) {
+    // Method for RPi clones that don't have a working w1-gpio kernel overlay.
+    $Poll = shell_exec("cat /tmp/rss_ds18b20 | awk '{print tolower(\$0)}' | grep \"$Address\"");
+    if (trim($Poll) != "") {
+      $Temp = explode(":",$Poll);
+      $Data["C"] = round($Temp[1],1);
+      $Data["F"] = round(($Data["C"] * (9 / 5)) + 32,1);
+    } else {
+      $Data["C"] = -1000;
+      $Data["F"] = -1000;
+    }
   } else {
-    $Data["C"] = -1000;
-    $Data["F"] = -1000;
+    // Method for original Raspberry Pi systems where the w1-gpio kernel overlay works.
+    if (file_exists("/sys/bus/w1/devices/$Address/w1_slave")) {
+      $Poll = file_get_contents("/sys/bus/w1/devices/$Address/w1_slave");
+      preg_match("/.*?t=(.*)/i",$Poll,$M);
+      $Temp = $M[1];
+      $Data["C"] = round($Temp * .001,1);
+      $Data["F"] = round(($Data["C"] * (9 / 5)) + 32,1);
+    } else {
+      $Data["C"] = -1000;
+      $Data["F"] = -1000;
+    }
   }
   return $Data;
 }
