@@ -40,6 +40,9 @@ if [ -d /usr/share/rpi-smart-still ]; then
     else
       sudo cp -rfv ./RPi-GPIO-OPi/RPi /usr/share/rpi-smart-still
     fi
+    BusPin=$(gpio readall | head -n7 | tail -n1 | tr -d '|' | awk '{print $2}')
+    sed -i "s/#define DS18B20_PIN_NUMBER 7/#define DS18B20_PIN_NUMBER $BusPin/g" ./ds18b20.c
+    sudo gcc -Wall -o /usr/share/rpi-smart-still/ds18b20 ./ds18b20.c -lwiringPi -lpthread
   fi
 
   sudo chmod +x /usr/share/rpi-smart-still/*
