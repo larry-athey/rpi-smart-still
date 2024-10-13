@@ -293,7 +293,10 @@ else
     echo "is with Raspbian. Just run 'sudo reboot' and you're done. Isn't that better?"
   else
     echo "Since this is a legacy installation, there are some manual steps that need to"
-    echo "be taken before the system will be fully functional."
+    echo "be taken before the system will be fully functional. Please refer to the Wiki"
+    echo "page below for the necessary completion steps."
+    echo
+    echo "https://github.com/larry-athey/rpi-smart-still/wiki/10.-Legacy-Installation-Help"
   fi
 fi
 
