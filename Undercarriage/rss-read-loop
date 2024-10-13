@@ -6,6 +6,9 @@ sleep 0.9
 
 while [ true ]; do
   ScriptStart=$(date +%s)
+  if [ -f /usr/share/rpi-smart-still/ds18b20 ]; then
+    /usr/share/rpi-smart-still/ds18b20 > /tmp/rss_ds18b20
+  fi
   ./read-inputs.php
   ScriptEnd=$(date +%s)
   Runtime=$(($ScriptEnd - $ScriptStart))
