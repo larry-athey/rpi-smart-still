@@ -184,6 +184,9 @@ if [ $Raspbian -eq 0 ]; then
       echo "param_w1_pin_int_pullup=1" | sudo tee -a $Config
     fi
   fi
+  if [ $Legacy -eq 0 ]; then
+    BusPin=$(gpio readall | head -n7 | tail -n1 | tr -d '|' | awk '{print $2}')
+  fi
 else
   # Raspbian specific configuration procedures.
   sudo cp -f rc.local /etc/rc.local
@@ -283,8 +286,13 @@ if [ $Raspbian -eq 1 ]; then
     echo "serial interface."
   fi
 else
-  echo "Debian for ARM detected, things are a little different with this OS than it"
-  echo "is with Raspbian. Just run 'sudo reboot' and you're done. Isn't that better?"
+  if [ $Legacy -eq 0 ]; then
+    echo "Debian for ARM detected, things are a little different with this OS than it"
+    echo "is with Raspbian. Just run 'sudo reboot' and you're done. Isn't that better?"
+  else
+    echo "Since this is a legacy installation, there are some manual steps that need to"
+    echo "be taken before the system will be fully functional."
+  fi
 fi
 
 echo
