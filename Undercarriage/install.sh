@@ -186,6 +186,8 @@ if [ $Raspbian -eq 0 ]; then
   fi
   if [ $Legacy -eq 0 ]; then
     BusPin=$(gpio readall | head -n7 | tail -n1 | tr -d '|' | awk '{print $2}')
+    sed -i "s/#define DS18B20_PIN_NUMBER 7/#define DS18B20_PIN_NUMBER $BusPin/g" ./ds18b20.c
+    sudo gcc -Wall -o /usr/share/rpi-smart-still/ds18b20 ./ds18b20.c -lwiringPi -lpthread
   fi
 else
   # Raspbian specific configuration procedures.
