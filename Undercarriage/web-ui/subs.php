@@ -101,6 +101,10 @@ function getOneWireTemp($Address) {
   if (file_exists("/tmp/rss_ds18b20")) {
     // Method for RPi clones that don't have a working w1-gpio kernel overlay.
     $Poll = shell_exec("cat /tmp/rss_ds18b20 | awk '{print tolower(\$0)}' | grep \"$Address\"");
+    if (trim($Poll) == "") {
+      sleep(2);
+      $Poll = shell_exec("cat /tmp/rss_ds18b20 | awk '{print tolower(\$0)}' | grep \"$Address\"");
+    }
     if (trim($Poll) != "") {
       $Temp = explode(":",$Poll);
       $Data["C"] = round($Temp[1],1);
