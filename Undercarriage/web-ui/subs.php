@@ -126,9 +126,29 @@ function getOneWireTemp($Address) {
 }
 //---------------------------------------------------------------------------------------------------
 function getSensorList() {
-  $Files = array_diff(scandir("/sys/bus/w1/devices/"),array('.','..','w1_bus_master1'));
-  $Files = array_values($Files);
-  return $Files;
+  if (file_exists("/tmp/rss_ds18b20")) {
+    // Method for RPi clones that don't have a working w1-gpio kernel overlay.
+    $Data = strtolower(file_get_contents("/tmp/rss_ds18b20"));
+    if (trim($Data) == "") {
+      sleep(2);
+      $Data = strtolower(file_get_contents("/tmp/rss_ds18b20"));
+    }
+    if (trim($Data) != "") {
+      $Temp1 = explode("\n",$Data);
+      for ($x = 0; $x <= (count($Temp1) - 1); $x ++) {
+        $Temp2 = explode(":",$Temp1[$x]);
+        if (trim($Temp2[0]) != "") $Files[] = $Temp2[0];
+      }
+      return $Files;
+    } else {
+      return [];
+    }
+  } else {
+    // Method for original Raspberry Pi systems where the w1-gpio kernel overlay works.
+    $Files = array_diff(scandir("/sys/bus/w1/devices/"),array('.','..','w1_bus_master1'));
+    $Files = array_values($Files);
+    return $Files;
+  }
 }
 //---------------------------------------------------------------------------------------------------
 function PosToPct($Total,$Position) {
