@@ -186,7 +186,8 @@ if [ $Raspbian -eq 0 ]; then
     fi
   fi
   if [ $Legacy -eq 0 ]; then
-    # If there actually is a functional w1-gpio kernel overlay, just delete the compiled ds18b20 executable and reboot
+    # 3 out 3 devices I have running Armbian, 1 has a nonfunctional w1-gpio kernel overlay, the other 2 have none at all
+    # If there actually is a functional w1-gpio kernel overlay, simply delete the compiled ds18b20 executable and reboot
     BusPin=$(gpio readall | head -n7 | tail -n1 | tr -d '|' | awk '{print $2}')
     sed -i "s/#define DS18B20_PIN_NUMBER 7/#define DS18B20_PIN_NUMBER $BusPin/g" ./ds18b20.c
     sudo gcc -Wall -o /usr/share/rpi-smart-still/ds18b20 ./ds18b20.c -lwiringPi -lpthread
