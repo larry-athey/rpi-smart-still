@@ -186,13 +186,6 @@ if [ $Raspbian -eq 0 ]; then
       echo "param_w1_pin_int_pullup=1" | sudo tee -a $Config
     fi
   fi
-  if [ $Legacy -eq 0 ]; then
-    # 3 out 3 devices I have running Armbian, 1 has a nonfunctional w1-gpio kernel overlay, the other 2 have none at all
-    # If there actually is a functional w1-gpio kernel overlay, simply delete the compiled ds18b20 executable and reboot
-    BusPin=$(gpio readall | head -n7 | tail -n1 | tr -d '|' | awk '{print $2}')
-    sed -i "s/#define DS18B20_PIN_NUMBER 7/#define DS18B20_PIN_NUMBER $BusPin/g" ./ds18b20.c
-    sudo gcc -Wall -o /usr/share/rpi-smart-still/ds18b20 ./ds18b20.c -lwiringPi -lpthread
-  fi
 else
   # Raspbian specific configuration procedures.
   sudo cp -f rc.local /etc/rc.local
@@ -212,6 +205,14 @@ else
   if [ ! $? -eq 0 ]; then
     echo "dtoverlay=uart0" | sudo tee -a $Config
   fi
+fi
+
+if [ $Legacy -eq 0 ]; then
+  # 3 out 3 devices I have running Armbian, 1 has a nonfunctional w1-gpio kernel overlay, the other 2 have none at all
+  # Since this method is 3x faster than reading vales from /sys/bus/w1/devices it's also used with Raspberry Pi boards 
+  BusPin=$(gpio readall | head -n7 | tail -n1 | tr -d '|' | awk '{print $2}')
+  sed -i "s/#define DS18B20_PIN_NUMBER 7/#define DS18B20_PIN_NUMBER $BusPin/g" ./ds18b20.c
+  sudo gcc -Wall -o /usr/share/rpi-smart-still/ds18b20 ./ds18b20.c -lwiringPi -lpthread
 fi
 
 sudo systemctl enable mariadb > /dev/null 2>&1
