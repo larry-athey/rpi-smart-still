@@ -51,6 +51,9 @@ if [ -d /usr/share/rpi-smart-still ]; then
   sudo chown -R www-data:www-data /usr/share/rpi-smart-still
   sudo chmod g+w -R /usr/share/rpi-smart-still
 
+  # Force all undercarriage daemons to restart
+  sudo pkill -f "rss-"
+
   echo
   echo "Updating web root source code"
   echo
