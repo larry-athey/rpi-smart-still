@@ -171,8 +171,8 @@ if [ $Raspbian -eq 0 ]; then
   fi
   Config="/boot/armbianEnv.txt"
   if [ -f $Config ]; then
-    # The following steps are 100% the correct kernel configuration parameters to enabled DS18B20 support
-    # Without a functional w1-gpio kernel overlay, no DS18B20 sensors will appear in /sys/bus/w1/devices
+    # The following items are 100% correct kernel configuration parameters to enable Armbian DS18B20 support
+    # But without a functional w1-gpio kernel overlay, no DS18B20 sensors will appear in /sys/bus/w1/devices
     cat $Config | grep "overlays=w1-gpio"
     if [ ! $? -eq 0 ]; then
       echo "overlays=w1-gpio" | sudo tee -a $Config
