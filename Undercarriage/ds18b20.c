@@ -55,7 +55,7 @@ void DelayMicrosecondsNoSleep(int delay_us) {
   long int time_difference;
   struct timespec gettime_now;
 
-  clock_gettime(CLOCK_REALTIME, &gettime_now);
+  clock_gettime(CLOCK_REALTIME,&gettime_now);
   start_time = gettime_now.tv_nsec; //Get nS value
   while (1) {
     clock_gettime(CLOCK_REALTIME,&gettime_now);
@@ -411,12 +411,12 @@ int main(int argc, char **argv) {
   }
 
   if (Flag == 0) {
-    printf("*** Error - Unable to detect Logic level 1. No pull-up? : 0\n");
+    printf("*** Error - Unable to detect Logic level 1. No pull-up? :0\n");
     exit(-1);
   }
 
   if (GlobalStartConversion() == 0) {
-    printf("*** Error - Unable to detect any DS18B20 sensors! : 0\n");
+    printf("*** Error - Unable to detect any DS18B20 sensors! :0\n");
     exit(-2);
   }
 
