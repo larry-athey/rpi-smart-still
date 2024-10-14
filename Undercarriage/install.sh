@@ -171,6 +171,7 @@ if [ $Raspbian -eq 0 ]; then
   fi
   Config="/boot/armbianEnv.txt"
   if [ -f $Config ]; then
+    # Without a functional w1-gpio kernel overlay, no DS18B20 sensors will appear in /sys/bus/w1/devices
     cat $Config | grep "overlays=w1-gpio"
     if [ ! $? -eq 0 ]; then
       echo "overlays=w1-gpio" | sudo tee -a $Config
@@ -185,6 +186,7 @@ if [ $Raspbian -eq 0 ]; then
     fi
   fi
   if [ $Legacy -eq 0 ]; then
+    # If there actually is a functional w1-gpio kernel overlay, just delete the compiled ds18b20 executable and reboot
     BusPin=$(gpio readall | head -n7 | tail -n1 | tr -d '|' | awk '{print $2}')
     sed -i "s/#define DS18B20_PIN_NUMBER 7/#define DS18B20_PIN_NUMBER $BusPin/g" ./ds18b20.c
     sudo gcc -Wall -o /usr/share/rpi-smart-still/ds18b20 ./ds18b20.c -lwiringPi -lpthread
