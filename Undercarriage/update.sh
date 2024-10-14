@@ -42,6 +42,8 @@ if [ -d /usr/share/rpi-smart-still ]; then
     fi
   fi
 
+  echo
+  echo "Compiling and installing the latest DS18B20 temperature sensor reader"
   BusPin=$(gpio readall | head -n7 | tail -n1 | tr -d '|' | awk '{print $2}')
   sed -i "s/#define DS18B20_PIN_NUMBER 7/#define DS18B20_PIN_NUMBER $BusPin/g" ./ds18b20.c  > /dev/null 2>&1
   sudo gcc -Wall -o /usr/share/rpi-smart-still/ds18b20 ./ds18b20.c -lwiringPi -lpthread
