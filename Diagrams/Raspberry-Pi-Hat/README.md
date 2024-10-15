@@ -1,4 +1,4 @@
-This is a 4-layer printed circuit board and is capable of running everything up through the Model 5 and its clones.
+This is a 4-layer printed circuit board and is capable of running everything up to a Model 5 and its clones. Depending on your location and where you get printed circuit boards made, the 2 layer version 1.3 boards could save you money over the price of the 4-layer version 1.4 boards.
 
 The issue with the logic level shifters in the v1.1 and v1.2 boards is fixed in this version.
 
