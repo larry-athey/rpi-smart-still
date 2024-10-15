@@ -29,7 +29,7 @@ if ($DephlegTemp > 0) $Update = mysqli_query($DBcnx,"UPDATE settings SET dephleg
 $Data = getOneWireTemp($Settings["column_addr"]);
 $ColumnTemp = $Data["C"];
 echo("Column: $ColumnTemp\n\n");
-if ($ColumnTemp > 0) $Update = mysqli_query($DBcnx,"UPDATE settings SET column_temp='ColumnTemp' WHERE ID=1");
+if ($ColumnTemp > 0) $Update = mysqli_query($DBcnx,"UPDATE settings SET column_temp='$ColumnTemp' WHERE ID=1");
 
 // Read any waiting serial data from the digital hydrometer
 $Hydrometer = str_replace("\r","",trim(shell_exec("/usr/bin/timeout 10s /usr/share/rpi-smart-still/hydro-read")));
