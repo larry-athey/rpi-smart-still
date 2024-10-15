@@ -16,7 +16,7 @@
 ; a Raspberry Pi clone at the board footprint only. They don't seem to have any
 ; desire to be 100% compatible at the GPIO level when they certainly could, with
 ; not a whole lot of extra firmware coding effort. Just like I'm doing here.
-;
+
 ; Heating stepper motor
 STEPPER_ENABLE=22
 STEPPER_PULSE=21
