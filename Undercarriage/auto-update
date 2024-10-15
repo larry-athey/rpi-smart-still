@@ -1,0 +1,35 @@
+#!/bin/bash
+#----------------------------------------------------------------------------------------------
+# Run `sudo crontab -e` and insert the CRON job below. Edit the time as you desire, there is
+# no best time of day to schedule this. This script expects it to be located in the "pi" user's
+# home directory, but you can place it anywhere you like and edit the path/name as necessary.
+#
+# CRON job to run this script at 3am every day at 3am.
+#
+# * 3 * * * /home/pi/auto-update
+#----------------------------------------------------------------------------------------------
+
+if [ ! -d /home/pi ]; then
+  echo
+  echo "No /home/pi user home directory found, terminating script."
+  echo
+  exit 1
+fi
+
+cd /home/pi
+
+if [ -d /home/pi/rpi-smart-still ]; then
+  sudo rm -rf /home/pi/rpi-smart-still
+fi
+
+git clone https://github.com/larry-athey/rpi-smart-still
+
+if [ $? -eq 0 ]; then
+  cd /home/pi/rpi-smart-still/Undercarriage
+  ./update.sh
+  sudo rm -rf /home/pi/rpi-smart-still
+else
+  echo
+  echo "Git clone failed, terminating script."
+  echo
+fi
