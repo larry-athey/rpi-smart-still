@@ -1,10 +1,10 @@
 ; RPi Smart Still Configuration File
 ; ----------------------------------
 ;
-; The makers of the Orange Pi maintain their own version of WiringPi, whish is
-; used here instead of a ported version of RPi.GPIO since there is no version of
+; The makers of the Orange Pi maintain their own version of WiringPi, which is
+; used here instead of a ported version of pyGPIO since there is no version of
 ; it that works with all Orange Pi boards. They also maintain their own Python
-; interface to WiringPi, which is used here instead of a ported RPi.GPIO library.
+; interface to WiringPi, which is used here instead of a ported pyGPIO library.
 ;
 ; In which case, we are no longer addressing ports by Raspberry Pi port numbers.
 ; Instead, ports are addressed by WiringPi port numbers. To do that, you need to
