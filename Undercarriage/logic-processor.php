@@ -126,7 +126,7 @@ if (mysqli_num_rows($Result) > 0) {
                     $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                                   "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
                                                          "(now(),'0','3','1','" . $Heating["position"] . "','" . $Heating["position"] . "','1','0')");
-                  } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
+                  } else { // Digital voltage controllers can just be adjusted up and down as necessary
                     $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                                   "VALUES (now(),'0','3','1','$Difference','" . $Heating["position"] . "','1','0')");
                   }
@@ -156,7 +156,7 @@ if (mysqli_num_rows($Result) > 0) {
                     $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                                   "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
                                                          "(now(),'0','3','1','" . $Heating["position"] . "','" . $Heating["position"] . "','1','0')");
-                  } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
+                  } else { // Digital voltage controllers can just be adjusted up and down as necessary
                     $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                                   "VALUES (now(),'0','3','0','$Difference','" . $Heating["position"] . "','1','0')");
                   }
