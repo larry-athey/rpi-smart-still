@@ -71,6 +71,13 @@ elseif (isset($_GET["control_relay"])) {
   exit;
 }
 //---------------------------------------------------------------------------------------------------
+elseif (isset($_GET["delete_program"])) {
+  $Update = mysqli_query($DBcnx,"DELETE FROM programs WHERE ID=" . $_GET["ID"]);
+  mysqli_close($DBcnx);
+  header("Location: index.php?page=programs");
+  exit;
+}
+//---------------------------------------------------------------------------------------------------
 elseif (isset($_GET["heat_jump"])) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
@@ -143,6 +150,10 @@ elseif (isset($_GET["reboot_hydro"])) {
   mysqli_close($DBcnx);
   header("Location: index.php?page=hydrometer");
   exit;
+}
+//---------------------------------------------------------------------------------------------------
+elseif (isset($_GET["reboot_system"])) {
+  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','90','0','0')");
 }
 //---------------------------------------------------------------------------------------------------
 elseif (isset($_GET["recalibrate_hydro"])) {
@@ -324,6 +335,10 @@ elseif (isset($_POST["rss_edit_servos"])) {
       }
     }
   }
+}
+//---------------------------------------------------------------------------------------------------
+elseif (isset($_GET["shutdown_system"])) {
+  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','91','0','0')");
 }
 //---------------------------------------------------------------------------------------------------
 mysqli_close($DBcnx);
