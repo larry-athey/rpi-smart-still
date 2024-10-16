@@ -91,7 +91,7 @@ while ($RS = mysqli_fetch_assoc($Result)) {
     }
     if ($Settings["speech_enabled"] == 1) {
       if ($RS["direction"] == 0) {
-        if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0))SpeakMessage(5);
+        if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(5);
       } else {
         if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(4);
       }
