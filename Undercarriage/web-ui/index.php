@@ -124,7 +124,9 @@ if (! isset($_GET["page"])) {
   // Hidden div to play voice prompts (web browser must have autoplay enabled in its settings)
   $Content .= VoicePrompter($DBcnx,true);
 } else {
-  if ($_GET["page"] == "edit_program") {
+  if ($_GET["page"] == "delete_confirm") {
+    $Content .= Confirmation($DBcnx,1,$_GET["ID"]);
+  } elseif ($_GET["page"] == "edit_program") {
     $Content .= EditProgram($DBcnx,$_GET["ID"]);
   } elseif ($_GET["page"] == "edit_servos") {
     $Content .= DrawCard($DBcnx,"edit_servos",false);
@@ -142,6 +144,8 @@ if (! isset($_GET["page"])) {
     $Content .= DrawCard($DBcnx,"start_run",false);
   } elseif ($_GET["page"] == "stop_run") {
     $Content .= DrawCard($DBcnx,"stop_run",false);
+  } elseif ($_GET["page"] == "system_confirm") {
+    $Content .= Confirmation($DBcnx,2,$_GET["option"]);
   } elseif ($_GET["page"] == "timeline") {
     $Content .= ShowTimelines($DBcnx);
   }
