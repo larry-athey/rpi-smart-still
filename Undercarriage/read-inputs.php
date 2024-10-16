@@ -39,7 +39,7 @@ if (($Hydrometer != "") && (mb_substr($Hydrometer,-1) == "#")) {
   $Hydrometer = trim(str_replace("#","",$Hydrometer));
   $Data = explode("\n",$Hydrometer);
   $Hydrometer = addslashes($Hydrometer);
-  if (count($Data) <= 12) {
+  if (count($Data) == 5) {
     print_r($Data);
     $Data2 = explode(": ",$Data[2]);
     $DistillateFlow = trim($Data2[1]);
