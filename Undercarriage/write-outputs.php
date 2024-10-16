@@ -16,10 +16,36 @@ if (mysqli_num_rows($Result) > 0) {
   mysqli_close($DBcnx);
   exit;
 }
-
+//---------------------------------------------------------------------------------------------
+function RebootSystem() {
+  global $DBcnx;
+  mysqli_close($DBcnx);
+  $Script = "#!/bin/bash\n\n" .
+            "echo \"Rebooting in 30 seconds.\"\n" .
+            "/usr/bin/sleep 30\n" .
+            "/usr/sbin/shutdown -r now\n";
+  file_put_contents("/tmp/rss-script",$Script);
+  shell_exec("chmod +x /tmp/rss-script");
+  shell_exec("/tmp/rss-script");
+  sleep(30);
+}
+//---------------------------------------------------------------------------------------------
+function ShutdownSystem() {
+  global $DBcnx;
+  mysqli_close($DBcnx);
+  $Script = "#!/bin/bash\n\n" .
+            "echo \"Shutting down in 30 seconds.\"\n" .
+            "/usr/bin/sleep 30\n" .
+            "/usr/sbin/shutdown -P now\n";
+  file_put_contents("/tmp/rss-script",$Script);
+  shell_exec("chmod +x /tmp/rss-script");
+  shell_exec("/tmp/rss-script");
+  sleep(30);
+}
+//---------------------------------------------------------------------------------------------
 $Config    = parse_ini_file("/usr/share/rpi-smart-still/config.ini");
 $HydroPort = $Config["HYDRO_PORT"];
-
+//---------------------------------------------------------------------------------------------
 $Result = mysqli_query($DBcnx,"SELECT * FROM output_table WHERE executed=0");
 while ($RS = mysqli_fetch_assoc($Result)) {
   print_r($RS);
@@ -34,15 +60,15 @@ while ($RS = mysqli_fetch_assoc($Result)) {
     if ($Settings["speech_enabled"] == 1) {
       if ($RS["valve_id"] == 1) {
         if ($RS["direction"] == 0) {
-          if ($RS["muted"] == 0) SpeakMessage(1);
+          if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(1);
         } else {
-          if ($RS["muted"] == 0) SpeakMessage(0);
+          if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(0);
         }
       } else {
         if ($RS["direction"] == 0) {
-          if ($RS["muted"] == 0) SpeakMessage(3);
+          if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(3);
         } else {
-          if ($RS["muted"] == 0) SpeakMessage(2);
+          if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(2);
         }
       }
     }
@@ -65,9 +91,9 @@ while ($RS = mysqli_fetch_assoc($Result)) {
     }
     if ($Settings["speech_enabled"] == 1) {
       if ($RS["direction"] == 0) {
-        if ($RS["muted"] == 0) SpeakMessage(5);
+        if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0))SpeakMessage(5);
       } else {
-        if ($RS["muted"] == 0) SpeakMessage(4);
+        if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(4);
       }
     }
     shell_exec("/usr/share/rpi-smart-still/heating $Direction " . $RS["duration"]);
@@ -98,43 +124,43 @@ while ($RS = mysqli_fetch_assoc($Result)) {
     // Unused, my plans changed for pausing/unpausing a run and I forgot about this valve_id, LOL!!!
   } elseif ($RS["valve_id"] == 6) {
     // Control command to reboot the hydrometer (Load cell and LIDAR versions)
-    if ($RS["muted"] == 0) SpeakMessage(33);
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(33);
     shell_exec("/usr/bin/echo \"!\" > $HydroPort");
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 7) {
     // Control command to recalibrate the hydrometer (Load cell version)
-    if ($RS["muted"] == 0) SpeakMessage(32);
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(32);
     shell_exec("/usr/bin/echo \"\#\" > $HydroPort");
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 50) {
     // Only play a voice prompt if relay 1 is activated
-    if ($RS["muted"] == 0) SpeakMessage(50);
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(50);
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 51) {
     // Only play a voice prompt if relay 1 is deactivated
-    if ($RS["muted"] == 0) SpeakMessage(51);
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(51);
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 52) {
     // Only play a voice prompt if relay 2 is activated
-    if ($RS["muted"] == 0) SpeakMessage(52);
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(52);
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 53) {
     // Only play a voice prompt if relay 2 is deactivated
-    if ($RS["muted"] == 0) SpeakMessage(53);
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(53);
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 70) {
     // Control command to calibrate the hydrometer 0% slot (LIDAR version)
-    if ($RS["muted"] == 0) SpeakMessage(37);
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(37);
     shell_exec("/usr/bin/echo \"\#0\" > $HydroPort");
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 71) {
     // Control command to calibrate the hydrometer 10% slot (LIDAR version)
-    if ($RS["muted"] == 0) SpeakMessage(38);
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(38);
     shell_exec("/usr/bin/echo \"\#1\" > $HydroPort");
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 72) {
     // Control command to calibrate the hydrometer 20% slot (LIDAR version)
-    if ($RS["muted"] == 0) SpeakMessage(39);
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(39);
     shell_exec("/usr/bin/echo \"\#2\" > $HydroPort");
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 73) {
@@ -144,42 +170,52 @@ while ($RS = mysqli_fetch_assoc($Result)) {
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 74) {
     // Control command to calibrate the hydrometer 40% slot (LIDAR version)
-    if ($RS["muted"] == 0) SpeakMessage(41);
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(41);
     shell_exec("/usr/bin/echo \"\#4\" > $HydroPort");
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 75) {
     // Control command to calibrate the hydrometer 50% slot (LIDAR version)
-    if ($RS["muted"] == 0) SpeakMessage(42);
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(42);
     shell_exec("/usr/bin/echo \"\#5\" > $HydroPort");
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 76) {
     // Control command to calibrate the hydrometer 60% slot (LIDAR version)
-    if ($RS["muted"] == 0) SpeakMessage(43);
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(43);
     shell_exec("/usr/bin/echo \"\#6\" > $HydroPort");
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 77) {
     // Control command to calibrate the hydrometer 70% slot (LIDAR version)
-    if ($RS["muted"] == 0) SpeakMessage(44);
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(44);
     shell_exec("/usr/bin/echo \"\#7\" > $HydroPort");
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 78) {
     // Control command to calibrate the hydrometer 80% slot (LIDAR version)
-    if ($RS["muted"] == 0) SpeakMessage(45);
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(45);
     shell_exec("/usr/bin/echo \"\#8\" > $HydroPort");
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 79) {
     // Control command to calibrate the hydrometer 90% slot (LIDAR version)
-    if ($RS["muted"] == 0) SpeakMessage(46);
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(46);
     shell_exec("/usr/bin/echo \"\#9\" > $HydroPort");
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 80) {
     // Control command to calibrate the hydrometer 100% slot (LIDAR version)
-    if ($RS["muted"] == 0) SpeakMessage(47);
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(47);
     shell_exec("/usr/bin/echo \"\#a\" > $HydroPort");
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+  } elseif ($RS["valve_id"] == 90) {
+    // Control command to reboot the system
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(56);
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+    RebootSystem();
+  } elseif ($RS["valve_id"] == 91) {
+    // Control command to shut down the system
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(57);
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+    ShutdownSystem();
   } elseif ($RS["valve_id"] == 99) {
     // Control commands to speak notifications with no other actions
-    if ($Settings["speech_enabled"] == 1) {
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) {
       if ($RS["position"] == 1) {
         DebugMessage("Performing boiler heating stepper motor jump to " . $RS["duration"] . "%");
       } elseif ($RS["position"] == 2) {
