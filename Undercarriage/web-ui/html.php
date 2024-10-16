@@ -54,6 +54,38 @@ function CalibrateHydrometer($DBcnx) {
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
+function Confirmation($DBcnx,$Type,$Data) {
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
+  $Settings = mysqli_fetch_assoc($Result);
+
+  if ($Type == 1) {
+    $Result   = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=$Data");
+    $Program  = mysqli_fetch_assoc($Result);
+    $Msg = "Are you sure that you want to delete the program<br>\"" . $Program["program_name"] . "\"?";
+    $Btn = "delete_program";
+  } else {
+    if ($Data == 1) {
+      $Msg = "Are you sure that you want to reboot the system?";
+      $Btn = "reboot_system";
+    } else {
+      $Msg = "Are you sure that you want to shut down the system?";
+      $Btn = "shutdown_system";
+    }
+  }
+
+  $Content  = "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\">";
+  $Content .=   "<div class=\"card-body\">";
+  $Content .=     "<p class=\"fw-bolder\">$Msg</p>";
+  $Content .=     "<div class=\"row\" style=\"margin-top: 0.5em;\">";
+  $Content .=       "<div class=\"col\"><a style=\"float: right;\" href=\"index.php\" class=\"btn btn-danger btn-sm fw-bolder\">Cancel</a></div>";
+  $Content .=       "<div class=\"col\"><a href=\"process.php?$Btn=1&ID=$Data\" class=\"btn btn-primary btn-sm fw-bolder\">Confirm</a></div>";
+  $Content .=     "</div>";
+  $Content .=   "</div>";
+  $Content .= "</div>";
+  $Content .= VoicePrompter($DBcnx,true);
+  return $Content;
+}
+//---------------------------------------------------------------------------------------------------
 function ControlRelays($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
@@ -89,7 +121,7 @@ function ControlRelays($DBcnx) {
   $Content .=     "</div>";
   $Content .=   "</div>";
   $Content .= "</div>";
-  $Content .= VoicePrompter($DBcnx,true);
+  $Content .= VoicAuxiliaryePrompter($DBcnx,true);
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
@@ -224,6 +256,14 @@ function DrawMenu($DBcnx) {
     $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=20\"><span class=\"fw-bolder\">Heat&nbsp;Jump&nbsp;To&nbsp;20%</span></a></li>";
     $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=10\"><span class=\"fw-bolder\">Heat&nbsp;Jump&nbsp;To&nbsp;10%</span></a></li>";
     $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=0\"><span class=\"fw-bolder\">Heat&nbsp;Jump&nbsp;To&nbsp;0%</span></a></li>";
+  }
+  $Content .=             "<li><hr class=\"dropdown-divider\"></li>";
+  if ($Settings["active_run"] == 1) {
+    $Content .=           "<li><a  class=\"dropdown-item disabled\" href=\"?page=system_confirm&option=1\"><span class=\"text-secondary fw-bolder\">Reboot&nbsp;System</span></a></li>";
+    $Content .=           "<li><a  class=\"dropdown-item disabled\" href=\"?page=system_confirm&option=2\"><span class=\"text-secondary fw-bolder\">Shutdown&nbsp;System</span></a></li>";
+  } else {
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"?page=system_confirm&option=1\"><span class=\"fw-bolder\">Reboot&nbsp;System</span></a></li>";
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"?page=system_confirm&option=2\"><span class=\"fw-bolder\">Shutdown&nbsp;System</span></a></li>";
   }
   $Content .=           "</ul>";
   $Content .=         "</li>";
