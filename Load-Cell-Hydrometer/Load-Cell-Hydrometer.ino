@@ -411,7 +411,7 @@ byte CalcEthanol(float WeightAvg) { // Convert the weight average to an ethanol 
         }
       }
     }
-    if (x == 0) return 0; // Why the F??K is this necessary to prevent negative rollover to 255?
+    if (x == 0) return 0; // Goofy nature of for|next loops ending values
   }
   return 0;
 }
