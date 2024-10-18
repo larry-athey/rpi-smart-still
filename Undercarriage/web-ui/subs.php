@@ -98,6 +98,11 @@ function generateRandomString($length = 10) {
 }
 //---------------------------------------------------------------------------------------------------
 function getOneWireTemp($Address) {
+  if (trim($Address . " ") == "") {
+    $Data["C"] = -1000;
+    $Data["F"] = -1000;
+    return $Data;
+  }
   if (file_exists("/tmp/rss_ds18b20")) {
     // Method for RPi clones that don't have a working w1-gpio kernel overlay.
     $Poll = shell_exec("cat /tmp/rss_ds18b20 | awk '{print tolower(\$0)}' | grep \"$Address\"");
