@@ -32,7 +32,7 @@ echo("Column: $ColumnTemp\n\n");
 if ($ColumnTemp > 0) $Update = mysqli_query($DBcnx,"UPDATE settings SET column_temp='$ColumnTemp' WHERE ID=1");
 
 // Read any waiting serial data from the digital hydrometer
-$Hydrometer = str_replace("\r","",trim(shell_exec("/usr/bin/timeout 10s /usr/share/rpi-smart-still/hydro-read")));
+$Hydrometer = str_replace("\r","",trim(shell_exec("/usr/bin/timeout 10s /usr/share/rpi-smart-still/hydro-read") . " "));
 
 // If we got a valid data block from the hydrometer, explode it and update the settings table
 if (($Hydrometer != "") && (mb_substr($Hydrometer,-1) == "#")) {
