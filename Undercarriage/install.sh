@@ -38,7 +38,7 @@ sudo dpkg-reconfigure locales
 
 sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
 sudo apt update
-sudo apt install -y alsa-utils espeak ffmpeg mpg123 lighttpd python3 python3-pip python3-dev php php-common php-fpm php-mysql mariadb-server mariadb-client
+sudo apt install -y alsa-utils espeak ffmpeg mpg123 lighttpd python3 python3-pip python3-dev python3-serial php php-common php-fpm php-mysql mariadb-server mariadb-client
 sudo apt --fix-broken install -y
 sudo apt autoremove -y
 
