@@ -121,7 +121,7 @@ function ControlRelays($DBcnx) {
   $Content .=     "</div>";
   $Content .=   "</div>";
   $Content .= "</div>";
-  $Content .= VoicAuxiliaryePrompter($DBcnx,true);
+  $Content .= VoicePrompter($DBcnx,true);
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
