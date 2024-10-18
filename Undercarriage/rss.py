@@ -7,6 +7,7 @@
 # porting from one language to the other. I honestly detest Python and have no idea how it ever
 # became a standard. Whitespace aware unencapsulated shit language, reminds me of 1980's BASIC.
 #----------------------------------------------------------------------------------------------
+import sys
 import time
 import RPi.GPIO as GPIO
 
@@ -188,22 +189,22 @@ def valveCalibrate(WhichOne,Direction):
 def valvePulse(WhichOne,Direction,Duration):
   if WhichOne == 1:
     if Direction == 1:
-      GPIO.output(config.get("VALVE1_CLOSE"),GPIO.HIGH)
-      sleep_ms(Duration)
-      GPIO.output(config.get("VALVE1_CLOSE"),GPIO.LOW)
-    else:
       GPIO.output(config.get("VALVE1_OPEN"),GPIO.HIGH)
       sleep_ms(Duration)
       GPIO.output(config.get("VALVE1_OPEN"),GPIO.LOW)
+    else:
+      GPIO.output(config.get("VALVE1_CLOSE"),GPIO.HIGH)
+      sleep_ms(Duration)
+      GPIO.output(config.get("VALVE1_CLOSE"),GPIO.LOW)
   else:
     if Direction == 1:
-      GPIO.output(config.get("VALVE2_CLOSE"),GPIO.HIGH)
-      sleep_ms(Duration)
-      GPIO.output(config.get("VALVE2_CLOSE"),GPIO.LOW)
-    else:
       GPIO.output(config.get("VALVE2_OPEN"),GPIO.HIGH)
       sleep_ms(Duration)
       GPIO.output(config.get("VALVE2_OPEN"),GPIO.LOW)
+    else:
+      GPIO.output(config.get("VALVE2_CLOSE"),GPIO.HIGH)
+      sleep_ms(Duration)
+      GPIO.output(config.get("VALVE2_CLOSE"),GPIO.LOW)
 
   return True
 #----------------------------------------------------------------------------------------------
