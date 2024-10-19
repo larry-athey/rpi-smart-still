@@ -90,7 +90,6 @@ elseif (isset($_GET["heat_jump"])) {
     $Heating["position"] = $Settings["heating_total"];
   }
 
-  // Requires a difference in heating stepper position to process
   $Difference = 0;
   if ($Settings["heating_enabled"] == 1) {
     if ($Heating["position"] > $Settings["heating_position"]) {
@@ -100,6 +99,7 @@ elseif (isset($_GET["heat_jump"])) {
       $Difference = $Settings["heating_position"] - $Heating["position"];
       $Direction = 0;
     }
+    // Requires a difference in heating stepper position to process
     if ($Difference > 0) {
       $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                     "VALUES (now(),'1','99','0','" . $_GET["value"] . "','1','0','0')");
@@ -108,7 +108,7 @@ elseif (isset($_GET["heat_jump"])) {
         $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                       "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
                                              "(now(),'1','3','1','" . $Heating["position"] . "','" . $Heating["position"] . "','1','0')");
-      } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
+      } else { // Digital voltage controllers can just be adjusted up and down as necessary
         $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                       "VALUES (now(),'1','3','$Direction','$Difference','" . $Heating["position"] . "','1','0')");
       }
