@@ -119,7 +119,7 @@ byte CalcEthanol() { // Convert the Distance millimeters to an ethanol ABV value
         }
       }
     }
-    if (x == 0) return 0; // Goofy nature of for|next loops ending values
+    if (x == 0) return 0; // Goofy nature of for|next loop ending values
   }
   return 0;
 }
