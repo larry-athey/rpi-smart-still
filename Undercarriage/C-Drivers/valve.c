@@ -11,7 +11,7 @@
 //
 //------------------------------------------------------------------------------------------------
 // Compile command:
-// gcc -Wall -o valve valve.c -lwiringPi
+// gcc -Wall -o valve valve.c -lwiringPi -lpthread
 //------------------------------------------------------------------------------------------------
 #include "stdio.h"
 #include "stdlib.h"
