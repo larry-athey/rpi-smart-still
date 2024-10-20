@@ -11,7 +11,7 @@
 //
 //------------------------------------------------------------------------------------------------
 // Compile command:
-// gcc -Wall -o heating heating.c -lwiringPi
+// gcc -Wall -o heating heating.c -lwiringPi -lpthread
 //------------------------------------------------------------------------------------------------
 #include "stdio.h"
 #include "stdlib.h"
