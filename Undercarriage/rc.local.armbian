@@ -20,6 +20,9 @@ fi
 modprobe w1-gpio
 modprobe w1-therm
 
+# If your board isn't allowing rss-init to configure your ports at boot time,
+# use the WiringPi `gpio` command to set them. You will need to adjust the port
+# numbers below to match your board. Use `gpio readall` to show your values.
 #gpio mode 7 output #BCM 27
 #gpio write 7 0
 
