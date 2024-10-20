@@ -1,4 +1,6 @@
 //---------------------------------------------------------------------------------------------
+// RPi-Smart-Still | (CopyLeft) 2023-Present | Larry Athey (https://panhandleponics.com)
+//
 // DS18B20 Temperature Reader - Reads raw data from a GPIO pin without the need for /sys/bus/w1
 // devices to be present. This is because the RPi clone market is so fractured that Armbian has
 // pretty much given up on creating a dependable w1-gpio kernel overlay for any RPi clone. What
