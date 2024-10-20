@@ -20,6 +20,40 @@ fi
 modprobe w1-gpio
 modprobe w1-therm
 
+#gpio mode 7 output #BCM 27
+#gpio write 7 0
+
+#gpio mode 13 output #BCM 25
+#gpio write 13 0
+#gpio mode 10 output #BCM 24
+#gpio write 10 0
+#gpio mode 9 input  #BCM 23
+#gpio mode 9 up
+#gpio mode 8 input  #BCM 22
+#gpio mode 8 up
+
+#gpio mode 27 output #BCM 21
+#gpio write 27 0
+#gpio mode 26 output #BCM 20
+#gpio write 26 0
+#gpio mode 23 input #BCM 19
+#gpio mode 23 up
+#gpio mode 6 input  #BCM 18
+#gpio mode 6 up
+
+#gpio mode 5 output #BCM 17
+#gpio write 5 0
+
+#gpio mode 22 output #BCM 13
+#gpio write 22 0
+#gpio mode 21 output #BCM 12
+#gpio write 21 0
+#gpio mode 14 output #BCM 11
+#gpio write 14 0
+
+#gpio mode 3 ALT1
+#gpio mode 4 ALT1
+
 /usr/share/rpi-smart-still/rss-init
 
 exit 0
