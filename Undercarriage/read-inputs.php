@@ -19,17 +19,29 @@ if (mysqli_num_rows($Result) > 0) {
 $Data = getOneWireTemp($Settings["boiler_addr"]);
 $BoilerTemp = $Data["C"];
 echo("Boiler: $BoilerTemp\n");
-if ($BoilerTemp > 0) $Update = mysqli_query($DBcnx,"UPDATE settings SET boiler_temp='$BoilerTemp' WHERE ID=1");
+if ($BoilerTemp > 0) {
+  $Update = mysqli_query($DBcnx,"UPDATE settings SET boiler_temp='$BoilerTemp' WHERE ID=1");
+} else {
+  $BoilerTemp = $Settings["boiler_temp"];
+}
 
 $Data = getOneWireTemp($Settings["dephleg_addr"]);
 $DephlegTemp = $Data["C"];
 echo("Dephleg: $DephlegTemp\n");
-if ($DephlegTemp > 0) $Update = mysqli_query($DBcnx,"UPDATE settings SET dephleg_temp='$DephlegTemp' WHERE ID=1");
+if ($DephlegTemp > 0) {
+  $Update = mysqli_query($DBcnx,"UPDATE settings SET dephleg_temp='$DephlegTemp' WHERE ID=1");
+} else {
+  $DephlegTemp = $Settings["dephleg_temp"];
+}
 
 $Data = getOneWireTemp($Settings["column_addr"]);
 $ColumnTemp = $Data["C"];
 echo("Column: $ColumnTemp\n\n");
-if ($ColumnTemp > 0) $Update = mysqli_query($DBcnx,"UPDATE settings SET column_temp='$ColumnTemp' WHERE ID=1");
+if ($ColumnTemp > 0) {
+  $Update = mysqli_query($DBcnx,"UPDATE settings SET column_temp='$ColumnTemp' WHERE ID=1");
+} else {
+  $ColumnTemp = $Settings["column_temp"];
+}
 
 // Read any waiting serial data from the digital hydrometer
 $Hydrometer = str_replace("\r","",trim(shell_exec("/usr/bin/timeout 10s /usr/share/rpi-smart-still/hydro-read") . " "));
