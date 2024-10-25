@@ -12,7 +12,6 @@ import time
 import RPi.GPIO as GPIO
 
 config = {}
-STEPPER_MS = 5 # 5 ms sleep time between Nema 17 heating stepper motor pulses
 #----------------------------------------------------------------------------------------------
 def readConfig():
   global config
@@ -134,9 +133,9 @@ def stepperPulse(Direction,Steps):
     GPIO.output(config.get("STEPPER_DIR"),GPIO.LOW)
   for x in range(1,Steps + 1):
     GPIO.output(config.get("STEPPER_PULSE"),GPIO.HIGH)
-    sleep_ms(STEPPER_MS)
+    sleep_ms(config.get("STEPPER_MS"))
     GPIO.output(config.get("STEPPER_PULSE"),GPIO.LOW)
-    sleep_ms(STEPPER_MS)
+    sleep_ms(config.get("STEPPER_MS"))
 
   return True
 #----------------------------------------------------------------------------------------------
