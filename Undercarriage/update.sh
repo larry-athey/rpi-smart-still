@@ -33,6 +33,11 @@ if [ -d /usr/share/rpi-smart-still ]; then
   sudo cp -fv rss* /usr/share/rpi-smart-still
   sudo cp -fv *.php /usr/share/rpi-smart-still
 
+  cat /usr/share/rpi-smart-still/config.ini | grep "STEPPER_MS"
+  if [ ! $? -eq 0 ]; then
+    echo "STEPPER_MS=5" | sudo tee -a /usr/share/rpi-smart-still/config.ini
+  fi
+
   if [ -d /usr/share/rpi-smart-still/RPi ]; then
     cat /usr/share/rpi-smart-still/RPi/GPIO.py | grep "pyGPIO2"
     if [ $? -eq 0 ]; then
