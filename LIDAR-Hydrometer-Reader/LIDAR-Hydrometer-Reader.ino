@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------
-// Written by Larry Athey (https://panhandleponics.com) v1.0.1 released May 11, 2024
+// Written by Larry Athey (https://panhandleponics.com) v1.2.1 released November 3, 2024
 //
 // If you have seen any of George Duncan's videos on YouTube from around 2020, you might remember
 // an Arduino project of his called the "Talking Parrot Head". It involved a black PVC tube on top
@@ -236,7 +236,6 @@ doubleLong measureADC(int num_measurements,byte charge_pin,byte sense_pin,byte c
 //------------------------------------------------------------------------------------------------
 float getCapacitance() { // Read the flow sensor, this can take up to 4 seconds to complete
   doubleLong ADCvalues = measureADC(numMeasurements,CHARGE_PIN,SENSE_PIN,chargeTime_us,dischargeTime_ms);
-
   capVoltage = (Vref * ADCvalues.charged_value) / (float)MAX_ADC_VALUE;
   capacitance_pf = -1.0 * ((chargeTime_us) / resistor_mohm ) / log(1 - (capVoltage / Vref));
   if (capacitance_pf > 0.0) capacitance_pf -= 9.0;
@@ -316,6 +315,8 @@ void loop() {
     Serial.print("Ethanol: "); Serial.println(Ethanol);
     Serial.print("TempC: "); Serial.println(TempC,1);
     Serial.println("#"); // Pound sign marks the end of a data block to the Raspberry PI
+    Serial.flush();
+    delay(100);
     digitalWrite(USER_LED,LOW);
     SerialCounter = CurrentTime;
   }
