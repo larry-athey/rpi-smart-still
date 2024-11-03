@@ -43,47 +43,60 @@
 #include "DallasTemperature.h" // Dallas Temperature DS18B20 temperature sensor library
 #include "Preferences.h"       // ESP32 Flash memory read/write library
 //------------------------------------------------------------------------------------------------
-#define ONE_WIRE 15
-#define FLOW_SENSOR 39
-#define I2C_SCL 22
-#define I2C_SDA 21
-#define USER_LED 2
+#define ONE_WIRE 15            // 1-Wire network pin for the DS18B20 temperature sensor
+#define I2C_SCL 22             // I2C clock pin
+#define I2C_SDA 21             // I2C data pin
+#define USER_LED 2             // Blue or Neopixel LED on the ESP32 board
+#define SENSE_PIN 39           // Capacitive flow sensor analog input pin
+#define CHARGE_PIN 36          // Capacitive flow sensor charging output pin
 //------------------------------------------------------------------------------------------------
-char Uptime[10];            // Global placeholder for the formatted uptime reading
-byte Ethanol = 0;           // Global placeholder for ethanol percentage reading
-float TempC = 0;            // Global placeholder for ethanol temperature reading
-uint Distance = 0;          // Global placeholder for the LIDAR distance measurement
-uint Divisions[11];         // Measurements for the hydrometer's 10% divisions
-long SerialCounter;         // Timekeeper for serial data output updates
-volatile byte PulseCounter; // Flow sensor pulse counter
-byte EthanolBuf[10];        // Buffer for smoothing out ethanol readings
-byte FlowBuf[100];          // Buffer for calculating the flow rate percentage
+char Uptime[10];               // Global placeholder for the formatted uptime reading
+byte Ethanol = 0;              // Global placeholder for ethanol percentage reading
+float TempC = 0;               // Global placeholder for ethanol temperature reading
+uint Distance = 0;             // Global placeholder for the LIDAR distance measurement
+uint Divisions[11];            // Measurements for the hydrometer's 10% divisions
+long SerialCounter;            // Timekeeper for serial data output updates
+byte EthanolBuf[10];           // Buffer for smoothing out ethanol readings
+byte FlowBuf[10];              // Buffer for smoothing out flow sensor readings
+//------------------------------------------------------------------------------------------------
+// Constants and variables here are for the capacotance reading functions
+const byte chargeTime_us = 84;
+const byte dischargeTime_ms = 40;
+const byte numMeasurements = 40;
+const uint16_t MAX_ADC_VALUE = 4095;
+const float resistor_mohm = 2.035;
+const float Vref = 3.3;
+
+float capacitance_pf = 0;
+float capVoltage = 0;
+
+struct doubleLong {
+  long charged_value;
+  long discharged_value;
+};
 //------------------------------------------------------------------------------------------------
 Adafruit_VL53L0X Lidar = Adafruit_VL53L0X();
 OneWire oneWire(ONE_WIRE);
 DallasTemperature DT(&oneWire);
 Preferences preferences;
 //------------------------------------------------------------------------------------------------
-void IRAM_ATTR PulseCapture() { // Interupt hook function to capture flow sensor pulses
-  if (PulseCounter < 255) PulseCounter ++;
-}
-//------------------------------------------------------------------------------------------------
 void setup() {
-  boolean NewChip = true;
   Serial.begin(9600);
-  while (! Serial) delay(10);
+  Serial2.begin(115200);
+  Serial2.setDebugOutput(true); // Send ESP32 debug data to an ignored serial port
+  Serial.setDebugOutput(false); // Turn off ESP32 debug data on the RPi output port
+  while ((! Serial) or (! Serial2)) delay(10);
   Serial.println("");
+
   DT.begin();
   if (! Lidar.begin(VL53L0X_I2C_ADDR,false,&Wire,Lidar.VL53L0X_SENSE_HIGH_ACCURACY)) {
     Serial.println("Failed to initialize VL53L0X");
     while(true);
   }
-  for (byte x = 0; x <= 99; x ++) FlowBuf[x] = 0;
-  for (byte x = 0; x <= 9; x ++) EthanolBuf[x] = 0;
-  SerialCounter = millis();
-  PulseCounter  = 0;
-  GetDivisions();
+
   // Check the flash memory to see if this is a new ESP32 and stuff it with default values if so
+  boolean NewChip = true;
+  GetDivisions();
   for (byte x = 0; x <= 10; x ++) {
     if (Divisions[x] > 0) NewChip = false;
   }
@@ -91,9 +104,17 @@ void setup() {
     ResetDivisions();
     GetDivisions();
   }
-  pinMode(FLOW_SENSOR,INPUT_PULLUP);
+
+  pinMode(SENSE_PIN,INPUT);
+  pinMode(CHARGE_PIN,OUTPUT);
+  digitalWrite(CHARGE_PIN,LOW);
+  delay(dischargeTime_ms);
+
   pinMode(USER_LED,OUTPUT);
-  attachInterrupt(digitalPinToInterrupt(FLOW_SENSOR),PulseCapture,FALLING);
+  SerialCounter = millis();
+
+  for (byte x = 0; x <= 9; x ++) FlowBuf[x] = 0;
+  for (byte x = 0; x <= 9; x ++) EthanolBuf[x] = 0;
 }
 //------------------------------------------------------------------------------------------------
 void TempUpdate() { // Update the distillate temperature value
@@ -194,6 +215,32 @@ void ResetDivisions() { // Restore all of the default reflector distance values
   }
 }
 //------------------------------------------------------------------------------------------------
+doubleLong measureADC(int num_measurements,byte charge_pin,byte sense_pin,byte charge_time_us,byte discharge_time_ms) { // Read the ADC
+  long charged_val = 0;
+  long discharged_val = 0;
+ 
+  for (int i = 0; i < num_measurements; i ++) {
+    digitalWrite(charge_pin,HIGH);
+    delayMicroseconds(charge_time_us - 54);
+    charged_val += analogRead(sense_pin);
+    digitalWrite(charge_pin,LOW);
+    delay(discharge_time_ms);
+    discharged_val += analogRead(sense_pin);
+  }
+  Serial.flush();
+  Serial.println("\n!"); // Tell the Raspberry Pi to purge any serial data prior to this
+  return {charged_val /= num_measurements,discharged_val /= num_measurements};
+}
+//------------------------------------------------------------------------------------------------
+float getCapacitance() { // Read the flow sensor, this can take up to 4 seconds to complete
+  doubleLong ADCvalues = measureADC(numMeasurements,CHARGE_PIN,SENSE_PIN,chargeTime_us,dischargeTime_ms);
+
+  capVoltage = (Vref * ADCvalues.charged_value) / (float)MAX_ADC_VALUE;
+  capacitance_pf = -1.0 * ((chargeTime_us) / resistor_mohm ) / log(1 - (capVoltage / Vref));
+  if (capacitance_pf > 0.0) capacitance_pf -= 9.0;
+  return capacitance_pf;
+}
+//------------------------------------------------------------------------------------------------
 void RebootUnit() { // Reboot the device, write to flash memory here before restarting if needed
   ESP.restart();
 }
@@ -201,7 +248,7 @@ void RebootUnit() { // Reboot the device, write to flash memory here before rest
 void loop() {
   VL53L0X_RangingMeasurementData_t measure;
   byte Data = 0;
-  float FlowTotal = 0;
+  float Flow = 0,FlowTotal = 0;
   uint EthanolAvg = 0;
   long CurrentTime = millis();
   if (CurrentTime > 4200000000) {
@@ -238,7 +285,6 @@ void loop() {
 
   // Build the data block to be sent to the RPi Smart Still Controller once every second
   if (CurrentTime - SerialCounter >= 1000) {
-    digitalWrite(USER_LED,HIGH);
     // Get the current distillate temperature
     TempUpdate();
 
@@ -254,30 +300,27 @@ void loop() {
 
     // Get the current distillate flow rate
     for (byte x = 0; x <= 98; x ++) FlowBuf[x] = FlowBuf[x + 1];
-    FlowBuf[99] = PulseCounter;
+    Flow = getCapacitance();
+    Flow -= 350;
+    if (Flow < 0) Flow = 0;
+    FlowBuf[99] = round((Flow / 650) * 100);
     for (byte x = 0; x <= 99; x ++) FlowTotal += FlowBuf[x];
     FlowTotal *= 0.01;
 
-    Serial.print("Uptime: ");
-    Serial.println(Uptime);
-    Serial.print("Distance: ");
-    Serial.println(Distance);
-    Serial.print("Flow: ");
-    Serial.println(FlowTotal);
-    Serial.print("Ethanol: ");
-    Serial.println(Ethanol);
-    Serial.print("TempC: ");
-    Serial.println(TempC,1);
-    Serial.println("#"); // Pound signs mark the start and end of data blocks to the Raspberry PI
+    digitalWrite(USER_LED,HIGH);
+    Serial.print("Uptime: "); Serial.println(Uptime);
+    Serial.print("Distance: "); Serial.println(Distance);
+    Serial.print("Flow: "); Serial.println(FlowTotal);
+    Serial.print("Ethanol: "); Serial.println(Ethanol);
+    Serial.print("TempC: "); Serial.println(TempC,1);
+    Serial.println("#"); // Pound sign marks the end of a data block to the Raspberry PI
     digitalWrite(USER_LED,LOW);
     SerialCounter = CurrentTime;
-    PulseCounter  = 0;
   }
-  delay(100);
 }
 //------------------------------------------------------------------------------------------------
 /*
-// Create a new sketch with the following code to fully erase the flash memory of an ESP32
+// Create & run a new sketch with the following code to fully erase the flash memory of an ESP32
 
 #include <nvs_flash.h>
 
