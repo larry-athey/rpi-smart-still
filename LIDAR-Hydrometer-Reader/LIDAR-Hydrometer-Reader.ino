@@ -61,7 +61,7 @@ long SerialCounter;            // Timekeeper for serial data output updates
 byte EthanolBuf[10];           // Buffer for smoothing out ethanol readings
 byte FlowBuf[10];              // Buffer for smoothing out flow sensor readings
 //------------------------------------------------------------------------------------------------
-// Constants and variables here are for the capacotance reading functions
+// Constants and variables here are for the capacitance reading functions
 const byte chargeTime_us = 84;
 const byte dischargeTime_ms = 40;
 const byte numMeasurements = 40;
