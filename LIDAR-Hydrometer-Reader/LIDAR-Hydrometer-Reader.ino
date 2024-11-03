@@ -30,13 +30,15 @@
 // the 100% calibration, and repeat for every 10% mark including the 0% mark. The settings will be
 // stored in the flash memory and you won't have to do it again unless you change your hydrometer.
 //
-// This device also utilizes the flow sensor and DS18B20 temperature sensor since features of the
-// RPi Smart Still Controller depend on them. So if the Load Cell Hydrometer seems to be far more
-// complicated than what you want to deal with, this should be a viable alternative and not leave
-// you short on features. I use the https://www.amazon.com/dp/B07RF57QF8 flow sensor connected to
-// the output spout of my parrot with silicone tubing and the temperature sensor on the condenser
-// output plugged into the side a 3/8" stainless steel barbed tee. So my parrot kind of looks like
-// a Frankenstein project with all of the wires zip tied to it. Oh well, I don't mind.
+// This device also utilizes a DS18B20 temperature sensor in order to tell the mart still system to
+// turn up the condenser flow if the distillate temperature is too hot for the hydrometer to read
+// correctly and prevent a fire hazard. Hot distillate means that you're not condensing all of the
+// vapor back to a liquid, so you're actually losing product if it's too hot.
+//
+// The new flow sensor is a custom device designed by James (The Doc) from Ireland and determines
+// the flow rate by the height of ethanol in a vessel and reading the electrical capacitance from
+// two copper plates placed into the ethanol. The higher the ethanol level, the higher the flow
+// rate, and the higher the capacitance. A perforated overflow tube helps make this determination.
 //------------------------------------------------------------------------------------------------
 #include "Adafruit_VL53L0X.h"  // VL53L0X LIDAR sensor library by Adafruit
 #include "OneWire.h"           // OneWire Network communications library
