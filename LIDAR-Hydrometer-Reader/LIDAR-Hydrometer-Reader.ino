@@ -301,12 +301,12 @@ void loop() {
     }
 
     // Get the current distillate flow rate
-    for (byte x = 0; x <= 98; x ++) FlowBuf[x] = FlowBuf[x + 1];
+    for (byte x = 0; x <= 8; x ++) FlowBuf[x] = FlowBuf[x + 1];
     Flow = getCapacitance();
     Flow -= 350;
     if (Flow < 0) Flow = 0;
-    FlowBuf[99] = round((Flow / 650) * 100);
-    for (byte x = 0; x <= 99; x ++) FlowTotal += FlowBuf[x];
+    FlowBuf[9] = round((Flow / 650) * 100);
+    for (byte x = 0; x <= 9; x ++) FlowTotal += FlowBuf[x];
     FlowTotal *= 0.01;
 
     digitalWrite(USER_LED,HIGH);
