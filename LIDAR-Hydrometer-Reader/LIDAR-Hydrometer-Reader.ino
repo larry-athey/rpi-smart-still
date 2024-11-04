@@ -318,7 +318,7 @@ void loop() {
     Serial.print("TempC: "); Serial.println(TempC,1);
     Serial.println("#"); // Pound sign marks the end of a data block to the Raspberry PI
     Serial.flush();
-    delay(100);
+    delay(250);
     digitalWrite(USER_LED,LOW);
     SerialCounter = CurrentTime;
   }
