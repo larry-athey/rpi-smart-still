@@ -308,7 +308,7 @@ void loop() {
     FlowBuf[9] = round((Flow / 700) * 100);
     if (FlowBuf[9] > 100 FlowBuf[9] = 100;
     for (byte x = 0; x <= 9; x ++) FlowTotal += FlowBuf[x];
-    FlowTotal *= round(0.01);
+    FlowTotal *= 0.01;
 
     digitalWrite(USER_LED,HIGH);
     Serial.print("Uptime: "); Serial.println(Uptime);
