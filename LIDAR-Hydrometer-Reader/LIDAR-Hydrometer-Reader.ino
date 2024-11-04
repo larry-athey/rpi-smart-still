@@ -1,5 +1,6 @@
 //------------------------------------------------------------------------------------------------
-// Written by Larry Athey (https://panhandleponics.com) v1.2.1 released November 3, 2024
+// RPi Smart Still Controller | (CopyLeft) 2024-Present | Larry Athey (https://panhandleponics.com)
+// Bird Brain v1.2.1 - LIDAR Hydrometer Reader and Parrot Flow Monitor - Released November 3, 2024
 //
 // If you have seen any of George Duncan's videos on YouTube from around 2020, you might remember
 // an Arduino project of his called the "Talking Parrot Head". It involved a black PVC tube on top
