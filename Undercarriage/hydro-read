@@ -76,7 +76,11 @@ def read_until_hash(dev_name):
 
       buffer.extend(byte)
 
-      # Check if '#' is in the buffer
+      # Check if '!' is in the buffer (purge command)
+      if b'!' in buffer:
+        buffer.clear()
+
+      # Check if '#' is in the buffer (data block end)
       if b'#' in buffer:
         # Clean the buffer of any characters that aren't ASCII printable
         buffer = clean_utf8(buffer)
