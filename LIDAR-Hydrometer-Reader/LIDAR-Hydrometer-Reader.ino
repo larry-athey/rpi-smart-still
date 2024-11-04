@@ -300,7 +300,8 @@ void loop() {
       Ethanol = EthanolAvg * 0.1;
     }
 
-    // Get the current distillate flow rate
+    // Get the current distillate flow rate (capacitance of the flow sensor plates)
+    // RPi Smart Still Controller ignores this until Ethanol value is greater than zero
     for (byte x = 0; x <= 8; x ++) FlowBuf[x] = FlowBuf[x + 1];
     Flow = getCapacitance();
     Flow -= 300;
