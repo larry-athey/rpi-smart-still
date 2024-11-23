@@ -1,7 +1,13 @@
 //------------------------------------------------------------------------------------------------
+// RPi Smart Still Controller | (CopyLeft) 2024-Present | Larry Athey (https://panhandleponics.com)
+// Bird Brain v1.2.1 - LIDAR Hydrometer Reader and Parrot Flow Monitor - Released November 3, 2024
+// 
+// This is a custom library for turning the capacitance readings from the custom flow sensor into
+// a coherent 0% to 100% reading. Please use Capacitance_Meter.ino to fine tune your flow sensor.
+//------------------------------------------------------------------------------------------------
 #define SENSE_PIN 39  // Capacitor under test is connected between this pin and ESP32 +3.3v pin
                       // Shielded cable should be used if the capacitor connection is distant
-#define CHARGE_PIN 23 // 2 meg resistor connected between this pin and SENSE_PIN
+#define CHARGE_PIN 23 // 1 or 2 meg resistor connected between this pin and SENSE_PIN
 //------------------------------------------------------------------------------------------------
 struct doubleLong {
   long charged_value;
@@ -35,8 +41,8 @@ doubleLong measureADC(int num_measurements,byte charge_pin,byte sense_pin,byte c
 }
 //------------------------------------------------------------------------------------------------
 int getFlowSensor() { // Convert the flow sensor capacitance value to a coherent flow rate
-  int emptyValue = 30; // Sensor reading when the vessel is empty
-  int fullValue = 15;  // Sensor reading when the vessel is full
+  int emptyValue = 30; // Sensor reading when the vessel is empty, adjust as necessary
+  int fullValue = 18;  // Sensor reading when the vessel is full, adjust as necessaey
   int range = emptyValue - fullValue; // Calculate the range
   // Ensure that we're not dividing by zero
   if (range == 0) {
