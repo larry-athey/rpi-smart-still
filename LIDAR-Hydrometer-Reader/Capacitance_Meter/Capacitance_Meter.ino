@@ -1,6 +1,6 @@
 //------------------------------------------------------------------------------------------------
 // RPi Smart Still Controller | (CopyLeft) 2024-Present | Larry Athey (https://panhandleponics.com)
-// Bird Brain v1.2.1 - LIDAR Hydrometer Reader and Parrot Flow Monitor - Released November 3, 2024
+// Bird Brain v1.2.1 - LIDAR Hydrometer Reader and Parrot Flow Monitor - Released November 23, 2024
 //
 // Compile and upload this code to your ESP32 and watch the capacitance value in the IDE terminal.
 // Perform test fills and drains while noting the correlation between the Flow Rate & capacitance.
