@@ -1,6 +1,6 @@
 //------------------------------------------------------------------------------------------------
 // RPi Smart Still Controller | (CopyLeft) 2024-Present | Larry Athey (https://panhandleponics.com)
-// Bird Brain v1.2.1 - LIDAR Hydrometer Reader and Parrot Flow Monitor - Released November 3, 2024
+// Bird Brain v1.2.1 - LIDAR Hydrometer Reader and Parrot Flow Monitor - Released November 23, 2024
 // 
 // This is a custom library for turning the capacitance readings from the custom flow sensor into
 // a coherent 0% to 100% reading. Please use Capacitance_Meter.ino to fine tune your flow sensor.
