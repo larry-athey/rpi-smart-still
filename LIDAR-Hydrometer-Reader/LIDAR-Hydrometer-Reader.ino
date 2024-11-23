@@ -149,7 +149,7 @@ void GetDivisions() { // Stuff the Divisions array with saved values stored in f
     Serial.print(": ");
     Serial.println(Divisions[x]);
   }
-  Serial.println("#");
+  Serial.println("#!");
 }
 //------------------------------------------------------------------------------------------------
 void UpdateDivision(byte Slot) { // Update a flash memory slot for a specific Divisions array item
