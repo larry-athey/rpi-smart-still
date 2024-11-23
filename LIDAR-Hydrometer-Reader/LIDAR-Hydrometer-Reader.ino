@@ -45,13 +45,12 @@
 #include "OneWire.h"           // OneWire Network communications library
 #include "DallasTemperature.h" // Dallas Temperature DS18B20 temperature sensor library
 #include "Preferences.h"       // ESP32 Flash memory read/write library
+#include "flow-sensor.h"       // Library for the custom capacitive flow sensor
 //------------------------------------------------------------------------------------------------
 #define ONE_WIRE 15            // 1-Wire network pin for the DS18B20 temperature sensor
 #define I2C_SCL 22             // I2C clock pin
 #define I2C_SDA 21             // I2C data pin
 #define USER_LED 2             // Blue or Neopixel LED on the ESP32 board
-#define SENSE_PIN 39           // Capacitive flow sensor analog input pin
-#define CHARGE_PIN 36          // Capacitive flow sensor charging output pin
 //------------------------------------------------------------------------------------------------
 char Uptime[10];               // Global placeholder for the formatted uptime reading
 byte Ethanol = 0;              // Global placeholder for ethanol percentage reading
@@ -62,22 +61,6 @@ long SerialCounter;            // Timekeeper for serial data output updates
 byte EthanolBuf[10];           // Buffer for smoothing out ethanol readings
 byte FlowBuf[10];              // Buffer for smoothing out flow sensor readings
 //------------------------------------------------------------------------------------------------
-// Constants and variables here are for the capacitance reading functions
-const byte chargeTime_us = 84;
-const byte dischargeTime_ms = 40;
-const byte numMeasurements = 40;
-const uint16_t MAX_ADC_VALUE = 4095;
-const float resistor_mohm = 2.035;
-const float Vref = 3.3;
-
-float capacitance_pf = 0;
-float capVoltage = 0;
-
-struct doubleLong {
-  long charged_value;
-  long discharged_value;
-};
-//------------------------------------------------------------------------------------------------
 Adafruit_VL53L0X Lidar = Adafruit_VL53L0X();
 OneWire oneWire(ONE_WIRE);
 DallasTemperature DT(&oneWire);
@@ -85,10 +68,7 @@ Preferences preferences;
 //------------------------------------------------------------------------------------------------
 void setup() {
   Serial.begin(9600);
-  Serial2.begin(115200);
-  Serial2.setDebugOutput(true); // Send ESP32 debug data to an ignored serial port
-  Serial.setDebugOutput(false); // Turn off ESP32 debug data on the RPi output port
-  while ((! Serial) or (! Serial2)) delay(10);
+  while (! Serial) delay(10);
   Serial.println("");
 
   DT.begin();
@@ -108,10 +88,11 @@ void setup() {
     GetDivisions();
   }
 
+  // Set up the custom flow sensor library
   pinMode(SENSE_PIN,INPUT);
   pinMode(CHARGE_PIN,OUTPUT);
   digitalWrite(CHARGE_PIN,LOW);
-  delay(dischargeTime_ms);
+  delay(100);
 
   pinMode(USER_LED,OUTPUT);
   SerialCounter = millis();
@@ -218,31 +199,6 @@ void ResetDivisions() { // Restore all of the default reflector distance values
   }
 }
 //------------------------------------------------------------------------------------------------
-doubleLong measureADC(int num_measurements,byte charge_pin,byte sense_pin,byte charge_time_us,byte discharge_time_ms) { // Read the ADC
-  long charged_val = 0;
-  long discharged_val = 0;
- 
-  for (int i = 0; i < num_measurements; i ++) {
-    digitalWrite(charge_pin,HIGH);
-    delayMicroseconds(charge_time_us - 54);
-    charged_val += analogRead(sense_pin);
-    digitalWrite(charge_pin,LOW);
-    delay(discharge_time_ms);
-    discharged_val += analogRead(sense_pin);
-  }
-  Serial.flush();
-  Serial.println("\n!"); // Tell the Raspberry Pi to purge any serial data prior to this
-  return {charged_val /= num_measurements,discharged_val /= num_measurements};
-}
-//------------------------------------------------------------------------------------------------
-float getCapacitance() { // Read the flow sensor, this can take up to 4 seconds to complete
-  doubleLong ADCvalues = measureADC(numMeasurements,CHARGE_PIN,SENSE_PIN,chargeTime_us,dischargeTime_ms);
-  capVoltage = (Vref * ADCvalues.charged_value) / (float)MAX_ADC_VALUE;
-  capacitance_pf = -1.0 * ((chargeTime_us) / resistor_mohm ) / log(1 - (capVoltage / Vref));
-  if (capacitance_pf > 0.0) capacitance_pf -= 9.0;
-  return capacitance_pf;
-}
-//------------------------------------------------------------------------------------------------
 void RebootUnit() { // Reboot the device, write to flash memory here before restarting if needed
   ESP.restart();
 }
@@ -250,7 +206,7 @@ void RebootUnit() { // Reboot the device, write to flash memory here before rest
 void loop() {
   VL53L0X_RangingMeasurementData_t measure;
   byte Data = 0;
-  float Flow = 0,FlowTotal = 0;
+  int FlowTotal;
   uint EthanolAvg = 0;
   long CurrentTime = millis();
   if (CurrentTime > 4200000000) {
@@ -300,18 +256,16 @@ void loop() {
       Ethanol = EthanolAvg * 0.1;
     }
 
-    // Get the current distillate flow rate (capacitance of the flow sensor plates)
+    // Get the current distillate flow rate (resonance level across the flow sensor plates)
     // RPi Smart Still Controller ignores this until Ethanol value is greater than zero
     for (byte x = 0; x <= 8; x ++) FlowBuf[x] = FlowBuf[x + 1];
-    Flow = getCapacitance();
-    Flow -= 300;
-    if (Flow < 0) Flow = 0;
-    FlowBuf[9] = round((Flow / 700) * 100);
-    if (FlowBuf[9] > 100 FlowBuf[9] = 100;
+    FlowBuf[9] = getFlowSensor();
+    if (FlowBuf[9] > 100) FlowBuf[9] = 100;
     for (byte x = 0; x <= 9; x ++) FlowTotal += FlowBuf[x];
     FlowTotal *= 0.01;
 
     digitalWrite(USER_LED,HIGH);
+    digitalWrite(CHARGE_PIN,LOW);
     Serial.print("Uptime: "); Serial.println(Uptime);
     Serial.print("Distance: "); Serial.println(Distance);
     Serial.print("Flow: "); Serial.println(FlowTotal);
@@ -319,7 +273,7 @@ void loop() {
     Serial.print("TempC: "); Serial.println(TempC,1);
     Serial.println("#"); // Pound sign marks the end of a data block to the Raspberry PI
     Serial.flush();
-    delay(250);
+    delay(200);
     digitalWrite(USER_LED,LOW);
     SerialCounter = CurrentTime;
   }
