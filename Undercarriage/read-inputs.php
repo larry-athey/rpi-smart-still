@@ -57,7 +57,6 @@ if (($Hydrometer != "") && (mb_substr($Hydrometer,-1) == "#")) {
     $DistillateFlow = trim($Data2[1]);
     $Data2 = explode(": ",$Data[3]);
     $DistillateAbv = trim($Data2[1]);
-    if ($DistillateAbv == 0) $DistillateFlow = 0; // Ignore the flow rate if there's no ABV reading
     $Data2 = explode(": ",$Data[4]);
     $DistillateTemp = trim($Data2[1]);
     $Update = mysqli_query($DBcnx,"UPDATE settings SET distillate_flow='$DistillateFlow',distillate_abv='$DistillateAbv',distillate_temp='$DistillateTemp',serial_data='$Hydrometer' WHERE ID=1");
