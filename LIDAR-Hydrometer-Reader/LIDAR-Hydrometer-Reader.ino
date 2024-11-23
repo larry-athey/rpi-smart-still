@@ -39,7 +39,7 @@
 // The new flow sensor is a custom device designed by James (The Doc) from Ireland and determines
 // the flow rate by the height of ethanol in a vessel and reading the electrical capacitance from
 // two copper plates in the ethanol. The higher the flow rate, the higher the ethanol level, the
-// higher the capacitance. A perforated overflow tube controls the ethanol level in the vessel.
+// higher the sensor reading. A perforated overflow tube controls the ethanol level in the vessel.
 //------------------------------------------------------------------------------------------------
 #include "Adafruit_VL53L0X.h"  // VL53L0X LIDAR sensor library by Adafruit
 #include "OneWire.h"           // OneWire Network communications library
