@@ -206,7 +206,7 @@ void RebootUnit() { // Reboot the device, write to flash memory here before rest
 void loop() {
   VL53L0X_RangingMeasurementData_t measure;
   byte Data = 0;
-  int FlowTotal;
+  int FlowTotal = 0;
   uint EthanolAvg = 0;
   long CurrentTime = millis();
   if (CurrentTime > 4200000000) {
@@ -262,7 +262,7 @@ void loop() {
     FlowBuf[9] = getFlowSensor();
     if (FlowBuf[9] > 100) FlowBuf[9] = 100;
     for (byte x = 0; x <= 9; x ++) FlowTotal += FlowBuf[x];
-    FlowTotal *= 0.01;
+    if (FlowTotal > 0) FlowTotal *= 0.01;
 
     digitalWrite(USER_LED,HIGH);
     digitalWrite(CHARGE_PIN,LOW);
