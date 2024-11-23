@@ -4,6 +4,8 @@
 //
 // Compile and upload this code to your ESP32 and watch the capacitance value in the IDE terminal.
 // Perform test fills and drains while noting the correlation between the Flow Rate & capacitance.
+// It's best to perform these tests while running off the RPI Smart Still Controller power supply
+// and not USB power alone due to the current limitations in most computers' built in USB hubs.
 //
 // Edit the emptyValue and fullValue variables in the getFlowSensor() function to fine-tune it to
 // your flow sensor, then carry those values over to the same variables in the function by the same
