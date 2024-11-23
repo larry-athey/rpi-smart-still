@@ -2,9 +2,10 @@
 // RPi Smart Still Controller | (CopyLeft) 2024-Present | Larry Athey (https://panhandleponics.com)
 // Bird Brain v1.2.1 - LIDAR Hydrometer Reader and Parrot Flow Monitor - Released November 3, 2024
 //
-// Use this progrgram to fine tune your flow sensor. Edit the emptyValue and fullValue variables
-// in the getFlowSensor() function to tune your flow sensor, then carry those values over to the
-// same function name in the flow-sensor.h library.
+// Edit the emptyValue and fullValue variables in the getFlowSensor() function to fine-tune it to
+// your flow sensor, then carry those values over to the same variables in the function by the same
+// name in the flow-sensor.h library. After that, you can compile and upload the LIDAR Hydrometer
+// Reader code to your ESP32 and your flow sensor will be properly calibrated to work with it.
 //
 // Remember, you are actually building an air-gap capacitor here. The length, width, thickness of
 // the plates and the gap between the plates all have an effect on its readings. The beauty is the
