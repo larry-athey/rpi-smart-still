@@ -105,8 +105,8 @@ function ControlRelays($DBcnx) {
 
   $Content  = "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
-  $Content .=     "<p class=\"fw-bolder\">Auxiliary relays can be connected to GPIO pins 17 and 27 for controlling pumps independent of your program settings, and will resume switch state across reboots.</p>";
-  $Content .=     "<p class=\"fw-bolder\">Keep in mind that high current AC power loads should not be switched with the Pi Hat onboard relays. These should be used to switch external solid state relays.</p>";
+  $Content .=     "<p class=\"fw-bolder\">The auxiliary relays can be used to control low-current DC pumps independent of your program settings. These will also resume their switched state across reboots.</p>";
+  $Content .=     "<p class=\"fw-bolder\">Keep in mind that high current AC power loads should not be switched with the Pi Hat onboard relays. These should be used to switch external solid state relays instead.</p>";
   $Content .=     "<div class=\"row\" style=\"margin-top: 1.5em;\">";
   $Content .=       "<div class=\"col\"><span class=\" fw-bolder\">Auxiliary&nbsp;Relay&nbsp;#1</span></div>";
   $Content .=       "<div class=\"col\"><a style=\"float: right;\" href=\"process.php?control_relay=1&state=0\" class=\"btn btn-danger btn-sm fw-bolder\">Deactivate</a></div>";
