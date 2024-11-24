@@ -7,6 +7,8 @@
 // It's best to perform these tests while running off the RPI Smart Still Controller power supply
 // and not USB power alone due to the current limitations in most computers' built in USB hubs.
 //
+// NOTE: The serial data line cannot be connected while uploading code to the ESP32.
+//
 // Edit the emptyValue and fullValue variables in the getFlowSensor() function to fine-tune it to
 // your flow sensor, then carry those values over to the same variables in the function by the same
 // name in the flow-sensor.h library. After that, you can compile and upload the LIDAR Hydrometer
