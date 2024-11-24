@@ -53,7 +53,6 @@
 #define USER_LED 2             // Blue or Neopixel LED on the ESP32 board
 //------------------------------------------------------------------------------------------------
 char Uptime[10];               // Global placeholder for the formatted uptime reading
-byte Ethanol = 0;              // Global placeholder for ethanol percentage reading
 float TempC = 0;               // Global placeholder for ethanol temperature reading
 uint Distance = 0;             // Global placeholder for the LIDAR distance measurement
 uint Divisions[11];            // Measurements for the hydrometer's 10% divisions
@@ -253,7 +252,7 @@ void loop() {
       for (byte x = 0; x <= 8; x ++) EthanolBuf[x] = EthanolBuf[x + 1];
       EthanolBuf[9] = CalcEthanol();
       for (byte x = 0; x <= 9; x ++) EthanolAvg += EthanolBuf[x];
-      Ethanol = EthanolAvg * 0.1;
+      EthanolAvg *= 0.1;
     }
 
     // Get the current distillate flow rate (resonance level across the flow sensor plates)
@@ -269,7 +268,7 @@ void loop() {
     Serial.print("Uptime: "); Serial.println(Uptime);
     Serial.print("Distance: "); Serial.println(Distance);
     Serial.print("Flow: "); Serial.println(FlowTotal);
-    Serial.print("Ethanol: "); Serial.println(Ethanol);
+    Serial.print("Ethanol: "); Serial.println(EthanolAvg);
     Serial.print("TempC: "); Serial.println(TempC,1);
     Serial.println("#"); // Pound sign marks the end of a data block to the Raspberry PI
     Serial.flush();
