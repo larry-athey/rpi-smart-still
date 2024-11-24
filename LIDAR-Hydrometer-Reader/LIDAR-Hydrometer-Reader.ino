@@ -262,7 +262,7 @@ void loop() {
     FlowBuf[9] = getFlowSensor();
     if (FlowBuf[9] > 100) FlowBuf[9] = 100;
     for (byte x = 0; x <= 9; x ++) FlowTotal += FlowBuf[x];
-    if (FlowTotal > 0) FlowTotal *= 0.01;
+    FlowTotal *= 0.01;
 
     digitalWrite(USER_LED,HIGH);
     digitalWrite(CHARGE_PIN,LOW);
