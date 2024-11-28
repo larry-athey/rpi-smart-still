@@ -328,7 +328,7 @@ if (mysqli_num_rows($Result) > 0) {
       /***** DISTILLATE MINIMUM ABV MANAGEMENT ROUTINES *****/
       if ($Program["abv_managed"] == 1) {
         if ($Logic["hydrometer_started"] == 0) {
-          if ($Settings["distillate_abv"] > 20) $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_started='1' WHERE ID=1");
+          if ($Settings["distillate_abv"] >= $Program["distillate_abv"]) $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_started='1' WHERE ID=1");
         } else {
           if ($Program["mode"] == 0) {
             if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Logic["hydrometer_started"] == 1)) {
