@@ -343,8 +343,10 @@ if (mysqli_num_rows($Result) > 0) {
                 $Update = mysqli_query($DBcnx,"UPDATE settings SET active_run='0',run_end=now() WHERE ID=1");
               }
             } else {
-              $Logic["hydrometer_abv_errors"] = 0;
-              $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_errors='0' WHERE ID=1");
+              if ($Settings["distillate_abv"] > $Program["distillate_abv"]) {
+                $Logic["hydrometer_abv_errors"] = 0;
+                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_errors='0' WHERE ID=1");
+              }
             }
           } else {
             // In reflux mode, we dynamically adjust the program's dephleg upper and lower temperature limits downward
@@ -361,8 +363,10 @@ if (mysqli_num_rows($Result) > 0) {
                 $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_errors='0' WHERE ID=1");
               }
             } else {
-              $Logic["hydrometer_abv_errors"] = 0;
-              $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_errors='0' WHERE ID=1");
+              if ($Settings["distillate_abv"] > $Program["distillate_abv"]) {
+                $Logic["hydrometer_abv_errors"] = 0;
+                $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_errors='0' WHERE ID=1");
+              }
             }
           }
         }
