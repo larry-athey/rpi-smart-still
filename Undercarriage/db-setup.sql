@@ -6,6 +6,22 @@ USE `rpismartstill`;
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, LOCK TABLES, EXECUTE, CREATE ROUTINE, ALTER ROUTINE, TRIGGER ON `rpismartstill`.* TO 'rssdbuser'@'localhost';
 FLUSH PRIVILEGES;
 
+CREATE TABLE `boilermaker` (
+  `ID` int(11) NOT NULL,
+  `enabled` tinyint(4) DEFAULT NULL,
+  `ip_address` varchar(15) DEFAULT NULL,
+  `online` tinyint(4) DEFAULT NULL,
+  `fixed_temp` tinyint(4) DEFAULT NULL,
+  `time_spread` tinyint(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `boilermaker` (`ID`, `enabled`, `ip_address`, `online`, `fixed_temp`, `time_spread`) VALUES
+(1, 0, '0.0.0.0', 0, 0, 4);
+
+ALTER TABLE `boilermaker` ADD PRIMARY KEY (`ID`);
+
+ALTER TABLE `boilermaker` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 CREATE TABLE `heating_translation` (
   `ID` int(11) NOT NULL,
   `percent` tinyint(4) DEFAULT NULL,
@@ -171,3 +187,5 @@ CREATE TABLE `voice_prompts` (
 ALTER TABLE `voice_prompts` ADD PRIMARY KEY (`ID`);
 
 ALTER TABLE `voice_prompts` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+COMMIT;
