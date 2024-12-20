@@ -70,6 +70,15 @@ if [ -d /usr/share/rpi-smart-still ]; then
   sudo chown -R www-data:www-data /var/www/html
   sudo chmod g+w -R /var/www/html
 
+  which curl > /dev/null 2>&1
+  if [ ! $? -eq 0 ]; then
+    echo "Cannot locate the 'curl' executable on this system"
+    echo "You will need this if you intend to use a Boilermaker"
+    echo
+    echo "run 'sudo apt install curl -y' to install it"
+    echo
+  fi
+
   echo
   echo "All Done"
   echo
