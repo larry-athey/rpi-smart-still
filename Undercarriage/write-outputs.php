@@ -151,7 +151,7 @@ while ($RS = mysqli_fetch_assoc($Result)) {
     PingHost($Boilermaker["ip_address"]);
     PingHost($Boilermaker["ip_address"]);
     BoilermakerQuery($Boilermaker["ip_address"],"/reboot"); // Reboot the Boilermaker
-    Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+    $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 6) {
     // Control command to reboot the hydrometer (Load cell and LIDAR versions)
     if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(33);
