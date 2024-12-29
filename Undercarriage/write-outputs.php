@@ -11,6 +11,8 @@ $Counter  = 0;
 $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
 if (mysqli_num_rows($Result) > 0) {
   $Settings = mysqli_fetch_assoc($Result);
+  $Result = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
+  $Boilermaker = mysqli_fetch_assoc($Result);
 } else {
   echo("System settings record is missing, reinstall system from GitHub clone.\n");
   mysqli_close($DBcnx);
@@ -75,33 +77,55 @@ while ($RS = mysqli_fetch_assoc($Result)) {
     shell_exec("/usr/share/rpi-smart-still/valve " . $RS["valve_id"] . " $Direction " . $RS["duration"]);
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 3) {
-    // Control commands for the heating stepper motor
-    if ($Settings["heating_polarity"] == 0) {
-      if ($RS["direction"] == 0) {
-        $Direction = "ccw";
-      } else {
-        $Direction = "cw";
+    if ($Boilermaker["enabled"] == 1) {
+      // Control commands for a Boilermaker
+      if (($Boilermaker["online"] == 1) && ($Settings["active_run"] == 0)) {
+        if ($RS["position"] > 0) {
+          PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
+          PingHost($Boilermaker["ip_address"]);
+          PingHost($Boilermaker["ip_address"]);
+          $Runtime = trim(BoilermakerQuery($Boilermaker["ip_address"],"/get-runtime")); // Get the Boilermaker current runtime
+          if (($Runtime != "") && ($Runtime == 0)) {
+            BoilermakerQuery2($Boilermaker["ip_address"],"/?data_0=0"); // Put the Boilermaker into Constant Power mode
+            BoilermakerQuery2($Boilermaker["ip_address"],"/start-run"); // Start the Boilermaker
+          }
+          BoilermakerQuery2($Boilermaker["ip_address"],"/?power=" . $RS["position"]); // Set the Boilermaker power level
+        } else {
+          BoilermakerQuery2($Boilermaker["ip_address"],"/stop-run"); // Stop the Boilermaker
+        }
+        if ($RS["direction"] == 0) {
+          if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(5);
+        } else {
+          if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(4);
+        }
       }
     } else {
-      if ($RS["direction"] == 0) {
-        $Direction = "cw";
+      // Control commands for the heating stepper motor
+      if ($Settings["heating_polarity"] == 0) {
+        if ($RS["direction"] == 0) {
+          $Direction = "ccw";
+        } else {
+          $Direction = "cw";
+        }
       } else {
-        $Direction = "ccw";
+        if ($RS["direction"] == 0) {
+          $Direction = "cw";
+        } else {
+          $Direction = "ccw";
+        }
       }
-    }
-    if ($Settings["speech_enabled"] == 1) {
       if ($RS["direction"] == 0) {
         if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(5);
       } else {
         if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(4);
       }
+      shell_exec("/usr/share/rpi-smart-still/heating $Direction " . $RS["duration"]);
+      if ($Settings["active_run"] == 0) {
+        sleep(1);
+        shell_exec("/usr/share/rpi-smart-still/heating disable");
+      }
+      if ($Settings["heating_analog"] == 1) sleep(1);
     }
-    shell_exec("/usr/share/rpi-smart-still/heating $Direction " . $RS["duration"]);
-    if ($Settings["active_run"] == 0) {
-      sleep(1);
-      shell_exec("/usr/share/rpi-smart-still/heating disable");
-    }
-    if ($Settings["heating_analog"] == 1) sleep(1);
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 4) {
     // Control commands to calibrate the valves
@@ -217,7 +241,7 @@ while ($RS = mysqli_fetch_assoc($Result)) {
     // Control commands to speak notifications with no other actions
     if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) {
       if ($RS["position"] == 1) {
-        DebugMessage("Performing boiler heating stepper motor jump to " . $RS["duration"] . "%");
+        DebugMessage("Performing boiler heating controller jump to " . $RS["duration"] . "%");
       } elseif ($RS["position"] == 2) {
         SpeakMessage(30);
       } elseif ($RS["position"] == 3) {
