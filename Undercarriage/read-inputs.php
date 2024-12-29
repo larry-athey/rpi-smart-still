@@ -9,15 +9,46 @@ $DBcnx = mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
 $Result = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
 if (mysqli_num_rows($Result) > 0) {
   $Settings = mysqli_fetch_assoc($Result);
+  $Result = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
+  $Boilermaker = mysqli_fetch_assoc($Result);
 } else {
   echo("System settings record is missing, reinstall system from GitHub clone.\n");
   mysqli_close($DBcnx);
   exit;
 }
 
-// Read the three DS18B20 temperature sensors and update the settings table individually so as to keep -1000 failure readings out of the timeline
-$Data = getOneWireTemp($Settings["boiler_addr"]);
-$BoilerTemp = $Data["C"];
+// ESP32 seems to put its WiFi to sleep if it's not kept active, so we ping it every time this script runs to keep it awake
+if ($Boilermaker["enabled"] == 1) {
+  if (PingHost($Boilermaker["ip_address"])) {
+    $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET online='1' WHERE ID=1");
+    $Boilermaker["online"] = 1;
+  } else {
+    $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET online='0' WHERE ID=1");
+    $Boilermaker["online"] = 0;
+  }
+}
+
+if ($Boilermaker["enabled"] == 1) {
+  // If a Boilermaker is configured, we get the boiler temperature from that instead of the DS18B20
+  if ($Boilermaker["online"] == 1) {
+    $BoilerTemp = trim(BoilermakerQuery($Boilermaker["ip_address"],"/get-tempc"));
+    if ($BoilerTemp == "") $BoilerTemp = 0;
+  } else {
+    $BoilerTemp = 0;
+  }
+  // If a Boilermaker is configured, get its current power level during an active run since it manages its own power
+  if ($Settings["active_run"] == 1) {
+    if ($Boilermaker["online"] == 1) {
+      $BoilerPower = trim(BoilermakerQuery($Boilermaker["ip_address"],"/get-power"));
+      if (is_numeric($BoilerPower)) $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='$BoilerPower' WHERE ID=1");
+    }
+  }
+} else {
+  // Read the three DS18B20 temperature sensors and update the settings table individually so as to keep -1000 failure readings out of the timeline
+  $Data = getOneWireTemp($Settings["boiler_addr"]);
+  $BoilerTemp = $Data["C"];
+}
+
 echo("Boiler: $BoilerTemp\n");
 if ($BoilerTemp > 0) {
   $Update = mysqli_query($DBcnx,"UPDATE settings SET boiler_temp='$BoilerTemp' WHERE ID=1");
