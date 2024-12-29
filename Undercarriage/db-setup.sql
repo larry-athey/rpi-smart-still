@@ -12,11 +12,13 @@ CREATE TABLE `boilermaker` (
   `ip_address` varchar(15) DEFAULT NULL,
   `online` tinyint(4) DEFAULT NULL,
   `fixed_temp` tinyint(4) DEFAULT NULL,
-  `time_spread` tinyint(4) DEFAULT NULL
+  `time_spread` tinyint(4) DEFAULT NULL,
+  `target_temp` float DEFAULT NULL,
+  `inc_temp` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `boilermaker` (`ID`, `enabled`, `ip_address`, `online`, `fixed_temp`, `time_spread`) VALUES
-(1, 0, '0.0.0.0', 0, 0, 4);
+INSERT INTO `boilermaker` (`ID`, `enabled`, `ip_address`, `online`, `fixed_temp`, `time_spread`, `target_temp`, `inc_temp`) VALUES
+(1, 0, '0.0.0.0', 0, 0, 3, 0, 0);
 
 ALTER TABLE `boilermaker` ADD PRIMARY KEY (`ID`);
 
