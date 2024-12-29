@@ -145,7 +145,13 @@ while ($RS = mysqli_fetch_assoc($Result)) {
     if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(27);
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 5) {
-    // Unused, my plans changed for pausing/unpausing a run and I forgot about this valve_id, LOL!!!
+    // Reboot the Boilermaker (if one is configured)
+    if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(62);
+    PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
+    PingHost($Boilermaker["ip_address"]);
+    PingHost($Boilermaker["ip_address"]);
+    BoilermakerQuery($Boilermaker["ip_address"],"/reboot"); // Reboot the Boilermaker
+    Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 6) {
     // Control command to reboot the hydrometer (Load cell and LIDAR versions)
     if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(33);
