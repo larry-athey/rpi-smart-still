@@ -9,14 +9,17 @@ $DBcnx = mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
 //---------------------------------------------------------------------------------------------
 $Result = mysqli_query($DBcnx,"SELECT * FROM logic_tracker WHERE ID=1");
 if (mysqli_num_rows($Result) > 0) {
-  $Logic    = mysqli_fetch_assoc($Result);
-  $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
-  $Settings = mysqli_fetch_assoc($Result);
-  $Result   = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=" . $Settings["active_program"]);
-  $Program  = mysqli_fetch_assoc($Result);
+  $Logic       = mysqli_fetch_assoc($Result);
+  $Result      = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
+  $Settings    = mysqli_fetch_assoc($Result);
+  $Result      = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=" . $Settings["active_program"]);
+  $Program     = mysqli_fetch_assoc($Result);
+  $Result      = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
+  $Boilermaker = mysqli_fetch_assoc($Result);
   if ($Logic["run_start"] == 1) {
     // New run started
     if ($Settings["speech_enabled"] == 1) SpeakMessage(6);
+    if ($Boilermaker["enabled"] == 1) $Settings["heating_total"] = 0;
     $Update = mysqli_query($DBcnx,"UPDATE settings SET valve1_position='0',valve2_position='0',heating_position='" . $Settings["heating_total"] . "' WHERE ID=1");
     if ($Settings["speech_enabled"] == 1) SpeakMessage(1);
     shell_exec("/usr/share/rpi-smart-still/valve 1 close");
@@ -24,8 +27,31 @@ if (mysqli_num_rows($Result) > 0) {
     shell_exec("/usr/share/rpi-smart-still/valve 2 close");
     $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET run_start='0' WHERE ID=1");
     if ($Settings["heating_enabled"] == 1) {
-      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                    "VALUES (now(),'0','3','1','" . $Settings["heating_total"] . "','" . $Settings["heating_total"] . "','0','0')");
+      if ($Boilermaker["enabled"] == 1) {
+        if ($Boilermaker["online"] == 1) {
+          PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
+          PingHost($Boilermaker["ip_address"]);
+          PingHost($Boilermaker["ip_address"]);
+          $Runtime = trim(BoilermakerQuery($Boilermaker["ip_address"],"/get-runtime")); // Get the Boilermaker current runtime
+          if (($Runtime != "") && ($Runtime > 0)) BoilermakerQuery2($Boilermaker["ip_address"],"/stop-run"); // Stop the Boilermaker if it's already running
+          BoilermakerQuery2($Boilermaker["ip_address"],"/?data_0=1"); // Put the Boilermaker into Constant Temp mode
+          BoilermakerQuery2($Boilermaker["ip_address"],"/?data_1=" . $Program["boiler_temp_low"]); // Set the Boilermaker initial target temperature
+          BoilermakerQuery2($Boilermaker["ip_address"],"/start-run"); // Start the Boilermaker
+          if ($Boilermaker["fixed_temp"] == 0) {
+            $Range = $Program["boiler_temp_high"] - $Program["boiler_temp_low"];
+            $IncTemp = $Range / ($Boilermaker["time_spread"] * 4);
+            $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='" . $Program["boiler_temp_low"] . "',inc_temp='$IncTemp' WHERE ID=1");
+          } else {
+            $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='" . $Program["boiler_temp_low"] . "',inc_temp='0' WHERE ID=1");
+          }
+          if ($Settings["speech_enabled"] == 1) SpeakMessage(58);
+        } else {
+          if ($Settings["speech_enabled"] == 1) SpeakMessage(59);
+        }
+      } else {
+        $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                      "VALUES (now(),'0','3','1','" . $Settings["heating_total"] . "','" . $Settings["heating_total"] . "','0','0')");
+      }
     } else {
       if ($Settings["speech_enabled"] == 1) SpeakMessage(8);
     }
@@ -35,8 +61,21 @@ if (mysqli_num_rows($Result) > 0) {
     $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='0' WHERE ID=1");
     $Update = mysqli_query($DBcnx,"TRUNCATE logic_tracker");
     if ($Settings["heating_enabled"] == 1) {
-      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                    "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','0','0')");
+      if ($Boilermaker["enabled"] == 1) {
+        if ($Boilermaker["online"] == 1) {
+          PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
+          PingHost($Boilermaker["ip_address"]);
+          PingHost($Boilermaker["ip_address"]);
+          BoilermakerQuery2($Boilermaker["ip_address"],"/stop-run"); // Stop the Boilermaker
+          $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='0',inc_temp='0' WHERE ID=1");
+          if ($Settings["speech_enabled"] == 1) SpeakMessage(60);
+        } else {
+          if ($Settings["speech_enabled"] == 1) SpeakMessage(59);
+        }
+      } else {
+        $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                      "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','0','0')");
+      }
     } else {
       if ($Settings["speech_enabled"] == 1) SpeakMessage(9);
     }
@@ -53,18 +92,23 @@ if (mysqli_num_rows($Result) > 0) {
       // Don't bother managing anything else until the boiler is up to temperature
       if ($Settings["boiler_temp"] >= $Program["boiler_temp_low"]) {
         if ($Settings["heating_enabled"] == 1) {
-          if ($Settings["speech_enabled"] == 1) SpeakMessage(10);
-          $Difference = $Settings["heating_position"] - $Program["heating_idle"];
-          $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Program["heating_idle"] . "' WHERE ID=1");
-          $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_done='1',boiler_last_adjustment=now()," .
-                                        "boiler_note='Boiler has reached minimum operating temperature, reducing heat to " . $Program["heating_idle"] . " steps' WHERE ID=1");
-          if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
-            $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                          "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
-                                                 "(now(),'0','3','1','" . $Program["heating_idle"] . "','" . $Program["heating_idle"] . "','1','0')");
-          } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
-            $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                          "VALUES (now(),'0','3','0','$Difference','" . $Program["heating_idle"] . "','1','0')");
+          if ($Boilermaker["enabled"] == 1) {
+            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_done='1',boiler_last_adjustment=now(),boiler_note='Boilermaker has reached minimum operating temperature' WHERE ID=1");
+            if ($Settings["speech_enabled"] == 1) SpeakMessage(61);
+          } else {
+            if ($Settings["speech_enabled"] == 1) SpeakMessage(10);
+            $Difference = $Settings["heating_position"] - $Program["heating_idle"];
+            $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Program["heating_idle"] . "' WHERE ID=1");
+            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_done='1',boiler_last_adjustment=now()," .
+                                          "boiler_note='Boiler has reached minimum operating temperature, reducing heat to " . $Program["heating_idle"] . " steps' WHERE ID=1");
+            if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
+              $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                            "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
+                                                   "(now(),'0','3','1','" . $Program["heating_idle"] . "','" . $Program["heating_idle"] . "','1','0')");
+            } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
+              $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                            "VALUES (now(),'0','3','0','$Difference','" . $Program["heating_idle"] . "','1','0')");
+            }
           }
         } else {
           $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_timer=now(),boiler_done='1',boiler_last_adjustment=now()," .
@@ -100,7 +144,7 @@ if (mysqli_num_rows($Result) > 0) {
       }
     } else {
       /***** BOILER TEMPERATURE MANAGEMENT ROUTINES *****/
-      if ($Program["boiler_managed"] == 1) {
+      if (($Program["boiler_managed"] == 1) && ($Boilermaker["enabled"] == 0)) {
         // Check boiler temperature every 30 seconds
         if (time() - strtotime($Logic["boiler_timer"]) >= 30) { // Primary timer, in case it's needed for future development
           $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_timer=now() WHERE ID=1");
@@ -172,7 +216,23 @@ if (mysqli_num_rows($Result) > 0) {
             } // $Settings["boiler_temp"] vs $Program["boiler_temp_low/high"] checks
           } // $Logic["boiler_last_adjustment"]) >= 900 check
         } //$Logic["boiler_timer"] >= 30 check
-      } // $Program["boiler_managed"] == 1 check
+      } // $Program["boiler_managed"] == 1 && $Boilermaker["enabled"] == 0 check
+      /***** BOILERMAKER PROGRESSIVE TEMPERATURE MANAGEMENT ROUTINES *****/
+      if (($Program["boiler_managed"] == 1) && ($Boilermaker["enabled"] == 1) && ($Boilermaker["fixed_temp"] == 0)) {
+        // Perform progressive temperature increases every 15 minutes
+        // This works just like Mode 3 in my "Airhead" controller for Air Stills
+        if (time() - strtotime($Logic["boiler_last_adjustment"]) >= 900) {
+          $TargetTemp = $Boilermaker["target_temp"] + $Boilermaker["inc_temp"];
+          $TempC = round($TargetTemp,1) . "C";
+          $TempF = round(($TargetTemp * (9 / 5)) + 32,1) . "F";
+          $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='$TargetTemp' WHERE ID=1");
+          $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now(),boiler_note='Boilermaker target temperature progressively incremented to $TempC / $TempF' WHERE ID=1");
+          PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
+          PingHost($Boilermaker["ip_address"]);
+          PingHost($Boilermaker["ip_address"]);
+          BoilermakerQuery2($Boilermaker["ip_address"],"/?data_1=$TargetTemp"); // Update the Boilermaker target temperature
+        }
+      } // $Program["boiler_managed"] == 1 && $Boilermaker["enabled"] == 1 && $Boilermaker["fixed_temp"] == 1 check
       /***** COLUMN TEMPERATURE MANAGEMENT ROUTINES *****/
       if ($Program["column_managed"] == 1) {
         if ($Logic["column_done"] == 0) {
