@@ -33,8 +33,8 @@ function SpeakMessage($ID) {
   $Msg[1]   = "Decreasing condenser cooling valve position";
   $Msg[2]   = "Increasing dephlegmator cooling valve position";
   $Msg[3]   = "Decreasing dephlegmator cooling valve position";
-  $Msg[4]   = "Increasing heating stepper motor position";
-  $Msg[5]   = "Decreasing heating stepper motor position";
+  $Msg[4]   = "Increasing heating controller position";
+  $Msg[5]   = "Decreasing heating controller position";
   $Msg[6]   = "Starting a new distillation run using the program named. " . $Program["program_name"];
   $Msg[7]   = "Stopping the current distillation run. Shutting down the boiler and cooling valves";
   $Msg[8]   = "Please turn on your boiler's heating control to its highest setting at this time";
@@ -59,7 +59,7 @@ function SpeakMessage($ID) {
   $Msg[27]  = "Dephlegmator valve reported " . $Settings["valve2_total"] . " total pulses. Each 1% movement equals " . $Settings["valve2_pulse"] . " pulses";
   $Msg[28]  = "Turning off the cooling valves in 2 minutes";
   $Msg[29]  = "Setting the cooling valves to their starting positions according to the current program";
-  $Msg[30]  = "Manual adjustment of heating stepper motor to " . $Settings["heating_position"] . " steps";
+  $Msg[30]  = "Manual adjustment of heating controller to " . $Settings["heating_position"] . " steps";
   $Msg[31]  = "Pot still mode minimum acceptable ABV level has been reached";
   $Msg[32]  = "Sending the command to recalibrate the hydrometer load cell";
   $Msg[33]  = "Sending the command to reboot the hydrometer";
@@ -87,6 +87,10 @@ function SpeakMessage($ID) {
   $Msg[55]  = "Dephlegmator is at it's maximum open position. There is a potential water flow problem";
   $Msg[56]  = "This system will reboot in 30 seconds";
   $Msg[57]  = "This system will shut down in 30 seconds";
+  $Msg[58]  = "Boilermaker starting up in constant temperature mode";
+  $Msg[59]  = "Boilermaker is enabled in the configuration. But is currently unreachable";
+  $Msg[60]  = "Boilermaker has been stopped";
+  $Msg[61]  = "Boiler has reached minimum operating temperature and is now managed by the Boilermaker";
 
   mysqli_close($DBcnx);
   CreatePrompt($Msg[$ID]);
