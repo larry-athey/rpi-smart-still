@@ -386,6 +386,16 @@ function EditHeating($DBcnx) {
     $Content .=     "</div>";
   }
   $Content .=     "<div class=\"row\" style=\"margin-top: 1em;\">";
+  if ($Boilermaker["enabled"] == 1) {
+    if ($Settings["active_run"] == 1) {
+      $Disabled = "disabled";
+    } else {
+      $Disabled = "";
+    }
+    $Content .=     "<div class=\"col\">";
+    $Content .=       "<a href=\"process.php?reboot_boilermaker=1\" class=\"btn btn-outline-danger fw-bolder $Disabled\" name=\"cancel_action\">Reboot Boilermaker</a>";
+    $Content .=     "</div>";
+  }
   $Content .=       "<div class=\"col\" style=\"text-align: right;\">";
   $Content .=         "<a href=\"index.php\" class=\"btn btn-danger fw-bolder\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-primary fw-bolder\" name=\"rss_edit_heating\">Submit</button>";
   $Content .=       "</div>";
@@ -880,7 +890,7 @@ function StartRun($DBcnx) {
     $Content .= "<ol>";
     $Content .=   "<li><span class=\"fw-bolder\">Make sure that your still is completely cooled down.</span></li>";
     if ($Boilermaker["enabled"] == 1) {
-      $Content .= "<li><span class=\"fw-bolder\">Reboot your Boilermaker (unplug/replug it).</span></li>";
+      $Content .= "<li><span class=\"fw-bolder\">Reboot your Boilermaker.</span></li>";
     } else {
       $Content .= "<li><span class=\"fw-bolder\">Zero the heating stepper motor (if enabled).</span></li>";
     }
