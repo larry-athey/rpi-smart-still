@@ -250,21 +250,34 @@ if (mysqli_num_rows($Result) > 0) {
             // The column is slower to react to adjustments than the dephleg sensor
             if (time() - strtotime($Logic["column_last_adjustment"]) >= 300) {
               if ($Settings["column_temp"] < $Program["column_temp_low"]) {
-                if ($Settings["heating_enabled"] == 1) {
-                  // Increase boiler power to the next higher step
-                  $Increase = $Settings["heating_position"] + 1;
-                  if ($Increase > $Settings["heating_total"]) $Increase = $Settings["heating_total"];
-                  $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='$Increase' WHERE ID=1");
-                  $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_last_adjustment=now()," .
-                                                "column_note='Column is under temperature, increasing heat to $Increase steps' WHERE ID=1");
-                  if ($Settings["speech_enabled"] == 1) SpeakMessage(20);
-                  if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
-                    $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                                  "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
-                                                         "(now(),'0','3','1','$Increase','$Increase','1','0')");
-                  } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
-                    $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                                  "VALUES (now(),'0','3','1','1','$Increase','1','0')");
+                if (($Program["boiler_managed"] == 1) && ($Settings["heating_enabled"] == 1)) {
+                  // Increase boiler power to raise the column temperature
+                  if ($Boilermaker["enabled"] == 1) {
+                    $TargetTemp = $Boilermaker["target_temp"] + 1;
+                    $TempC = round($TargetTemp,1) . "C";
+                    $TempF = round(($TargetTemp * (9 / 5)) + 32,1) . "F";
+                    $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='$TargetTemp' WHERE ID=1");
+                    $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now(),boiler_note='Boilermaker target temperature increased to $TempC / $TempF due to column under temp' WHERE ID=1");
+                    PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
+                    PingHost($Boilermaker["ip_address"]);
+                    PingHost($Boilermaker["ip_address"]);
+                    BoilermakerQuery2($Boilermaker["ip_address"],"/?data_1=$TargetTemp"); // Update the Boilermaker target temperature
+                    if ($Settings["speech_enabled"] == 1) SpeakMessage(20);
+                  } else {
+                    $Increase = $Settings["heating_position"] + 1;
+                    if ($Increase > $Settings["heating_total"]) $Increase = $Settings["heating_total"];
+                    $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='$Increase' WHERE ID=1");
+                    $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_last_adjustment=now()," .
+                                                  "column_note='Column is under temperature, increasing heat to $Increase steps' WHERE ID=1");
+                    if ($Settings["speech_enabled"] == 1) SpeakMessage(20);
+                    if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
+                      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                    "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
+                                                           "(now(),'0','3','1','$Increase','$Increase','1','0')");
+                    } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
+                      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                    "VALUES (now(),'0','3','1','1','$Increase','1','0')");
+                    }
                   }
                 } else {
                 // Tell the user to manually turn up their heat a notch or two
@@ -272,21 +285,34 @@ if (mysqli_num_rows($Result) > 0) {
                   if ($Settings["speech_enabled"] == 1) SpeakMessage(18);
                 }
               } elseif ($Settings["column_temp"] > $Program["column_temp_high"]) {
-                if ($Settings["heating_enabled"] == 1) {
-                  // Decrease boiler power to the next lower step
-                  $Decrease = $Settings["heating_position"] - 1;
-                  if ($Decrease < 0) $Decrease = 0;
-                  $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='$Decrease' WHERE ID=1");
-                  $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_last_adjustment=now()," .
-                                                "column_note='Column is over temperature, decreasing heat to $Decrease steps' WHERE ID=1");
-                  if ($Settings["speech_enabled"] == 1) SpeakMessage(21);
-                  if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
-                    $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                                  "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
-                                                         "(now(),'0','3','1','$Decrease','$Decrease','1','0')");
-                  } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
-                    $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                                  "VALUES (now(),'0','3','1','1','$Decrease','1','0')");
+                if (($Program["boiler_managed"] == 1) && ($Settings["heating_enabled"] == 1)) {
+                  // Decrease boiler power to lower the column temperature
+                  if ($Boilermaker["enabled"] == 1) {
+                    $TargetTemp = $Boilermaker["target_temp"] - 1;
+                    $TempC = round($TargetTemp,1) . "C";
+                    $TempF = round(($TargetTemp * (9 / 5)) + 32,1) . "F";
+                    $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='$TargetTemp' WHERE ID=1");
+                    $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now(),boiler_note='Boilermaker target temperature reduced to $TempC / $TempF due to column over temp' WHERE ID=1");
+                    PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
+                    PingHost($Boilermaker["ip_address"]);
+                    PingHost($Boilermaker["ip_address"]);
+                    BoilermakerQuery2($Boilermaker["ip_address"],"/?data_1=$TargetTemp"); // Update the Boilermaker target temperature
+                    if ($Settings["speech_enabled"] == 1) SpeakMessage(21);
+                  } else {
+                    $Decrease = $Settings["heating_position"] - 1;
+                    if ($Decrease < 0) $Decrease = 0;
+                    $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='$Decrease' WHERE ID=1");
+                    $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_last_adjustment=now()," .
+                                                  "column_note='Column is over temperature, decreasing heat to $Decrease steps' WHERE ID=1");
+                    if ($Settings["speech_enabled"] == 1) SpeakMessage(21);
+                    if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
+                      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                    "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
+                                                           "(now(),'0','3','1','$Decrease','$Decrease','1','0')");
+                    } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
+                      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                    "VALUES (now(),'0','3','1','1','$Decrease','1','0')");
+                    }
                   }
                 } else {
                   // Tell the user to manually turn down their heat a notch or two
