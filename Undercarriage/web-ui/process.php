@@ -83,34 +83,49 @@ elseif (isset($_GET["heat_jump"])) {
   $Settings = mysqli_fetch_assoc($Result);
   $Result   = mysqli_query($DBcnx,"SELECT * FROM heating_translation WHERE percent=" . $_GET["value"]);
   $Heating  = mysqli_fetch_assoc($Result);
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
+  $Boilermaker = mysqli_fetch_assoc($Result);
 
-  if ($_GET["value"] == 0) {
-    $Heating["position"] = 0;
-  } elseif ($_GET["value"] == 100) {
-    $Heating["position"] = $Settings["heating_total"];
-  }
-
-  $Difference = 0;
-  if ($Settings["heating_enabled"] == 1) {
-    if ($Heating["position"] > $Settings["heating_position"]) {
-      $Difference = $Heating["position"] - $Settings["heating_position"];
+  if ($Boilermaker["enabled"] == 1) {
+    if ($_GET["value"] > $Settings["heating_position"]) {
       $Direction = 1;
-    } elseif ($Heating["position"] < $Settings["heating_position"]) {
-      $Difference = $Settings["heating_position"] - $Heating["position"];
+    } else {
       $Direction = 0;
     }
-    // Requires a difference in heating stepper position to process
-    if ($Difference > 0) {
-      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                    "VALUES (now(),'1','99','0','" . $_GET["value"] . "','1','0','0')");
-      $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Heating["position"] . "' WHERE ID=1");
-      if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
+    $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                  "VALUES (now(),'1','99','0','" . $_GET["value"] . "','1','0','0')");
+    $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $_GET["value"] . "' WHERE ID=1");
+    $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                  "VALUES (now(),'1','3','$Direction','0','" . $_GET["value"] . "','1','0')");
+  } else {
+    if ($_GET["value"] == 0) {
+      $Heating["position"] = 0;
+    } elseif ($_GET["value"] == 100) {
+      $Heating["position"] = $Settings["heating_total"];
+    }
+
+    $Difference = 0;
+    if ($Settings["heating_enabled"] == 1) {
+      if ($Heating["position"] > $Settings["heating_position"]) {
+        $Difference = $Heating["position"] - $Settings["heating_position"];
+        $Direction = 1;
+      } elseif ($Heating["position"] < $Settings["heating_position"]) {
+        $Difference = $Settings["heating_position"] - $Heating["position"];
+        $Direction = 0;
+      }
+      // Requires a difference in heating stepper position to process
+      if ($Difference > 0) {
         $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                      "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
-                                             "(now(),'1','3','1','" . $Heating["position"] . "','" . $Heating["position"] . "','1','0')");
-      } else { // Digital voltage controllers can just be adjusted up and down as necessary
-        $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                      "VALUES (now(),'1','3','$Direction','$Difference','" . $Heating["position"] . "','1','0')");
+                                      "VALUES (now(),'1','99','0','" . $_GET["value"] . "','1','0','0')");
+        $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Heating["position"] . "' WHERE ID=1");
+        if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
+          $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                        "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
+                                               "(now(),'1','3','1','" . $Heating["position"] . "','" . $Heating["position"] . "','1','0')");
+        } else { // Digital voltage controllers can just be adjusted up and down as necessary
+          $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                        "VALUES (now(),'1','3','$Direction','$Difference','" . $Heating["position"] . "','1','0')");
+        }
       }
     }
   }
@@ -191,39 +206,54 @@ elseif (isset($_GET["recalibrate_hydro"])) {
 }
 //---------------------------------------------------------------------------------------------------
 elseif (isset($_POST["rss_edit_heating"])) {
+  $Result = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
+  $Boilermaker = mysqli_fetch_assoc($Result);
   //echo("<pre>\n");
   //print_r($_POST);
   //echo("</pre>\n");
 
   $HeatingEnabled  = $_POST["HeatingEnabled"];
-  $HeatingPolarity = $_POST["HeatingPolarity"];
-  $HeatingAnalog   = $_POST["HeatingAnalog"];
-  $HeatingTotal    = $_POST["HeatingTotal"];
-  $Heating10       = $_POST["Heating10"];
-  $Heating20       = $_POST["Heating20"];
-  $Heating30       = $_POST["Heating30"];
-  $Heating40       = $_POST["Heating40"];
-  $Heating50       = $_POST["Heating50"];
-  $Heating60       = $_POST["Heating60"];
-  $Heating70       = $_POST["Heating70"];
-  $Heating80       = $_POST["Heating80"];
-  $Heating90       = $_POST["Heating90"];
+  $BMenabled       = $_POST["BMenabled"];
 
-  $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_enabled='$HeatingEnabled',heating_polarity='$HeatingPolarity',heating_analog='$HeatingAnalog',heating_total='$HeatingTotal' WHERE ID=1");
-  $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating10' WHERE percent=10");
-  $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating20' WHERE percent=20");
-  $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating30' WHERE percent=30");
-  $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating40' WHERE percent=40");
-  $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating50' WHERE percent=50");
-  $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating60' WHERE percent=60");
-  $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating70' WHERE percent=70");
-  $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating80' WHERE percent=80");
-  $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating90' WHERE percent=90");
+  if ($Boilermaker["enabled"] == 1) {
+    $BMip_address  = $_POST["BMip_address"];
+    $BMfixed_temp  = $_POST["BMfixed_temp"];
+    $BMtime_spread = $_POST["BMtime_spread"];
+    $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_enabled='$HeatingEnabled' WHERE ID=1");
+    $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET enabled='$BMenabled',ip_address='$BMip_address',fixed_temp='$BMfixed_temp',time_spread='$BMtime_spread' WHERE ID=1");
+  } else {
+    $HeatingPolarity = $_POST["HeatingPolarity"];
+    $HeatingAnalog   = $_POST["HeatingAnalog"];
+    $HeatingTotal    = $_POST["HeatingTotal"];
+    $Heating10       = $_POST["Heating10"];
+    $Heating20       = $_POST["Heating20"];
+    $Heating30       = $_POST["Heating30"];
+    $Heating40       = $_POST["Heating40"];
+    $Heating50       = $_POST["Heating50"];
+    $Heating60       = $_POST["Heating60"];
+    $Heating70       = $_POST["Heating70"];
+    $Heating80       = $_POST["Heating80"];
+    $Heating90       = $_POST["Heating90"];
+
+    $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_enabled='$HeatingEnabled',heating_polarity='$HeatingPolarity',heating_analog='$HeatingAnalog',heating_total='$HeatingTotal' WHERE ID=1");
+    $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET enabled='$BMenabled' WHERE ID=1");
+    $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating10' WHERE percent=10");
+    $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating20' WHERE percent=20");
+    $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating30' WHERE percent=30");
+    $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating40' WHERE percent=40");
+    $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating50' WHERE percent=50");
+    $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating60' WHERE percent=60");
+    $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating70' WHERE percent=70");
+    $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating80' WHERE percent=80");
+    $Update = mysqli_query($DBcnx,"UPDATE heating_translation SET position='$Heating90' WHERE percent=90");
+  }
 
   //exit;
 }
 //---------------------------------------------------------------------------------------------------
 elseif (isset($_POST["rss_edit_program"])) {
+  $Result = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
+  $Boilermaker = mysqli_fetch_assoc($Result);
   //echo("<pre>\n");
   //print_r($_POST);
   //echo("</pre>\n");
@@ -237,7 +267,11 @@ elseif (isset($_POST["rss_edit_program"])) {
   $MinimumFlow     = $_POST["MinimumFlow"];
   $CondenserRate   = $_POST["CondenserRate"];
   $DephlegStart    = $_POST["DephlegStart"];
-  $HeatingIdle     = $_POST["HeatingIdle"];
+  if ($Boilermaker["enabled"] == 1) {
+    $HeatingIdle   = 50;
+  } else {
+    $HeatingIdle   = $_POST["HeatingIdle"];
+  }
   $BoilerManaged   = $_POST["BoilerManaged"];
   $BoilerTempLow   = $_POST["BoilerTempLow"];
   $BoilerTempHigh  = $_POST["BoilerTempHigh"];
@@ -275,6 +309,8 @@ elseif (isset($_POST["rss_edit_sensors"])) {
 elseif (isset($_POST["rss_edit_servos"])) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
+  $Boilermaker = mysqli_fetch_assoc($Result);
 
   $Valve1 = round($_POST["Valve1"] * $Settings["valve1_pulse"],1);
   $Valve2 = round($_POST["Valve2"] * $Settings["valve2_pulse"],1);
@@ -311,27 +347,43 @@ elseif (isset($_POST["rss_edit_servos"])) {
                                   "VALUES (now(),'1','2','$Direction','$Difference','$Valve2','0','0')");
   }
 
-  // Requires a difference in heating stepper position to process
-  $Difference = 0;
-  if ($Settings["heating_enabled"] == 1) {
-    if ($_POST["Heating"] > $Settings["heating_position"]) {
-      $Difference = $_POST["Heating"] - $Settings["heating_position"];
-      $Direction = 1;
-    } elseif ($_POST["Heating"] < $Settings["heating_position"]) {
-      $Difference = $Settings["heating_position"] - $_POST["Heating"];
-      $Direction = 0;
+  if ($Boilermaker["enabled"] == 1) {
+    // Power adjustments to a Boilermaker can't be made if there's an active run
+    if ($Settings["active_run"] == 0) {
+      if ($POST["Heatering"] != $Settings["heating_position"]) {
+        if ($_POST["Heating"] > $Settings["heating_position"]) {
+          $Direction = 1;
+        } else {
+          $Direction = 0;
+        }
+        $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $_POST["Heating"] . "' WHERE ID=1");
+        $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                      "VALUES (now(),'1','3','$Direction','0','" . $_POST["Heating"] . "','0','0')");
+      }
     }
-    if ($Difference > 0) {
-      $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $_POST["Heating"] . "' WHERE ID=1");
-      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                    "VALUES (now(),'1','99','0','0','2','0','0')");
-      if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
+  } else {
+    // Requires a difference in heating stepper position to process
+    $Difference = 0;
+    if ($Settings["heating_enabled"] == 1) {
+      if ($_POST["Heating"] > $Settings["heating_position"]) {
+        $Difference = $_POST["Heating"] - $Settings["heating_position"];
+        $Direction = 1;
+      } elseif ($_POST["Heating"] < $Settings["heating_position"]) {
+        $Difference = $Settings["heating_position"] - $_POST["Heating"];
+        $Direction = 0;
+      }
+      if ($Difference > 0) {
+        $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $_POST["Heating"] . "' WHERE ID=1");
         $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                      "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
-                                             "(now(),'1','3','1','" . $_POST["Heating"] . "','" . $_POST["Heating"] . "','1','0')");
-      } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
-        $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                      "VALUES (now(),'1','3','$Direction','$Difference','" . $_POST["Heating"] . "','1','0')");
+                                      "VALUES (now(),'1','99','0','0','2','0','0')");
+        if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
+          $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                        "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
+                                               "(now(),'1','3','1','" . $_POST["Heating"] . "','" . $_POST["Heating"] . "','1','0')");
+        } else { // Digital voltage controllers and gas valves can just be adjusted up and down as necessary
+          $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                        "VALUES (now(),'1','3','$Direction','$Difference','" . $_POST["Heating"] . "','1','0')");
+        }
       }
     }
   }
