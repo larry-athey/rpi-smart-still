@@ -160,6 +160,13 @@ elseif (isset($_GET["pause_run"])) {
   }
 }
 //---------------------------------------------------------------------------------------------------
+elseif (isset($_GET["reboot_boilermaker"])) {
+  $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','5','0','0')");
+  mysqli_close($DBcnx);
+  header("Location: index.php?page=heating");
+  exit;
+}
+//---------------------------------------------------------------------------------------------------
 elseif (isset($_GET["reboot_hydro"])) {
   $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','6','0','0')");
   mysqli_close($DBcnx);
