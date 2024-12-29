@@ -6,7 +6,7 @@ Raspberry Pi (or clone) and Arduino/ESP32 powered smart still controller system.
 You may contact me directly at https://panhandleponics.com<br>
 Subscribe to the official YouTube channel at https://www.youtube.com/@PanhandlePonics
 
-_If you have an Air Still (or clone) be sure to check out my [Airhead](https://github.com/larry-athey/airhead) project if you'd like to upgrade that appliance and make it more useful._<br><br>
+_If you have an Air Still (or clone) be sure to check out my [Airhead](https://github.com/larry-athey/airhead) project if you'd like to upgrade that appliance and make it more useful. Or check out my [Boilermaker](https://github.com/larry-athey/boilermaker) project if you'd like a stand-alone version of its boiler power and temperature controller to use with this system._<br><br>
 
 **NO, THERE IS NOTHING ILLEGAL ABOUT THIS PROJECT! IT DOESN'T MAKE YOU DO ILLEGAL THINGS OR PREVENT YOU FROM GETTING A DISTILLATION LICENSE IN THE USA! THIS IS ONLY A TOOL!**<br><br>
 
