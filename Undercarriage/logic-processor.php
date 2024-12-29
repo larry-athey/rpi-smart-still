@@ -222,15 +222,18 @@ if (mysqli_num_rows($Result) > 0) {
         // Perform progressive temperature increases every 15 minutes
         // This works just like Mode 3 in my "Airhead" controller for Air Stills
         if (time() - strtotime($Logic["boiler_last_adjustment"]) >= 900) {
-          $TargetTemp = $Boilermaker["target_temp"] + $Boilermaker["inc_temp"];
-          $TempC = round($TargetTemp,1) . "C";
-          $TempF = round(($TargetTemp * (9 / 5)) + 32,1) . "F";
-          $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='$TargetTemp' WHERE ID=1");
-          $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now(),boiler_note='Boilermaker target temperature progressively incremented to $TempC / $TempF' WHERE ID=1");
-          PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
-          PingHost($Boilermaker["ip_address"]);
-          PingHost($Boilermaker["ip_address"]);
-          BoilermakerQuery2($Boilermaker["ip_address"],"/?data_1=$TargetTemp"); // Update the Boilermaker target temperature
+          if ($Boilermaker["target_temp"] < $Program["boiler_temp_high"]) {
+            $TargetTemp = $Boilermaker["target_temp"] + $Boilermaker["inc_temp"];
+            $TempC = round($TargetTemp,1) . "C";
+            $TempF = round(($TargetTemp * (9 / 5)) + 32,1) . "F";
+            $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='$TargetTemp' WHERE ID=1");
+            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now(),boiler_note='Boilermaker target temperature progressively incremented to $TempC / $TempF' WHERE ID=1");
+            PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
+            PingHost($Boilermaker["ip_address"]);
+            PingHost($Boilermaker["ip_address"]);
+            BoilermakerQuery2($Boilermaker["ip_address"],"/?data_1=$TargetTemp"); // Update the Boilermaker target temperature
+            if (($TargetTemp >= $Program["boiler_temp_high"]) && ($Settings["speech_enabled"] == 1)) SpeakMessage(63);
+          }
         }
       } // $Program["boiler_managed"] == 1 && $Boilermaker["enabled"] == 1 && $Boilermaker["fixed_temp"] == 1 check
       /***** COLUMN TEMPERATURE MANAGEMENT ROUTINES *****/
