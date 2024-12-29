@@ -174,8 +174,10 @@ function DrawMenu($DBcnx) {
   $Settings = mysqli_fetch_assoc($Result);
   $Result   = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=" . $Settings["active_program"]);
   $Program  = mysqli_fetch_assoc($Result);
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
+  $Boilermaker = mysqli_fetch_assoc($Result);
 
-  $Content  = "<nav class=\"navbar navbar-expand-lg navbar-dark bg-dark\">";
+  $Content  = "<div class=\"row\" style=\"margin-left: 0.5em; margin-right: 0.5em;\"><nav class=\"navbar navbar-expand-lg navbar-dark bg-dark\">";
   $Content .=   "<div class=\"container-fluid\">";
   $Content .=     "<a class=\"navbar-brand\" href=\"/\"><span class=\"iconify text-white\" style=\"font-size: 1.5em;\" data-icon=\"logos:raspberry-pi\"></span>&nbsp;<span class=\"text-white\" style=\"font-weight: bold;\">RPi Smart Still</span></a>";
   $Content .=     "<button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">";
@@ -224,6 +226,9 @@ function DrawMenu($DBcnx) {
     $Content .=           "<li><a class=\"dropdown-item\" href=\"?page=hydrometer\"><span class=\"fw-bolder\">Calibrate&nbsp;Hydrometer</span></a></li>";
   }
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=relays\"><span class=\"fw-bolder\">Control&nbsp;Relays</span></a></li>";
+  if ($Boilermaker["enabled"] == 1) {
+    $Content .=           "<li><a class=\"dropdown-item\" href=\"http://" . $Boilermaker["ip_address"] . "\" target=\"_blank\"><span class=\"fw-bolder\">Open&nbsp;Boilermaker</span></a></li>";
+  }
   if ($Settings["speech_enabled"] == 0) {
     $Content .=           "<li><a class=\"dropdown-item\" href=\"?speech=1\"><span class=\"fw-bolder\">Enable&nbsp;Speech</span></a></li>";
   } else {
@@ -273,13 +278,15 @@ function DrawMenu($DBcnx) {
   $Content .=       "</ul>";
   $Content .=     "</div>";
   $Content .=   "</div>";
-  $Content .= "</nav>";
+  $Content .= "</nav></div>";
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
 function EditHeating($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
+  $Boilermaker = mysqli_fetch_assoc($Result);
   $Result   = mysqli_query($DBcnx,"SELECT * FROM heating_translation ORDER BY percent");
   while ($RS = mysqli_fetch_assoc($Result)) $Position[] = $RS["position"];
 
@@ -292,67 +299,95 @@ function EditHeating($DBcnx) {
   $Content .=         YNselector($Settings["heating_enabled"],"HeatingEnabled");
   $Content .=       "</div>";
   $Content .=       "<div class=\"col\">";
-  $Content .=         "<label for=\"HeatingPolarity\" class=\"form-label fw-bolder\">Inverted Stepper Rotation</label>";
-  $Content .=         YNselector($Settings["heating_polarity"],"HeatingPolarity");
+  $Content .=         "<label for=\"BMenabled\" class=\"form-label fw-bolder\">Boilermaker Enabled</label>";
+  $Content .=         YNselector($Boilermaker["enabled"],"BMenabled");
   $Content .=       "</div>";
   $Content .=     "</div>";
-  $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
-  $Content .=       "<div class=\"col\">";
-  $Content .=         "<label for=\"HeatingAnalog\" class=\"form-label fw-bolder\">Analog Heat Controller</label>";
-  $Content .=         YNselector($Settings["heating_analog"],"HeatingAnalog");
-  $Content .=       "</div>";
-  $Content .=       "<div class=\"col\">";
-  $Content .=         "<label for=\"HeatingTotal\" class=\"form-label fw-bolder\">Total Adjustment Steps</label>";
-  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"HeatingTotal\" name=\"HeatingTotal\" min=\"0\" max=\"1000\" step=\"1\" value=\"" . $Settings["heating_total"] . "\">";
-  $Content .=       "</div>";
-  $Content .=     "</div>";
-  $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
-  $Content .=       "<div class=\"col\">";
-  $Content .=         "<label for=\"Heating10\" class=\"form-label fw-bolder\">10% Position</label>";
-  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Heating10\" name=\"Heating10\" min=\"0\" max=\"1000\" step=\"1\" value=\"$Position[0]\">";
-  $Content .=       "</div>";
-  $Content .=       "<div class=\"col\">";
-  $Content .=         "<label for=\"Heating20\" class=\"form-label fw-bolder\">20% Position</label>";
-  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Heating20\" name=\"Heating20\" min=\"0\" max=\"1000\" step=\"1\" value=\"$Position[1]\">";
-  $Content .=       "</div>";
-  $Content .=     "</div>";
-  $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
-  $Content .=       "<div class=\"col\">";
-  $Content .=         "<label for=\"Heating30\" class=\"form-label fw-bolder\">30% Position</label>";
-  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Heating30\" name=\"Heating30\" min=\"0\" max=\"1000\" step=\"1\" value=\"$Position[2]\">";
-  $Content .=       "</div>";
-  $Content .=       "<div class=\"col\">";
-  $Content .=         "<label for=\"Heating40\" class=\"form-label fw-bolder\">40% Position</label>";
-  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Heating40\" name=\"Heating40\" min=\"0\" max=\"1000\" step=\"1\" value=\"$Position[3]\">";
-  $Content .=       "</div>";
-  $Content .=     "</div>";
-  $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
-  $Content .=       "<div class=\"col\">";
-  $Content .=         "<label for=\"Heating50\" class=\"form-label fw-bolder\">50% Position</label>";
-  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Heating50\" name=\"Heating50\" min=\"0\" max=\"1000\" step=\"1\" value=\"$Position[4]\">";
-  $Content .=       "</div>";
-  $Content .=       "<div class=\"col\">";
-  $Content .=         "<label for=\"Heating60\" class=\"form-label fw-bolder\">60% Position</label>";
-  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Heating60\" name=\"Heating60\" min=\"0\" max=\"1000\" step=\"1\" value=\"$Position[5]\">";
-  $Content .=       "</div>";
-  $Content .=     "</div>";
-  $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
-  $Content .=       "<div class=\"col\">";
-  $Content .=         "<label for=\"Heating70\" class=\"form-label fw-bolder\">70% Position</label>";
-  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Heating70\" name=\"Heating70\" min=\"0\" max=\"1000\" step=\"1\" value=\"$Position[6]\">";
-  $Content .=       "</div>";
-  $Content .=       "<div class=\"col\">";
-  $Content .=         "<label for=\"Heating80\" class=\"form-label fw-bolder\">80% Position</label>";
-  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Heating80\" name=\"Heating80\" min=\"0\" max=\"1000\" step=\"1\" value=\"$Position[7]\">";
-  $Content .=       "</div>";
-  $Content .=     "</div>";
-  $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
-  $Content .=       "<div class=\"col\">";
-  $Content .=         "<label for=\"Heating90\" class=\"form-label fw-bolder\">90% Position</label>";
-  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Heating90\" name=\"Heating90\" min=\"0\" max=\"1000\" step=\"1\" value=\"$Position[8]\">";
-  $Content .=       "</div>";
-  $Content .=       "<div class=\"col\">";
-  $Content .=         "<a href=\"index.php\" style=\"margin-top: 2em;\" class=\"btn btn-danger fw-bolder\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" style=\"margin-top: 2em;\" class=\"btn btn-primary fw-bolder\" name=\"rss_edit_heating\">Submit</button>";
+  if ($Boilermaker["enabled"] == 1) {
+    $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
+    $Content .=       "<div class=\"col\">";
+    $Content .=         "<label for=\"BMip_address\" class=\"form-label fw-bolder\">IP Address</label>"; $Pattern = '^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$';
+    $Content .=         "<input type=\"text\" class=\"form-control fw-bolder\" id=\"BMip_address\" name=\"BMip_address\" minlength=\"7\" maxlength=\"15\" pattern=\"$Pattern\" required value=\"". $Boilermaker["ip_address"] . "\">";
+    $Content .=       "</div>";
+    //$Content .=       "<div class=\"col\">";
+
+    //$Content .=       "</div>";
+    $Content .=     "</div>";
+    $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
+    $Content .=       "<div class=\"col\">";
+    $Content .=         "<label for=\"BMfixed_temp\" class=\"form-label fw-bolder\">Fixed Temperature</label>";
+    $Content .=         YNselector($Boilermaker["fixed_temp"],"BMfixed_temp");
+    $Content .=       "</div>";
+    $Content .=       "<div class=\"col\">";
+    $Content .=         "<label for=\"BMtime_spread\" class=\"form-label fw-bolder\">Time Spread (hours)</label>";
+    $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"BMtime_spread\" name=\"BMtime_spread\" min=\"1\" max=\"24\" step=\"1\" value=\"" . $Boilermaker["time_spread"] . "\">";
+    $Content .=       "</div>";
+    $Content .=     "</div>";
+  } else {
+    $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
+    $Content .=       "<div class=\"col\">";
+    $Content .=         "<label for=\"HeatingPolarity\" class=\"form-label fw-bolder\">Inverted Stepper Rotation</label>";
+    $Content .=         YNselector($Settings["heating_polarity"],"HeatingPolarity");
+    $Content .=       "</div>";
+    $Content .=       "<div class=\"col\">";
+    $Content .=         "<label for=\"HeatingAnalog\" class=\"form-label fw-bolder\">Analog Heat Controller</label>";
+    $Content .=         YNselector($Settings["heating_analog"],"HeatingAnalog");
+    $Content .=       "</div>";
+    $Content .=     "</div>";
+    $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
+    $Content .=       "<div class=\"col\">";
+    $Content .=         "<label for=\"HeatingTotal\" class=\"form-label fw-bolder\">Total Adjustment Steps</label>";
+    $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"HeatingTotal\" name=\"HeatingTotal\" min=\"0\" max=\"1000\" step=\"1\" value=\"" . $Settings["heating_total"] . "\">";
+    $Content .=       "</div>";
+    $Content .=       "<div class=\"col\">";
+    $Content .=         "<label for=\"Heating10\" class=\"form-label fw-bolder\">10% Position</label>";
+    $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Heating10\" name=\"Heating10\" min=\"0\" max=\"1000\" step=\"1\" value=\"$Position[0]\">";
+    $Content .=       "</div>";
+    $Content .=     "</div>";
+    $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
+    $Content .=       "<div class=\"col\">";
+    $Content .=         "<label for=\"Heating20\" class=\"form-label fw-bolder\">20% Position</label>";
+    $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Heating20\" name=\"Heating20\" min=\"0\" max=\"1000\" step=\"1\" value=\"$Position[1]\">";
+    $Content .=       "</div>";
+    $Content .=       "<div class=\"col\">";
+    $Content .=         "<label for=\"Heating30\" class=\"form-label fw-bolder\">30% Position</label>";
+    $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Heating30\" name=\"Heating30\" min=\"0\" max=\"1000\" step=\"1\" value=\"$Position[2]\">";
+    $Content .=       "</div>";
+    $Content .=     "</div>";
+    $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
+    $Content .=       "<div class=\"col\">";
+    $Content .=         "<label for=\"Heating40\" class=\"form-label fw-bolder\">40% Position</label>";
+    $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Heating40\" name=\"Heating40\" min=\"0\" max=\"1000\" step=\"1\" value=\"$Position[3]\">";
+    $Content .=       "</div>";
+    $Content .=       "<div class=\"col\">";
+    $Content .=         "<label for=\"Heating50\" class=\"form-label fw-bolder\">50% Position</label>";
+    $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Heating50\" name=\"Heating50\" min=\"0\" max=\"1000\" step=\"1\" value=\"$Position[4]\">";
+    $Content .=       "</div>";
+    $Content .=     "</div>";
+    $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
+    $Content .=       "<div class=\"col\">";
+    $Content .=         "<label for=\"Heating60\" class=\"form-label fw-bolder\">60% Position</label>";
+    $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Heating60\" name=\"Heating60\" min=\"0\" max=\"1000\" step=\"1\" value=\"$Position[5]\">";
+    $Content .=       "</div>";
+    $Content .=       "<div class=\"col\">";
+    $Content .=         "<label for=\"Heating70\" class=\"form-label fw-bolder\">70% Position</label>";
+    $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Heating70\" name=\"Heating70\" min=\"0\" max=\"1000\" step=\"1\" value=\"$Position[6]\">";
+    $Content .=       "</div>";
+    $Content .=     "</div>";
+    $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
+    $Content .=       "<div class=\"col\">";
+    $Content .=         "<label for=\"Heating80\" class=\"form-label fw-bolder\">80% Position</label>";
+    $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Heating80\" name=\"Heating80\" min=\"0\" max=\"1000\" step=\"1\" value=\"$Position[7]\">";
+    $Content .=       "</div>";
+    $Content .=       "<div class=\"col\">";
+    $Content .=         "<label for=\"Heating90\" class=\"form-label fw-bolder\">90% Position</label>";
+    $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Heating90\" name=\"Heating90\" min=\"0\" max=\"1000\" step=\"1\" value=\"$Position[8]\">";
+    $Content .=       "</div>";
+    $Content .=     "</div>";
+  }
+  $Content .=     "<div class=\"row\" style=\"margin-top: 1em;\">";
+  $Content .=       "<div class=\"col\" style=\"text-align: right;\">";
+  $Content .=         "<a href=\"index.php\" class=\"btn btn-danger fw-bolder\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-primary fw-bolder\" name=\"rss_edit_heating\">Submit</button>";
   $Content .=       "</div>";
   $Content .=     "</div>";
   $Content .=   "</div>";
@@ -365,6 +400,9 @@ function EditHeating($DBcnx) {
 function EditProgram($DBcnx,$ID) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
+  $Boilermaker = mysqli_fetch_assoc($Result);
+
   if ($ID > 0) {
     $Result  = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=$ID");
     $Program = mysqli_fetch_assoc($Result);
@@ -432,10 +470,12 @@ function EditProgram($DBcnx,$ID) {
   $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"DephlegStart\" name=\"DephlegStart\" min=\"0\" max=\"100\" step=\".1\" value=\"" . $Program["dephleg_start"] . "\">";
   $Content .=       "</div>";
   $Content .=     "</div>";
-  $Content .=     "<div style=\"margin-top: .5em;\">";
-  $Content .=         "<label for=\"HeatingIdle\" class=\"form-label fw-bolder\">Heating Idle Position <span class=\"text-secondary\"><i>(after boiler is up to temp 0.." . $Settings["heating_total"] . ")</i></span></label>";
-  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"HeatingIdle\" name=\"HeatingIdle\" min=\"0\" max=\"" . $Settings["heating_total"] . "\" step=\"1\" value=\"" . $Program["heating_idle"] . "\">";
-  $Content .=     "</div>";
+  if ($Boilermaker["enabled"] == 0) {
+    $Content .=   "<div style=\"margin-top: .5em;\">";
+    $Content .=     "<label for=\"HeatingIdle\" class=\"form-label fw-bolder\">Heating Idle Position <span class=\"text-secondary\"><i>(after boiler is up to temp 0.." . $Settings["heating_total"] . ")</i></span></label>";
+    $Content .=     "<input type=\"number\" class=\"form-control fw-bolder\" id=\"HeatingIdle\" name=\"HeatingIdle\" min=\"0\" max=\"" . $Settings["heating_total"] . "\" step=\"1\" value=\"" . $Program["heating_idle"] . "\">";
+    $Content .=   "</div>";
+  }
   $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
   $Content .=       "<div class=\"col\">";
   $Content .=         "<label for=\"BoilerManaged\" class=\"form-label fw-bolder\">Boiler Managed</label>";
@@ -556,14 +596,26 @@ function LogicTracker($DBcnx) {
 function ServoPositionEditor($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
+  $Boilermaker = mysqli_fetch_assoc($Result);
 
   $Content  = "<form id=\"servo_editor\" method=\"post\" action=\"process.php\">";
   $Content .= "<label for=\"Valve2\" class=\"form-label fw-bolder\">Dephleg Cooling Valve %</label>";
   $Content .= "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Valve2\" name=\"Valve2\" min=\"0\" max=\"100\" step=\".1\" value=\"" . PosToPct($Settings["valve2_total"],$Settings["valve2_position"]) . "\">";
   $Content .= "<label for=\"Valve1\" class=\"form-label fw-bolder\" style=\"margin-top: .5em;\">Condenser Cooling Valve %</label>";
   $Content .= "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Valve1\" name=\"Valve1\" min=\"0\" max=\"100\" step=\".1\" value=\"" . PosToPct($Settings["valve1_total"],$Settings["valve1_position"]) . "\">";
-  $Content .= "<label for=\"Heating\" class=\"form-label fw-bolder\" style=\"margin-top: .5em;\">Heating Stepper Position [0.." . $Settings["heating_total"] . "]</label>";
-  $Content .= "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Heating\" name=\"Heating\" min=\"0\" max=\"" . $Settings["heating_total"] . "\" step=\"1\" value=\"" . $Settings["heating_position"] . "\">";
+  if ($Boilermaker["enabled"] == 1) {
+    if ($Settings["active_run"] == 1) {
+      $Disabled = "disabled";
+    } else {
+      $Disabled = "";
+    }
+    $Content .= "<label for=\"Heating\" class=\"form-label fw-bolder\" style=\"margin-top: .5em;\">Heating Controller Position %</label>";
+    $Content .= "<input type=\"number\" $Disabled class=\"form-control fw-bolder\" id=\"Heating\" name=\"Heating\" min=\"0\" max=\"100\" step=\"1\" value=\"" . $Settings["heating_position"] . "\">";
+  } else {
+    $Content .= "<label for=\"Heating\" class=\"form-label fw-bolder\" style=\"margin-top: .5em;\">Heating Controller Position [0.." . $Settings["heating_total"] . "]</label>";
+    $Content .= "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Heating\" name=\"Heating\" min=\"0\" max=\"" . $Settings["heating_total"] . "\" step=\"1\" value=\"" . $Settings["heating_position"] . "\">";
+  }
   $Content .= "<div style=\"margin-top: 1em; float: right;\"><a href=\"index.php\" class=\"btn btn-danger fw-bolder\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-primary fw-bolder\" name=\"rss_edit_servos\">Submit</button></div>";
   $Content .= "</form>";
   $Content .= VoicePrompter($DBcnx,true);
@@ -770,7 +822,7 @@ function ShowTimelines($DBcnx) {
     $Content = str_replace("{Label2}","Dephleg Valve",$Content);
     $Content = str_replace("{Data2}",$Valve2Steps,$Content);
     $Content = str_replace("{RGB2}",$Color[4],$Content);
-    $Content = str_replace("{Label3}","Heating Stepper",$Content);
+    $Content = str_replace("{Label3}","Heating Controller",$Content);
     $Content = str_replace("{Data3}",$HeatingSteps,$Content);
     $Content = str_replace("{RGB3}",$Color[2],$Content);
 
@@ -796,12 +848,18 @@ function ShowTimelines($DBcnx) {
 function ShowValves($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
+  $Boilermaker = mysqli_fetch_assoc($Result);
 
   $Content  = "<table class=\"table table-sm table-borderless\">";
   $Content .=   "<tr><td><span class=\"fw-bolder\">Dephleg&nbsp;Valve:</span></td><td align=\"right\" nowrap><span class=\"fw-bolder\">" . FormatValvePosition($Settings["valve2_total"],$Settings["valve2_position"]) . "</span></td></tr>";
   $Content .=   "<tr><td><span class=\"fw-bolder\">Condenser&nbsp;Valve:</span></td><td align=\"right\" nowrap><span class=\"fw-bolder\">" . FormatValvePosition($Settings["valve1_total"],$Settings["valve1_position"]) . "</span></td></tr>";
-  $Content .=   "<tr><td><span class=\"fw-bolder\">Heating&nbsp;Stepper:</span></td><td align=\"right\" nowrap><span class=\"text-light fw-bolder\">" . $Settings["heating_position"] . " / " . $Settings["heating_total"] . "</span></td></tr>";
-  $Content .=   "<tr><td colspan=\"2\" align=\"right\"><a href=\"?page=edit_servos\" class=\"btn btn-secondary\" name=\"edit_motors\" style=\"float: right; --bs-btn-padding-y: .10rem; --bs-btn-padding-x: .75rem; --bs-btn-font-size: .75rem;\"><span class=\"fw-bolder\">Modify Servo Positions</span></a></td></tr>";
+  if ($Boilermaker["enabled"] == 1) {
+    $Content .= "<tr><td><span class=\"fw-bolder\">Heating&nbsp;Controller:</span></td><td align=\"right\" nowrap><span class=\"text-light fw-bolder\">" . $Settings["heating_position"] . "%</span></td></tr>";
+  } else {
+    $Content .= "<tr><td><span class=\"fw-bolder\">Heating&nbsp;Controller:</span></td><td align=\"right\" nowrap><span class=\"text-light fw-bolder\">" . $Settings["heating_position"] . " / " . $Settings["heating_total"] . "</span></td></tr>";
+  }
+  $Content .=   "<tr><td colspan=\"2\" align=\"right\"><a href=\"?page=edit_servos\" class=\"btn btn-secondary\" name=\"edit_motors\" style=\"float: right; --bs-btn-padding-y: .10rem; --bs-btn-padding-x: .75rem; --bs-btn-font-size: .75rem;\"><span class=\"fw-bolder\">Modify Values</span></a></td></tr>";
   $Content .= "</table>";
   return $Content;
 }
@@ -809,6 +867,8 @@ function ShowValves($DBcnx) {
 function StartRun($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
+  $Boilermaker = mysqli_fetch_assoc($Result);
 
   if (($Settings["valve1_total"] == 0) || ($Settings["valve1_pulse"] == 0) || ($Settings["valve2_total"] == 0) || ($Settings["valve2_pulse"] == 0)) {
     $Content  = "<p class=\"text-danger fw-bolder\"><b>SYSTEM ERROR</b></p>";
@@ -819,7 +879,11 @@ function StartRun($DBcnx) {
                 "Remember, you are making a computer perform the physical actions that a human being would manually perform. Make sure that you always start with a clean and accurate slate!</p>";
     $Content .= "<ol>";
     $Content .=   "<li><span class=\"fw-bolder\">Make sure that your still is completely cooled down.</span></li>";
-    $Content .=   "<li><span class=\"fw-bolder\">Zero the heating stepper motor (if enabled).</span></li>";
+    if ($Boilermaker["enabled"] == 1) {
+      $Content .= "<li><span class=\"fw-bolder\">Reboot your Boilermaker (unplug/replug it).</span></li>";
+    } else {
+      $Content .= "<li><span class=\"fw-bolder\">Zero the heating stepper motor (if enabled).</span></li>";
+    }
     $Content .=   "<li><span class=\"fw-bolder\">Confirm that your water lines are pressurized.</span></li>";
     $Content .=   "<li><span class=\"fw-bolder\">Calibrate the condenser and dephleg cooling valves.</span></li>";
     $Content .=   "<li><span class=\"fw-bolder\">Calibrate the hydrometer.</span></li>";
