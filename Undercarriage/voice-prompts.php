@@ -92,6 +92,7 @@ function SpeakMessage($ID) {
   $Msg[60]  = "Boilermaker has been stopped";
   $Msg[61]  = "Boiler has reached minimum operating temperature and is now managed by the Boilermaker";
   $Msg[62]  = "Sending the command to reboot the Boilermaker";
+  $Msg[63]  = "Boilermaker progressive temperature limit has been reached";
 
   mysqli_close($DBcnx);
   CreatePrompt($Msg[$ID]);
