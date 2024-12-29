@@ -12,7 +12,7 @@ function CalibrateHydrometer($DBcnx) {
     $Content .=     "<p class=\"fw-bolder\">If you are starting a new run, it is suggested that you reboot the hydrometer since barrometric pressure can affect a load cell's reference resistance.</p>";
     $Content .=     "<p class=\"fw-bolder\">Do not use the calibrate function if there is any distillate in the parrot cup, only use this to clear load cell drift before any output begins.</p>";
     $Content .=     "<div class=\"row\">";
-    $Content .=       "<div class=\"col\"><a href=\"process.php?reboot_hydro=1\" class=\"btn btn-primary\">Reboot Hydrometer</a></div>";
+    $Content .=       "<div class=\"col\"><a href=\"process.php?reboot_hydro=1\" class=\"btn btn-outline-danger\">Reboot Hydrometer</a></div>";
     $Content .=       "<div class=\"col\"><a style=\"float: right;\" href=\"process.php?recalibrate_hydro=1\" class=\"btn btn-primary\">Recalibrate Load Cell</a></div>";
     $Content .=     "</div>";
     $Content .=   "</div>";
@@ -23,7 +23,7 @@ function CalibrateHydrometer($DBcnx) {
     $Content .=     "<p class=\"fw-bolder\">By default, the LIDAR hydrometer reader is calibrated with a hydrometer using a 146mm scale. A reflector 10mm above the 100% line will track within +/- 1%.</p>";
     $Content .=     "<p class=\"fw-bolder\">Use the buttons below to recalibrate the 10% division lines. Float your hydrometer with water, use the top of your parrot as the reference point. Watch for the blue light to flash on the reader chip when updating.</p>";
     $Content .=     "<div class=\"row\">";
-    $Content .=       "<div class=\"col\"><a href=\"process.php?reboot_hydro=1\" class=\"btn btn-danger btn-sm fw-bolder\">Reboot Device</a></div>";
+    $Content .=       "<div class=\"col\"><a href=\"process.php?reboot_hydro=1\" class=\"btn btn-outline-danger btn-sm fw-bolder\">Reboot Device</a></div>";
     $Content .=       "<div class=\"col\"><a style=\"float: right;\" href=\"process.php?recalibrate_hydro=1&slot=0\" class=\"btn btn-primary btn-sm fw-bolder\">Calibrate 0%</a></div>";
     $Content .=     "</div>";
     $Content .=     "<div class=\"row\" style=\"margin-top: 0.5em;\">";
