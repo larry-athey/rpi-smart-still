@@ -3,10 +3,39 @@
 ini_set('display_errors',1);
 ini_set('error_reporting',E_ALL);
 //---------------------------------------------------------------------------------------------------
+define("VERSION","1.0.5");
 define("DB_HOST","localhost");
 define("DB_NAME","rpismartstill");
 define("DB_USER","rssdbuser");
 define("DB_PASS","rssdbpasswd");
+//---------------------------------------------------------------------------------------------------
+function PingHost($Host) {
+  $Output = exec("/usr/bin/ping -c 1 -W 1 " . escapeshellarg($Host),$Result,$Status);
+  if ($Status == 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+//---------------------------------------------------------------------------------------------------
+function BoilermakerQuery($Host,$Query) {
+  $Output = shell_exec("/usr/bin/curl -s -m 5 --http0.9 http://$Host" . $Query);
+  return $Output;
+}
+//---------------------------------------------------------------------------------------------------
+function BoilermakerQuery2($Host,$Query) {
+  $Success = "{\"status\": \"success\",\"message\": \"Operation completed successfully\"}";
+  $Result  = "";
+  $Count   = 0;
+
+  while (($Result != $Success) && ($Count < 3)) {
+    $Count ++;
+    PingHost($Host);
+    $Result = trim(BoilermakerQuery($Host,$Query));
+    if ($Result == $Success) $Count = 3;
+  }
+  return $Result;
+}
 //---------------------------------------------------------------------------------------------------
 function AjaxRefreshJS($ID,$RandID,$Delay) {
   $Content  = "\n<script type=\"text/javascript\">\n";
