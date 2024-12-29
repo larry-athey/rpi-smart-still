@@ -53,6 +53,8 @@ if [ -d /usr/share/rpi-smart-still ]; then
   sed -i "s/#define DS18B20_PIN_NUMBER 7/#define DS18B20_PIN_NUMBER $BusPin/g" ./ds18b20.c > /dev/null 2>&1
   sudo gcc -Wall -o /usr/share/rpi-smart-still/ds18b20 ./ds18b20.c -lwiringPi -lpthread
 
+  sudo mysql < boilermaker.sql
+
   sudo chmod +x /usr/share/rpi-smart-still/*
   sudo chmod -x /usr/share/rpi-smart-still/config.ini
   sudo chmod -x /usr/share/rpi-smart-still/rss.py
