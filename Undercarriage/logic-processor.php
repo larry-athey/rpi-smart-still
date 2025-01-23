@@ -39,7 +39,7 @@ if (mysqli_num_rows($Result) > 0) {
           BoilermakerQuery2($Boilermaker["ip_address"],"/start-run"); // Start the Boilermaker
           if ($Boilermaker["fixed_temp"] == 0) {
             $Range = $Program["boiler_temp_high"] - $Program["boiler_temp_low"];
-            $IncTemp = $Range / ($Boilermaker["time_spread"] * 4);
+            $IncTemp = $Range / ($Boilermaker["time_spread"] * 12);
             $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='" . $Program["boiler_temp_low"] . "',inc_temp='$IncTemp' WHERE ID=1");
           } else {
             $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='" . $Program["boiler_temp_low"] . "',inc_temp='0' WHERE ID=1");
@@ -219,9 +219,9 @@ if (mysqli_num_rows($Result) > 0) {
       } // $Program["boiler_managed"] == 1 && $Boilermaker["enabled"] == 0 check
       /***** BOILERMAKER PROGRESSIVE TEMPERATURE MANAGEMENT ROUTINES *****/
       if (($Program["boiler_managed"] == 1) && ($Boilermaker["enabled"] == 1) && ($Boilermaker["fixed_temp"] == 0)) {
-        // Perform progressive temperature increases every 15 minutes
-        // This works just like Mode 3 in my "Airhead" controller for Air Stills
-        if (time() - strtotime($Logic["boiler_last_adjustment"]) >= 900) {
+        // Perform progressive temperature increases every 5 minutes
+        // This works similar to Mode 3 in my "Airhead" controller for Air Stills (which runs on 15 minute intervals)
+        if (time() - strtotime($Logic["boiler_last_adjustment"]) >= 300) {
           if ($Boilermaker["target_temp"] < $Program["boiler_temp_high"]) {
             $TargetTemp = $Boilermaker["target_temp"] + $Boilermaker["inc_temp"];
             $TempC = round($TargetTemp,1) . "C";
