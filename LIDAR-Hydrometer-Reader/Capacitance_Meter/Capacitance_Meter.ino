@@ -7,7 +7,8 @@
 // It's best to perform these tests while running off the RPI Smart Still Controller power supply
 // and not USB power alone due to the current limitations in most computers' built in USB hubs.
 //
-// NOTE: The serial data line cannot be connected while uploading code to the ESP32.
+// NOTE: The serial data line from the RPi Smart Still controller system cannot be connected while
+//       uploading code to the ESP32.
 //
 // Edit the emptyValue and fullValue variables in the getFlowSensor() function to fine-tune it to
 // your flow sensor, then carry those values over to the same variables in the function by the same
@@ -60,7 +61,7 @@ doubleLong measureADC(int num_measurements,byte charge_pin,byte sense_pin,byte c
 }
 //------------------------------------------------------------------------------------------------
 int getFlowSensor(float sensorReading) { // Convert the capacitance to a coherent flow rate
-  int emptyValue = 35; // Sensor reading when the vessel is empty, adjust as necessary
+  int emptyValue = 34; // Sensor reading when the vessel is empty, adjust as necessary
   int fullValue = 24;  // Sensor reading when the vessel is full, adjust as necessary
   // Sensor reading when the vessel is full
   int range = emptyValue - fullValue; // Calculate the range
