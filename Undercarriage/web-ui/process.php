@@ -357,6 +357,7 @@ elseif (isset($_POST["rss_edit_servos"])) {
   if ($Boilermaker["enabled"] == 1) {
     // Power adjustments to a Boilermaker can't be made if there's an active run
     if ($Settings["active_run"] == 0) {
+      if (($_POST["Heating"] > 0) && ($_POST["Heating"] < 10)) $_POST["Heating"] = 10;
       if ($_POST["Heating"] != $Settings["heating_position"]) {
         if ($_POST["Heating"] > $Settings["heating_position"]) {
           $Direction = 1;

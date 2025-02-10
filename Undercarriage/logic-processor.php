@@ -479,7 +479,7 @@ if (mysqli_num_rows($Result) > 0) {
       }
       /***** DISTILLATE TEMPERATURE MANAGEMENT ROUTINES *****/
       /***** THIS FINAL CODE BRANCH CONTROLS THE RESET OF $Logic["hydrometer_timer"] *****/
-      if (($Logic["column_done"] == 1) || ($Logic["column_done"] == 1)) {
+      if (($Logic["column_done"] == 1) || ($Logic["dephleg_done"] == 1)) {
         // Check the distillate temperature every 5 minutes after column or dephleg are up to temperature
         if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Logic["hydrometer_started"] == 1)) {
           // If distillate is over 24C/75F, increment the $Logic["hydrometer_temp_errors"] counter
