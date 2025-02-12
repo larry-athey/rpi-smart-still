@@ -294,15 +294,17 @@ if (mysqli_num_rows($Result) > 0) {
                   // Decrease boiler power to lower the column temperature
                   if ($Boilermaker["enabled"] == 1) {
                     $TargetTemp = $Boilermaker["target_temp"] - 1;
-                    $TempC = round($TargetTemp,1) . "C";
-                    $TempF = round(($TargetTemp * (9 / 5)) + 32,1) . "F";
-                    $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='$TargetTemp' WHERE ID=1");
-                    $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now(),boiler_note='Boilermaker target temperature reduced to $TempC / $TempF due to column over temp' WHERE ID=1");
-                    PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
-                    PingHost($Boilermaker["ip_address"]);
-                    PingHost($Boilermaker["ip_address"]);
-                    BoilermakerQuery2($Boilermaker["ip_address"],"/?data_1=$TargetTemp"); // Update the Boilermaker target temperature
-                    if ($Settings["speech_enabled"] == 1) SpeakMessage(21);
+                    if ($TargetTemp >= $Program["boiler_temp_low"]) {
+                      $TempC = round($TargetTemp,1) . "C";
+                      $TempF = round(($TargetTemp * (9 / 5)) + 32,1) . "F";
+                      $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='$TargetTemp' WHERE ID=1");
+                      $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_last_adjustment=now(),boiler_note='Boilermaker target temperature reduced to $TempC / $TempF due to column over temp' WHERE ID=1");
+                      PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
+                      PingHost($Boilermaker["ip_address"]);
+                      PingHost($Boilermaker["ip_address"]);
+                      BoilermakerQuery2($Boilermaker["ip_address"],"/?data_1=$TargetTemp"); // Update the Boilermaker target temperature
+                      if ($Settings["speech_enabled"] == 1) SpeakMessage(21);
+                    }
                   } else {
                     $Decrease = $Settings["heating_position"] - 1;
                     if ($Decrease < 0) $Decrease = 0;
