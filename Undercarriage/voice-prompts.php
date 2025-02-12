@@ -28,6 +28,8 @@ function SpeakMessage($ID) {
   $Settings = mysqli_fetch_assoc($Result);
   $Result   = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=" . $Settings["active_program"]);
   $Program  = mysqli_fetch_assoc($Result);
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
+  $Boilermaker = mysqli_fetch_assoc($Result);
 
   $Msg[0]   = "Increasing condenser cooling valve position";
   $Msg[1]   = "Decreasing condenser cooling valve position";
@@ -49,7 +51,11 @@ function SpeakMessage($ID) {
   $Msg[17]  = "Dephlegmator has reached minimum operating temperature";
   $Msg[18]  = "Column is under temperature. Please increase your heat a notch or two";
   $Msg[19]  = "Column is over temperature. Please decrease your heat a notch or two";
-  $Msg[20]  = "Column is under temperature. Increasing heat to " . $Settings["heating_position"] . " steps";
+  if ($Boilermaker["enabled"] == 1) {
+    $Msg[20] = "Column is under temperature. Increasing Boilermaker target temperature by 1 degree";
+  } else {
+    $Msg[20] = "Column is under temperature. Increasing heat to " . $Settings["heating_position"] . " steps";
+  }
   $Msg[21]  = "Column is over temperature. Decreasing heat to " . $Settings["heating_position"] . " steps";
   $Msg[22]  = "Dephlegmator is under temperature. Decreasing cooling water flow";
   $Msg[23]  = "Dephlegmator is over temperature. Increasing cooling water flow";
