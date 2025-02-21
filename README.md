@@ -21,7 +21,7 @@ The main focus of this project is to read temperatures and control the heating &
 
 This project is also not intended to replace things like the **AirStill Pro** or **MyVodkaMaker**, this is meant to be added to an existing higher volume still that can deliver more product per hour. If anything, it's intended to provide a person most of the conveniences of a Genio or iStill using your own existing equipment and save you from a $15,000 (or more) investment. This system costs less than $500 and works with your cell phone.
 
-**NOTE:** _It's upon on the distiller themselves to take cuts because there is no way to make those determinations electronically without a gas chromatograph / mass spectrometer. Seriously, ChatGPT can't even do this without tastebuds. Honestly, how could a $35 computer know what tastes **you** prefer and find them in your distillate?_
+_**NOTE:** It's upon on the distiller themselves to take cuts because there is no way to make those determinations electronically without a gas chromatograph / mass spectrometer. Seriously, ChatGPT can't even do this without tastebuds. Honestly, how could a $35 computer know what tastes **you** prefer and find them in your distillate?_
 
 Even though the still that I'm working with is the Still Spirits boiler and their copper T-500 column, this system will work with any other personal still as long as it has a dephlegmator. I don't have the room for anything larger and don't need to upgrade because of how little I actually drink. I just do distilling as a hobby and for this project. Electronics, robotics, and programming are also hobbies of mine. So, here we are. LOL!!!
 
