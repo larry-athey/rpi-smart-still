@@ -57,7 +57,7 @@ function SpeakMessage($ID) {
     $Msg[20] = "Column is under temperature. Increasing heat to " . $Settings["heating_position"] . " steps";
   }
   if ($Boilermaker["enabled"] == 1) {
-    $Msg[20] = "Column is over temperature. Decreasing Boilermaker target temperature by 1 degree";
+    $Msg[21] = "Column is over temperature. Decreasing Boilermaker target temperature by 1 degree";
   } else {
     $Msg[21] = "Column is over temperature. Decreasing heat to " . $Settings["heating_position"] . " steps";
   }

@@ -46,7 +46,12 @@ if (mysqli_num_rows($Result) > 0) {
           }
           if ($Settings["speech_enabled"] == 1) SpeakMessage(58);
         } else {
-          if ($Settings["speech_enabled"] == 1) SpeakMessage(59);
+          // Boilermaker enabled but unresponsive, cancel the distillation run
+          if ($Settings["speech_enabled"] == 1) {
+            SpeakMessage(59);
+            SpeakMessage(7);
+          }
+          $Update = mysqli_query($DBcnx,"TRUNCATE logic_tracker");
         }
       } else {
         $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
