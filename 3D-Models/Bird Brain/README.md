@@ -2,7 +2,7 @@
 
 **34-Copper-flow-Sensor** - This folder contains models related to the [3/4" copper pipe flow sensor](https://www.youtube.com/watch?v=uXPyjsHgtic) designed by [James "The Doc"](https://www.youtube.com/@TheDocChannel) of Ireland. This includes the mounting arm that attaches to the center column of your parrot.
 
-**Flow-Sensor-Bottom.stl** - This is the bottom part of the 3D printable flow sensor vessel that inserts into the 1-3/8" (35mm) receiver cup of your proofing parrot. This must be printed with PETG using 0.1mm layers due to the size of the weep holes in the stand pipe. Or, if you have an SLA resin printer, that would be better yet. Check your resin technical data to verify that it can stand up to ethanol.
+**Flow-Sensor-Bottom.stl** - This is the bottom part of the 3D printable flow sensor vessel that inserts into the 1-3/8" (35mm) receiver cup of your proofing parrot. This must be printed with PETG using 0.1mm layers due to the size of the weep holes in the stand pipe. Or, if you have an SLA resin printer, that would be better yet. Check your resin's technical data to verify that it can stand up to ethanol.
 
 _**NOTE:** If you use an FDM printer, the bottom part of the flow sensor must be printed with PETG filament, not PLA! This is the same plastic that you will find bargain basement bottles of booze bottled in. PLA will progressively deteriorate if exposed to ethanol. While PLA is made mostly from corn, other chemicals used in its manufacture really aren't safe for distillation or food/drink storage._
 
