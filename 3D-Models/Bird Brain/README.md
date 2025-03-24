@@ -6,4 +6,4 @@
 
 **Flow-Sensor-Cap.stl** - This is the cap for the above mentioned flow sensor vessel. It is suggested that you print this using TPU so that it can expand while inserting the copper capactor plates and the DS18B20 temperature sensor. There is a 10mm hole to accept a small funnel to function as your condenser receiver or 1/4" ID silicone tubing from the output of a Still Spirits T500 column.
 
-**Flow-Sensor-Plate-Spacer.stl** - This goes on the end of the copper capacitor plates inside the flow sensor vessel to pervent them from touching each other. This should also be printed with TPU so it's easier to insert the capacitor plates.
+**Flow-Sensor-Plate-Spacer.stl** - This goes on the end of the copper capacitor plates inside the flow sensor vessel to prevent them from touching each other. This should also be printed with TPU so it's easier to insert the capacitor plates.
