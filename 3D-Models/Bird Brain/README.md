@@ -9,3 +9,5 @@
 **Flow-Sensor-Plate-Spacer.stl** - This goes on the end of the copper capacitor plates inside the flow sensor vessel to prevent them from touching each other. This should also be printed with TPU so it's easier to insert the capacitor plates. The plates should reach all the way to the bottom of the vessel, cut two copper strips 55mm x 10mm and bend a 5mm tab at the top to solder the wires to.
 
 **Hydrometer Reflector.stl** - This is the circular reflector that goes at the top of your hydrometer. You should print this in PLA using 0.1mm layers, this will only be two layers tall. While you could print this with a single 0.2mm layer, it will likely tear when you put it on your hydrometer. Depending on your hydrometer, you may need to slightly notch the center hole to make it fit.
+
+**LIDAR Sensor Mount - Back.stl** and **LIDAR Sensor Mount - Front.stl** - These are the two halves of the LIDAR sensor mount that attaches to the overflow cup of your parrot. You will need two 10mm M2 self tapping screws to hold the two halves together and clamp it in place on your parrot. This can be printed with any type filament.
