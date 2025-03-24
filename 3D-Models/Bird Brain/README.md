@@ -4,7 +4,7 @@
 
 **Flow-Sensor-Bottom.stl** - This is the bottom part of the 3D printable flow sensor vessel that inserts into the 1-3/8" (35mm) receiver cup of your proofing parrot. This must be printed with PETG using 0.1mm layers due to the size of the weep holes in the stand pipe. Or, if you have an SLA resin printer, that would be better yet. Check your resin's technical data to verify that it can stand up to ethanol.
 
-_**NOTE:** If you use an FDM printer, the bottom part of the flow sensor must be printed with PETG filament, not PLA! This is the same plastic that you will find bargain basement bottles of booze bottled in. PLA will progressively deteriorate if exposed to ethanol. While PLA is made mostly from corn, other chemicals used in its manufacture really aren't safe for distillation or food/drink storage._
+_**NOTE:** If you use an FDM printer, the bottom part of the flow sensor **must** be printed with PETG filament, not PLA! This is the same plastic that you will find bargain basement bottles of booze bottled in. PLA will progressively deteriorate if exposed to ethanol. While PLA is made mostly from corn, other chemicals used in its manufacture really aren't safe for distillation or food/drink storage._
 
 **Flow-Sensor-Cap.stl** - This is the cap for the above mentioned flow sensor vessel. It is suggested that you print this using TPU so that it can expand while inserting the copper capactor plates and the DS18B20 temperature sensor. There is a 10mm hole to accept a small funnel to function as your condenser receiver or 1/4" ID silicone tubing from the output of a Still Spirits T500 column.
 
