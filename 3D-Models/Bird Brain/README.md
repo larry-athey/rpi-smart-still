@@ -6,7 +6,7 @@
 
 _**NOTE:** If you use an FDM printer, the bottom part of the flow sensor **must** be printed with PETG filament, not PLA! This is the same plastic that you will find bargain basement bottles of booze bottled in. PLA will progressively deteriorate if exposed to ethanol. While PLA is made mostly from corn, other chemicals used in its manufacture really aren't safe for distillation or food/drink storage._
 
-**Flow-Sensor-Cap.stl** - This is the cap for the above mentioned flow sensor vessel. It is suggested that you print this using TPU so that it can expand while inserting the copper capactor plates and the DS18B20 temperature sensor. There is a 10mm hole to accept a small funnel to function as your condenser receiver or 1/4" ID silicone tubing from the output of a Still Spirits T500 column.
+**Flow-Sensor-Cap.stl** - This is the cap for the above mentioned flow sensor vessel. It is suggested that you print this using TPU so that it can expand while inserting the copper capacitor plates and the DS18B20 temperature sensor. There is a 10mm hole to accept a small funnel to function as your condenser receiver or 1/4" ID silicone tubing from the output of a Still Spirits T500 column.
 
 **Flow-Sensor-Plate-Spacer.stl** - This goes on the end of the copper capacitor plates inside the flow sensor vessel to prevent them from touching each other. This should also be printed with TPU so it's easier to insert the capacitor plates. The plates should reach all the way to the bottom of the vessel, cut two copper strips 55mm x 10mm and bend a 5mm tab at the top to solder the wires to.
 
