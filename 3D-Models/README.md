@@ -1,3 +1,4 @@
 # 3D Model Notes
 
-**Bird Brain** - This folder contains
+**Bird Brain** - This folder contains all of the models associated with the LIDAR Hydrometer Reader project.
+**Misc** - This folder contains miscellaneous models used for wire and hose routing.
