@@ -861,6 +861,17 @@ function ShowValves($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
   $Boilermaker = mysqli_fetch_assoc($Result);
 
+  if ($Settings["relay1_state"] == 1) {
+    $Relay1 = "<span class=\"fw-bolder text-success\">Relay 1 On</span>";
+  } else {
+    $Relay1 = "<span class=\"fw-bolder text-warning\">Relay 1 Off</span>";
+  }
+  if ($Settings["relay2_state"] == 1) {
+    $Relay2 = "<span class=\"fw-bolder text-success\">Relay 2 On</span>";
+  } else {
+    $Relay2 = "<span class=\"fw-bolder text-warning\">Relay 2 Off</span>";
+  }
+
   $Content  = "<table class=\"table table-sm table-borderless\">";
   $Content .=   "<tr><td><span class=\"fw-bolder\">Dephleg&nbsp;Valve:</span></td><td align=\"right\" nowrap><span class=\"fw-bolder\">" . FormatValvePosition($Settings["valve2_total"],$Settings["valve2_position"]) . "</span></td></tr>";
   $Content .=   "<tr><td><span class=\"fw-bolder\">Condenser&nbsp;Valve:</span></td><td align=\"right\" nowrap><span class=\"fw-bolder\">" . FormatValvePosition($Settings["valve1_total"],$Settings["valve1_position"]) . "</span></td></tr>";
@@ -869,7 +880,7 @@ function ShowValves($DBcnx) {
   } else {
     $Content .= "<tr><td><span class=\"fw-bolder\">Heating&nbsp;Controller:</span></td><td align=\"right\" nowrap><span class=\"text-light fw-bolder\">" . $Settings["heating_position"] . " / " . $Settings["heating_total"] . "</span></td></tr>";
   }
-  $Content .=   "<tr><td colspan=\"2\" align=\"right\"><a href=\"?page=edit_servos\" class=\"btn btn-secondary\" name=\"edit_motors\" style=\"float: right; --bs-btn-padding-y: .10rem; --bs-btn-padding-x: .75rem; --bs-btn-font-size: .75rem;\"><span class=\"fw-bolder\">Modify Values</span></a></td></tr>";
+  $Content .=   "<tr><td>$Relay1 &diams; $Relay2</td><td align=\"right\"><a href=\"?page=edit_servos\" class=\"btn btn-secondary\" name=\"edit_motors\" style=\"float: right; --bs-btn-padding-y: .10rem; --bs-btn-padding-x: .75rem; --bs-btn-font-size: .75rem;\"><span class=\"fw-bolder\">Modify Values</span></a></td></tr>";
   $Content .= "</table>";
   return $Content;
 }
