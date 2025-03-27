@@ -177,7 +177,7 @@ function DrawMenu($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
   $Boilermaker = mysqli_fetch_assoc($Result);
 
-  $Content  = "<div class=\"row\" style=\"margin-left: 0.5em; margin-right: 0.5em;\"><nav class=\"navbar navbar-expand-lg navbar-dark bg-dark\">";
+  $Content  = "<div class=\"row\" style=\"margin-left: 0.5em; margin-right: 0.5em;\"><nav class=\"navbar navbar-expand-lg navbar-dark bg-dark\" style=\"background-color: #121212;\">";
   $Content .=   "<div class=\"container-fluid\">";
   $Content .=     "<a class=\"navbar-brand\" href=\"/\"><span class=\"iconify text-white\" style=\"font-size: 1.5em;\" data-icon=\"logos:raspberry-pi\"></span>&nbsp;<span class=\"text-white\" style=\"font-weight: bold;\">RPi Smart Still</span></a>";
   $Content .=     "<button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">";

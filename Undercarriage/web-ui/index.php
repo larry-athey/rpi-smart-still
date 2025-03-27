@@ -12,7 +12,7 @@ if (! isset($_COOKIE["client_id"])) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
   <title>Raspberry Pi Smart Still Controller System</title>
   <meta http-equiv="cache-control" content="max-age=0">
@@ -22,8 +22,7 @@ if (! isset($_COOKIE["client_id"])) {
   <meta http-equiv="pragma" content="no-cache">
   <meta http-equiv="refresh" content="3600">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://unpkg.com/bootstrap-darkmode@0.7.0/dist/darktheme.css">
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
   <script src="https://code.iconify.design/2/2.0.3/iconify.min.js"></script>
   <!-- The first Charts.js library is only compatible with newer versions of iOS. -->
@@ -58,6 +57,14 @@ if (! isset($_COOKIE["client_id"])) {
 <?php } ?>
   </script>
   <style>
+    [data-bs-theme="dark"] {
+      --bs-body-bg: #121212; /* Darker background */
+      --bs-body-color: #e0e0e0; /* Optional: Lighter text for contrast */
+    }
+    [data-bs-theme="dark"] .navbar.bg-dark {
+      background-color: #121212 !important; /* Makes the menu bar match the body background */
+    }
+
     .text-magenta {
       color: purple !important;
     }
@@ -81,7 +88,7 @@ if (! isset($_COOKIE["client_id"])) {
     a, a:hover {text-decoration: none;}
   </style>
 </head>
-<body data-theme="dark">
+<body>
 <?php
 $DBcnx = mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
 $Result = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
@@ -157,7 +164,6 @@ $Content .= "</div>";
 echo("$Content\n");
 mysqli_close($DBcnx);
 ?>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
