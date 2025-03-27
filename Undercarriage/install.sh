@@ -82,6 +82,9 @@ sudo systemctl restart lighttpd.service
 
 sudo rm -f /var/www/html/index.lighttpd.html
 sudo cp -f ./web-ui/* /var/www/html
+cd /var/www/html
+sudo tar -xzvf bootstrap.tar.gz
+cd -
 sudo mkdir -p /var/www/html/voice_prompts
 sudo chown -R www-data:www-data /var/www/html
 sudo chmod g+w -R /var/www/html
