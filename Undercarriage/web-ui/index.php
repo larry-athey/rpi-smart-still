@@ -23,13 +23,9 @@ if (! isset($_COOKIE["client_id"])) {
   <meta http-equiv="refresh" content="3600">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
-  <script src="https://code.iconify.design/2/2.0.3/iconify.min.js"></script>
-  <!-- The first Charts.js library is only compatible with newer versions of iOS. -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- The second Charts.js library is compatible with older versions of iOS -->
-  <!-- script src="https://unpkg.com/chart.js@2.9.4/dist/Chart.min.js"></script -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="/js/iconify.min.js"></script>
+  <script src="/js/chart.js"></script>
+  <script src="/js/jquery.min.js"></script>
   <link rel="icon" href="favicon.ico?v=1.1">
   <script type="text/javascript">
     //---------------------------------------------------------------------------------------------------
@@ -38,7 +34,7 @@ if (! isset($_COOKIE["client_id"])) {
       $("#rssBG").addClass("bg-purple");
     });
     //---------------------------------------------------------------------------------------------------
-<?php if ($_GET["page"] == "edit_program") { ?>
+<?php if (($_GET) && ($_GET["page"] == "edit_program")) { ?>
     window.onload = function() {
       ToggleInputFields(document.getElementById('ProgramType'));
     }
