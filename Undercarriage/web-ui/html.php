@@ -176,8 +176,20 @@ function DrawMenu($DBcnx) {
   $Program  = mysqli_fetch_assoc($Result);
   $Result   = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
   $Boilermaker = mysqli_fetch_assoc($Result);
+  $Content  = "";
 
-  $Content  = "<div class=\"row\" style=\"margin-left: 0.5em; margin-right: 0.5em;\"><nav class=\"navbar navbar-expand-lg navbar-dark bg-dark\" style=\"background-color: #121212;\">";
+  if ($Settings["heating_enabled"] == 1) {
+    $Content .= "<script type=\"text/javascript\">\n";
+    $Content .= "function handleHeatJump(value) {\n";
+    $Content .= "  if (value) {\n";
+    $Content .= "    const url = `/process.php?heat_jump=1&value=\${value}`;\n";
+    $Content .= "    window.location.href = url;\n";
+    $Content .= "  }\n";
+    $Content .= "}\n";
+    $Content .= "</script>\n";
+  }
+
+  $Content .= "<div class=\"row\" style=\"margin-left: 0.5em; margin-right: 0.5em;\"><nav class=\"navbar navbar-expand-lg navbar-dark bg-dark\" style=\"background-color: #121212;\">";
   $Content .=   "<div class=\"container-fluid\">";
   $Content .=     "<a class=\"navbar-brand\" href=\"/\"><span class=\"iconify text-white\" style=\"font-size: 1.5em;\" data-icon=\"logos:raspberry-pi\"></span>&nbsp;<span class=\"text-white\" style=\"font-weight: bold;\">RPi Smart Still</span></a>";
   $Content .=     "<button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">";
@@ -250,17 +262,24 @@ function DrawMenu($DBcnx) {
   }
   if ($Settings["heating_enabled"] == 1) {
     $Content .=           "<li><hr class=\"dropdown-divider\"></li>";
-    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=100\"><span class=\"fw-bolder\">Heat&nbsp;Jump&nbsp;To&nbsp;100%</span></a></li>";
-    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=90\"><span class=\"fw-bolder\">Heat&nbsp;Jump&nbsp;To&nbsp;90%</span></a></li>";
-    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=80\"><span class=\"fw-bolder\">Heat&nbsp;Jump&nbsp;To&nbsp;80%</span></a></li>";
-    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=70\"><span class=\"fw-bolder\">Heat&nbsp;Jump&nbsp;To&nbsp;70%</span></a></li>";
-    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=60\"><span class=\"fw-bolder\">Heat&nbsp;Jump&nbsp;To&nbsp;60%</span></a></li>";
-    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=50\"><span class=\"fw-bolder\">Heat&nbsp;Jump&nbsp;To&nbsp;50%</span></a></li>";
-    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=40\"><span class=\"fw-bolder\">Heat&nbsp;Jump&nbsp;To&nbsp;40%</span></a></li>";
-    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=30\"><span class=\"fw-bolder\">Heat&nbsp;Jump&nbsp;To&nbsp;30%</span></a></li>";
-    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=20\"><span class=\"fw-bolder\">Heat&nbsp;Jump&nbsp;To&nbsp;20%</span></a></li>";
-    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=10\"><span class=\"fw-bolder\">Heat&nbsp;Jump&nbsp;To&nbsp;10%</span></a></li>";
-    $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?heat_jump=1&value=0\"><span class=\"fw-bolder\">Heat&nbsp;Jump&nbsp;To&nbsp;0%</span></a></li>";
+    $Content .=           "<li>";
+    $Content .=             "<div class=\"px-3 py-1\">";
+    $Content .=               "<select class=\"form-select\" id=\"heatJumpSelect\" onchange=\"handleHeatJump(this.value)\">";
+    $Content .=                 "<option value=\"\" disabled selected>Heat Jump To...</option>";
+    $Content .=                 "<option value=\"100\">Heat Jump To 100%</option>";
+    $Content .=                 "<option value=\"90\">Heat Jump To 90%</option>";
+    $Content .=                 "<option value=\"80\">Heat Jump To 80%</option>";
+    $Content .=                 "<option value=\"70\">Heat Jump To 70%</option>";
+    $Content .=                 "<option value=\"60\">Heat Jump To 60%</option>";
+    $Content .=                 "<option value=\"50\">Heat Jump To 50%</option>";
+    $Content .=                 "<option value=\"40\">Heat Jump To 40%</option>";
+    $Content .=                 "<option value=\"30\">Heat Jump To 30%</option>";
+    $Content .=                 "<option value=\"20\">Heat Jump To 20%</option>";
+    $Content .=                 "<option value=\"10\">Heat Jump To 10%</option>";
+    $Content .=                 "<option value=\"0\">Heat Jump To 0%</option>";
+    $Content .=               "<select>";
+    $Content .=             "</div>";
+    $Content .=           "</li>";
   }
   $Content .=             "<li><hr class=\"dropdown-divider\"></li>";
   if ($Settings["active_run"] == 1) {
@@ -690,12 +709,12 @@ function ShowProgramTemps($DBcnx) {
   $Content .=   "<tr><td><span class=\"fw-bolder\">Column&nbsp;Range:</span></td><td align=\"right\" nowrap><span class=\"fw-bolder\">" . FormatTempRange($Program["column_temp_low"],$Program["column_temp_high"],$Program["column_managed"]) . "</span></td></tr>";
   $Content .=   "<tr><td><span class=\"fw-bolder\">Boiler&nbsp;Range:</span></td><td align=\"right\" nowrap><span class=\"fw-bolder\">" . FormatTempRange($Program["boiler_temp_low"],$Program["boiler_temp_high"],$Program["boiler_managed"]) . "</span></td></tr>";
   if ($Settings["active_run"] == 0) {
-    $Content .= "<tr><td colspan=\"2\" align=\"right\"><span class=\"text-warning fw-bolder\">Distillation run not active, no temperature management</span></td></tr>";
+    $Content .= "<tr><td colspan=\"2\" align=\"center\"><span class=\"text-warning fw-bolder\">Distillation run not active, no temperature management</span></td></tr>";
   } else {
     if ($Settings["paused"] == 1) {
-      $Content .= "<tr><td colspan=\"2\" align=\"right\"><span class=\"text-danger blink fw-bolder\">The active distillation run is currently paused</span></td></tr>";
+      $Content .= "<tr><td colspan=\"2\" align=\"center\"><span class=\"text-danger blink fw-bolder\">The active distillation run is currently paused</span></td></tr>";
     } else {
-      $Content .= "<tr><td colspan=\"2\" align=\"right\"><span class=\"text-success blink fw-bolder\">Distillation run active, temperatures are being managed</span></td></tr>";
+      $Content .= "<tr><td colspan=\"2\" align=\"center\"><span class=\"text-success blink fw-bolder\">Distillation run active, temperatures are being managed</span></td></tr>";
     }
   }
   $Content .= "</table>";
