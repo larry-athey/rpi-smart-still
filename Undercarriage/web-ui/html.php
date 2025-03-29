@@ -260,8 +260,8 @@ function DrawMenu($DBcnx) {
     $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"process.php?pause_page=start_run\"><span class=\"text-secondary fw-bolder\">Pause&nbsp;Run</span></a></li>";
     $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"?page=stop_run\"><span class=\"text-secondary fw-bolder\">Stop&nbsp;Run</span></a></li>";
   }
+  $Content .=             "<li><hr class=\"dropdown-divider\"></li>";
   if ($Settings["heating_enabled"] == 1) {
-    $Content .=           "<li><hr class=\"dropdown-divider\"></li>";
     $Content .=           "<li>";
     $Content .=             "<div class=\"px-3 py-1\">";
     $Content .=               "<select class=\"form-select\" id=\"heatJumpSelect\" onchange=\"handleHeatJump(this.value)\">";
@@ -281,7 +281,6 @@ function DrawMenu($DBcnx) {
     $Content .=             "</div>";
     $Content .=           "</li>";
   }
-  $Content .=             "<li><hr class=\"dropdown-divider\"></li>";
   if ($Settings["active_run"] == 1) {
     $Content .=           "<li><a  class=\"dropdown-item disabled\" href=\"?page=system_confirm&option=1\"><span class=\"text-secondary fw-bolder\">Reboot&nbsp;System</span></a></li>";
     $Content .=           "<li><a  class=\"dropdown-item disabled\" href=\"?page=system_confirm&option=2\"><span class=\"text-secondary fw-bolder\">Shutdown&nbsp;System</span></a></li>";
