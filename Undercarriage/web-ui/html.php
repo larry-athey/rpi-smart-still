@@ -324,7 +324,7 @@ function EditHeating($DBcnx) {
   if ($Boilermaker["enabled"] == 1) {
     $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
     $Content .=       "<div class=\"col\">";
-    $Content .=         "<label for=\"BMip_address\" class=\"form-label fw-bolder\">IP Address</label>"; $Pattern = '^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$';
+    $Content .=         "<label for=\"BMip_address\" class=\"form-label fw-bolder\">Boilermaker IP Address</label>"; $Pattern = '^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$';
     $Content .=         "<input type=\"text\" class=\"form-control fw-bolder\" id=\"BMip_address\" name=\"BMip_address\" minlength=\"7\" maxlength=\"15\" pattern=\"$Pattern\" required value=\"". $Boilermaker["ip_address"] . "\">";
     $Content .=       "</div>";
     //$Content .=       "<div class=\"col\">";
