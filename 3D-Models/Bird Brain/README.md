@@ -4,7 +4,7 @@
 
 **BB-Case-Bottom.stl** - This is the bottom (or base) of the Bird Brain PCB case. This is a slip together case so the top can be quickly removed in order to see the blue LED which indicates memory slot updates while you are calibrating the hydrometer. It's up to you what type of filament you print this case with, PLA is fine here.
 
-**BB-Case-Cover.stl** - This is the top half of the Bird Brain PCB case. It is recommended that you attach the case bottom to the base of your proofing parrot and leave enough space for this cover to slip on.
+**BB-Case-Cover.stl** - This is the top half of the Bird Brain PCB case. It is recommended that you attach the case bottom to the base of your proofing parrot and leave enough space for this cover to slip on and off.
 
 **Flow-Sensor-Bottom.stl** - This is the bottom part of the 3D printable flow sensor vessel that inserts into the 1-3/8" (35mm) receiver cup of your proofing parrot. This must be printed with PETG using 0.1mm layers due to the size of the weep holes in the stand pipe. Or, if you have an SLA resin printer, that would be better yet. Check your resin's technical data to verify that it can stand up to ethanol.
 
