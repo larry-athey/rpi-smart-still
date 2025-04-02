@@ -2,7 +2,7 @@
 
 **34-Copper-flow-Sensor** - This folder contains models related to the [3/4" copper pipe flow sensor](https://www.youtube.com/watch?v=uXPyjsHgtic) designed by [James "The Doc"](https://www.youtube.com/@TheDocChannel) of Ireland. This includes the mounting arm that attaches to the center column of your parrot.
 
-**BB-Case-Bottom.stl** - the bottom (or base) of the Bird Brain PCB case. This is a slip together case so the top can be quickly removed in order to see the blue LED which indicates memory slot updates while you are calibrating the hydrometer. It's up to you what type of filament you print this case with, PLA is fine here.
+**BB-Case-Bottom.stl** - This is the bottom (or base) of the Bird Brain PCB case. This is a slip together case so the top can be quickly removed in order to see the blue LED which indicates memory slot updates while you are calibrating the hydrometer. It's up to you what type of filament you print this case with, PLA is fine here.
 
 **Flow-Sensor-Bottom.stl** - This is the bottom part of the 3D printable flow sensor vessel that inserts into the 1-3/8" (35mm) receiver cup of your proofing parrot. This must be printed with PETG using 0.1mm layers due to the size of the weep holes in the stand pipe. Or, if you have an SLA resin printer, that would be better yet. Check your resin's technical data to verify that it can stand up to ethanol.
 
