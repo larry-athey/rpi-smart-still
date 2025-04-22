@@ -307,7 +307,14 @@ elseif (isset($_POST["rss_edit_program"])) {
 }
 //---------------------------------------------------------------------------------------------------
 elseif (isset($_POST["rss_edit_sensors"])) {
-  $BoilerAddr  = $_POST["BoilerAddr"];
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
+  $Boilermaker = mysqli_fetch_assoc($Result);
+
+  if ($Boilermaker["enabled"] == 1) {
+    $BoilerAddr = "";
+  } else {
+    $BoilerAddr = $_POST["BoilerAddr"];
+  }
   $DephlegAddr = $_POST["DephlegAddr"];
   $ColumnAddr  = $_POST["ColumnAddr"];
   $Update = mysqli_query($DBcnx,"UPDATE settings SET boiler_addr='$BoilerAddr',dephleg_addr='$DephlegAddr',column_addr='$ColumnAddr' WHERE ID=1");

@@ -565,6 +565,8 @@ function EditProgram($DBcnx,$ID) {
 function EditSensors($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
+  $Result   = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
+  $Boilermaker = mysqli_fetch_assoc($Result);
 
   $Content  = "<form id=\"edit_sensors\" method=\"post\" action=\"process.php\">";
   $Content .= "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
@@ -577,10 +579,12 @@ function EditSensors($DBcnx) {
   $Content .=       "<label for=\"ColumnAddr\" class=\"form-label fw-bolder\">Column Sensor Address</label>";
   $Content .=       SensorSelector($Settings["column_addr"],"ColumnAddr");
   $Content .=     "</div>";
-  $Content .=     "<div style=\"margin-top: .5em;\">";
-  $Content .=       "<label for=\"BoilerAddr\" class=\"form-label fw-bolder\">Boiler Sensor Address</label>";
-  $Content .=       SensorSelector($Settings["boiler_addr"],"BoilerAddr");
-  $Content .=     "</div>";
+  if ($Boilermaker["enabled"] == 0) {
+    $Content .=   "<div style=\"margin-top: .5em;\">";
+    $Content .=     "<label for=\"BoilerAddr\" class=\"form-label fw-bolder\">Boiler Sensor Address</label>";
+    $Content .=     SensorSelector($Settings["boiler_addr"],"BoilerAddr");
+    $Content .=   "</div>";
+  }
   $Content .=     "<div style=\"margin-top: 1em; float: right;\"><a href=\"index.php\" class=\"btn btn-danger fw-bolder\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-primary fw-bolder\" name=\"rss_edit_sensors\">Submit</button></div>";
   $Content .=   "</div>";
   $Content .= "</div>";
