@@ -15,6 +15,8 @@ _If you have an Air Still (or clone) be sure to check out my [Airhead](https://g
 
 **NO, THERE IS NOTHING ILLEGAL ABOUT THIS PROJECT! IT DOESN'T MAKE YOU DO ILLEGAL THINGS OR PREVENT YOU FROM GETTING A DISTILLATION LICENSE IN THE USA! THIS IS ONLY A TOOL!**
 
+_**NOTE:** Contrary to popular misconception, this system does not take away your ability to manually run your still. This system is actually completely stupid until you manually run your still with it and take notes that you would then use to create programs. Every still is different and requires a training period before this system can begin replaying distillation runs._
+
 Let me start off by saying that I'm no master distiller and I don't pretend to be one. YouTube and other social media sites already have more than enough self-idolizing hacks and frauds _(usually sporting a Popcorn Sutton photo as their profile picture)_ who think that they're legends in the distilling world and should be on the cast of Moonshiners _(a'la, "Cyrus Mason" and "Windsong", the Still'n The Clear charlatans)_. **I'm just a nobody hobby distiller. Not an internet celebrity or a deluded podcaster wannabe, and I most certainly do not idolize reality TV "stars". That kind of mentality is for juveniles and posers. I'm simply a hacker, period.**
 
 I'm a veteran software engineer with over 45 years programming experience and a strong emphasis in the areas of automation and remote device management. Even though I'm only a hobby distiller, I know very well what needs to be done in order to automate a non-commercial dephleg reflux still and maintain a targeted output. It's all just a matter of temperature control and monitoring results, same things that a human does.
