@@ -2,6 +2,12 @@
 // RPi Smart Still Controller | (CopyLeft) 2024-Present | Larry Athey (https://panhandleponics.com)
 // Bird Brain v1.2.1 - LIDAR Hydrometer Reader and Parrot Flow Monitor - Released November 23, 2024
 //
+// You must be using a v2.x ESP32 library to compile this code. It appears that v3.x libraries do
+// not contain compatible headers for certain legacy libraries that I rely on. You should also use
+// the following URL in your preferences under Addisional Boards Manager URLs.
+//
+// https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+//
 // Compile and upload this code to your ESP32 and watch the capacitance value in the IDE terminal.
 // Perform test fills and drains while noting the correlation between the Flow Rate & capacitance.
 // It's best to perform these tests while running off the RPI Smart Still Controller power supply
@@ -61,8 +67,8 @@ doubleLong measureADC(int num_measurements,byte charge_pin,byte sense_pin,byte c
 }
 //------------------------------------------------------------------------------------------------
 int getFlowSensor(float sensorReading) { // Convert the capacitance to a coherent flow rate
-  int emptyValue = 34; // Sensor reading when the vessel is empty, adjust as necessary
-  int fullValue = 24;  // Sensor reading when the vessel is full, adjust as necessary
+  int emptyValue = 60; // Sensor reading when the vessel is empty, adjust as necessary
+  int fullValue = 50;  // Sensor reading when the vessel is full, adjust as necessary
   // Sensor reading when the vessel is full
   int range = emptyValue - fullValue; // Calculate the range
   // Ensure that we're not dividing by zero
