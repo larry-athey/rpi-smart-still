@@ -2,6 +2,12 @@
 // RPi Smart Still Controller | (CopyLeft) 2024-Present | Larry Athey (https://panhandleponics.com)
 // Bird Brain v1.2.1 - LIDAR Hydrometer Reader and Parrot Flow Monitor - Released November 23, 2024
 //
+// You must be using a v2.x ESP32 library to compile this code. It appears that v3.x libraries do
+// not contain compatible headers for certain legacy libraries that I rely on. You should also use
+// the following URL in your preferences under Addisional Boards Manager URLs.
+//
+// https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
+//
 // If you have seen any of George Duncan's videos on YouTube from around 2020, you might remember
 // an Arduino project of his called the "Talking Parrot Head". It involved a black PVC tube on top
 // of a parrot with a VL53L0X sensor at the top that bounced the beam downward to a disc on top of
