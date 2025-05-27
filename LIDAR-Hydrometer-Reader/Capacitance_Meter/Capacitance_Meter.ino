@@ -68,7 +68,7 @@ doubleLong measureADC(int num_measurements,byte charge_pin,byte sense_pin,byte c
 //------------------------------------------------------------------------------------------------
 int getFlowSensor(float sensorReading) { // Convert the capacitance to a coherent flow rate
   int emptyValue = 60; // Sensor reading when the vessel is empty, adjust as necessary
-  int fullValue = 50;  // Sensor reading when the vessel is full, adjust as necessary
+  int fullValue = 25;  // Sensor reading when the vessel is full, adjust as necessary
   // Sensor reading when the vessel is full
   int range = emptyValue - fullValue; // Calculate the range
   // Ensure that we're not dividing by zero
