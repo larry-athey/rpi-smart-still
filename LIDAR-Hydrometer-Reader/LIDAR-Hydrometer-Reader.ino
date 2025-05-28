@@ -21,14 +21,12 @@
 // a digital signal that the RPi Smart Still Controller can use.
 //
 // The VL53L0X sensor is mounted to the side of the overflow cup of the parrot roughly even with
-// the top of the overflow tube aiming upwards. A paper disc equal to the diameter of the overflow
-// cup is attached to the top of the hydrometer, about 20mm above the 100% line. The sensor mount
-// that I've provided a 3D model for, places your sensor at the perfect angle so that it's sloped
-// inward but doesn't hit the glass and cause erroneous readings. Calibrate it with the RPis Smart
-// Still Controller and you're off to the races.
+// the top of the overflow tube aiming upwards. A reflector equal to the diameter of the overflow
+// cup is attached to the top of the hydrometer, about 20mm above the 100% line. Calibrate it with
+// the RPis Smart Still Controller and you're off to the races.
 //
-// The disc can be made out of construction paper and have hardly any effect on the hydrometer, if
-// even .5 percent. Having the sensor that close to distillate isn't dangerous at all. It only runs
+// The reflector can be 3D printed or made out of construction paper and have hardly any effect on
+// the hydrometer. Having the sensor that close to distillate isn't dangerous at all. It only runs
 // on 3.3 volts and distillate isn't conductive, nor is distilled water. I've submerged one in 90%
 // ethanol and distilled water while running and nothing happened, it never even stopped working.
 //
@@ -40,7 +38,7 @@
 // This device also utilizes a DS18B20 temperature sensor in order to tell the mart still system to
 // turn up the condenser flow if the distillate temperature is too hot for the hydrometer to read
 // correctly and prevent a fire hazard. Hot distillate means that you're not condensing all of the
-// vapor back to a liquid, so you're actually losing product if it's too hot.
+// vapor back to a liquid, so you're actually losing product to the air if it's too hot.
 //
 // The new flow sensor is a custom device designed by James (The Doc) from Ireland and determines
 // the flow rate by the height of ethanol in a vessel and reading the electrical capacitance from
@@ -64,7 +62,6 @@ uint Distance = 0;             // Global placeholder for the LIDAR distance meas
 uint Divisions[11];            // Measurements for the hydrometer's 10% divisions
 long SerialCounter;            // Timekeeper for serial data output updates
 byte EthanolBuf[10];           // Buffer for smoothing out ethanol readings
-byte FlowBuf[10];              // Buffer for smoothing out flow sensor readings
 //------------------------------------------------------------------------------------------------
 Adafruit_VL53L0X Lidar = Adafruit_VL53L0X();
 OneWire oneWire(ONE_WIRE);
@@ -102,7 +99,6 @@ void setup() {
   pinMode(USER_LED,OUTPUT);
   SerialCounter = millis();
 
-  for (byte x = 0; x <= 9; x ++) FlowBuf[x] = 0;
   for (byte x = 0; x <= 9; x ++) EthanolBuf[x] = 0;
 }
 //------------------------------------------------------------------------------------------------
@@ -261,18 +257,13 @@ void loop() {
       EthanolAvg *= 0.1;
     }
 
-    // Get the current distillate flow rate (resonance level across the flow sensor plates)
-    // RPi Smart Still Controller ignores this until Ethanol value is greater than zero
-    for (byte x = 0; x <= 8; x ++) FlowBuf[x] = FlowBuf[x + 1];
-    FlowBuf[9] = getFlowSensor();
-    if (FlowBuf[9] > 100) FlowBuf[9] = 100;
-    for (byte x = 0; x <= 9; x ++) FlowTotal += FlowBuf[x];
-    FlowTotal *= 0.01;
-
+    // Get the current distillate flow rate (capacitance level across the flow sensor plates)
+    FlowTotal = getFlowSensor();
+  
     digitalWrite(USER_LED,HIGH);
     digitalWrite(CHARGE_PIN,LOW);
     Serial.print("Uptime: "); Serial.println(Uptime);
-    Serial.print("Distance: "); Serial.println(Distance);
+    Serial.print("Distance: "); Serial.print(Distance); Serial.printf(", Capacitance: %.2fpf\n",capacitance_pf);
     Serial.print("Flow: "); Serial.println(FlowTotal);
     Serial.print("Ethanol: "); Serial.println(EthanolAvg);
     Serial.print("TempC: "); Serial.println(TempC,1);
