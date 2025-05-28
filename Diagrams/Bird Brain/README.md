@@ -2,4 +2,5 @@ Printed circuit board design by [James "The Doc"](https://www.youtube.com/@TheDo
 
 **SIDE NOTES**
 - The 1 meg resistor actually works better when replaced by two of them in series _(2 megs)_
-- The two wires to the capacitor plates should be inside of a grounded steel braid to shield them
+- The two wires to the capacitor plates should be contained inside of a grounded steel braid to shield them
+- Choose a low profile capacitor for C1 so it doesn't block the USB port on the ESP32
