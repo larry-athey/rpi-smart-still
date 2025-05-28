@@ -4,3 +4,4 @@ Printed circuit board design by [James "The Doc"](https://www.youtube.com/@TheDo
 - The 1 meg resistor _(R1)_ actually works better when replaced by two of them in series _(2 megs)_
 - The wires to the flow sensor capacitor plates should be shielded inside of a grounded steel braid
 - Choose a low profile capacitor for C1 so it doesn't block the USB port on the ESP32
+- An absolutely dry flow sensor will yield erratic and unreliable readings on the controller dashboard
