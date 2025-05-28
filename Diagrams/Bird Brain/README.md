@@ -2,5 +2,5 @@ Printed circuit board design by [James "The Doc"](https://www.youtube.com/@TheDo
 
 **SIDE NOTES**
 - The 1 meg resistor _(R1)_ actually works better when replaced by two of them in series _(2 megs)_
-- The two wires to the capacitor plates should be contained inside of a grounded steel braid to shield them
+- The wires to the flow sensor capacitor plates should be shielded inside of a grounded steel braid
 - Choose a low profile capacitor for C1 so it doesn't block the USB port on the ESP32
