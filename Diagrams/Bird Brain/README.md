@@ -5,4 +5,4 @@ Printed circuit board design by [James "The Doc"](https://www.youtube.com/@TheDo
 - The wires to the flow sensor capacitor plates should be shielded inside of a grounded steel braid
 - Choose a low profile capacitor for C1 so it doesn't block the USB port on the ESP32
 - An absolutely dry flow sensor will yield erratic and unreliable readings on the controller dashboard
-- You should periodically flush the flow sensor with vinegar before a run to clean the capacitor plates
+- You should periodically flush the flow sensor with vinegar to clean the capacitor plates
