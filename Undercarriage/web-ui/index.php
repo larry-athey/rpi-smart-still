@@ -14,7 +14,7 @@ if (! isset($_COOKIE["client_id"])) {
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>
-  <title>Raspberry Pi Smart Still Controller System</title>
+  <title>Raspberry Pi Smart Still Controller System v<?= VERSION ?></title>
   <meta http-equiv="cache-control" content="max-age=0">
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
