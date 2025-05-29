@@ -90,6 +90,9 @@ if (($Hydrometer != "") && (mb_substr($Hydrometer,-1) == "#")) {
     $DistillateAbv = trim($Data2[1]);
     $Data2 = explode(": ",$Data[4]);
     $DistillateTemp = trim($Data2[1]);
+    // If the flow sensor is absolutely dry, the capacitance will nose dive into the range of valid readings.
+    // Therefore, we ignore any flow sensor readings until the hydrometer has begun floating.
+    if ($DistillateAbv == 0) $DistillateFlow = 0;
     $Update = mysqli_query($DBcnx,"UPDATE settings SET distillate_flow='$DistillateFlow',distillate_abv='$DistillateAbv',distillate_temp='$DistillateTemp',serial_data='$Hydrometer' WHERE ID=1");
   } else {
     echo("$Hydrometer\n");
