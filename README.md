@@ -37,7 +37,9 @@ This is a little bit of a juggling act to do manually, no matter what still you 
 
 _**FYI:** This is only intended for hobbyist and small business micro distillers. Commercial distilleries use continuous column stills, this system would be of no value or use in that kind of setting. The target audience for this system are those who want to have the convenience of hands-free reproducibility or just want to tame down a touchy still._
 
-<br><img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/db6e8b4a-c8c9-4fa8-aa1d-7d0ee92d3ea4">
+---
+
+<img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/db6e8b4a-c8c9-4fa8-aa1d-7d0ee92d3ea4">
 
 ---
 
