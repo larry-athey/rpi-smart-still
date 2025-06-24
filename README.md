@@ -37,10 +37,16 @@ This is a little bit of a juggling act to do manually, no matter what still you 
 
 _**FYI:** This is only intended for hobbyist and small business micro distillers. Commercial distilleries use continuous column stills, this system would be of no value or use in that kind of setting. The target audience for this system are those who want to have the convenience of hands-free reproducibility or just want to tame down a touchy still._
 
-<br><img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/db6e8b4a-c8c9-4fa8-aa1d-7d0ee92d3ea4"><br><br>
-<img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/b32f3226-20d1-4fcc-816d-5b6759123e04"><br><br>
-<img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/d018d39a-29b2-4b84-b7fc-e1e11e623ff0"><br><br>
-<img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/4bfd6090-3d98-42cd-8d09-7a9dec18ca1d"><br><br>
-<img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/fbde1696-560b-4bf5-b7ab-8872883ebedf"><br><br>
-<img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/5cc6f707-35e3-481b-8e75-02739034dc1a"><br><br>
+<br><img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/db6e8b4a-c8c9-4fa8-aa1d-7d0ee92d3ea4">
+---
+<img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/b32f3226-20d1-4fcc-816d-5b6759123e04">
+---
+<img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/d018d39a-29b2-4b84-b7fc-e1e11e623ff0">
+---
+<img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/4bfd6090-3d98-42cd-8d09-7a9dec18ca1d">
+---
+<img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/fbde1696-560b-4bf5-b7ab-8872883ebedf">
+---
+<img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/5cc6f707-35e3-481b-8e75-02739034dc1a">
+---
 <img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/e691e82d-7098-4b75-84cb-c16d310b94a7">
