@@ -39,28 +39,28 @@ _**FYI:** This is only intended for hobbyist and small business micro distillers
 
 ---
 
-<img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/db6e8b4a-c8c9-4fa8-aa1d-7d0ee92d3ea4">
+<img width="1024" alt="2024-09-25 14-34-02-1" src="https://github.com/user-attachments/assets/db6e8b4a-c8c9-4fa8-aa1d-7d0ee92d3ea4">
 
 ---
 
-<img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/b32f3226-20d1-4fcc-816d-5b6759123e04">
+<img width="1024" alt="2024-09-25 14-34-02-2" src="https://github.com/user-attachments/assets/b32f3226-20d1-4fcc-816d-5b6759123e04">
 
 ---
 
-<img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/d018d39a-29b2-4b84-b7fc-e1e11e623ff0">
+<img width="1024" alt="2024-09-25 14-34-02-3" src="https://github.com/user-attachments/assets/d018d39a-29b2-4b84-b7fc-e1e11e623ff0">
 
 ---
 
-<img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/4bfd6090-3d98-42cd-8d09-7a9dec18ca1d">
+<img width="1024" alt="2024-09-25 14-34-02-4" src="https://github.com/user-attachments/assets/4bfd6090-3d98-42cd-8d09-7a9dec18ca1d">
 
 ---
 
-<img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/fbde1696-560b-4bf5-b7ab-8872883ebedf">
+<img width="1024" alt="2024-09-25 14-34-02-5" src="https://github.com/user-attachments/assets/f379b257-a7b0-4188-b51a-fd5cbe070a8d">
 
 ---
 
-<img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/5cc6f707-35e3-481b-8e75-02739034dc1a">
+<img width="1024" alt="2024-09-25 14-34-02-6" src="https://github.com/user-attachments/assets/fbde1696-560b-4bf5-b7ab-8872883ebedf">
 
 ---
 
-<img width="1024" alt="2024-09-25 14-34-02-0" src="https://github.com/user-attachments/assets/e691e82d-7098-4b75-84cb-c16d310b94a7">
+<img width="1024" alt="2024-09-25 14-34-02-7" src="https://github.com/user-attachments/assets/5cc6f707-35e3-481b-8e75-02739034dc1a">
