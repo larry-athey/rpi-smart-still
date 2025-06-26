@@ -263,7 +263,7 @@ void loop() {
     digitalWrite(USER_LED,HIGH);
     digitalWrite(CHARGE_PIN,LOW);
     Serial.print("Uptime: "); Serial.println(Uptime);
-    Serial.print("Distance: "); Serial.print(Distance); Serial.printf(", Capacitance: %.2fpf\n",capacitance_pf);
+    Serial.print("Distance: "); Serial.print(Distance); Serial.printf(", Capacitance: %.2fpf\r\n",capacitance_pf);
     Serial.print("Flow: "); Serial.println(FlowTotal);
     Serial.print("Ethanol: "); Serial.println(EthanolAvg);
     Serial.print("TempC: "); Serial.println(TempC,1);
