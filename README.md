@@ -55,7 +55,7 @@ _**FYI:** This is only intended for hobbyist and small business micro distillers
 
 ---
 
-<img width="1024" alt="2024-09-25 14-34-02-5" src="https://github.com/user-attachments/assets/4bfd6090-3d98-42cd-8d09-7a9dec18ca1d">
+<img width="1024" alt="2024-09-25 14-34-02-5" src="https://github.com/user-attachments/assets/26ef9c44-79dc-4f28-80fd-669204fc0611">
 
 ---
 
