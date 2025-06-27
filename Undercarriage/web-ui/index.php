@@ -23,6 +23,7 @@ if (! isset($_COOKIE["client_id"])) {
   <meta http-equiv="refresh" content="3600">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="/js/iconify.min.js"></script>
   <script src="/js/chart.js"></script>
   <script src="/js/jquery.min.js"></script>
@@ -81,6 +82,7 @@ if (! isset($_COOKIE["client_id"])) {
       -webkit-animation-timing-function:ease-in-out;
       -webkit-animation-direction: alternate;
     }
+
     a, a:hover {text-decoration: none;}
   </style>
 </head>
@@ -160,6 +162,6 @@ $Content .= "</div>";
 echo("$Content\n");
 mysqli_close($DBcnx);
 ?>
-  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
