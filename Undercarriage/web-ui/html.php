@@ -671,9 +671,8 @@ function ShowPrograms($DBcnx) {
   $Settings = mysqli_fetch_assoc($Result);
 
   $Counter  = 0;
-  $Content  = "<a href=\"?page=edit_program&ID=0\" class=\"btn btn-outline-secondary fw-bolder\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\" name=\"create_program\">Create New Program</a><br>";
-  $Content .= "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\">";
-  $Content .=   "<div class=\"card-body\">";
+  $Content  = "<div style=\"width: 31em; margin-left: 0.5em;\">";
+  $Content .= "<a href=\"?page=edit_program&ID=0\" class=\"btn btn-outline-secondary fw-bolder\" style=\"width: 100%; margin-top: 0.5em; margin-bottom: 0.5em; margin-right: 0.5em;\" name=\"create_program\">Create New Program</a><br>";
 
   $Result = mysqli_query($DBcnx,"SELECT * FROM programs ORDER BY program_name");
   while ($RS = mysqli_fetch_assoc($Result)) {
@@ -687,17 +686,16 @@ function ShowPrograms($DBcnx) {
       $Disabled = "";
       $BtnColor = "btn-danger";
     }
-    $Content .= "<div class=\"card\">";
+    $Content .= "<div class=\"card\" style=\"width: 100%; margin-bottom: 0.5em;\">";
     $Content .=   "<div class=\"card-body\">";
-    $Content .=     "<p class=\"fw-bolder\">" . $RS["program_name"] . "</p>";
-    $Content .=     "<p style=\"float: right;\"><a href=\"?page=delete_confirm&ID=" . $RS["ID"] . "\" class=\"btn $BtnColor $Disabled fw-bolder\" name=\"delete_program\" style=\"--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .75rem; --bs-btn-font-size: .75rem;\">Delete</a>&nbsp;&nbsp;&nbsp;&nbsp;";
+    $Content .=     "<p class=\"fw-bolder mb-0\">" . $RS["program_name"] . "</p>";
+    $Content .=     "<p class=\"mb-0\" style=\"float: right;\"><a href=\"?page=delete_confirm&ID=" . $RS["ID"] . "\" class=\"btn $BtnColor $Disabled fw-bolder\" name=\"delete_program\" style=\"--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .75rem; --bs-btn-font-size: .75rem;\">Delete</a>&nbsp;&nbsp;&nbsp;&nbsp;";
     $Content .=     "<a href=\"?page=edit_program&ID=" . $RS["ID"] . "\" class=\"btn btn-primary fw-bolder\" name=\"edit_program\" style=\"--bs-btn-padding-y: .10rem; --bs-btn-padding-x: .75rem; --bs-btn-font-size: .75rem;\">Edit</a></p>";
     $Content .=   "</div>";
     $Content .= "</div>";
   }
 
-  if ($Counter == 0) $Content .= "No programs found...";
-  $Content .=   "</div>";
+  if ($Counter == 0) $Content .= "<p class=\"fw-bolder\">No programs found...</p>";
   $Content .= "</div>";
   $Content .= VoicePrompter($DBcnx,true);
   return $Content;
