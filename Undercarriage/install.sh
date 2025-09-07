@@ -192,8 +192,11 @@ else
   # Raspbian specific configuration procedures.
   sudo cp -f rc.local /etc/rc.local
   sudo chmod +x /etc/rc.local
-  wget https://project-downloads.drogon.net/wiringpi-latest.deb
-  sudo dpkg -i wiringpi-latest.deb
+  git clone https://github.com/WiringPi/WiringPi
+  cd WiringPi
+  sudo ./build
+  #wget https://project-downloads.drogon.net/wiringpi-latest.deb
+  #sudo dpkg -i wiringpi-latest.deb
   if [ $Bullseye -eq 1 ]; then
     sudo systemctl stop serial-getty@ttyAMA0.service > /dev/null 2>&1
     sudo systemctl disable serial-getty@ttyAMA0.service > /dev/null 2>&1
