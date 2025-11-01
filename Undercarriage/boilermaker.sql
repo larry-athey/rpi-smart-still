@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `boilermaker` (
   `ip_address` varchar(15) DEFAULT NULL,
   `online` tinyint(4) DEFAULT NULL,
   `op_mode` tinyint(4) DEFAULT 1,
+  `startup` tinyint(4) DEFAULT 90,
   `fallback` tinyint(4) DEFAULT 70,
   `fixed_temp` tinyint(4) DEFAULT NULL,
   `time_spread` tinyint(4) DEFAULT NULL,
