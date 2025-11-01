@@ -20,7 +20,7 @@ CREATE TABLE `boilermaker` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `boilermaker` (`ID`, `enabled`, `ip_address`, `online`, `fixed_temp`, `time_spread`, `target_temp`, `inc_temp`) VALUES
-(1, 0, '0.0.0.0', 0, 0, 3, 0, 0);
+(1, 0, '0.0.0.0', 0, 0, 4, 0, 0);
 
 ALTER TABLE `boilermaker` ADD PRIMARY KEY (`ID`);
 
