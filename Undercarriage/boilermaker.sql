@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `boilermaker` (
 --
 
 INSERT INTO `boilermaker` (`ID`, `enabled`, `ip_address`, `online`, `fixed_temp`, `time_spread`, `target_temp`, `inc_temp`) VALUES
-(1, 0, '0.0.0.0', 0, 0, 3, 0, 0);
+(1, 0, '0.0.0.0', 0, 0, 4, 0, 0);
 
 --
 -- Indexes for dumped tables
