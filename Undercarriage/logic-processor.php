@@ -183,7 +183,7 @@ if (mysqli_num_rows($Result) > 0) {
           if (time() - strtotime($Logic["boiler_last_adjustment"]) >= 900) {
             if ($Settings["boiler_temp"] < $Program["boiler_temp_low"]) {
               if ($Settings["heating_enabled"] == 1) {
-                if ($Boilermaker["enabled"] == 1) {
+                if ($Boilermaker["enabled"] == 1) { // Boilermaker is basically functioning like an SCR power controller if op_mode == 0
                   if ($Boilermaker["online"] == 1) {
                     // Increase Boilermaker power by 5%
                     if ($Settings["heating_position"] < 100) {
@@ -230,7 +230,7 @@ if (mysqli_num_rows($Result) > 0) {
               }
             } elseif ($Settings["boiler_temp"] > $Program["boiler_temp_high"]) {
               if ($Settings["heating_enabled"] == 1) {
-                if ($Boilermaker["enabled"] == 1) {
+                if ($Boilermaker["enabled"] == 1) { // Boilermaker is basically functioning like an SCR power controller if op_mode == 0
                   if ($Boilermaker["online"] == 1) {
                     // Decrease Boilermaker power by 5%
                     if ($Settings["heating_position"] > 10) {
