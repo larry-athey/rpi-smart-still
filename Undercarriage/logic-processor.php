@@ -34,17 +34,21 @@ if (mysqli_num_rows($Result) > 0) {
           PingHost($Boilermaker["ip_address"]);
           $Runtime = trim(BoilermakerQuery($Boilermaker["ip_address"],"/get-runtime")); // Get the Boilermaker current runtime
           if (($Runtime != "") && ($Runtime > 0)) BoilermakerQuery2($Boilermaker["ip_address"],"/stop-run"); // Stop the Boilermaker if it's already running
-          BoilermakerQuery2($Boilermaker["ip_address"],"/?data_0=1"); // Put the Boilermaker into Constant Temp mode
-          BoilermakerQuery2($Boilermaker["ip_address"],"/?data_1=" . $Program["boiler_temp_low"]); // Set the Boilermaker initial target temperature
-          BoilermakerQuery2($Boilermaker["ip_address"],"/start-run"); // Start the Boilermaker
-          if ($Boilermaker["fixed_temp"] == 0) {
-            $Range = $Program["boiler_temp_high"] - $Program["boiler_temp_low"];
-            $IncTemp = $Range / ($Boilermaker["time_spread"] * 12);
-            $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='" . $Program["boiler_temp_low"] . "',inc_temp='$IncTemp' WHERE ID=1");
-          } else {
-            $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='" . $Program["boiler_temp_low"] . "',inc_temp='0' WHERE ID=1");
+          if ($Boilermaker["op_mode"] == 1) {  // Constant temperature mode
+            BoilermakerQuery2($Boilermaker["ip_address"],"/?data_0=1"); // Put the Boilermaker into Constant Temp mode
+            BoilermakerQuery2($Boilermaker["ip_address"],"/?data_1=" . $Program["boiler_temp_low"]); // Set the Boilermaker initial target temperature
+            BoilermakerQuery2($Boilermaker["ip_address"],"/start-run"); // Start the Boilermaker
+            if ($Boilermaker["fixed_temp"] == 0) {
+              $Range = $Program["boiler_temp_high"] - $Program["boiler_temp_low"];
+              $IncTemp = $Range / ($Boilermaker["time_spread"] * 12);
+              $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='" . $Program["boiler_temp_low"] . "',inc_temp='$IncTemp' WHERE ID=1");
+            } else {
+              $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='" . $Program["boiler_temp_low"] . "',inc_temp='0' WHERE ID=1");
+            }
+            if ($Settings["speech_enabled"] == 1) SpeakMessage(58);
+          } else { // Constant power mode
+
           }
-          if ($Settings["speech_enabled"] == 1) SpeakMessage(58);
         } else {
           // Boilermaker enabled but unresponsive, cancel the distillation run
           if ($Settings["speech_enabled"] == 1) {

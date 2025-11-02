@@ -224,10 +224,13 @@ elseif (isset($_POST["rss_edit_heating"])) {
 
   if ($Boilermaker["enabled"] == 1) {
     $BMip_address  = $_POST["BMip_address"];
+    $BMop_mode     = $_POST["BMop_mode"];
+    $BMstartup     = $_POST["BMstartup"];
+    $BMfallback    = $_POST["BMfallback"];
     $BMfixed_temp  = $_POST["BMfixed_temp"];
     $BMtime_spread = $_POST["BMtime_spread"];
     $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_enabled='$HeatingEnabled' WHERE ID=1");
-    $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET enabled='$BMenabled',ip_address='$BMip_address',fixed_temp='$BMfixed_temp',time_spread='$BMtime_spread' WHERE ID=1");
+    $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET enabled='$BMenabled',ip_address='$BMip_address',op_mode='$BMop_mode',startup='$BMstartup',fallback='$BMfallback',fixed_temp='$BMfixed_temp',time_spread='$BMtime_spread' WHERE ID=1");
   } else {
     $HeatingPolarity = $_POST["HeatingPolarity"];
     $HeatingAnalog   = $_POST["HeatingAnalog"];
@@ -362,8 +365,8 @@ elseif (isset($_POST["rss_edit_servos"])) {
   }
 
   if ($Boilermaker["enabled"] == 1) {
-    // Power adjustments to a Boilermaker can't be made if there's an active run
-    if ($Settings["active_run"] == 0) {
+    // Power adjustments to a Boilermaker can't be made if there's an active run and external boiler temperature management is used
+    if (($Settings["active_run"] == 0) || ($Boilermaker["op_mode"] == 0)) {
       if (($_POST["Heating"] > 0) && ($_POST["Heating"] < 10)) $_POST["Heating"] = 10;
       if ($_POST["Heating"] != $Settings["heating_position"]) {
         if ($_POST["Heating"] > $Settings["heating_position"]) {

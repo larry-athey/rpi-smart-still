@@ -79,7 +79,7 @@ while ($RS = mysqli_fetch_assoc($Result)) {
   } elseif ($RS["valve_id"] == 3) {
     if ($Boilermaker["enabled"] == 1) {
       // Control commands for a Boilermaker
-      if (($Boilermaker["online"] == 1) && ($Settings["active_run"] == 0)) {
+      if ($Boilermaker["online"] == 1) {
         if ($RS["position"] > 0) {
           PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
           PingHost($Boilermaker["ip_address"]);
@@ -98,6 +98,8 @@ while ($RS = mysqli_fetch_assoc($Result)) {
         } else {
           if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(4);
         }
+      } else {
+        if ($Settings["speech_enabled"] == 1) SpeakMessage(59);
       }
     } else {
       // Control commands for the heating stepper motor

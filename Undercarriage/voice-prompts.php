@@ -103,6 +103,10 @@ function SpeakMessage($ID) {
   $Msg[61]  = "Boiler has reached minimum operating temperature and is now managed by the Boilermaker";
   $Msg[62]  = "Sending the command to reboot the Boilermaker";
   $Msg[63]  = "Boilermaker progressive temperature limit has been reached";
+  $Msg[64]  = "Boilermaker starting up in constant power mode";
+  $Msg[65]  = "Boiler has reached minimum operating temperature. Reducing Boilermake power to " . $Boilermaker["fallback"] . " percent";
+  $Msg[66]  = "Boiler is under temperature. Increasing Boilermaker power to " . $Settings["heating_position"] . " percent";
+  $Msg[67]  = "Boiler is over temperature. Decreasing Boilermaker power to " . $Settings["heating_position"] . " percent";
 
   mysqli_close($DBcnx);
   CreatePrompt($Msg[$ID]);

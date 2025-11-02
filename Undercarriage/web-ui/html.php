@@ -6,6 +6,12 @@ function CalibrateHydrometer($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
 
+  if ($Settings["active_run"] == 1) {
+    $Disabled = "disabled";
+  } else {
+    $Disabled = "";
+  }
+
   if ($Settings["hydro_type"] == 0) {
     $Content  = "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\">";
     $Content .=   "<div class=\"card-body\">";
@@ -23,28 +29,28 @@ function CalibrateHydrometer($DBcnx) {
     $Content .=     "<p class=\"fw-bolder\">By default, the LIDAR hydrometer reader is calibrated with a hydrometer using a 146mm scale. A reflector 10mm above the 100% line will track within +/- 1%.</p>";
     $Content .=     "<p class=\"fw-bolder\">Use the buttons below to recalibrate the 10% division lines. Float your hydrometer with water, use the top of your parrot as the reference point. Watch for the blue light to flash on the reader chip when updating.</p>";
     $Content .=     "<div class=\"row\">";
-    $Content .=       "<div class=\"col\"><a href=\"process.php?reboot_hydro=1\" class=\"btn btn-outline-danger btn-sm fw-bolder\">Reboot Device</a></div>";
-    $Content .=       "<div class=\"col\"><a style=\"float: right;\" href=\"process.php?recalibrate_hydro=1&slot=0\" class=\"btn btn-primary btn-sm fw-bolder\">Calibrate 0%</a></div>";
+    $Content .=       "<div class=\"col\"><a href=\"process.php?reboot_hydro=1\" class=\"btn btn-outline-danger btn-sm fw-bolder $Disabled\">Reboot Device</a></div>";
+    $Content .=       "<div class=\"col\"><a style=\"float: right;\" href=\"process.php?recalibrate_hydro=1&slot=0\" class=\"btn btn-primary btn-sm fw-bolder $Disabled\">Calibrate 0%</a></div>";
     $Content .=     "</div>";
     $Content .=     "<div class=\"row\" style=\"margin-top: 0.5em;\">";
-    $Content .=       "<div class=\"col\"><a href=\"process.php?recalibrate_hydro=1&slot=1\" class=\"btn btn-primary btn-sm fw-bolder\">Calibrate 10%</a></div>";
-    $Content .=       "<div class=\"col\"><a style=\"float: right;\" href=\"process.php?recalibrate_hydro=1&slot=2\" class=\"btn btn-primary btn-sm fw-bolder\">Calibrate 20%</a></div>";
+    $Content .=       "<div class=\"col\"><a href=\"process.php?recalibrate_hydro=1&slot=1\" class=\"btn btn-primary btn-sm fw-bolder $Disabled\">Calibrate 10%</a></div>";
+    $Content .=       "<div class=\"col\"><a style=\"float: right;\" href=\"process.php?recalibrate_hydro=1&slot=2\" class=\"btn btn-primary btn-sm fw-bolder $Disabled\">Calibrate 20%</a></div>";
     $Content .=     "</div>";
     $Content .=     "<div class=\"row\" style=\"margin-top: 0.5em;\">";
-    $Content .=       "<div class=\"col\"><a href=\"process.php?recalibrate_hydro=1&slot=3\" class=\"btn btn-primary btn-sm fw-bolder\">Calibrate 30%</a></div>";
-    $Content .=       "<div class=\"col\"><a style=\"float: right;\" href=\"process.php?recalibrate_hydro=1&slot=4\" class=\"btn btn-primary btn-sm fw-bolder\">Calibrate 40%</a></div>";
+    $Content .=       "<div class=\"col\"><a href=\"process.php?recalibrate_hydro=1&slot=3\" class=\"btn btn-primary btn-sm fw-bolder $Disabled\">Calibrate 30%</a></div>";
+    $Content .=       "<div class=\"col\"><a style=\"float: right;\" href=\"process.php?recalibrate_hydro=1&slot=4\" class=\"btn btn-primary btn-sm fw-bolder $Disabled\">Calibrate 40%</a></div>";
     $Content .=     "</div>";
     $Content .=     "<div class=\"row\" style=\"margin-top: 0.5em;\">";
-    $Content .=       "<div class=\"col\"><a href=\"process.php?recalibrate_hydro=1&slot=5\" class=\"btn btn-primary btn-sm fw-bolder\">Calibrate 50%</a></div>";
-    $Content .=       "<div class=\"col\"><a style=\"float: right;\" href=\"process.php?recalibrate_hydro=1&slot=6\" class=\"btn btn-primary btn-sm fw-bolder\">Calibrate 60%</a></div>";
+    $Content .=       "<div class=\"col\"><a href=\"process.php?recalibrate_hydro=1&slot=5\" class=\"btn btn-primary btn-sm fw-bolder $Disabled\">Calibrate 50%</a></div>";
+    $Content .=       "<div class=\"col\"><a style=\"float: right;\" href=\"process.php?recalibrate_hydro=1&slot=6\" class=\"btn btn-primary btn-sm fw-bolder $Disabled\">Calibrate 60%</a></div>";
     $Content .=     "</div>";
     $Content .=     "<div class=\"row\" style=\"margin-top: 0.5em;\">";
-    $Content .=       "<div class=\"col\"><a href=\"process.php?recalibrate_hydro=1&slot=7\" class=\"btn btn-primary btn-sm fw-bolder\">Calibrate 70%</a></div>";
-    $Content .=       "<div class=\"col\"><a style=\"float: right;\" href=\"process.php?recalibrate_hydro=1&slot=8\" class=\"btn btn-primary btn-sm fw-bolder\">Calibrate 80%</a></div>";
+    $Content .=       "<div class=\"col\"><a href=\"process.php?recalibrate_hydro=1&slot=7\" class=\"btn btn-primary btn-sm fw-bolder $Disabled\">Calibrate 70%</a></div>";
+    $Content .=       "<div class=\"col\"><a style=\"float: right;\" href=\"process.php?recalibrate_hydro=1&slot=8\" class=\"btn btn-primary btn-sm fw-bolder $Disabled\">Calibrate 80%</a></div>";
     $Content .=     "</div>";
     $Content .=     "<div class=\"row\" style=\"margin-top: 0.5em;\">";
-    $Content .=       "<div class=\"col\"><a href=\"process.php?recalibrate_hydro=1&slot=9\" class=\"btn btn-primary btn-sm fw-bolder\">Calibrate 90%</a></div>";
-    $Content .=       "<div class=\"col\"><a style=\"float: right;\" href=\"process.php?recalibrate_hydro=1&slot=10\" class=\"btn btn-primary btn-sm fw-bolder\">Calibrate 100%</a></div>";
+    $Content .=       "<div class=\"col\"><a href=\"process.php?recalibrate_hydro=1&slot=9\" class=\"btn btn-primary btn-sm fw-bolder $Disabled\">Calibrate 90%</a></div>";
+    $Content .=       "<div class=\"col\"><a style=\"float: right;\" href=\"process.php?recalibrate_hydro=1&slot=10\" class=\"btn btn-primary btn-sm fw-bolder $Disabled\">Calibrate 100%</a></div>";
     $Content .=     "</div>";
     $Content .=   "</div>";
     $Content .= "</div>";
@@ -228,17 +234,12 @@ function DrawMenu($DBcnx) {
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=programs\"><span class=\"fw-bolder\">Edit&nbsp;Programs</span></a></li>";
   if ($Settings["active_run"] == 1) {
     $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"process.php?calibrate_valves=1\"><span class=\"text-secondary fw-bolder\">Calibrate&nbsp;Valves</span></a></li>";
-    $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"?page=sensors\"><span class=\"text-secondary fw-bolder\">Configure&nbsp;Sensors</span></a></li>";
   } else {
     $Content .=           "<li><a class=\"dropdown-item\" href=\"process.php?calibrate_valves=1\"><span class=\"fw-bolder\">Calibrate&nbsp;Valves</span></a></li>";
-    $Content .=           "<li><a class=\"dropdown-item\" href=\"?page=sensors\"><span class=\"fw-bolder\">Configure&nbsp;Sensors</span></a></li>";
   }
+  $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=sensors\"><span class=\"fw-bolder\">Configure&nbsp;Sensors</span></a></li>";
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=heating\"><span class=\"fw-bolder\">Configure&nbsp;Heating</span></a></li>";
-  if ($Settings["active_run"] == 1) {
-    $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"?page=hydrometer\"><span class=\"text-secondary fw-bolder\">Calibrate&nbsp;Hydrometer</a></span></li>";
-  } else {
-    $Content .=           "<li><a class=\"dropdown-item\" href=\"?page=hydrometer\"><span class=\"fw-bolder\">Calibrate&nbsp;Hydrometer</span></a></li>";
-  }
+  $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=hydrometer\"><span class=\"fw-bolder\">Calibrate&nbsp;Hydrometer</span></a></li>";
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=relays\"><span class=\"fw-bolder\">Control&nbsp;Relays</span></a></li>";
   if ($Boilermaker["enabled"] == 1) {
     $Content .=           "<li><a class=\"dropdown-item\" href=\"http://" . $Boilermaker["ip_address"] . "\" target=\"_blank\"><span class=\"fw-bolder\">Open&nbsp;Boilermaker</span></a></li>";
@@ -310,10 +311,17 @@ function EditHeating($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM heating_translation ORDER BY percent");
   while ($RS = mysqli_fetch_assoc($Result)) $Position[] = $RS["position"];
 
+  if ($Settings["active_run"] == 1) {
+    $Disabled = "disabled";
+  } else {
+    $Disabled = "";
+  }
+
   $Content  = "<form id=\"edit_heating\" method=\"post\" action=\"process.php\">";
   $Content .= "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
   $Content .=     "<div class=\"row\">";
+  if ($Boilermaker["enabled"] == 1) $Content .= "<p class=\"fw-bolder\">Note: Changes to any of these settings during an active run will require the run to be restarted to make them active.</p>";
   $Content .=       "<div class=\"col\">";
   $Content .=         "<label for=\"HeatingEnabled\" class=\"form-label fw-bolder\">Heat Management Enabled</label>";
   $Content .=         YNselector($Settings["heating_enabled"],"HeatingEnabled");
@@ -329,9 +337,22 @@ function EditHeating($DBcnx) {
     $Content .=         "<label for=\"BMip_address\" class=\"form-label fw-bolder\">Boilermaker IP Address</label>"; $Pattern = '^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$';
     $Content .=         "<input type=\"text\" class=\"form-control fw-bolder\" id=\"BMip_address\" name=\"BMip_address\" minlength=\"7\" maxlength=\"15\" pattern=\"$Pattern\" required value=\"". $Boilermaker["ip_address"] . "\">";
     $Content .=       "</div>";
-    //$Content .=       "<div class=\"col\">";
-
-    //$Content .=       "</div>";
+    $Content .=     "</div>";
+    $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
+    $Content .=       "<div class=\"col\">";
+    $Content .=         "<label for=\"BMop_mode\" class=\"form-label fw-bolder\">Boiler Temperature Management</label>";
+    $Content .=         BoilermakerModeSelector($Boilermaker["op_mode"]);
+    $Content .=       "</div>";
+    $Content .=     "</div>";
+    $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
+    $Content .=       "<div class=\"col\">";
+    $Content .=         "<label for=\"BMstartup\" class=\"form-label fw-bolder\">Startup Power (%)</label>";
+    $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"BMstartup\" name=\"BMstartup\" min=\"10\" max=\"100\" step=\"1\" value=\"" . $Boilermaker["startup"] . "\">";
+    $Content .=       "</div>";
+    $Content .=       "<div class=\"col\">";
+    $Content .=         "<label for=\"BMfallback\" class=\"form-label fw-bolder\">Fallback Power (%)</label>";
+    $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"BMfallback\" name=\"BMfallback\" min=\"10\" max=\"100\" step=\"1\" value=\"" . $Boilermaker["fallback"] . "\">";
+    $Content .=       "</div>";
     $Content .=     "</div>";
     $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
     $Content .=       "<div class=\"col\">";
@@ -407,11 +428,6 @@ function EditHeating($DBcnx) {
   }
   $Content .=     "<div class=\"row\" style=\"margin-top: 1em;\">";
   if ($Boilermaker["enabled"] == 1) {
-    if ($Settings["active_run"] == 1) {
-      $Disabled = "disabled";
-    } else {
-      $Disabled = "";
-    }
     $Content .=     "<div class=\"col\">";
     $Content .=       "<a href=\"process.php?reboot_boilermaker=1\" class=\"btn btn-outline-danger fw-bolder $Disabled\" name=\"cancel_action\">Reboot Boilermaker</a>";
     $Content .=     "</div>";
@@ -570,24 +586,30 @@ function EditSensors($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
   $Boilermaker = mysqli_fetch_assoc($Result);
 
+  if ($Settings["active_run"] == 1) {
+    $Disabled = "disabled";
+  } else {
+    $Disabled = "";
+  }
+
   $Content  = "<form id=\"edit_sensors\" method=\"post\" action=\"process.php\">";
   $Content .= "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
   $Content .=     "<div style=\"margin-top: .5em;\">";
   $Content .=       "<label for=\"DephlegAddr\" class=\"form-label fw-bolder\">Dephleg Sensor Address</label>";
-  $Content .=       SensorSelector($Settings["dephleg_addr"],"DephlegAddr");
+  $Content .=       SensorSelector($Settings["dephleg_addr"],"DephlegAddr",$Disabled);
   $Content .=     "</div>";
   $Content .=     "<div style=\"margin-top: .5em;\">";
   $Content .=       "<label for=\"ColumnAddr\" class=\"form-label fw-bolder\">Column Sensor Address</label>";
-  $Content .=       SensorSelector($Settings["column_addr"],"ColumnAddr");
+  $Content .=       SensorSelector($Settings["column_addr"],"ColumnAddr",$Disabled);
   $Content .=     "</div>";
   if ($Boilermaker["enabled"] == 0) {
     $Content .=   "<div style=\"margin-top: .5em;\">";
     $Content .=     "<label for=\"BoilerAddr\" class=\"form-label fw-bolder\">Boiler Sensor Address</label>";
-    $Content .=     SensorSelector($Settings["boiler_addr"],"BoilerAddr");
+    $Content .=     SensorSelector($Settings["boiler_addr"],"BoilerAddr",$Disabled);
     $Content .=   "</div>";
   }
-  $Content .=     "<div style=\"margin-top: 1em; float: right;\"><a href=\"index.php\" class=\"btn btn-danger fw-bolder\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-primary fw-bolder\" name=\"rss_edit_sensors\">Submit</button></div>";
+  $Content .=     "<div style=\"margin-top: 1em; float: right;\"><a href=\"index.php\" class=\"btn btn-danger fw-bolder\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-primary fw-bolder\" name=\"rss_edit_sensors\" $Disabled>Submit</button></div>";
   $Content .=   "</div>";
   $Content .= "</div>";
   $Content .= "</form>";
@@ -639,7 +661,7 @@ function ServoPositionEditor($DBcnx) {
   $Content .= "<label for=\"Valve1\" class=\"form-label fw-bolder\" style=\"margin-top: .5em;\">Condenser Cooling Valve %</label>";
   $Content .= "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Valve1\" name=\"Valve1\" min=\"0\" max=\"100\" step=\".1\" value=\"" . PosToPct($Settings["valve1_total"],$Settings["valve1_position"]) . "\">";
   if ($Boilermaker["enabled"] == 1) {
-    if ($Settings["active_run"] == 1) {
+    if (($Settings["active_run"] == 1) && ($Boilermaker["op_mode"]) == 1) {
       $Disabled = "disabled";
     } else {
       $Disabled = "";

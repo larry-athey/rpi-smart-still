@@ -19,6 +19,21 @@ function PingHost($Host) {
   }
 }
 //---------------------------------------------------------------------------------------------------
+function BoilermakerModeSelector($Mode) {
+  if ($Mode == 0) {
+    $S0 = "selected";
+    $S1 = "";
+  } else {
+    $S0 = "";
+    $S1 = "selected";
+  }
+  $Content  = "<select style=\"width: 100%;\" size=\"1\" class=\"form-control form-select fw-bolder\" id=\"BMop_mode\" name=\"BMop_mode\" aria-describedby=\"BMop_mode" . "Help\">";
+  $Content .= "<option $S0 value=\"0\">RPi Smart Still Controller</option>";
+  $Content .= "<option $S1 value=\"1\">Boilermaker Internal Routines</option>";
+  $Content .= "</select>";
+  return $Content;
+}
+//---------------------------------------------------------------------------------------------------
 function BoilermakerQuery($Host,$Query) {
   $Output = shell_exec("/usr/bin/curl -s -m 5 --http0.9 http://$Host" . $Query);
   return $Output;
@@ -218,10 +233,10 @@ function SecsToTime($Seconds) {
   return $Tmp[0] . ":" . $Tmp[1];
 }
 //---------------------------------------------------------------------------------------------------
-function SensorSelector($Selected,$ID) {
+function SensorSelector($Selected,$ID,$Disabled) {
   $Sensors = getSensorList();
   if (count($Sensors) > 0) {
-    $Content  = "<select style=\"width: 100%;\" size=\"1\" class=\"form-control form-select fw-bolder\" id=\"$ID\" name=\"$ID\" aria-describedby=\"$ID" . "Help\">";
+    $Content  = "<select style=\"width: 100%;\" size=\"1\" class=\"form-control form-select fw-bolder\" id=\"$ID\" name=\"$ID\" aria-describedby=\"$ID" . "Help\" $Disabled>";
     $Content .= "<option value=\"\"></option>";
     for ($x = 0; $x <= (count($Sensors) - 1); $x++) {
       if ($Selected == $Sensors[$x]) {
