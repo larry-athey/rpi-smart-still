@@ -551,6 +551,7 @@ if (mysqli_num_rows($Result) > 0) {
       /***** THIS FINAL CODE BRANCH CONTROLS THE RESET OF $Logic["hydrometer_timer"] *****/
       if (($Logic["column_done"] == 1) || ($Logic["dephleg_done"] == 1)) {
         // Check the distillate temperature every 5 minutes after column or dephleg are up to temperature
+        // NOTE: This needs to be reworked because it only works if flow/ABV management is enabled in the current program
         if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Logic["hydrometer_started"] == 1)) {
           // If distillate is over 24C/75F, increment the $Logic["hydrometer_temp_errors"] counter
           // This is for both safety and to maintain the accuracy of the hydrometer, hot distillate is less dense and reads a higher proof
