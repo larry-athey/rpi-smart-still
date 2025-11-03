@@ -190,6 +190,8 @@ if (mysqli_num_rows($Result) > 0) {
                       $BoilerPower = $Settings["heating_position"] + 5; // Boilermaker is more accurate than SCR controllers and only needs 5% adjustments
                       if ($BoilerPower > 100) $BoilerPower = 100;
                       $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='$BoilerPower' WHERE ID=1");
+                      $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now()," .
+                                                    "boiler_note='Boiler is under temperature, increasing Boilermaker power to " . $BoilerPower . "%' WHERE ID=1");
                       PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
                       PingHost($Boilermaker["ip_address"]);
                       PingHost($Boilermaker["ip_address"]);
@@ -237,6 +239,8 @@ if (mysqli_num_rows($Result) > 0) {
                       $BoilerPower = $Settings["heating_position"] - 5; // Boilermaker is more accurate than SCR controllers and only needs 5% adjustments
                       if ($BoilerPower < 10) $BoilerPower = 10;
                       $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='$BoilerPower' WHERE ID=1");
+                      $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now()," .
+                                                    "boiler_note='Boiler is over temperature, decreasing Boilermaker power to " . $BoilerPower . "%' WHERE ID=1");
                       PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
                       PingHost($Boilermaker["ip_address"]);
                       PingHost($Boilermaker["ip_address"]);
