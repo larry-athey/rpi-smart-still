@@ -551,9 +551,13 @@ if (mysqli_num_rows($Result) > 0) {
           }
         }
       }
-      /***** $Logic["hydrometer_timer"] STARTER IN CASE NEITHER FLOW NOR ABV MANAGEMENT ARE IN USE *****/
+      /***** $Logic["hydrometer_timer"] STARTER - IN CASE NEITHER FLOW NOR ABV MANAGEMENT ARE IN USE *****/
       if (($Program["abv_managed"] == 0) && ($Program["flow_managed"] == 0)) {
-
+        if (($Logic["column_done"] == 1) || ($Logic["dephleg_done"] == 1)) {
+          if ($Logic["hydrometer_started"] == 0) {
+            $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_timer=now(),hydrometer_temp_errors='0',hydrometer_started='1' WHERE ID=1");
+          }
+        }
       }
       /***** DISTILLATE TEMPERATURE MANAGEMENT ROUTINES *****/
       /***** THIS FINAL CODE BRANCH CONTROLS THE RESET OF $Logic["hydrometer_timer"] *****/
