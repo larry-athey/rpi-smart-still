@@ -209,7 +209,7 @@ void loop() {
   byte Data = 0;
   int FlowTotal = 0;
   uint EthanolAvg = 0;
-  long CurrentTime = millis();
+  unsigned long CurrentTime = millis();
   if (CurrentTime > 4200000000) {
     RebootUnit();
   } else if (CurrentTime < 1000) {
