@@ -23,13 +23,20 @@ function BoilermakerModeSelector($Mode) {
   if ($Mode == 0) {
     $S0 = "selected";
     $S1 = "";
-  } else {
+    $S2 = "";
+  } elseif ($Mode == 1) {
     $S0 = "";
     $S1 = "selected";
+    $S2 = "";
+  } else {
+    $S0 = "";
+    $S1 = "";
+    $S2 = "selected";
   }
   $Content  = "<select style=\"width: 100%;\" size=\"1\" class=\"form-control form-select fw-bolder\" id=\"BMop_mode\" name=\"BMop_mode\" aria-describedby=\"BMop_mode" . "Help\">";
   $Content .= "<option $S0 value=\"0\">RPi Smart Still Controller</option>";
-  $Content .= "<option $S1 value=\"1\">Boilermaker Internal Routines</option>";
+  $Content .= "<option $S1 value=\"1\">Boilermaker Temperature Cruise</option>";
+  $Content .= "<option $S2 value=\"2\">Boilermaker Brewing/Fermentation</option>";
   $Content .= "</select>";
   return $Content;
 }
