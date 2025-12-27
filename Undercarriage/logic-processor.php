@@ -36,6 +36,7 @@ if (mysqli_num_rows($Result) > 0) {
           PingHost($Boilermaker["ip_address"]);
           $Runtime = trim(BoilermakerQuery($Boilermaker["ip_address"],"/get-runtime")); // Get the Boilermaker current runtime
           if (($Runtime != "") && ($Runtime > 0)) BoilermakerQuery2($Boilermaker["ip_address"],"/stop-run"); // Stop the Boilermaker if it's already running
+          BoilermakerQuery2($Boilermaker["ip_address"],"/?data_16=0"); // Make sure the Boilermaker's countdown timer is disabled
           if ($Boilermaker["op_mode"] > 0) {  // Use Boilermaker temperature management
             $ExtBoilMgmt =  true;
             if ($Boilermaker["op_mode"] == 1) {
