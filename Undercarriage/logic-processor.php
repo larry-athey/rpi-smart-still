@@ -16,7 +16,12 @@ if (mysqli_num_rows($Result) > 0) {
   $Program     = mysqli_fetch_assoc($Result);
   $Result      = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
   $Boilermaker = mysqli_fetch_assoc($Result);
-  $ExtBoilMgmt = false;
+
+  if ($Boilermaker["op_mode"] > 0) {
+    $ExtBoilMgmt = true;
+  } else {
+    $ExtBoilMgmt = false;
+  }
 
   if ($Logic["run_start"] == 1) {
     // New run started
@@ -37,10 +42,9 @@ if (mysqli_num_rows($Result) > 0) {
           $Runtime = trim(BoilermakerQuery($Boilermaker["ip_address"],"/get-runtime")); // Get the Boilermaker current runtime
           if (($Runtime != "") && ($Runtime > 0)) BoilermakerQuery2($Boilermaker["ip_address"],"/stop-run"); // Stop the Boilermaker if it's already running
           BoilermakerQuery2($Boilermaker["ip_address"],"/?data_16=0"); // Make sure the Boilermaker's countdown timer is disabled
-          if ($Boilermaker["op_mode"] > 0) {  // Use Boilermaker temperature management
-            $ExtBoilMgmt =  true;
-            if ($Boilermaker["op_mode"] == 1) {
-              BoilermakerQuery2($Boilermaker["ip_address"],"/?data_0=1"); // Put the Boilermaker into Temperature Cruise mode
+          if ($ExtBoilMgmt) { // Use Boilermaker temperature management
+            if (($Boilermaker["op_mode"] == 1) || ($Boilermaker["op_mode"] == 3)) {
+              BoilermakerQuery2($Boilermaker["ip_address"],"/?data_0=" . $Boilermaker["op_mode"]); // Put the Boilermaker into Temperature Cruise mode
               BoilermakerQuery2($Boilermaker["ip_address"],"/?data_2=" . $Boilermaker["startup"]); // Set the Boilermaker startup power level
               BoilermakerQuery2($Boilermaker["ip_address"],"/?data_3=" . $Boilermaker["fallback"]); // Set the Boilermaker fallback power level
             } else {
@@ -188,7 +192,7 @@ if (mysqli_num_rows($Result) > 0) {
           if (time() - strtotime($Logic["boiler_last_adjustment"]) >= 900) {
             if ($Settings["boiler_temp"] < $Program["boiler_temp_low"]) {
               if ($Settings["heating_enabled"] == 1) {
-                if (($Boilermaker["enabled"] == 1) && ($Boilermaker["op_mode"] == 0)) { // Boilermaker is basically functioning like an SCR power controller if op_mode == 0
+                if ($Boilermaker["enabled"] == 1) { // Boilermaker is basically functioning like an SCR power controller
                   if ($Boilermaker["online"] == 1) {
                     // Increase Boilermaker power by 5%
                     if ($Settings["heating_position"] < 100) {
@@ -237,7 +241,7 @@ if (mysqli_num_rows($Result) > 0) {
               }
             } elseif ($Settings["boiler_temp"] > $Program["boiler_temp_high"]) {
               if ($Settings["heating_enabled"] == 1) {
-                if (($Boilermaker["enabled"] == 1) && ($Boilermaker["op_mode"] == 0)) { // Boilermaker is basically functioning like an SCR power controller if op_mode == 0
+                if ($Boilermaker["enabled"] == 1) { // Boilermaker is basically functioning like an SCR power controller
                   if ($Boilermaker["online"] == 1) {
                     // Decrease Boilermaker power by 5%
                     if ($Settings["heating_position"] > 10) {
