@@ -51,14 +51,15 @@ if (mysqli_num_rows($Result) > 0) {
               BoilermakerQuery2($Boilermaker["ip_address"],"/?data_0=2"); // Put the Boilermaker into Brewing/Fermentation mode
             }
             BoilermakerQuery2($Boilermaker["ip_address"],"/?data_1=" . $Program["boiler_temp_low"]); // Set the Boilermaker initial target temperature
-            BoilermakerQuery2($Boilermaker["ip_address"],"/start-run"); // Start the Boilermaker
             if ($Boilermaker["fixed_temp"] == 0) {
+              BoilermakerQuery2($Boilermaker["ip_address"],"/?data_13=0"); // Disable the Boilermaker's progressive temperature function
               $Range = $Program["boiler_temp_high"] - $Program["boiler_temp_low"];
               $IncTemp = $Range / ($Boilermaker["time_spread"] * 12);
               $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='" . $Program["boiler_temp_low"] . "',inc_temp='$IncTemp' WHERE ID=1");
             } else {
               $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='" . $Program["boiler_temp_low"] . "',inc_temp='0' WHERE ID=1");
             }
+            BoilermakerQuery2($Boilermaker["ip_address"],"/start-run"); // Start the Boilermaker
             if ($Settings["speech_enabled"] == 1) SpeakMessage(58);
           } else { // Constant power mode (we're basically using the Boilermaker as a digital SCR power controller in this case)
             BoilermakerQuery2($Boilermaker["ip_address"],"/?data_0=0"); // Put the Boilermaker into Constant Power mode
