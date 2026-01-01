@@ -86,6 +86,7 @@ while ($RS = mysqli_fetch_assoc($Result)) {
           PingHost($Boilermaker["ip_address"]);
           $Runtime = trim(BoilermakerQuery($Boilermaker["ip_address"],"/get-runtime")); // Get the Boilermaker current runtime
           if (($Runtime != "") && ($Runtime == 0)) {
+            BoilermakerQuery2($Boilermaker["ip_address"],"/?data_16=0"); // Make sure the Boilermaker's countdown timer is disabled
             BoilermakerQuery2($Boilermaker["ip_address"],"/?data_0=0"); // Put the Boilermaker into Constant Power mode
             BoilermakerQuery2($Boilermaker["ip_address"],"/start-run"); // Start the Boilermaker
           }
