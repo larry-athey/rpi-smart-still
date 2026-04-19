@@ -56,8 +56,8 @@ float TempC = 0;               // Global placeholder for ethanol temperature rea
 float dist0 = 132.0;           // Reflector distance for 0% ABV
 float dist100 = 20.0;          // Reflector distance for 100% ABV
 float Distance = 0.0;          // Current LIDAR distance measurement
-uint emptyValue = 58;          // Flow sensor reading when the vessel is empty
-uint fullValue = 28;           // Flow sensor reading when the vessel is full
+float emptyValue = 58.0;       // Flow sensor reading when the vessel is empty
+float fullValue = 28.0;        // Flow sensor reading when the vessel is full
 long SerialCounter;            // Timekeeper for serial data output updates
 bool NewChip = true;           // True if the flash memory hasn't been initialized
 byte EthanolBuf[10];           // Buffer for smoothing out ethanol readings
@@ -171,8 +171,8 @@ void GetMemory() { // Get all of the configuration settings from flash memory
   preferences.begin("prefs",true);
   dist0      = preferences.getFloat("dist0",132.0);
   dist100    = preferences.getFloat("dist100",20.0);
-  emptyValue = preferences.getUInt("emptyvalue",0);
-  fullValue  = preferences.getUInt("fullvalue",0);
+  emptyValue = preferences.getFloat("emptyvalue",58.0);
+  fullValue  = preferences.getFloat("fullvalue",28.0);
   NewChip    = preferences.getBool("newchip",true);
   preferences.end();
   Serial.print("dist0: "); Serial.println(dist0);
@@ -187,8 +187,8 @@ void ResetMemory() { // Restore all of the configuration settings to their defau
   preferences.begin("prefs",false);
   preferences.putFloat("dist0",132.0);  // 0%
   preferences.putFloat("dist100",20.0); // 100%
-  preferences.putUInt("emptyvalue",58); // Empty capacitance
-  preferences.putUInt("fullvalue",28);  // Full capaitance
+  preferences.putFloat("emptyvalue",58.0); // Empty capacitance
+  preferences.putFloat("fullvalue",28.0);  // Full capaitance
   preferences.putBool("newchip",false); // New chip Y/N
   preferences.end();
   for (byte x = 0; x <= 9; x ++) {
@@ -206,9 +206,9 @@ void UpdateMemory(byte Slot) { // Update a flash memory slot for a specific conf
   } else if (Slot == 1) {
     preferences.putFloat("dist100",dist100);
   } else if (Slot == 2) {
-    preferences.putUInt("emptyvalue",emptyValue);
+    preferences.putFloat("emptyvalue",emptyValue);
   } else if (Slot == 3) {
-    preferences.putUInt("fullvalue",fullValue);
+    preferences.putFloat("fullvalue",fullValue);
   }
   preferences.end();
   GetMemory();
@@ -227,7 +227,7 @@ void RebootUnit() { // Reboot the device, write to flash memory here before rest
 void loop() {
   VL53L0X_RangingMeasurementData_t measure;
   byte Data = 0;
-  int FlowTotal = 0;
+  uint FlowRate = 0;
   uint EthanolAvg = 0;
   unsigned long CurrentTime = millis();
   if (CurrentTime > 4200000000) {
@@ -278,13 +278,13 @@ void loop() {
     }
 
     // Get the current distillate flow rate (capacitance level across the flow sensor plates)
-    FlowTotal = getFlowSensor();
+    FlowRate = getFlowSensor();
   
     digitalWrite(USER_LED,HIGH);
     digitalWrite(CHARGE_PIN,LOW);
     Serial.print("Uptime: "); Serial.println(Uptime);
     Serial.print("Distance: "); Serial.print(Distance); Serial.printf(", Capacitance: %.2fpf\r\n",capacitance_pf);
-    Serial.print("Flow: "); Serial.println(FlowTotal);
+    Serial.print("Flow: "); Serial.println(FlowRate);
     Serial.print("Ethanol: "); Serial.println(EthanolAvg);
     Serial.print("TempC: "); Serial.println(TempC,1);
     Serial.println("#"); // Pound sign marks the end of a data block to the Raspberry PI
