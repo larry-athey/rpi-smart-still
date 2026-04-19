@@ -105,11 +105,11 @@ void TempUpdate() { // Update the distillate temperature value
 }
 //------------------------------------------------------------------------------------------------
 float CalcEthanol() { // Convert the Distance millimeters to an ethanol ABV value (temperature compensated)
-    const float tolerance = 3.0f;  // mm — increase to compensate for a noisy VL53L0X sensor
+  const float tolerance = 3.0f;  // mm — increase to compensate for a noisy VL53L0X sensor
 
-    if (Distance > (dist0 + tolerance) || Distance < (dist100 - tolerance)) {
-        return 0.0f;  // Invalid reading → treat as 0% ABV or "no valid measurement"
-    }
+  if (Distance > (dist0 + tolerance) || Distance < (dist100 - tolerance)) {
+    return 0.0f;  // Invalid reading → treat as 0% ABV or "no valid measurement"
+  }
 
   // Standard densities at 20 °C (kg/m³)
   const float d0_20   = 998.20f;   // water
