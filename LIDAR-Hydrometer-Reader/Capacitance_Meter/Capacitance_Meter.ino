@@ -17,9 +17,8 @@
 //       uploading code to the ESP32.
 //
 // Edit the emptyValue and fullValue variables in the getFlowSensor() function to fine-tune it to
-// your flow sensor, then carry those values over to the same variables in the function by the same
-// name in the flow-sensor.h library. After that, you can compile and upload the LIDAR Hydrometer
-// Reader code to your ESP32 and your flow sensor will be properly calibrated to work with it.
+// your flow sensor. This will give you a general feel for the performance of your flow sensor so
+// you can make physical changes if necessary.
 //
 // Remember, you are actually building an air-gap capacitor here. The length, width, thickness of
 // the plates and the gap between the plates all have an effect on its readings. The beauty is the

@@ -1,6 +1,6 @@
 //------------------------------------------------------------------------------------------------
 // RPi Smart Still Controller | (CopyLeft) 2024-Present | Larry Athey (https://panhandleponics.com)
-// Bird Brain v1.2.1 - LIDAR Hydrometer Reader and Parrot Flow Monitor - Released November 23, 2024
+// Bird Brain v1.2.2 - LIDAR Hydrometer Reader and Parrot Flow Monitor - Released April 30, 2026
 //
 // You must be using a v2.x ESP32 library to compile this code. It appears that v3.x libraries do
 // not contain compatible headers for certain legacy libraries that I rely on. You should also use
@@ -32,13 +32,9 @@
 //
 // Calibration is as simple as putting the hydrometer in the parrot, add water until the 100% mark
 // is even with the top of the center tube, click the button in the RPi Smart Still Controller for
-// the 100% calibration, and repeat for every 10% mark including the 0% mark. The settings will be
-// stored in the flash memory and you won't have to do it again unless you change your hydrometer.
-//
-// This device also utilizes a DS18B20 temperature sensor in order to tell the mart still system to
-// turn up the condenser flow if the distillate temperature is too hot for the hydrometer to read
-// correctly and prevent a fire hazard. Hot distillate means that you're not condensing all of the
-// vapor back to a liquid, so you're actually losing product to the air if it's too hot.
+// the 100% calibration. Then fill it up until the 0% mark is even with the top of the center tube
+// and click the button for the 0% calibration. Calibrating the flow sensor works the same way but
+// you fill it with vodka rather than water due to the dielectric properties of ethanol.
 //
 // The new flow sensor is a custom device designed by James (The Doc) from Ireland and determines
 // the flow rate by the height of ethanol in a vessel and reading the electrical capacitance from
@@ -49,7 +45,6 @@
 #include "OneWire.h"           // OneWire Network communications library
 #include "DallasTemperature.h" // Dallas Temperature DS18B20 temperature sensor library
 #include "Preferences.h"       // ESP32 Flash memory read/write library
-#include "flow-sensor.h"       // Library for the custom capacitive flow sensor
 //------------------------------------------------------------------------------------------------
 #define ONE_WIRE 15            // 1-Wire network pin for the DS18B20 temperature sensor
 #define I2C_SCL 22             // I2C clock pin
@@ -58,15 +53,21 @@
 //------------------------------------------------------------------------------------------------
 char Uptime[10];               // Global placeholder for the formatted uptime reading
 float TempC = 0;               // Global placeholder for ethanol temperature reading
-uint Distance = 0;             // Global placeholder for the LIDAR distance measurement
-uint Divisions[11];            // Measurements for the hydrometer's 10% divisions
+float dist0 = 132.0;           // Reflector distance for 0% ABV
+float dist100 = 20.0;          // Reflector distance for 100% ABV
+float Distance = 0.0;          // Current LIDAR distance measurement
+uint emptyValue = 58;          // Flow sensor reading when the vessel is empty
+uint fullValue = 28;           // Flow sensor reading when the vessel is full
 long SerialCounter;            // Timekeeper for serial data output updates
+bool NewChip = true;           // True if the flash memory hasn't been initialized
 byte EthanolBuf[10];           // Buffer for smoothing out ethanol readings
 //------------------------------------------------------------------------------------------------
 Adafruit_VL53L0X Lidar = Adafruit_VL53L0X();
 OneWire oneWire(ONE_WIRE);
 DallasTemperature DT(&oneWire);
 Preferences preferences;
+//------------------------------------------------------------------------------------------------
+#include "flow-sensor.h"       // Inline code library for the custom capacitive flow sensor
 //------------------------------------------------------------------------------------------------
 void setup() {
   Serial.begin(9600);
@@ -80,14 +81,10 @@ void setup() {
   }
 
   // Check the flash memory to see if this is a new ESP32 and stuff it with default values if so
-  boolean NewChip = true;
-  GetDivisions();
-  for (byte x = 0; x <= 10; x ++) {
-    if (Divisions[x] > 0) NewChip = false;
-  }
+  GetMemory();
   if (NewChip) {
-    ResetDivisions();
-    GetDivisions();
+    ResetMemory();
+    GetMemory();
   }
 
   // Set up the custom flow sensor library
@@ -107,91 +104,114 @@ void TempUpdate() { // Update the distillate temperature value
   TempC = DT.getTempCByIndex(0);
 }
 //------------------------------------------------------------------------------------------------
-byte CalcEthanol() { // Convert the Distance millimeters to an ethanol ABV value
-  float Tenth,TotalDivs = 0;
-  byte ABV;
-  for (byte x = 10; x >= 0; x --) {
-    if (Divisions[x] == Distance) {
-      return x * 10;
-    } else {
-      if ((x > 0) && (Distance > Divisions[x]) && (Distance < Divisions[x - 1])) {
-        Tenth = (Divisions[x - 1] - Divisions[x]) * 0.1;
-        for (byte y = 1; y <= 9; y ++) {
-          TotalDivs += Tenth;
-          if (Divisions[x - 1] - round(TotalDivs) <= Distance) {
-            ABV = ((x - 1) * 10) + y;
-            return ABV;
-          }
-        }
-      }
+float CalcEthanol() { // Convert the Distance millimeters to an ethanol ABV value (temperature compensated)
+    const float tolerance = 3.0f;  // mm — increase to compensate for a noisy VL53L0X sensor
+
+    if (Distance > (dist0 + tolerance) || Distance < (dist100 - tolerance)) {
+        return 0.0f;  // Invalid reading → treat as 0% ABV or "no valid measurement"
     }
-    if (x == 0) return 0; // Goofy nature of for|next loop ending values
+
+  // Standard densities at 20 °C (kg/m³)
+  const float d0_20   = 998.20f;   // water
+  const float d100_20 = 789.24f;   // pure ethanol
+
+  // Fit constants so that: dist = k / density + m
+  float delta_h   = dist0 - dist100;                    // positive in your setup
+  float delta_inv = (1.0f / d0_20) - (1.0f / d100_20);  // negative
+  if (fabs(delta_inv) < 1e-8f) return 0.0f;
+
+  float k = delta_h / delta_inv;   // will be negative — that's physically correct
+  float m = dist0 - k / d0_20;
+
+  // Observed density at current temperature
+  float denom = Distance - m;
+  if (fabs(denom) < 0.01f) return 0.0f;
+  float density_obs = k / denom;
+
+  // Clamp to realistic range
+  if (density_obs > 1100.0f) density_obs = 1100.0f;
+  if (density_obs < 780.0f)  density_obs = 780.0f;
+
+  // === TEMPERATURE CORRECTION (fixed & improved) ===
+  // density_T = density_20 / (1 + α·ΔT)   →   density_20 = density_T · (1 + α·ΔT)
+  // α = blended cubical expansion coefficient for 0–100 % ethanol-water mixtures
+  const float alpha = 0.00085f;   // excellent average for this application
+  float density_20 = density_obs * (1.0f + alpha * (TempC - 20.0f));
+
+  // Official OIML density table at 20 °C (1% steps)
+  static const float density_table[101] = {
+    998.20f, 996.70f, 995.73f, 993.81f, 992.41f, 991.06f, 989.73f, 988.43f, 987.16f, 985.92f,
+    984.71f, 983.52f, 982.35f, 981.21f, 980.08f, 978.97f, 977.87f, 976.79f, 975.71f, 974.63f,
+    973.56f, 972.48f, 971.40f, 970.31f, 969.21f, 968.10f, 966.97f, 965.81f, 964.64f, 963.44f,
+    962.21f, 960.95f, 959.66f, 958.34f, 956.98f, 955.59f, 954.15f, 952.69f, 951.18f, 949.63f,
+    948.05f, 946.42f, 944.76f, 943.06f, 941.32f, 939.54f, 937.73f, 935.88f, 934.00f, 932.09f,
+    930.14f, 928.16f, 926.16f, 924.12f, 922.06f, 919.96f, 917.84f, 915.70f, 913.53f, 911.33f,
+    909.11f, 906.87f, 904.60f, 902.31f, 899.99f, 897.65f, 895.28f, 892.89f, 890.48f, 888.03f,
+    885.56f, 883.06f, 880.54f, 877.99f, 875.40f, 872.79f, 870.15f, 867.48f, 864.78f, 862.04f,
+    859.27f, 856.46f, 853.62f, 850.74f, 847.82f, 844.85f, 841.84f, 838.77f, 835.64f, 832.45f,
+    829.18f, 825.83f, 822.39f, 818.85f, 815.18f, 811.38f, 807.42f, 803.27f, 798.90f, 794.25f,
+    789.24f
+  };
+
+  // Linear interpolation in the table
+  for (int i = 0; i < 100; ++i) {
+    float d_high = density_table[i];  // higher density = lower ABV
+    float d_low  = density_table[i + 1];
+    if (density_20 >= d_low && density_20 <= d_high) {
+      float fraction = (d_high - density_20) / (d_high - d_low);
+      return roundf(((float)i + fraction) * 10.0f) / 10.0f;  // 0.1 % resolution
+    }
   }
-  return 0;
+
+  // Fallback
+  return (density_20 <= d100_20) ? 100.0f : 0.0f;
 }
 //------------------------------------------------------------------------------------------------
-void GetDivisions() { // Stuff the Divisions array with saved values stored in flash memory
+void GetMemory() { // Get all of the configuration settings from flash memory
   preferences.begin("prefs",true);
-  Divisions[0] = preferences.getUInt("div0",0);
-  Divisions[1] = preferences.getUInt("div1",0);
-  Divisions[2] = preferences.getUInt("div2",0);
-  Divisions[3] = preferences.getUInt("div3",0);
-  Divisions[4] = preferences.getUInt("div4",0);
-  Divisions[5] = preferences.getUInt("div5",0);
-  Divisions[6] = preferences.getUInt("div6",0);
-  Divisions[7] = preferences.getUInt("div7",0);
-  Divisions[8] = preferences.getUInt("div8",0);
-  Divisions[9] = preferences.getUInt("div9",0);
-  Divisions[10] = preferences.getUInt("div10",0);
+  dist0      = preferences.getFloat("dist0",132.0);
+  dist100    = preferences.getFloat("dist100",20.0);
+  emptyValue = preferences.getUInt("emptyvalue",0);
+  fullValue  = preferences.getUInt("fullvalue",0);
+  NewChip    = preferences.getBool("newchip",true);
   preferences.end();
-  for (byte x = 0; x <= 10; x ++) {
-    Serial.print("div");
-    Serial.print(x);
-    Serial.print(": ");
-    Serial.println(Divisions[x]);
-  }
+  Serial.print("dist0: "); Serial.println(dist0);
+  Serial.print("dist100: "); Serial.println(dist100);
+  Serial.print("emptyValue: "); Serial.println(emptyValue);
+  Serial.print("fullValue: "); Serial.println(fullValue);
   Serial.println("#!");
 }
 //------------------------------------------------------------------------------------------------
-void UpdateDivision(byte Slot) { // Update a flash memory slot for a specific Divisions array item
-  char SlotName[6];
-  if (Slot == 97) {
-    Slot = 10;
-  } else {
-    Slot -= 48;
-  }
-  if ((Slot >= 0) && (Slot <= 10)) {
-    preferences.begin("prefs",false);
-    sprintf(SlotName,"div%u",Slot);
-    preferences.putUInt(SlotName,Distance);
-    preferences.end();
-    GetDivisions();
-    for (byte x = 0; x <= 9; x ++) {
-      digitalWrite(USER_LED,HIGH);
-      delay(100);
-      digitalWrite(USER_LED,LOW);
-      delay(100);
-    }
+void ResetMemory() { // Restore all of the configuration settings to their defaults
+  // The distances below are for this hydrometer -> https://www.amazon.com/dp/B013S1VAM4
+  preferences.begin("prefs",false);
+  preferences.putFloat("dist0",132.0);  // 0%
+  preferences.putFloat("dist100",20.0); // 100%
+  preferences.putUInt("emptyvalue",58); // Empty capacitance
+  preferences.putUInt("fullvalue",28);  // Full capaitance
+  preferences.putBool("newchip",false); // New chip Y/N
+  preferences.end();
+  for (byte x = 0; x <= 9; x ++) {
+    digitalWrite(USER_LED,HIGH);
+    delay(100);
+    digitalWrite(USER_LED,LOW);
+    delay(100);
   }
 }
 //------------------------------------------------------------------------------------------------
-void ResetDivisions() { // Restore all of the default reflector distance values
-  // The measurements below are for this hydrometer -> https://www.amazon.com/dp/B013S1VAM4
-  // If you have a different hydrometer, you should measure the scale and add 20mm to each
-  // division and mark 20mm above the 100% line so you know where the reflector needs to be
+void UpdateMemory(byte Slot) { // Update a flash memory slot for a specific configuration item
   preferences.begin("prefs",false);
-  preferences.putUInt("div0",132); // 0%
-  preferences.putUInt("div1",126); // 10%
-  preferences.putUInt("div2",122); // 20%
-  preferences.putUInt("div3",117); // 30%
-  preferences.putUInt("div4",110); // 40%
-  preferences.putUInt("div5",101); // 50%
-  preferences.putUInt("div6",90);  // 60%
-  preferences.putUInt("div7",78);  // 70%
-  preferences.putUInt("div8",63);  // 80%
-  preferences.putUInt("div9",45);  // 90%
-  preferences.putUInt("div10",20); // 100%
+  if (Slot == 0) {
+    preferences.putFloat("dist0",dist0);
+  } else if (Slot == 1) {
+    preferences.putFloat("dist100",dist100);
+  } else if (Slot == 2) {
+    preferences.putUInt("emptyvalue",emptyValue);
+  } else if (Slot == 3) {
+    preferences.putUInt("fullvalue",fullValue);
+  }
   preferences.end();
+  GetMemory();
   for (byte x = 0; x <= 9; x ++) {
     digitalWrite(USER_LED,HIGH);
     delay(100);
@@ -231,13 +251,13 @@ void loop() {
     Data = Serial.read();
     if (Data == 33) { // Reboot the device if a "!" is received
       RebootUnit();
-    } else if (Data == 35) { // Update a specific Divisions[x] slot if a "#" is received
-      if (Serial.available()) { // Formatted as #0 = 0%, #1 = 10% .. #9 = 90%, #a = 100%
+    } else if (Data == 35) { // Update a specific flash memory slot if a "#" is received
+      if (Serial.available()) { // Formatted as #0 = dist0, #1 = dist100, #2 = emptyValue, #3 = fullValue
         Data = Serial.read();
-        UpdateDivision(Data);
+        UpdateMemory(Data);
       }
     } else if (Data == 42) { // Restore default Divisions[x] values if a "*" is received
-      ResetDivisions();
+      ResetMemory();
       RebootUnit();
     }  
   }
@@ -250,9 +270,9 @@ void loop() {
     // Get the current reflector distance and convert it to an ethanol ABV value
     Lidar.rangingTest(&measure,false);
     if (measure.RangeStatus != 4) {
-      Distance = measure.RangeMilliMeter;
+      Distance = float(measure.RangeMilliMeter);
       for (byte x = 0; x <= 8; x ++) EthanolBuf[x] = EthanolBuf[x + 1];
-      EthanolBuf[9] = CalcEthanol();
+      EthanolBuf[9] = round(CalcEthanol());
       for (byte x = 0; x <= 9; x ++) EthanolAvg += EthanolBuf[x];
       EthanolAvg *= 0.1;
     }
