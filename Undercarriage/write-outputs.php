@@ -182,25 +182,26 @@ while ($RS = mysqli_fetch_assoc($Result)) {
     if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(53);
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 70) {
-    // Control command to calibrate the hydrometer 0% slot (LIDAR version)
+    // Control command to calibrate the hydrometer 0% position (LIDAR version)
     if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(37);
     shell_exec("/usr/bin/echo \"\#0\" > $HydroPort");
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 71) {
-    // Control command to calibrate the hydrometer 10% slot (LIDAR version)
+    // Control command to calibrate the hydrometer 100% position (LIDAR version)
     if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(38);
     shell_exec("/usr/bin/echo \"\#1\" > $HydroPort");
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 72) {
-    // Control command to calibrate the hydrometer 20% slot (LIDAR version)
+    // Control command to calibrate the flow sensor empty value
     if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(39);
     shell_exec("/usr/bin/echo \"\#2\" > $HydroPort");
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 73) {
-    // Control command to calibrate the hydrometer 30% slot (LIDAR version)
+    // Control command to calibrate the flow sensor full value
     if ($RS["muted"] == 0) SpeakMessage(40);
     shell_exec("/usr/bin/echo \"\#3\" > $HydroPort");
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+    /*
   } elseif ($RS["valve_id"] == 74) {
     // Control command to calibrate the hydrometer 40% slot (LIDAR version)
     if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(41);
@@ -236,6 +237,7 @@ while ($RS = mysqli_fetch_assoc($Result)) {
     if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(47);
     shell_exec("/usr/bin/echo \"\#a\" > $HydroPort");
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
+    */
   } elseif ($RS["valve_id"] == 90) {
     // Control command to reboot the system
     if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(56);

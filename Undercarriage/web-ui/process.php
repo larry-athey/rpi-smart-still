@@ -180,15 +180,15 @@ elseif (isset($_GET["reboot_system"])) {
 //---------------------------------------------------------------------------------------------------
 elseif (isset($_GET["recalibrate_hydro"])) {
   if (isset($_GET["slot"])) {
-    if ($_GET["slot"] == 0) {
+    if ($_GET["slot"] == 0) { // Hydrometer 0% position
       $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','70','0','0')");
-    } elseif ($_GET["slot"] == 1) {
+    } elseif ($_GET["slot"] == 1) { // Hydrometer 100% position
       $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','71','0','0')");
-    } elseif ($_GET["slot"] == 2) {
+    } elseif ($_GET["slot"] == 2) { // Flow sensor empty capacitance
       $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','72','0','0')");
-    } elseif ($_GET["slot"] == 3) {
+    } elseif ($_GET["slot"] == 3) { // Flow sensor full capacitance
       $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','73','0','0')");
-    } elseif ($_GET["slot"] == 4) {
+    }/* elseif ($_GET["slot"] == 4) {
       $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','74','0','0')");
     } elseif ($_GET["slot"] == 5) {
       $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','75','0','0')");
@@ -203,6 +203,7 @@ elseif (isset($_GET["recalibrate_hydro"])) {
     } elseif ($_GET["slot"] == 10) {
       $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','80','0','0')");
     }
+    */
   } else {
     $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,muted,executed) VALUES (now(),'1','7','0','0')");
   }
