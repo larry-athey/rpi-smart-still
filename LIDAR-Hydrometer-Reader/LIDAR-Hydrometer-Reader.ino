@@ -116,8 +116,8 @@ float CalcEthanol() { // Convert the Distance millimeters to an ethanol ABV valu
   const float d100_20 = 789.24f;   // pure ethanol
 
   // Fit constants so that: dist = k / density + m
-  float delta_h   = dist0 - dist100;                    // positive in your setup
-  float delta_inv = (1.0f / d0_20) - (1.0f / d100_20);  // negative
+  float delta_h   = dist0 - dist100;
+  float delta_inv = (1.0f / d0_20) - (1.0f / d100_20);
   if (fabs(delta_inv) < 1e-8f) return 0.0f;
 
   float k = delta_h / delta_inv;   // will be negative — that's physically correct
@@ -138,7 +138,7 @@ float CalcEthanol() { // Convert the Distance millimeters to an ethanol ABV valu
   const float alpha = 0.00085f;   // excellent average for this application
   float density_20 = density_obs * (1.0f + alpha * (TempC - 20.0f));
 
-  // Official OIML density table at 20 °C (1% steps)
+  // Official OIML ethanol density table at 20 °C (1% steps)
   static const float density_table[101] = {
     998.20f, 996.70f, 995.73f, 993.81f, 992.41f, 991.06f, 989.73f, 988.43f, 987.16f, 985.92f,
     984.71f, 983.52f, 982.35f, 981.21f, 980.08f, 978.97f, 977.87f, 976.79f, 975.71f, 974.63f,
