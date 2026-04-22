@@ -1,5 +1,7 @@
 # 3D Model Notes
 
+**Controller Case** - This folder contains all of the models for the 10x10x3 inch case for the full controller and valves.
+
 **LIDAR Hydrometer Reader** - This folder contains all of the models associated with the LIDAR Hydrometer Reader project.
 
 **Misc** - This folder contains miscellaneous models used for wire and hose routing.
