@@ -23,8 +23,6 @@ The main focus of this project is to read temperatures and control the heating &
 
 This project is also not intended to replace things like the **AirStill Pro** or **MyVodkaMaker**, this is meant to be added to an existing higher volume still that can deliver more product per hour. If anything, it's intended to provide a person most of the conveniences of a Genio or iStill using your own existing equipment and save you from a $15,000 (or more) investment. The main controller costs less than $500 to build and works with any web browser.
 
-_**NOTE:** It's upon on the distiller themselves to take cuts because there is no way to make flavor determinations electronically without the use of gas chromatography. Please see my [Cutting Board](https://github.com/larry-athey/cutting-board) project for a more simplified alternative that automatically swaps out jars once they are full._
-
 Even though the still that I'm working with is the Still Spirits boiler and their copper T500 column, this system will work with any other personal still as long as it has a dephlegmator. I don't have the room for anything larger and don't need to upgrade because of how little I actually drink. I just do distilling as a hobby and for this project. Electronics, robotics, and programming are also hobbies of mine. So, here we are. LOL!!!
 
 Yes, contrary to what you see in YouTube videos and in that T500 users group on Facebook, it actually can be used for more than just making flavored distilled sugar wash. I'm not on Facebook anymore, but when I was, I just had to shake my head at all of those T500 users who thought they were actually making whiskey by dumping a bottle of essence in some 90% lighter fluid and then complaining about how bad it tastes. LOL!!!
@@ -33,7 +31,7 @@ The T500 column in its default configuration that Still Spirits designed it is a
 
 This is a little bit of a juggling act to do manually, no matter what still you happen to use, but especially so with a T500. But it's not hard to automate this and stop your run once the still can no longer deliver the target proof. From that point, you can flip the still controller over to maximum reflux mode to finish stripping out all of the remaining ethanol as a totally neutral spirit, which can then be added to another run.
 
-_**FYI:** This is only intended for hobbyist and small business micro distillers. Commercial distilleries use continuous column stills, this system would be of no value or use in that kind of setting. The target audience for this system are those who want to have the convenience of hands-free reproducibility or just want to tame down a touchy still._
+_**NOTE:** It's upon on the distiller themselves to take cuts because there is no way to make flavor determinations electronically without the use of gas chromatography. Please see my [Cutting Board](https://github.com/larry-athey/cutting-board) project for a more simplified alternative that automatically swaps out jars once they are full._
 
 ---
 
