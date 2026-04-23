@@ -21,7 +21,7 @@ Let me start off by saying that I'm no master distiller and I don't pretend to b
 
 The main focus of this project is to read temperatures and control the heating & cooling water via servos while monitoring the results based on whether it's a pot still or reflux run. Also, be able to control these actions if a person wants to maintain a minimum proof in a pot still run. Plus, be able to shut down a pot still run once a minimum proof has been reached. Lastly, shut down the still if the output flow rate drops below a programmed percentage.
 
-This project is also not intended to replace things like the **AirStill Pro** or **MyVodkaMaker**, this is meant to be added to an existing higher volume still that can deliver more product per hour. If anything, it's intended to provide a person most of the conveniences of a Genio or iStill using your own existing equipment and save you from a $15,000 (or more) investment. This system costs less than $500 and works with your cell phone.
+This project is also not intended to replace things like the **AirStill Pro** or **MyVodkaMaker**, this is meant to be added to an existing higher volume still that can deliver more product per hour. If anything, it's intended to provide a person most of the conveniences of a Genio or iStill using your own existing equipment and save you from a $15,000 (or more) investment. The main controller costs less than $500 to build.
 
 _**NOTE:** It's upon on the distiller themselves to take cuts because there is no way to make flavor determinations electronically without the use of gas chromatography. Please see my [Cutting Board](https://github.com/larry-athey/cutting-board) project for a more simplified alternative that automatically swaps out jars once they are full._
 
