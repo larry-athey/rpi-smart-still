@@ -13,7 +13,7 @@ function CalibrateHydrometer($DBcnx) {
   }
 
   if ($Settings["hydro_type"] == 0) {
-    $Content  = "<div class=\"card\" style=\"margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\">";
+    $Content  = "<div class=\"card\" style=\"margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
     $Content .=   "<div class=\"card-body\">";
     $Content .=     "<p class=\"fw-bolder\">If you are starting a new run, it is suggested that you reboot the hydrometer since barrometric pressure can affect a load cell's reference resistance.</p>";
     $Content .=     "<p class=\"fw-bolder\">Do not use the calibrate function if there is any distillate in the parrot cup, only use this to clear load cell drift before any output begins.</p>";
@@ -24,7 +24,7 @@ function CalibrateHydrometer($DBcnx) {
     $Content .=   "</div>";
     $Content .= "</div>";
   } else {
-    $Content  = "<div class=\"card\" style=\"margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\">";
+    $Content  = "<div class=\"card\" style=\"margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
     $Content .=   "<div class=\"card-body\">";
     $Content .=     "<p class=\"fw-bolder\">By default, the LIDAR hydrometer reader is calibrated with a hydrometer using a 122mm scale. A reflector 20mm above the 100% line will track within +/- 1%.</p>";
     $Content .=     "<p class=\"fw-bolder\">Use the buttons below to recalibrate your hydrometer's 0% and 100% lines. Float your hydrometer with water, use the top of your parrot as the reference point. Watch for the blue light to flash on the reader chip when updating.</p>";

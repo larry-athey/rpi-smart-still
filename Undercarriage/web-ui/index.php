@@ -56,17 +56,17 @@ if (! isset($_COOKIE["client_id"])) {
   <style>
     .card-grid {
       display: grid;
-      gap: 0.25rem;                   /* spacing between cards */
-      grid-template-columns: 1fr;     /* 1 column by default (phones) */
+      gap: 0.25rem;
+      grid-template-columns: 1fr;
     }
 
     .card-full {
-      grid-column: 1 / -1;            /* spans all columns */
+      grid-column: 1 / -1;
     }
 
-    @media (min-width: 700px) {       /* adjust this breakpoint to your liking */
+    @media (min-width: 700px) {
       .card-grid {
-        grid-template-columns: repeat(2, 1fr);   /* exactly 2 columns, stretched */
+        grid-template-columns: repeat(2,1fr);
       }
     }
 
