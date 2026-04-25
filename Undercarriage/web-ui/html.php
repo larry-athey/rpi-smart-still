@@ -13,7 +13,7 @@ function CalibrateHydrometer($DBcnx) {
   }
 
   if ($Settings["hydro_type"] == 0) {
-    $Content  = "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\">";
+    $Content  = "<div class=\"card\" style=\"margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\">";
     $Content .=   "<div class=\"card-body\">";
     $Content .=     "<p class=\"fw-bolder\">If you are starting a new run, it is suggested that you reboot the hydrometer since barrometric pressure can affect a load cell's reference resistance.</p>";
     $Content .=     "<p class=\"fw-bolder\">Do not use the calibrate function if there is any distillate in the parrot cup, only use this to clear load cell drift before any output begins.</p>";
@@ -24,7 +24,7 @@ function CalibrateHydrometer($DBcnx) {
     $Content .=   "</div>";
     $Content .= "</div>";
   } else {
-    $Content  = "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\">";
+    $Content  = "<div class=\"card\" style=\"margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\">";
     $Content .=   "<div class=\"card-body\">";
     $Content .=     "<p class=\"fw-bolder\">By default, the LIDAR hydrometer reader is calibrated with a hydrometer using a 122mm scale. A reflector 20mm above the 100% line will track within +/- 1%.</p>";
     $Content .=     "<p class=\"fw-bolder\">Use the buttons below to recalibrate your hydrometer's 0% and 100% lines. Float your hydrometer with water, use the top of your parrot as the reference point. Watch for the blue light to flash on the reader chip when updating.</p>";
@@ -72,7 +72,7 @@ function Confirmation($DBcnx,$Type,$Data) {
     }
   }
 
-  $Content  = "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\">";
+  $Content  = "<div class=\"card\" style=\"margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
   $Content .=     "<p class=\"fw-bolder\">$Msg</p>";
   $Content .=     "<div class=\"row\" style=\"margin-top: 0.5em;\">";
@@ -102,7 +102,7 @@ function ControlRelays($DBcnx) {
     $Relay2 = $OffLabel;
   }
 
-  $Content  = "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\">";
+  $Content  = "<div class=\"card\" style=\"margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
   $Content .=     "<p class=\"fw-bolder\">The auxiliary relays can be used to control low-current DC pumps independent of your program settings. These will also resume their switched state across reboots.</p>";
   $Content .=     "<p class=\"fw-bolder\">Keep in mind that high current AC power loads should not be switched with the Pi Hat onboard relays. These should be used to switch external solid state relays instead.</p>";
@@ -126,7 +126,7 @@ function ControlRelays($DBcnx) {
 //---------------------------------------------------------------------------------------------------
 function DrawCard($DBcnx,$Body,$DoAjax) {
   $RandID   = "card_" . generateRandomString();
-  $Content  = "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
+  $Content  = "<div class=\"card\" style=\"margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
   if ($DoAjax) $Content .= AjaxRefreshJS($Body,$RandID,4500);
   $Content .=     "<div id=\"$RandID\">";
@@ -157,7 +157,7 @@ function DrawCard($DBcnx,$Body,$DoAjax) {
 //---------------------------------------------------------------------------------------------------
 function DrawLogicTracker($DBcnx) {
   $RandID   = "card_" . generateRandomString();
-  $Content  = "<div class=\"card\" style=\"width: 98.5%; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
+  $Content  = "<div class=\"card card-full\" style=\"margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
   $Content .=     AjaxRefreshJS("logic_tracker",$RandID,4500);
   $Content .=     "<div id=\"$RandID\">";
@@ -309,7 +309,7 @@ function EditHeating($DBcnx) {
   }
 
   $Content  = "<form id=\"edit_heating\" method=\"post\" action=\"process.php\">";
-  $Content .= "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
+  $Content .= "<div class=\"card\" style=\"margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
   $Content .=     "<div class=\"row\">";
   if ($Boilermaker["enabled"] == 1) $Content .= "<p class=\"fw-bolder\">Note: Changes to any of these settings during an active run will require the run to be restarted to make them active.</p>";
@@ -467,7 +467,7 @@ function EditProgram($DBcnx,$ID) {
 
   $Content  = "<form id=\"edit_program\" method=\"post\" action=\"process.php\">";
   $Content .= "<input type=\"hidden\" name=\"ID\" value=\"$ID\">";
-  $Content .= "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
+  $Content .= "<div class=\"card\" style=\"margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
   $Content .=     "<div>";
   $Content .=       "<label for=\"ProgramName\" class=\"form-label fw-bolder\">Program Name</label>";
@@ -584,7 +584,7 @@ function EditSensors($DBcnx) {
   }
 
   $Content  = "<form id=\"edit_sensors\" method=\"post\" action=\"process.php\">";
-  $Content .= "<div class=\"card\" style=\"width: 31em; margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
+  $Content .= "<div class=\"card\" style=\"margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
   $Content .=     "<div style=\"margin-top: .5em;\">";
   $Content .=       "<label for=\"DephlegAddr\" class=\"form-label fw-bolder\">Dephleg Sensor Address</label>";
@@ -684,7 +684,7 @@ function ShowPrograms($DBcnx) {
   $Settings = mysqli_fetch_assoc($Result);
 
   $Counter  = 0;
-  $Content  = "<div style=\"width: 31em; margin-left: 0.5em;\">";
+  $Content  = "<div style=\"margin-left: 0.5em;\">";
   $Content .= "<a href=\"?page=edit_program&ID=0\" class=\"btn btn-outline-secondary fw-bolder\" style=\"width: 100%; margin-top: 0.5em; margin-bottom: 0.5em; margin-right: 0.5em;\" name=\"create_program\">Create New Program</a><br>";
 
   $Result = mysqli_query($DBcnx,"SELECT * FROM programs ORDER BY program_name");

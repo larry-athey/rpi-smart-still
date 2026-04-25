@@ -54,6 +54,22 @@ if (! isset($_COOKIE["client_id"])) {
 <?php } ?>
   </script>
   <style>
+    .card-grid {
+      display: grid;
+      gap: 0.25rem;                   /* spacing between cards */
+      grid-template-columns: 1fr;     /* 1 column by default (phones) */
+    }
+
+    .card-full {
+      grid-column: 1 / -1;            /* spans all columns */
+    }
+
+    @media (min-width: 700px) {       /* adjust this breakpoint to your liking */
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);   /* exactly 2 columns, stretched */
+      }
+    }
+
     [data-bs-theme="dark"] {
       --bs-body-bg: #121212; /* Darker background */
       --bs-body-color: #e0e0e0; /* Optional: Lighter text for contrast */
@@ -117,14 +133,13 @@ if (mysqli_num_rows($Result) > 0) {
 echo(DrawMenu($DBcnx) . "\n");
 
 $Content  = "<div class=\"container-fluid\" style=\"align: left;\">";
-$Content .=   "<div class=\"row\">";
+$Content .=   "<div class=\"card-grid\">";
 
 if (! isset($_GET["page"])) {
   $Content .= DrawCard($DBcnx,"hydrometer",true);
   $Content .= DrawCard($DBcnx,"temperatures",true);
   $Content .= DrawCard($DBcnx,"valve_positions",true);
   $Content .= DrawCard($DBcnx,"program_temps",true);
-  // Full width card to show run logic tracking info
   $Content .= DrawLogicTracker($DBcnx);
   // Hidden div to play voice prompts (web browser must have autoplay enabled in its settings)
   $Content .= VoicePrompter($DBcnx,true);
@@ -152,6 +167,8 @@ if (! isset($_GET["page"])) {
   } elseif ($_GET["page"] == "system_confirm") {
     $Content .= Confirmation($DBcnx,2,$_GET["option"]);
   } elseif ($_GET["page"] == "timeline") {
+    $Content  = "<div class=\"container-fluid\" style=\"align: left;\">";
+    $Content .=   "<div class=\"row\">";
     $Content .= ShowTimelines($DBcnx);
   }
 }
