@@ -28,15 +28,23 @@
 //
 // Upload this sketch to the XIAO (select "Seeed XIAO" board in Arduino IDE)
 //
-// Below is a bash script that you can launch with /etc/rc.local as a detached process.
-//
-// #!/bin/bash
-// # Simple loop that checks CPU temp every 5 seconds and sends it to the fan controller
-// while true; do
-//   TEMP=$(cat /sys/class/thermal/thermal_zone0/temp | awk '{print $1/1000}')
-//   echo "$TEMP" > /dev/ttyACM0
-//   sleep 5
-// done
+// Below is a bash script that you can launch with /etc/rc.local as a detached process. RPi Smart
+// Still expects this script to be found at /usr/local/bin/fanctrl.sh
+/*
+#!/bin/bash
+# Simple loop that checks CPU temp every 5 seconds and sends it to the fan controller
+while true; do
+  if [ -f /tmp/fan0 ]; then # Fan off
+    echo "35" > /dev/ttyACM0
+  elif [ -f /tmp/fan100 ]; then # Fan on 100%
+    echo "60" > /dev/ttyACM0
+  else # Fan speed controlled based on CPU temperature
+    TEMP=$(cat /sys/class/thermal/thermal_zone0/temp | awk '{print $1/1000}')
+    echo "$TEMP" > /dev/ttyACM0
+  fi
+  sleep 5
+done
+*/
 //------------------------------------------------------------------------------------------------
 const int FAN_PWM_PIN = 5;        // Change if necessary. PWM-capable pins on XIAO SAMD21: 0,1,3,4,5,6,8,9,10,11,12,13
 const float MIN_TEMP = 40.0;      // Below this temp = fan off (0%)
