@@ -8,4 +8,4 @@ The smaller ones that fit in the footprint on the printed circuit boards will go
 
 ---
 
-<img width="1024" alt="12 volt to 5 volt regulator" src="https://github.com/user-attachments/assets/08829898-c9be-47c8-8c9b-23dfac15aed3" />
+<img width="1024" alt="RPi Hat" src="https://github.com/user-attachments/assets/0ab71202-ec83-4ef5-9509-13f537622c70"><br>
