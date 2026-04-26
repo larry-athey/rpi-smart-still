@@ -9,6 +9,10 @@
 // the fan to the 5 volt or 12 volt supply lines. I prefer a ball bearing 5 volt fan that adjusts
 // its speed as needed depending on the CPU temperature.
 //
+// No printed circuit board needed, just clip the fan's negative wire somewhere in the middle and
+// insert a 2N3904 transistor and a 1K resistor (as detailed below) then heat strink it. Your fan
+// now has 3 wires instead od 2, and the extra wire connects to pin 5 of the tiny little MCU.
+//
 //------------------------------------------------------------------------------------------------
 // USB interfaced PWM fan controller
 // MCU target: Seeed Studio XIAO SAMD21
@@ -66,7 +70,7 @@ void updateFan() {
     pwmValue = (int)(normalized * 255.0);
   }
 
-  analogWrite(FAN_PWM_PIN, pwmValue);
+  analogWrite(FAN_PWM_PIN,pwmValue);
 
   Serial.print("Temp: ");
   Serial.print(currentTemp);
