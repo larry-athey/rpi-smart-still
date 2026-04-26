@@ -3,7 +3,7 @@
 //
 // This may or may not be needed/wanted, depending on your build. All of the PWM capable pins of
 // the Pi GPIO bus are used by the hat. If you want a variable speed cooling fan that follows the
-// CPU temperature, this will need to be don via USB.
+// CPU temperature, this will need to be done via USB.
 //
 // Some people are fine with the CPU fan running full speed all the time and can safely connect
 // the fan to the 5 volt or 12 volt supply lines. I prefer a ball bearing 5 volt fan that adjusts
