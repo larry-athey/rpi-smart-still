@@ -48,10 +48,11 @@ unsigned long lastUpdate = 0;
 //------------------------------------------------------------------------------------------------
 void setup() {
   pinMode(FAN_PWM_PIN,OUTPUT);
-  analogWrite(FAN_PWM_PIN,0);     // Start with fan off
+  analogWriteResolution(8);
+  analogWrite(FAN_PWM_PIN,0);
 
-  Serial.begin(115200);           // USB serial connection to Pi (baud rate doesn't really matter for USB)
-  while (! Serial);               // Wait for USB serial to connect
+  Serial.begin(115200);
+  while (! Serial); // Wait for USB serial to connect
 
   Serial.println("USB PWM Fan Controller ready");
   Serial.println("Send temperature as a number followed by newline, e.g. echo \"42\" > /dev/ttyACM0");

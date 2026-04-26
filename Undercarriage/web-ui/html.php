@@ -72,9 +72,9 @@ function Confirmation($DBcnx,$Type,$Data) {
     }
   }
 
-  $Content  = "<div class=\"card\" style=\"margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\">";
+  $Content  = "<div class=\"card\" style=\"margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
-  $Content .=     "<p class=\"fw-bolder\">$Msg</p>";
+  $Content .=     "<p class=\"fw-bolder\" style=\"text-align: center;\">$Msg</p>";
   $Content .=     "<div class=\"row\" style=\"margin-top: 0.5em;\">";
   $Content .=       "<div class=\"col\"><a style=\"float: right;\" href=\"$Cancel\" class=\"btn btn-danger btn-sm fw-bolder\">Cancel</a></div>";
   $Content .=       "<div class=\"col\"><a href=\"process.php?$Btn=1&ID=$Data\" class=\"btn btn-primary btn-sm fw-bolder\">Confirm</a></div>";
@@ -102,7 +102,7 @@ function ControlRelays($DBcnx) {
     $Relay2 = $OffLabel;
   }
 
-  $Content  = "<div class=\"card\" style=\"margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 1.25em; margin-right: 0.5em;\">";
+  $Content  = "<div class=\"card\" style=\"margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
   $Content .=     "<p class=\"fw-bolder\">The auxiliary relays can be used to control low-current DC pumps independent of your program settings. These will also resume their switched state across reboots.</p>";
   $Content .=     "<p class=\"fw-bolder\">Keep in mind that high current AC power loads should not be switched with the Pi Hat onboard relays. These should be used to switch external solid state relays instead.</p>";
