@@ -15,7 +15,7 @@ _If you have an Air Still (or clone) be sure to check out my [Airhead](https://g
 
 _**NOTE:** Contrary to a popular misconception, this system does not take away your ability to manually run your still. This system is actually completely stupid until you manually run your still with it and make notes that you would then use to create programs. There is no AI in use here! Every still is different and requires a training period before this system can begin replaying distillation runs. Again, please refer to the [Wiki](https://github.com/larry-athey/rpi-smart-still/wiki), reading is fundamental!_
 
-<img width="1024" alt="image" src="https://github.com/user-attachments/assets/7bfd4081-60e6-40e5-ad81-2d5144fcbefc"><br>
+<img width="1024" alt="image" src="https://github.com/user-attachments/assets/0d467567-49a3-4a5a-98a7-a18709d3ea59"><br>
 
 Let me start off by saying that I'm no master distiller and I don't pretend to be one. YouTube and other social media sites already have more than enough self-idolizing hacks and frauds _(usually sporting a Popcorn Sutton photo as their profile picture)_ who think that they're legends in the distilling world and should be on the cast of Moonshiners _(a'la, "Cyrus Mason" and "Windsong", the Still'n The Clear charlatans)_. **I'm just a nobody hobby distiller. Not an internet celebrity or a deluded podcaster wannabe, and I most certainly do not idolize reality TV "stars". That kind of mentality is for juveniles and posers. I'm simply a hacker, period.**
 
@@ -32,6 +32,11 @@ The T500 column in its default configuration that Still Spirits designed it is a
 This is a little bit of a juggling act to do manually, no matter what still you happen to use, but especially so with a T500. But it's not hard to automate this and stop your run once the still can no longer deliver the target proof. From that point, you can flip the still controller over to maximum reflux mode to finish stripping out all of the remaining ethanol as a totally neutral spirit, which can then be added to another run.
 
 _**NOTE:** It's upon on the distiller themselves to take cuts because there is no way to make flavor determinations electronically without the use of gas chromatography. Please see my [Cutting Board](https://github.com/larry-athey/cutting-board) project for a more simplified alternative that automatically swaps out jars once they are full._
+
+---
+
+<img width="1024" alt="image" src="https://github.com/user-attachments/assets/58831372-e03a-41ef-8dfb-35a8c8b7bf8a">
+
 
 ---
 
