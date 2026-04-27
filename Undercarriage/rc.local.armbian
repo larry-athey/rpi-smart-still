@@ -59,5 +59,7 @@ modprobe w1-therm
 #gpio mode 4 ALT1
 
 /usr/share/rpi-smart-still/rss-init
+/usr/share/rpi-smart-still/valve 1 close
+/usr/share/rpi-smart-still/valve 2 close
 
 exit 0
