@@ -54,4 +54,7 @@ gpio -g write 11 0
 gpio mode 15 ALT0
 gpio mode 16 ALT0
 
+/usr/share/rpi-smart-still/valve 1 close
+/usr/share/rpi-smart-still/valve 2 close
+
 exit 0
