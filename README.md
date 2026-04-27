@@ -37,7 +37,6 @@ _**NOTE:** It's upon on the distiller themselves to take cuts because there is n
 
 <img width="1024" alt="image" src="https://github.com/user-attachments/assets/58831372-e03a-41ef-8dfb-35a8c8b7bf8a">
 
-
 ---
 
 <img width="1024" alt="2024-09-25 14-34-02-1" src="https://github.com/user-attachments/assets/db6e8b4a-c8c9-4fa8-aa1d-7d0ee92d3ea4">
@@ -57,15 +56,3 @@ _**NOTE:** It's upon on the distiller themselves to take cuts because there is n
 ---
 
 <img width="1024" alt="2024-09-25 14-34-02-5" src="https://github.com/user-attachments/assets/26ef9c44-79dc-4f28-80fd-669204fc0611">
-
----
-
-<img width="1024" alt="2024-09-25 14-34-02-6" src="https://github.com/user-attachments/assets/f379b257-a7b0-4188-b51a-fd5cbe070a8d">
-
----
-
-<img width="1024" alt="2024-09-25 14-34-02-7" src="https://github.com/user-attachments/assets/fbde1696-560b-4bf5-b7ab-8872883ebedf">
-
----
-
-<img width="1024" alt="2024-09-25 14-34-02-8" src="https://github.com/user-attachments/assets/5cc6f707-35e3-481b-8e75-02739034dc1a">
