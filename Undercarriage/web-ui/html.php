@@ -420,11 +420,11 @@ function EditHeating($DBcnx) {
   $Content .=     "<div class=\"row\" style=\"margin-top: 1em;\">";
   if ($Boilermaker["enabled"] == 1) {
     $Content .=     "<div class=\"col\">";
-    $Content .=       "<a href=\"process.php?reboot_boilermaker=1\" class=\"btn btn-outline-danger fw-bolder $Disabled\" name=\"cancel_action\">Reboot Boilermaker</a>";
+    $Content .=       "<a href=\"process.php?reboot_boilermaker=1\" class=\"btn btn-sm btn-outline-danger fw-bolder $Disabled\" name=\"cancel_action\">Reboot Boilermaker</a>";
     $Content .=     "</div>";
   }
   $Content .=       "<div class=\"col\" style=\"text-align: right;\">";
-  $Content .=         "<a href=\"index.php\" class=\"btn btn-danger fw-bolder\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-primary fw-bolder\" name=\"rss_edit_heating\">Submit</button>";
+  $Content .=         "<a href=\"index.php\" class=\"btn btn-sm btn-danger fw-bolder\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-sm btn-primary fw-bolder\" name=\"rss_edit_heating\">Submit</button>";
   $Content .=       "</div>";
   $Content .=     "</div>";
   $Content .=   "</div>";
@@ -563,7 +563,7 @@ function EditProgram($DBcnx,$ID) {
   $Content .=       "<label for=\"Notes\" class=\"form-label fw-bolder\">Program Notes</label>";
   $Content .=       "<textarea class=\"form-control fw-bolder\" id=\"Notes\" name=\"Notes\" style=\"height: 150px;\">" . $Program["notes"] . "</textarea>";
   $Content .=     "</div>";
-  $Content .=     "<div style=\"margin-top: 1em; float: right;\"><a href=\"?page=programs\" class=\"btn btn-danger\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-primary\" name=\"rss_edit_program\">Save Program</button></div>";
+  $Content .=     "<div style=\"margin-top: 1em; float: right;\"><a href=\"?page=programs\" class=\"btn btn-sm btn-danger\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-sm btn-primary\" name=\"rss_edit_program\">Save Program</button></div>";
   $Content .=   "</div>";
   $Content .= "</div>";
   $Content .= "</form>";
@@ -600,7 +600,7 @@ function EditSensors($DBcnx) {
     $Content .=     SensorSelector($Settings["boiler_addr"],"BoilerAddr",$Disabled);
     $Content .=   "</div>";
   }
-  $Content .=     "<div style=\"margin-top: 1em; float: right;\"><a href=\"index.php\" class=\"btn btn-danger fw-bolder\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-primary fw-bolder\" name=\"rss_edit_sensors\" $Disabled>Submit</button></div>";
+  $Content .=     "<div style=\"margin-top: 1em; float: right;\"><a href=\"index.php\" class=\"btn btn-sm btn-danger fw-bolder\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-sm btn-primary fw-bolder\" name=\"rss_edit_sensors\" $Disabled>Submit</button></div>";
   $Content .=   "</div>";
   $Content .= "</div>";
   $Content .= "</form>";
@@ -663,7 +663,7 @@ function ServoPositionEditor($DBcnx) {
     $Content .= "<label for=\"Heating\" class=\"form-label fw-bolder\" style=\"margin-top: .5em;\">Heating Controller Position [0.." . $Settings["heating_total"] . "]</label>";
     $Content .= "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Heating\" name=\"Heating\" min=\"0\" max=\"" . $Settings["heating_total"] . "\" step=\"1\" value=\"" . $Settings["heating_position"] . "\">";
   }
-  $Content .= "<div style=\"margin-top: 1em; float: right;\"><a href=\"index.php\" class=\"btn btn-danger fw-bolder\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-primary fw-bolder\" name=\"rss_edit_servos\">Submit</button></div>";
+  $Content .= "<div style=\"margin-top: 1em; float: right;\"><a href=\"index.php\" class=\"btn btn-sm btn-danger fw-bolder\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-sm btn-primary fw-bolder\" name=\"rss_edit_servos\">Submit</button></div>";
   $Content .= "</form>";
   $Content .= VoicePrompter($DBcnx,true);
   return $Content;
@@ -685,7 +685,7 @@ function ShowPrograms($DBcnx) {
 
   $Counter  = 0;
   $Content  = "<div style=\"margin-left: 0.5em;\">";
-  $Content .= "<a href=\"?page=edit_program&ID=0\" class=\"btn btn-outline-secondary fw-bolder\" style=\"width: 100%; margin-top: 0.5em; margin-bottom: 0.5em; margin-right: 0.5em;\" name=\"create_program\">Create New Program</a><br>";
+  $Content .= "<a href=\"?page=edit_program&ID=0\" class=\"btn btn-sm btn-outline-secondary fw-bolder\" style=\"width: 100%; margin-top: 0.5em; margin-bottom: 0.5em; margin-right: 0.5em;\" name=\"create_program\">Create New Program</a><br>";
 
   $Result = mysqli_query($DBcnx,"SELECT * FROM programs ORDER BY program_name");
   while ($RS = mysqli_fetch_assoc($Result)) {

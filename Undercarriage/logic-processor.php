@@ -25,6 +25,7 @@ if (mysqli_num_rows($Result) > 0) {
 
   if ($Logic["run_start"] == 1) {
     // New run started
+    touch("/tmp/fan100"); // For systems that use the USB PWM fan controller
     if ($Settings["speech_enabled"] == 1) SpeakMessage(6);
     if ($Boilermaker["enabled"] == 1) $Settings["heating_total"] = 0;
     $Update = mysqli_query($DBcnx,"UPDATE settings SET valve1_position='0',valve2_position='0',heating_position='" . $Settings["heating_total"] . "' WHERE ID=1");
@@ -85,6 +86,7 @@ if (mysqli_num_rows($Result) > 0) {
     }
   } elseif ($Logic["run_start"] == 2) {
     // Active run stopped
+    unlink("/tmp/fan100"); // For systems that use the USB PWM fan controller
     if ($Settings["speech_enabled"] == 1) SpeakMessage(7);
     $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='0' WHERE ID=1");
     $Update = mysqli_query($DBcnx,"TRUNCATE logic_tracker");
