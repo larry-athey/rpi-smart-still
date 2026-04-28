@@ -944,14 +944,14 @@ function StartRun($DBcnx) {
     $Content .=   "<li><span class=\"fw-bolder\">Calibrate the condenser and dephleg cooling valves.</span></li>";
     $Content .=   "<li><span class=\"fw-bolder\">Calibrate the hydrometer.</span></li>";
     $Content .= "</ol>";
-    $Content .= "<div style=\"float: right;\"><a href=\"index.php\" class=\"btn btn-danger fw-bolder\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"process.php?active_run=1\" class=\"btn btn-primary fw-bolder\" name=\"start_run\">Start Distillation Run</a></div>";
+    $Content .= "<div style=\"float: right;\"><a href=\"index.php\" class=\"btn btn-sm btn-danger fw-bolder\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"process.php?active_run=1\" class=\"btn btn-sm btn-primary fw-bolder\" name=\"start_run\">Start Distillation Run</a></div>";
   }
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
 function StopRun($DBcnx) {
   $Content  = "<p class=\"text-light fw-bolder\">Are you sure that you want to stop the current run rather than pausing it? Starting a new distillation run will clear all data currently stored in the timeline.</p>";
-  $Content .= "<div style=\"float: right;\"><a href=\"index.php\" class=\"btn btn-danger fw-bolder\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"process.php?active_run=0\" class=\"btn btn-primary fw-bolder\" name=\"start_run\">Stop Distillation Run</a></div>";
+  $Content .= "<div style=\"float: right;\"><a href=\"index.php\" class=\"btn btn-sm btn-danger fw-bolder\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"process.php?active_run=0\" class=\"btn btn-sm btn-primary fw-bolder\" name=\"start_run\">Stop Distillation Run</a></div>";
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
