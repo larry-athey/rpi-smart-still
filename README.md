@@ -3,7 +3,9 @@ Raspberry Pi (or clone) and Arduino/ESP32 powered smart still controller system.
 
 **Please refer to the [Wiki](https://github.com/larry-athey/rpi-smart-still/wiki) for more information and setup/usage instructions. Information on [turn-key systems](https://github.com/larry-athey/rpi-smart-still/wiki/12.-Turn%E2%80%90Key-Systems-and-Components) and components can also be found there.**
 
-You may contact me directly at https://panhandleponics.com<br>
+NEWSFLASH: _Complete turn-key systems are now available by special order. These systems can vary from the controller-only, all the way up to the controller + LIDAR Hydrometer Reader + Boilermaker + 10" Android tablet + dedicated WiFi router, all pre-configured and ready to plug in._
+
+You may contact me directly at https://panhandleponics.com/#contact<br>
 Subscribe to the official YouTube channel at https://www.youtube.com/@PanhandlePonics
 
 _If you have an Air Still (or clone) be sure to check out my [Airhead](https://github.com/larry-athey/airhead) project if you'd like to upgrade that appliance and make it more useful. Or check out my [Boilermaker](https://github.com/larry-athey/boilermaker) project if you'd like a stand-alone and far more advanced version of its boiler power and temperature controller to use with the RPi Smart Still controller system._
