@@ -8,8 +8,6 @@ Raspberry Pi (or clone) and Arduino/ESP32 powered smart still controller system.
 You may contact me directly at https://panhandleponics.com/#contact<br>
 Subscribe to the official YouTube channel at https://www.youtube.com/@PanhandlePonics
 
-_If you have an Air Still (or clone) be sure to check out my [Airhead](https://github.com/larry-athey/airhead) project if you'd like to upgrade that appliance and make it more useful. Or check out my [Boilermaker](https://github.com/larry-athey/boilermaker) project if you'd like a stand-alone and far more advanced version of its boiler power and temperature controller to use with the RPi Smart Still controller system._
-
 **Facebook Idiot:** _Why would you bother?_<br>
 **Me:** It's only a "bother" for somebody who couldn't do it on their best day. I'd rather have nicer things.
 
