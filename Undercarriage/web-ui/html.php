@@ -89,34 +89,51 @@ function ControlRelays($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
 
-  $OnLabel  = "<span class=\"text-success blink fw-bolder\">On</span>";
-  $OffLabel = "<span class=\"text-warning fw-bolder\">Off</span>";
   if ($Settings["relay1_state"] == 1) {
-    $Relay1 = $OnLabel;
+    $Relay1off = "";
+    $Relay1on  = "selected";
   } else {
-    $Relay1 = $OffLabel;
+    $Relay1off = "selected";
+    $Relay1on  = "";
   }
   if ($Settings["relay2_state"] == 1) {
-    $Relay2 = $OnLabel;
+    $Relay2off = "";
+    $Relay2on  = "selected";
   } else {
-    $Relay2 = $OffLabel;
+    $Relay2off = "selected";
+    $Relay2on  = "";
   }
 
-  $Content  = "<div class=\"card\" style=\"margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
+  $Content  = "<script type=\"text/javascript\">\n";
+  $Content .= "function handleRelay(relay,state) {\n";
+  $Content .= "  if (relay && state) {\n";
+  $Content .= "    const url = `/process.php?control_relay=\${relay}&state=\${state}`;\n";
+  $Content .= "    window.location.href = url;\n";
+  $Content .= "  }\n";
+  $Content .= "}\n";
+  $Content .= "</script>\n";
+
+  $Content .= "<div class=\"card\" style=\"margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
   $Content .=     "<p class=\"fw-bolder\">The auxiliary relays can be used to control low-current DC pumps independent of your program settings. These will also resume their switched state across reboots.</p>";
   $Content .=     "<p class=\"fw-bolder\">Keep in mind that high current AC power loads should not be switched with the Pi Hat onboard relays. These should be used to switch external solid state relays instead.</p>";
   $Content .=     "<div class=\"row\" style=\"margin-top: 1.5em;\">";
-  $Content .=       "<div class=\"col\"><span class=\" fw-bolder\">Auxiliary&nbsp;Relay&nbsp;#1</span></div>";
-  $Content .=       "<div class=\"col\"><a style=\"float: right;\" href=\"process.php?control_relay=1&state=0\" class=\"btn btn-danger btn-sm fw-bolder\">Deactivate</a></div>";
-  $Content .=       "<div class=\"col\"><a href=\"process.php?control_relay=1&state=1\" class=\"btn btn-primary btn-sm fw-bolder\">Activate</a></div>";
-  $Content .=       "<div class=\"col\">$Relay1</div>";
+  $Content .=       "<div class=\"col\" style=\"text-align: right;\"><span class=\" fw-bolder\">Auxiliary&nbsp;Relay&nbsp;#1</span></div>";
+  $Content .=       "<div class=\"col\">";
+  $Content .=         "<select class=\"form-select\" id=\"relayToggle1\" onchange=\"handleRelay(1,this.value)\">";
+  $Content .=           "<option value=\"1\" $Relay1on>Enabled</option>";
+  $Content .=           "<option value=\"0\" $Relay1off>Disabled</option>";
+  $Content .=         "</select>";
+  $Content .=       "</div>";
   $Content .=     "</div>";
   $Content .=     "<div class=\"row\" style=\"margin-top: 0.5em;\">";
-  $Content .=       "<div class=\"col\"><span class=\"fw-bolder\">Auxiliary&nbsp;Relay&nbsp;#2</span></div>";
-  $Content .=       "<div class=\"col\"><a style=\"float: right;\" href=\"process.php?control_relay=2&state=0\" class=\"btn btn-danger btn-sm fw-bolder\">Deactivate</a></div>";
-  $Content .=       "<div class=\"col\"><a href=\"process.php?control_relay=2&state=1\" class=\"btn btn-primary btn-sm fw-bolder\">Activate</a></div>";
-  $Content .=       "<div class=\"col\">$Relay2</div>";
+  $Content .=       "<div class=\"col\" style=\"text-align: right;\"><span class=\"fw-bolder\">Auxiliary&nbsp;Relay&nbsp;#2</span></div>";
+  $Content .=       "<div class=\"col\">";
+  $Content .=         "<select class=\"form-select\" id=\"relayToggle2\" onchange=\"handleRelay(2,this.value)\">";
+  $Content .=           "<option value=\"1\" $Relay2on>Enabled</option>";
+  $Content .=           "<option value=\"0\" $Relay2off>Disabled</option>";
+  $Content .=         "</select>";
+  $Content .=       "</div>";
   $Content .=     "</div>";
   $Content .=   "</div>";
   $Content .= "</div>";
