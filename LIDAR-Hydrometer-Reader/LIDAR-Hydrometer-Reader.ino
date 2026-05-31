@@ -202,13 +202,13 @@ void ResetMemory() { // Restore all of the configuration settings to their defau
 void UpdateMemory(byte Slot) { // Update a flash memory slot for a specific configuration item
   preferences.begin("prefs",false);
   if (Slot == 48) { // ASCII code for 0
-    preferences.putFloat("dist0",dist0);
+    preferences.putFloat("dist0",Distance);
   } else if (Slot == 49) { // ASCII code for 1
-    preferences.putFloat("dist100",dist100);
+    preferences.putFloat("dist100",Distance);
   } else if (Slot == 50) { // ASCII code for 2
-    preferences.putFloat("emptyvalue",emptyValue);
-  } else if (Slot == 51 { // ASCII code for 3
-    preferences.putFloat("fullvalue",fullValue);
+    preferences.putFloat("emptyvalue",capacitance_pf);
+  } else if (Slot == 51) { // ASCII code for 3
+    preferences.putFloat("fullvalue",capacitance_pf);
   }
   preferences.end();
   GetMemory();
