@@ -159,20 +159,20 @@ if (mysqli_num_rows($Result) > 0) {
         }
         if ($Settings["speech_enabled"] == 1) SpeakMessage(29);
         // Open the condenser valve to its program position
-        $Update = mysqli_query($DBcnx,"UPDATE settings SET valve1_position='" . round($Program["condenser_rate"] * $Settings["valve1_pulse"],0,PHP_ROUND_HALF_UP) . "' WHERE ID=1");
         // Open to 100% and pull down to the setting to evacuate any air in its water lines
+        shell_exec("/usr/share/rpi-smart-still/valve 1 open");
         $Duration = $Settings["valve1_total"] - round($Program["condenser_rate"] * $Settings["valve1_pulse"],0,PHP_ROUND_HALF_UP);
         $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                      "VALUES (now(),'0','1','1','" . $Settings["valve1_total"] . "','" . $Settings["valve1_total"] . "','1','0')," .
-                                             "(now(),'0','1','0','$Duration','" . round($Program["condenser_rate"] * $Settings["valve1_pulse"],0,PHP_ROUND_HALF_UP) . "','1','0')");
-        // Open the dephleg valve to its starting position if this is a reflux program
+                                      "VALUES (now(),'0','1','0','$Duration','" . round($Program["condenser_rate"] * $Settings["valve1_pulse"],0,PHP_ROUND_HALF_UP) . "','1','0')");
+        $Update = mysqli_query($DBcnx,"UPDATE settings SET valve1_position='" . round($Program["condenser_rate"] * $Settings["valve1_pulse"],0,PHP_ROUND_HALF_UP) . "' WHERE ID=1");
         if ($Program["mode"] == 1) {
-          $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='" . round($Program["dephleg_start"]  * $Settings["valve2_pulse"],0,PHP_ROUND_HALF_UP) . "' WHERE ID=1");
+          // Open the dephleg valve to its starting position if this is a reflux program
           // Open to 100% and pull down to the setting to evacuate any air in its water lines
+          shell_exec("/usr/share/rpi-smart-still/valve 2 open");
           $Duration = $Settings["valve2_total"] - round($Program["dephleg_start"] * $Settings["valve2_pulse"],0,PHP_ROUND_HALF_UP);
           $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                        "VALUES (now(),'0','2','1','" . $Settings["valve2_total"] . "','" . $Settings["valve2_total"] . "','1','0')," .
-                                               "(now(),'0','2','0','$Duration','" . round($Program["dephleg_start"] * $Settings["valve2_pulse"],0,PHP_ROUND_HALF_UP) . "','1','0')");
+                                        "VALUES (now(),'0','2','0','$Duration','" . round($Program["dephleg_start"] * $Settings["valve2_pulse"],0,PHP_ROUND_HALF_UP) . "','1','0')");
+          $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='" . round($Program["dephleg_start"]  * $Settings["valve2_pulse"],0,PHP_ROUND_HALF_UP) . "' WHERE ID=1");
         }
         if ($Settings["hydro_type"] == 0) {
           // Recalibrate the load cell hydrometer to its reference weight
@@ -576,9 +576,9 @@ if (mysqli_num_rows($Result) > 0) {
       if (($Logic["column_done"] == 1) || ($Logic["dephleg_done"] == 1)) {
         // Check the distillate temperature every 5 minutes after column or dephleg are up to temperature
         if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Logic["hydrometer_started"] == 1)) {
-          // If distillate is over 24C/75F, increment the $Logic["hydrometer_temp_errors"] counter
-          // This is for both safety and to maintain the accuracy of the hydrometer, hot distillate is less dense and reads a higher proof
-          if ($Settings["distillate_temp"] > 24) {
+          // If distillate is over 27C/80F, increment the $Logic["hydrometer_temp_errors"] counter
+          // This is for safety since ethanol vapors start becoming combustible over 80F, you can easily light an 80 proof shot of vodka if you just warm it up.
+          if ($Settings["distillate_temp"] > 27) {
             $Logic["hydrometer_temp_errors"] ++;
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_timer=now(),hydrometer_temp_errors='" . $Logic["hydrometer_temp_errors"] . "' WHERE ID=1");
           } else {
