@@ -794,6 +794,8 @@ function ShowTemperatures($DBcnx) {
 }
 //---------------------------------------------------------------------------------------------------
 function ShowTimelines($DBcnx) {
+  $Result = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
+  $Settings = mysqli_fetch_assoc($Result);
   $Timestamps1 = "";
   $Timestamps2 = "";
   $BoilerTemps = "";
@@ -841,13 +843,13 @@ function ShowTimelines($DBcnx) {
     while ($RS = mysqli_fetch_assoc($Result)) {
       $SaveIt =  false;
       if ($RS["valve_id"] == 1) {
-        $Valve1Prev = $RS["position"];
+        $Valve1Prev = $RS["position"] / $Settings["valve1_pulse"];
         $SaveIt = true;
       } elseif ($RS["valve_id"] == 2) {
-        $Valve2Prev = $RS["position"];
+        $Valve2Prev = $RS["position"] / $Settings["valve2_pulse"];
         $SaveIt = true;
       } elseif ($RS["valve_id"] == 3) {
-        $HeatingPrev = $RS["position"] * 10;
+        $HeatingPrev = $RS["position"];
         $SaveIt = true;
       }
       if ($SaveIt) {
