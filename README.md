@@ -56,3 +56,8 @@ _**NOTE:** It's upon on the distiller themselves to take cuts because there is n
 ---
 
 <img width="1024" alt="2024-09-25 14-34-02-5" src="https://github.com/user-attachments/assets/26ef9c44-79dc-4f28-80fd-669204fc0611">
+
+---
+
+<img width="1024" height="1819" alt="image" src="https://github.com/user-attachments/assets/d20990b1-4533-4e01-87a8-72505f16857a">
+
