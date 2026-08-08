@@ -110,7 +110,7 @@ if (mysqli_num_rows($Result) > 0) {
       if ($Settings["speech_enabled"] == 1) SpeakMessage(9);
     }
     if ($Settings["speech_enabled"] == 1) SpeakMessage(28);
-    sleep(120);
+    sleep(120); // 2 minute cool down before closing the valves
     $Update = mysqli_query($DBcnx,"UPDATE settings SET valve1_position='0',valve2_position='0' WHERE ID=1");
     if ($Settings["speech_enabled"] == 1) SpeakMessage(1);
     shell_exec("/usr/share/rpi-smart-still/valve 1 close");
@@ -161,6 +161,7 @@ if (mysqli_num_rows($Result) > 0) {
         // Open the condenser valve to its program position
         // Open to 100% and pull down to the setting to evacuate any air in its water lines
         shell_exec("/usr/share/rpi-smart-still/valve 1 open");
+        sleep(10); // Wait for read-inputs.php to detect the limit switch
         $Duration = $Settings["valve1_total"] - round($Program["condenser_rate"] * $Settings["valve1_pulse"],0,PHP_ROUND_HALF_UP);
         $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                       "VALUES (now(),'0','1','0','$Duration','" . round($Program["condenser_rate"] * $Settings["valve1_pulse"],0,PHP_ROUND_HALF_UP) . "','1','0')");
@@ -169,6 +170,7 @@ if (mysqli_num_rows($Result) > 0) {
           // Open the dephleg valve to its starting position if this is a reflux program
           // Open to 100% and pull down to the setting to evacuate any air in its water lines
           shell_exec("/usr/share/rpi-smart-still/valve 2 open");
+          sleep(10); // Wait for read-inputs.php to detect the limit switch
           $Duration = $Settings["valve2_total"] - round($Program["dephleg_start"] * $Settings["valve2_pulse"],0,PHP_ROUND_HALF_UP);
           $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                         "VALUES (now(),'0','2','0','$Duration','" . round($Program["dephleg_start"] * $Settings["valve2_pulse"],0,PHP_ROUND_HALF_UP) . "','1','0')");
