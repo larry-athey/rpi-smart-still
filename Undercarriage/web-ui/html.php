@@ -785,8 +785,8 @@ function ShowTemperatures($DBcnx) {
   $Program  = mysqli_fetch_assoc($Result);
 
   $Content  = "<table class=\"table table-sm table-borderless\">";
-  $Content .=   "<tr><td><span class=\"fw-bolder\">Dephleg&nbsp;Temperature:</span></td><td align=\"right\" nowrap><span class=\"fw-bolder\">" . FormatTemp($Settings["dephleg_temp"]) . "</span></td></tr>";
   $Content .=   "<tr><td><span class=\"fw-bolder\">Column&nbsp;Temperature:</span></td><td align=\"right\" nowrap><span class=\"fw-bolder\">" . FormatTemp($Settings["column_temp"]) . "</span></td></tr>";
+  $Content .=   "<tr><td><span class=\"fw-bolder\">Dephleg&nbsp;Temperature:</span></td><td align=\"right\" nowrap><span class=\"fw-bolder\">" . FormatTemp($Settings["dephleg_temp"]) . "</span></td></tr>";
   $Content .=   "<tr><td><span class=\"fw-bolder\">Boiler&nbsp;Temperature:</span></td><td align=\"right\" nowrap><span class=\"fw-bolder\">" . FormatTemp($Settings["boiler_temp"]) . "</span></td></tr>";
   $Content .=   "<tr><td><span class=\"fw-bolder\">Distillate&nbsp;Temperature:</span></td><td align=\"right\" nowrap><span class=\"fw-bolder\">" . FormatTemp($Settings["distillate_temp"]) . "</span></td></tr>";
   $Content .= "</table>";
