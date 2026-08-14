@@ -5,7 +5,7 @@ Raspberry Pi (or clone) and Arduino/ESP32 powered smart still controller system.
 
 **NEWSFLASH:** _Complete [turn-key systems](https://panhandleponics.com/rpi-smart-still-turn-key-systems/) are now available by special order. These systems can vary from the controller-only, all the way up to the controller + LIDAR Hydrometer Reader + Boilermaker + 10" Android tablet + dedicated WiFi router, all pre-configured and ready to plug in._
 
-You may contact me directly at https://panhandleponics.com/#contact<br>
+You may contact me directly at https://panhandleponics.com/contact<br>
 Subscribe to the official YouTube channel at https://www.youtube.com/@PanhandlePonics
 
 **Facebook Idiot:** _Why would you bother?_<br>
