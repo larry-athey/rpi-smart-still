@@ -90,18 +90,18 @@ function ControlRelays($DBcnx) {
   $Settings = mysqli_fetch_assoc($Result);
 
   if ($Settings["relay1_state"] == 1) {
-    $Relay1off = "";
-    $Relay1on  = "selected";
+    $R1C2 = "checked";
+    $R1C1 = "";
   } else {
-    $Relay1off = "selected";
-    $Relay1on  = "";
+    $R1C2 = "";
+    $R1C1 = "checked";
   }
   if ($Settings["relay2_state"] == 1) {
-    $Relay2off = "";
-    $Relay2on  = "selected";
+    $R2C2 = "checked";
+    $R2C1 = "";
   } else {
-    $Relay2off = "selected";
-    $Relay2on  = "";
+    $R2C2 = "";
+    $R2C1 = "checked";
   }
 
   $Content  = "<script type=\"text/javascript\">\n";
@@ -118,22 +118,23 @@ function ControlRelays($DBcnx) {
   $Content .=     "<p class=\"fw-bolder\">The auxiliary relays can be used to control low-current DC pumps independent of your program settings. These will also resume their switched state across reboots.</p>";
   $Content .=     "<p class=\"fw-bolder\">Keep in mind that high current AC power loads should not be switched with the Pi Hat onboard relays. These should be used to switch external solid state relays instead.</p>";
   $Content .=     "<div class=\"row\" style=\"margin-top: 1.5em;\">";
-  $Content .=       "<div class=\"col\" style=\"text-align: right;\"><span class=\" fw-bolder\">Auxiliary&nbsp;Relay&nbsp;#1</span></div>";
-  $Content .=       "<div class=\"col\">";
-  $Content .=         "<select class=\"form-select\" id=\"relayToggle1\" onchange=\"handleRelay(1,this.value)\">";
-  $Content .=           "<option value=\"1\" $Relay1on>Enabled</option>";
-  $Content .=           "<option value=\"0\" $Relay1off>Disabled</option>";
-  $Content .=         "</select>";
+
+  $Content .=       "<div class=\"relay-control\">";
+  $Content .=         "<label class=\"relay-label fw-bolder\">Auxiliary Relay #1</label>";
+  $Content .=         "<div class=\"radio-group\">";
+  $Content .=           "<label class=\"relay-label fw-bolder\"><input type=\"radio\" name=\"relayToggle1\" value=\"0\" onchange=\"handleRelay(1,this.value)\" $R1C1>Disabled</label>";
+  $Content .=           "<label class=\"relay-label fw-bolder\"><input type=\"radio\" name=\"relayToggle1\" value=\"1\" onchange=\"handleRelay(1,this.value)\" $R1C2>Enabled</label>";
+  $Content .=         "</div>";
   $Content .=       "</div>";
-  $Content .=     "</div>";
-  $Content .=     "<div class=\"row\" style=\"margin-top: 0.5em;\">";
-  $Content .=       "<div class=\"col\" style=\"text-align: right;\"><span class=\"fw-bolder\">Auxiliary&nbsp;Relay&nbsp;#2</span></div>";
-  $Content .=       "<div class=\"col\">";
-  $Content .=         "<select class=\"form-select\" id=\"relayToggle2\" onchange=\"handleRelay(2,this.value)\">";
-  $Content .=           "<option value=\"1\" $Relay2on>Enabled</option>";
-  $Content .=           "<option value=\"0\" $Relay2off>Disabled</option>";
-  $Content .=         "</select>";
+
+  $Content .=       "<div class=\"relay-control\">";
+  $Content .=         "<label class=\"relay-label fw-bolder\">Auxiliary Relay #2</label>";
+  $Content .=         "<div class=\"radio-group\">";
+  $Content .=           "<label class=\"relay-label fw-bolder\"><input type=\"radio\" name=\"relayToggle2\" value=\"0\" onchange=\"handleRelay(2,this.value)\" $R2C1>Disabled</label>";
+  $Content .=           "<label class=\"relay-label fw-bolder\"><input type=\"radio\" name=\"relayToggle2\" value=\"1\" onchange=\"handleRelay(2,this.value)\" $R2C2>Enabled</label>";
+  $Content .=         "</div>";
   $Content .=       "</div>";
+
   $Content .=     "</div>";
   $Content .=   "</div>";
   $Content .= "</div>";

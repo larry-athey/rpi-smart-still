@@ -54,6 +54,31 @@ if (! isset($_COOKIE["client_id"])) {
 <?php } ?>
   </script>
   <style>
+    .relay-control {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .relay-label {
+      min-width: 160px;
+      font-weight: 500;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 1.25rem;
+    }
+
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
     .card-grid {
       display: grid;
       gap: 0.25rem;
