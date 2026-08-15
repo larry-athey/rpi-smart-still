@@ -605,12 +605,12 @@ function EditSensors($DBcnx) {
   $Content .= "<div class=\"card\" style=\"margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
   $Content .=   "<div class=\"card-body\">";
   $Content .=     "<div style=\"margin-top: .5em;\">";
-  $Content .=       "<label for=\"DephlegAddr\" class=\"form-label fw-bolder\">Dephleg Sensor Address</label>";
-  $Content .=       SensorSelector($Settings["dephleg_addr"],"DephlegAddr",$Disabled);
-  $Content .=     "</div>";
-  $Content .=     "<div style=\"margin-top: .5em;\">";
   $Content .=       "<label for=\"ColumnAddr\" class=\"form-label fw-bolder\">Column Sensor Address</label>";
   $Content .=       SensorSelector($Settings["column_addr"],"ColumnAddr",$Disabled);
+  $Content .=     "</div>";
+  $Content .=     "<div style=\"margin-top: .5em;\">";
+  $Content .=       "<label for=\"DephlegAddr\" class=\"form-label fw-bolder\">Dephleg Sensor Address</label>";
+  $Content .=       SensorSelector($Settings["dephleg_addr"],"DephlegAddr",$Disabled);
   $Content .=     "</div>";
   if ($Boilermaker["enabled"] == 0) {
     $Content .=   "<div style=\"margin-top: .5em;\">";
@@ -665,10 +665,10 @@ function ServoPositionEditor($DBcnx) {
   $Boilermaker = mysqli_fetch_assoc($Result);
 
   $Content  = "<form id=\"servo_editor\" method=\"post\" action=\"process.php\">";
-  $Content .= "<label for=\"Valve2\" class=\"form-label fw-bolder\">Dephleg Cooling Valve %</label>";
-  $Content .= "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Valve2\" name=\"Valve2\" min=\"0\" max=\"100\" step=\".1\" value=\"" . PosToPct($Settings["valve2_total"],$Settings["valve2_position"]) . "\">";
-  $Content .= "<label for=\"Valve1\" class=\"form-label fw-bolder\" style=\"margin-top: .5em;\">Condenser Cooling Valve %</label>";
+  $Content .= "<label for=\"Valve1\" class=\"form-label fw-bolder\">Condenser Cooling Valve %</label>";
   $Content .= "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Valve1\" name=\"Valve1\" min=\"0\" max=\"100\" step=\".1\" value=\"" . PosToPct($Settings["valve1_total"],$Settings["valve1_position"]) . "\">";
+  $Content .= "<label for=\"Valve2\" class=\"form-label fw-bolder\" style=\"margin-top: .5em;\">Dephleg Cooling Valve %</label>";
+  $Content .= "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Valve2\" name=\"Valve2\" min=\"0\" max=\"100\" step=\".1\" value=\"" . PosToPct($Settings["valve2_total"],$Settings["valve2_position"]) . "\">";
   if ($Boilermaker["enabled"] == 1) {
     if (($Settings["active_run"] == 1) && ($Boilermaker["op_mode"]) == 1) {
       $Disabled = "disabled";
@@ -928,8 +928,8 @@ function ShowValves($DBcnx) {
   }
 
   $Content  = "<table class=\"table table-sm table-borderless\">";
-  $Content .=   "<tr><td><span class=\"fw-bolder\">Dephleg&nbsp;Valve:</span></td><td align=\"right\" nowrap><span class=\"fw-bolder\">" . FormatValvePosition($Settings["valve2_total"],$Settings["valve2_position"]) . "</span></td></tr>";
   $Content .=   "<tr><td><span class=\"fw-bolder\">Condenser&nbsp;Valve:</span></td><td align=\"right\" nowrap><span class=\"fw-bolder\">" . FormatValvePosition($Settings["valve1_total"],$Settings["valve1_position"]) . "</span></td></tr>";
+  $Content .=   "<tr><td><span class=\"fw-bolder\">Dephleg&nbsp;Valve:</span></td><td align=\"right\" nowrap><span class=\"fw-bolder\">" . FormatValvePosition($Settings["valve2_total"],$Settings["valve2_position"]) . "</span></td></tr>";
   if ($Boilermaker["enabled"] == 1) {
     $Content .= "<tr><td><span class=\"fw-bolder\">Heating&nbsp;Controller:</span></td><td align=\"right\" nowrap><span class=\"text-light fw-bolder\">" . $Settings["heating_position"] . "%</span></td></tr>";
   } else {

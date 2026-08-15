@@ -478,9 +478,9 @@ if (mysqli_num_rows($Result) > 0) {
                 if ($Range > 4) {
                   $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now(),dephleg_note='Dephleg temperature is within range, microstepping as needed' WHERE ID=1");
                   if ($Range % 2 == 0) { // Always better to use an odd numbered range, preferably 5 degrees between upper and lower limits
-                    $RangeCenter = ($Range / 2) + $Program["dephleg_temp_low"];
+                    $RangeCenter = ($Range / 2) + $Program["dephleg_temp_low"]; // Range is an even number
                   } else {
-                    $RangeCenter = round($Range / 2,0,PHP_ROUND_HALF_UP) + $Program["dephleg_temp_low"];
+                    $RangeCenter = round($Range / 2,0,PHP_ROUND_HALF_UP) + $Program["dephleg_temp_low"]; // Range is an odd number
                   }
                   $Difference = round($Settings["valve2_pulse"] * .1,0,PHP_ROUND_HALF_DOWN);
                   if ($Settings["dephleg_temp"] < ($RangeCenter -0.5)) {
