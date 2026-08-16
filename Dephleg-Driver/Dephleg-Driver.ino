@@ -79,10 +79,9 @@ void setup() {
   updateLimits();
   analogWrite(PIN_PWM, 0);
 
-  // Uncomment for debugging over USB Serial
-  // Serial.begin(115200);
-  // while (!Serial) { ; }
-  // Serial.println("XIAO Valve Emulator ready");
+  Serial.begin(115200);
+  delay(1000);
+  if (Serial) Serial.println("\nXIAO Valve Emulator ready");
 }
 //------------------------------------------------------------------------------------------------
 void updateLimits() {
@@ -132,13 +131,14 @@ void loop() {
   // Update simulated limit switches
   updateLimits();
 
-  // Optional debug output (uncomment if needed)
-  // static unsigned long lastPrint = 0;
-  // if (now - lastPrint >= 500) {
-  //   lastPrint = now;
-  //   Serial.print("Duty: "); Serial.print(duty);
-  //   Serial.print("%  OpenAcc: "); Serial.print(openAccum);
-  //   Serial.print("  CloseAcc: "); Serial.println(closeAccum);
-  // }
+  if (Serial) {
+    static unsigned long lastPrint = 0;
+    if (now - lastPrint >= 500) {
+      lastPrint = now;
+      Serial.print("Duty: "); Serial.print(duty);
+      Serial.print("%  OpenAcc: "); Serial.print(openAccum);
+      Serial.print("  CloseAcc: "); Serial.println(closeAccum);
+    }
+  }
 }
 //------------------------------------------------------------------------------------------------
