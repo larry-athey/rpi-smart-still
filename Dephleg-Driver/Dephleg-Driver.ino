@@ -2,7 +2,7 @@
 // RPi Smart Still Controller | (CopyLeft) 2024-Present | Larry Athey (https://panhandleponics.com)
 //------------------------------------------------------------------------------------------------
 // XIAO SAMD21 Powered Dephlegmator Cooling Valve Emulator for Peristaltic Pump
-// Seeed Studio XIAO SAMD21 (Arduino-compatible)
+// Seeed Studio XIAO SAMD21 (Arduino IDE board name “Seeeduino XIAO”)
 //
 // Emulates a US Solid motorized ball valve (10 second full travel, with limit switches)
 // while driving a TB6612FNG H-Bridge feeding a 400 ml/min peristaltic pump via PWM.
@@ -36,13 +36,15 @@
 // - TB6612FNG H-Bridge: https://www.amazon.com/dp/B09MJ4XPXD
 // - 400ml/minute peristaltic pump: https://www.amazon.com/dp/B07HB2NM74
 //
-// This whole unit can be built for the same price as a half inch US Solid motorized ball valve. 
+// This whole unit can be built for the same price as a half inch US Solid motorized ball valve.
+// You only need to provide +12v, +5V, and GND from the RPi hat. Logic level shift U16 in the v1.3
+// hat isn't needed since wires from XIAO pins 1 and 2 plug into pins 1 and 5 of the U16 socket.
+// XAIO pins 3 and 4 connect to the hat screw terminals LS3 and LS4. (see pin comments below)
 //------------------------------------------------------------------------------------------------
-// ========== PIN DEFINITIONS (change to match your wiring) ==========
-const int PIN_OPEN         = 1;   // RPi-SS dephleg valve "open / forward" signal
-const int PIN_CLOSE        = 2;   // RPi-SS dephleg valve "close / reverse" signal
-const int PIN_LIMIT_CLOSED = 3;   // Simulated closed limit switch (output to RPi-SS hat)
-const int PIN_LIMIT_OPEN   = 4;   // Simulated open limit switch (output to RPi-SS hat)
+const int PIN_OPEN         = 1;   // RPi-SS dephleg valve "open / forward" GPIO 25 logic level shifter socket
+const int PIN_CLOSE        = 2;   // RPi-SS dephleg valve "close / reverse" GPIO 24 logic level shifter socket
+const int PIN_LIMIT_CLOSED = 3;   // Simulated closed limit switch (output to RPi-SS hat LS4)
+const int PIN_LIMIT_OPEN   = 4;   // Simulated open limit switch (output to RPi-SS hat LS3)
 const int PIN_PWM          = 10;  // PWM output to TB6612FNG H-Bridge (PWMA or PWMB)
 
 // Active level of the Pi control signals (true = HIGH means "move")
