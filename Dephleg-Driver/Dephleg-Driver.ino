@@ -11,7 +11,7 @@
 // - Accumulates actual command time so 10 ms micro-pulses are tracked
 // - Advances/retracts duty by 1% for every 100 ms of command time
 // - Reports limit-switch states back to the RPi Smart Still
-// - Outputs PWM duty cycle 0-100% to a TB6612FNG H-bridge
+// - Outputs PWM duty cycle 0-100% to a TB6612FNG H-Bridge
 //
 // This optional device may be required for those who are running a pump for their cooling water
 // rather than running on well or city water pressure. This is because impeller pumps don't deliver
@@ -27,6 +27,16 @@
 // that while these may deliver enough pressure, they don't deliver enough volume to satisfy your
 // condenser's needs. Secondly, those are not intended for continous duty and will shut down after
 // a few hours due to overheating. Unlike an impeller pump, diaphragm pumps aren't water cooled.
+//
+// No printed circuit board is necessary since you'd still have more wires coming off this circuit
+// than you would have PCB traces connecting the XIAO SAMD21 to the TB6612FNG H-Bridge.
+//
+// Parts List:
+// - Seeed Studio XIAO SAMD21: https://www.seeedstudio.com/Seeeduino-XIAO-Arduino-Microcontroller-SAMD21-Cortex-M0+-p-4426.html
+// - TB6612FNG H-Bridge: https://www.amazon.com/dp/B09MJ4XPXD
+// - 400ml/minute peristaltic pump: https://www.amazon.com/dp/B07HB2NM74
+//
+// This whole unit can be built for the same price as a half inch US Solid motorized ball valve. 
 //------------------------------------------------------------------------------------------------
 // ========== PIN DEFINITIONS (change to match your wiring) ==========
 const int PIN_OPEN         = 1;   // RPi-SS dephleg valve "open / forward" signal
