@@ -37,12 +37,12 @@
 // - 400ml/minute peristaltic pump: https://www.amazon.com/dp/B07HB2NM74
 //
 // This whole unit can be built for the same price as a half inch US Solid motorized ball valve.
-// You only need to provide +12v, +5V, and GND from the RPi hat. Logic level shift U16 in the v1.3
-// hat isn't needed since wires from XIAO pins 1 and 2 plug into pins 1 and 5 of the U16 socket.
-// XAIO pins 3 and 4 connect to the hat screw terminals LS3 and LS4. (see pin comments below)
+// You only need to provide +12v, +5V, and GND from the RPi hat. Logic level shifter U16 (v1.3)
+// isn't needed now since wires from XIAO pins 1 and 2 plug into pins 1 and 5 of the U16 socket.
+// XAIO pins 3 and 4 connect to the RPi hat screw terminals LS3 and LS4. (see pin comments below)
 //------------------------------------------------------------------------------------------------
-const int PIN_OPEN         = 1;   // RPi-SS dephleg valve "open / forward" GPIO 25 logic level shifter socket
-const int PIN_CLOSE        = 2;   // RPi-SS dephleg valve "close / reverse" GPIO 24 logic level shifter socket
+const int PIN_OPEN         = 1;   // RPi-SS dephleg valve "open / forward" GPIO 25 (logic level shifter socket)
+const int PIN_CLOSE        = 2;   // RPi-SS dephleg valve "close / reverse" GPIO 24 (logic level shifter socket)
 const int PIN_LIMIT_CLOSED = 3;   // Simulated closed limit switch (output to RPi-SS hat LS4)
 const int PIN_LIMIT_OPEN   = 4;   // Simulated open limit switch (output to RPi-SS hat LS3)
 const int PIN_PWM          = 10;  // PWM output to TB6612FNG H-Bridge (PWMA or PWMB)
@@ -65,7 +65,7 @@ unsigned long closeAccum = 0;         // Accumulated close-command time (ms)
 unsigned long lastLoop   = 0;
 //------------------------------------------------------------------------------------------------
 void setup() {
-  pinMode(PIN_OPEN, INPUT);           // Change to INPUT_PULLUP if needed
+  pinMode(PIN_OPEN, INPUT);
   pinMode(PIN_CLOSE, INPUT);
   pinMode(PIN_LIMIT_CLOSED, OUTPUT);
   pinMode(PIN_LIMIT_OPEN, OUTPUT);
@@ -117,8 +117,7 @@ void loop() {
       openAccum -= MS_PER_PERCENT;
       duty++;
     }
-  }
-  else if (wantClose && !wantOpen) {
+  } else if (wantClose && !wantOpen) {
     closeAccum += dt;
     while (closeAccum >= MS_PER_PERCENT && duty > 0) {
       closeAccum -= MS_PER_PERCENT;
