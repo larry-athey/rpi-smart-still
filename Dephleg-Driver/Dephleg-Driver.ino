@@ -14,9 +14,9 @@
 // - Outputs PWM duty cycle 0-100% to a TB6612FNG H-Bridge
 //
 // This optional device may be required for those who are running a pump for their cooling water
-// rather than running on well or city water pressure. This is because impeller pumps don't deliver
+// rather than running public utility water pressure. This is because impeller pumps don't deliver
 // the necessary pressure to force water through the ball valves if they are choked down to 30% or
-// lower. This prevents low speed water flow through the dephlegmator for useful reflux operation.
+// lower. This prevents low volume water flow through the dephlegmator for useful reflux operation.
 //
 // The problem is that you can't achieve any balance between no output and switching right back to
 // pot still mode. The way to solve the problem is to replace the ball valve with a peristaltic
