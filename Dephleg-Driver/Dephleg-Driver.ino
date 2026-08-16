@@ -7,7 +7,7 @@
 // Emulates a US Solid motorized ball valve (10 second full travel, with limit switches)
 // while driving a TB6612FNG H-Bridge feeding a 400 ml/min peristaltic pump via PWM.
 //
-// - Watches RPi Smart Still dephleg valve OPEN / CLOSE GPIO lines
+// - Watches RPi Smart Still dephleg cooling valve OPEN / CLOSE GPIO lines
 // - Accumulates actual command time so 10 ms micro-pulses are tracked
 // - Advances/retracts duty by 1% for every 100 ms of command time
 // - Reports limit-switch states back to the RPi Smart Still
@@ -43,8 +43,8 @@
 //------------------------------------------------------------------------------------------------
 const int PIN_OPEN         = 1;   // RPi-SS dephleg valve "open / forward" GPIO 25 (logic level shifter socket)
 const int PIN_CLOSE        = 2;   // RPi-SS dephleg valve "close / reverse" GPIO 24 (logic level shifter socket)
-const int PIN_LIMIT_CLOSED = 3;   // Simulated closed limit switch (output to RPi-SS hat LS4)
-const int PIN_LIMIT_OPEN   = 4;   // Simulated open limit switch (output to RPi-SS hat LS3)
+const int PIN_LIMIT_OPEN   = 3;   // Simulated open limit switch (output to RPi-SS hat LS3)
+const int PIN_LIMIT_CLOSED = 4;   // Simulated closed limit switch (output to RPi-SS hat LS4)
 const int PIN_PWM          = 10;  // PWM output to TB6612FNG H-Bridge (PWMA or PWMB)
 
 // Active level of the Pi control signals (true = HIGH means "move")
