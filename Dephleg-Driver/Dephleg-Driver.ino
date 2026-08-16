@@ -41,8 +41,8 @@
 // is no longer needed since wires from XIAO pins 1 and 2 plug into pins 1 and 5 of the U16 socket.
 // XAIO pins 3 and 4 connect to the RPi hat screw terminals LS3 and LS4. (see pin comments below)
 //------------------------------------------------------------------------------------------------
-const int PIN_OPEN         = 1;   // RPi-SS dephleg valve "open / forward" GPIO 25 (logic level shifter socket)
-const int PIN_CLOSE        = 2;   // RPi-SS dephleg valve "close / reverse" GPIO 24 (logic level shifter socket)
+const int PIN_OPEN         = 1;   // RPi-SS dephleg valve "open / forward" GPIO 25 (logic level shifter socket pin 1)
+const int PIN_CLOSE        = 2;   // RPi-SS dephleg valve "close / reverse" GPIO 24 (logic level shifter socket pin 5)
 const int PIN_LIMIT_OPEN   = 3;   // Simulated open limit switch (output to RPi-SS hat LS3)
 const int PIN_LIMIT_CLOSED = 4;   // Simulated closed limit switch (output to RPi-SS hat LS4)
 const int PIN_PWM          = 10;  // PWM output to TB6612FNG H-Bridge (PWMA or PWMB)
