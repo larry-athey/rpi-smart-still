@@ -2,7 +2,7 @@
 // RPi Smart Still Controller | (CopyLeft) 2024-Present | Larry Athey (https://panhandleponics.com)
 //------------------------------------------------------------------------------------------------
 // XIAO SAMD21 Powered Dephlegmator Cooling Valve Emulator for Peristaltic Pump
-// Seeed Studio XIAO SAMD21 (Arduino IDE board name “Seeeduino XIAO”)
+// MCU: Seeed Studio XIAO SAMD21 (Arduino IDE board name “Seeeduino XIAO”)
 //
 // Emulates a US Solid motorized ball valve (10 second full travel, with limit switches)
 // while driving a TB6612FNG H-Bridge feeding a 400 ml/min peristaltic pump via PWM.
