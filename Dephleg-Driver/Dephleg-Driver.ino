@@ -16,12 +16,12 @@
 // This optional device may be required for those who are running a pump for their cooling water
 // rather than running on well or city water pressure. This is because impeller pumps don't deliver
 // the necessary pressure to force water through the ball valves if they are choked down to 30% or
-// lower. This prevents the water flow through the dephlegmator from running low enough for reflux.
+// lower. This prevents low speed water flow through the dephlegmator for useful reflux operation.
 //
 // The problem is that you can't achieve any balance between no output and switching right back to
 // pot still mode. The way to solve the problem is to replace the ball valve with a peristaltic
 // pump that by design has an incredibly low output volume. Rather than controlling the output of
-// the pump with a valve, the speed of the motor is varied instead.
+// the pump with a valve, the speed of the motor itself is varied instead.
 //
 // I know what you're probably thinking...Why not just use a diaphragm pump instead? The answer is
 // that while these may deliver enough pressure, they don't deliver enough volume to satisfy your
@@ -38,7 +38,7 @@
 //
 // This whole unit can be built for the same price as a half inch US Solid motorized ball valve.
 // You only need to provide +12v, +5V, and GND from the RPi hat. Logic level shifter U16 (v1.3)
-// isn't needed now since wires from XIAO pins 1 and 2 plug into pins 1 and 5 of the U16 socket.
+// is no longer needed since wires from XIAO pins 1 and 2 plug into pins 1 and 5 of the U16 socket.
 // XAIO pins 3 and 4 connect to the RPi hat screw terminals LS3 and LS4. (see pin comments below)
 //------------------------------------------------------------------------------------------------
 const int PIN_OPEN         = 1;   // RPi-SS dephleg valve "open / forward" GPIO 25 (logic level shifter socket)
