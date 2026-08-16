@@ -59,9 +59,9 @@ const bool LIMIT_ACTIVE_LOW = true;
 const unsigned long MS_PER_PERCENT = 100;  // 100 ms → 1 %  (10 s full scale)
 
 // ========== GLOBAL STATE ==========
-int duty = 0;                         // Current position / PWM duty 0-100
-unsigned long openAccum  = 0;         // Accumulated open-command time (ms)
-unsigned long closeAccum = 0;         // Accumulated close-command time (ms)
+int duty = 0;                     // Current position / PWM duty 0-100
+unsigned long openAccum  = 0;     // Accumulated open-command time (ms)
+unsigned long closeAccum = 0;     // Accumulated close-command time (ms)
 unsigned long lastLoop   = 0;
 //------------------------------------------------------------------------------------------------
 void setup() {
@@ -72,8 +72,8 @@ void setup() {
   pinMode(PIN_PWM, OUTPUT);
 
   // Optional: higher PWM resolution on SAMD21 (default is usually fine)
-  // analogWriteResolution(8);   // 0-255
-  // analogWriteResolution(10);  // 0-1023
+  // analogWriteResolution(8);    // 0-255
+  // analogWriteResolution(10);   // 0-1023
 
   lastLoop = millis();
   updateLimits();
