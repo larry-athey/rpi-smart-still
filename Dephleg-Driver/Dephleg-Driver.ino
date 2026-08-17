@@ -52,7 +52,6 @@ const bool OPEN_ACTIVE_HIGH  = true;
 const bool CLOSE_ACTIVE_HIGH = true;
 
 // Active level of the limit-switch outputs (true = LOW means "at limit")
-// Most of the original L298N + limit-switch setups are active-LOW
 const bool LIMIT_ACTIVE_LOW = true;
 
 // Timing
