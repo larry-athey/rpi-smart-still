@@ -133,10 +133,14 @@ void loop() {
   if (Serial) {
     static unsigned long lastPrint = 0;
     if (now - lastPrint >= 500) {
+      byte limitOpen   = digitalRead(PIN_LIMIT_OPEN);
+      byte limitClosed = digitalRead(PIN_LIMIT_CLOSED);
       lastPrint = now;
       Serial.print("Duty: "); Serial.print(duty);
       Serial.print("%  OpenAcc: "); Serial.print(openAccum);
-      Serial.print("  CloseAcc: "); Serial.println(closeAccum);
+      Serial.print("  CloseAcc: "); Serial.print(closeAccum);
+      Serial.print("  LimitOpen: "); Serial.print(limitOpen);
+      Serial.print("  LimitClosed: "); Serial.println(limitClosed);
     }
   }
 }
