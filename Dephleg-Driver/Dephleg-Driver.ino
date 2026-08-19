@@ -65,8 +65,8 @@ unsigned long closeAccum = 0;     // Accumulated close-command time (ms)
 unsigned long lastLoop   = 0;
 //------------------------------------------------------------------------------------------------
 void setup() {
-  pinMode(PIN_OPEN, INPUT);
-  pinMode(PIN_CLOSE, INPUT);
+  pinMode(PIN_OPEN, INPUT_PULLDOWN);
+  pinMode(PIN_CLOSE, INPUT_PULLDOWN);
   pinMode(PIN_LIMIT_CLOSED, OUTPUT);
   pinMode(PIN_LIMIT_OPEN, OUTPUT);
   pinMode(PIN_PWM, OUTPUT);
