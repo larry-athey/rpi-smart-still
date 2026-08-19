@@ -55,9 +55,9 @@ const bool CLOSE_ACTIVE_HIGH = true;
 const bool LIMIT_ACTIVE_LOW = true;
 
 // Timing
-const unsigned long MS_PER_PERCENT = 100;  // 100 ms → 1 %  (10 s full scale)
+const unsigned long MS_PER_PERCENT = 100;  // 100 ms → 1%  (10 seconds full scale)
 
-// ========== GLOBAL STATE ==========
+// Globals
 int duty = 0;                     // Current position / PWM duty 0-100
 unsigned long openAccum  = 0;     // Accumulated open-command time (ms)
 unsigned long closeAccum = 0;     // Accumulated close-command time (ms)
