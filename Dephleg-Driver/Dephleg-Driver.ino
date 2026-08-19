@@ -3,6 +3,7 @@
 //------------------------------------------------------------------------------------------------
 // XIAO SAMD21 Powered Dephlegmator Cooling Valve Emulator for Peristaltic Pump
 // MCU: Seeed Studio XIAO SAMD21 (Arduino IDE board name “Seeeduino XIAO”)
+// Board library: https://files.seeedstudio.com/arduino/package_seeeduino_boards_index.json
 //
 // Emulates a US Solid motorized ball valve (10 second full travel, with limit switches)
 // while driving a TB6612FNG H-Bridge feeding a 400 ml/min peristaltic pump via PWM.
