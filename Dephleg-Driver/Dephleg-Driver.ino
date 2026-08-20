@@ -30,7 +30,11 @@
 // a few hours due to overheating. Unlike an impeller pump, diaphragm pumps aren't water cooled.
 //
 // No printed circuit board is necessary since you'd still have more wires coming off this circuit
-// than you would have PCB traces connecting the XIAO SAMD21 to the TB6612FNG H-Bridge.
+// than you would have PCB traces connecting the XIAO SAMD21 to the TB6612FNG H-Bridge. Take a look
+// at the schematic in the digrams directory, it's so basic that you could glue both of the boards
+// to a popsicle stick, point-to-point it in an hour, then glue it to the 3D printed pump holder.
+//
+// When done, there will be 7 wires (preferably 12 inches long) from the circuit to the RPi hat.
 //
 // Parts List:
 // - Seeed Studio XIAO SAMD21: https://www.seeedstudio.com/Seeeduino-XIAO-Arduino-Microcontroller-SAMD21-Cortex-M0+-p-4426.html
