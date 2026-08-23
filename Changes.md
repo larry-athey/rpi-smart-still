@@ -8,7 +8,7 @@ Changes since the version 1.04 release
 
 - LIDAR Hydrometer Reader code updates that simplify the calibration and improves the accuracy by implementing temperature compensation and scientific scale measurement translation.
 
-- All undercarriage timing parameters are now configurable from a new Configure Tuning page added to the management menu. This allows precision tuning of the controller system to the still that it's attached to.
+- All undercarriage timing parameters are now configurable from a new **Configure Tuning** page added to the management menu. This allows precision tuning of the controller system to the still that it's attached to.
 
 - Improved Boilermaker API integration which allows the system to run the Boilermaker more like a digital SCR controller.
 
