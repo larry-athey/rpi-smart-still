@@ -12,7 +12,7 @@ Changes since the version 1.04 release
 
 - Improved Boilermaker API integration which allows the system to run the Boilermaker more like a digital SCR controller.
 
-- Boilermaker fallback power setting is now a per-program setting since different power levels are needed based on whether a reflux mode or pot still run is being performed. Previously, the Boilermaker's internal fallback power setting was used.
+- Boilermaker fallback power setting is now a per-program parameter since different power levels are needed based on whether a reflux mode or pot still run is being performed. Previously, the Boilermaker's internal fallback power setting was used.
 
 - Dephleg cooling valve management routines optimized and simplified to make things more accurate with far fewer steps.
 
