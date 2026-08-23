@@ -53,7 +53,15 @@ if [ -d /usr/share/rpi-smart-still ]; then
   sed -i "s/#define DS18B20_PIN_NUMBER 7/#define DS18B20_PIN_NUMBER $BusPin/g" ./ds18b20.c > /dev/null 2>&1
   sudo gcc -Wall -o /usr/share/rpi-smart-still/ds18b20 ./ds18b20.c -lwiringPi -lpthread
 
-  sudo mysql < boilermaker.sql
+  sudo mysql -e "USE \`rpismartstill\`; SELECT * FROM \`boilermaker\`;" > /dev/null 2>&1
+  if [ ! $? -eq 0 ]; then
+    sudo mysql < boilermaker.sql
+  fi
+
+  sudo mysql -e "USE \`rpismartstill\`; SELECT * FROM \`logic_tuning\`;" > /dev/null 2>&1
+  if [ ! $? -eq 0 ]; then
+    sudo mysql < logic_tuning.sql
+  fi
 
   sudo chmod +x /usr/share/rpi-smart-still/*
   sudo chmod -x /usr/share/rpi-smart-still/config.ini
