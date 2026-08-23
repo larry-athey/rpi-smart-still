@@ -16,7 +16,7 @@ Changes since the version 1.04 release
 
 - Dephleg cooling valve management routines optimized and simplified to make things more accurate with far fewer steps.
 
-- Improvd valve synchronization at distillation run startup and pause/resume to compensate for potential mechanical play/slop issues.
+- Improved valve synchronization at distillation run startup and pause/resume to compensate for potential mechanical play/slop issues.
 
 - Heating stepper motor control updated to use 5% of total motor steps rather than using the 10% heat-jump positions for boiler temperature management during a distillation run.
 
