@@ -4,7 +4,7 @@ Changes since the version 1.04 release
 
 - Created a completely 3D printable system case that simplifies total builds and caters to both headless and fully self-contained builds with local screen/tablet interfaces.
 
-- A new optional accessory has been added called the Dephleg Driver that replaces the dephleg cooling water valve. This was added after a number of people notified me that they use recirculating cooling water tanks running on impeller driven pond pumps which don't provide enough pressure to keep water flowing when the valve is at 30% or lower.
+- A new optional accessory has been added called the [Dephleg Driver](https://github.com/larry-athey/rpi-smart-still/tree/main/Dephleg-Driver) that replaces the dephleg cooling water valve. This was added after a number of people notified me that they use recirculating cooling water tanks running on impeller driven pond pumps which don't provide enough pressure to keep water flowing when the valve is at 30% or lower.
 
 - LIDAR Hydrometer Reader code updates that simplify the calibration and improves the accuracy by implementing temperature compensation and scientific scale measurement translation.
 
