@@ -24,4 +24,4 @@ Changes since the version 1.04 release
 
 - Numerous user interface tweaks and bug fixes, more touch-screen friendly now.
 
-- A new page has been added to the Wiki that covers all of the configuration settings in the management menu. It seems that there are some people who prefer to print manuals rather than watching how-to videos.
+- A new page has been added to the Wiki that covers all of the [configuration settings](https://github.com/larry-athey/rpi-smart-still/wiki/13.-Configuration-Settings) in the management menu. It seems that there are some people who prefer to print manuals rather than watching how-to videos.
