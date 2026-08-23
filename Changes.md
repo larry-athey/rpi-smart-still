@@ -10,7 +10,7 @@ Changes since the version 1.04 release
 
 - All undercarriage timing parameters are now configurable from a new **Configure Tuning** page added to the management menu. This allows precision tuning of the controller system to the still that it's attached to.
 
-- Improved Boilermaker API integration which allows the system to run the Boilermaker more like a digital SCR controller.
+- Improved Boilermaker API integration which allows the system to run the Boilermaker more like a digital SCR controller. As in, the boiler temperature is allowed to naturally rise, but is more precisely controlled within preset window.
 
 - Boilermaker fallback power setting is now a per-program parameter since different power levels are needed based on whether a reflux mode or pot still run is being performed. Previously, the Boilermaker's internal fallback power setting was used.
 
