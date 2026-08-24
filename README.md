@@ -1,7 +1,7 @@
 # RPi Smart Still
 Raspberry Pi (or clone) and Arduino/ESP32 powered smart still controller system. Originally designed around the Still Spirits T500 column and boiler, but can be easily added to any other gas or electric still with a dephlegmator. Safe to say that this is the world's first add-on smart still controller because I looked for one before I was forced to build my own. My only other option was to spend $15K on a Genio or iStill...Uh, pass - I'll build one from scratch.
 
-**Please refer to the [Wiki](https://github.com/larry-athey/rpi-smart-still/wiki) for more information and setup/usage instructions. Information on [turn-key systems](https://github.com/larry-athey/rpi-smart-still/wiki/12.-Turn%E2%80%90Key-Systems-and-Components) and components can also be found there.**
+**Please refer to the [Wiki](https://github.com/larry-athey/rpi-smart-still/wiki) for more information and setup/usage instructions.**
 
 **NEWSFLASH:** _Complete [turn-key systems](https://panhandleponics.com/rpi-smart-still-turn-key-systems/) are now available by special order. These systems can vary from the controller-only, all the way up to the controller + LIDAR Hydrometer Reader + Boilermaker + 10" Android tablet + dedicated WiFi router, all pre-configured and ready to plug in._
 
