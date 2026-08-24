@@ -86,7 +86,7 @@ elseif (isset($_GET["heat_jump"])) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
   $Boilermaker = mysqli_fetch_assoc($Result);
 
-  if ($Boilermaker["enabled"] == 1) {
+  if (($Boilermaker["enabled"] == 1) && ($Settings["heating_enabled"])) {
     if ($_GET["value"] > $Settings["heating_position"]) {
       $Direction = 1;
     } else {
@@ -227,7 +227,7 @@ elseif (isset($_POST["rss_edit_heating"])) {
     $BMip_address  = $_POST["BMip_address"];
     $BMop_mode     = $_POST["BMop_mode"];
     $BMstartup     = $_POST["BMstartup"];
-    $BMfallback    = $_POST["BMfallback"];
+    $BMfallback    = 70; // $_POST["BMfallback"]; // Moved to the program settings in v1.05
     $BMfixed_temp  = $_POST["BMfixed_temp"];
     $BMtime_spread = $_POST["BMtime_spread"];
     $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_enabled='$HeatingEnabled' WHERE ID=1");
@@ -278,11 +278,7 @@ elseif (isset($_POST["rss_edit_program"])) {
   $MinimumFlow     = $_POST["MinimumFlow"];
   $CondenserRate   = $_POST["CondenserRate"];
   $DephlegStart    = $_POST["DephlegStart"];
-  if ($Boilermaker["enabled"] == 1) {
-    $HeatingIdle   = 50;
-  } else {
-    $HeatingIdle   = $_POST["HeatingIdle"];
-  }
+  $HeatingIdle     = $_POST["HeatingIdle"];
   $BoilerManaged   = $_POST["BoilerManaged"];
   $BoilerTempLow   = $_POST["BoilerTempLow"];
   $BoilerTempHigh  = $_POST["BoilerTempHigh"];
@@ -331,7 +327,10 @@ elseif (isset($_POST["rss_edit_servos"])) {
   $Boilermaker = mysqli_fetch_assoc($Result);
 
   $Valve1 = round($_POST["Valve1"] * $Settings["valve1_pulse"],1);
+  if ($Valve1 > $Settings["valve1_total"]) $Valve1 = $Settings["valve1_total"];
+
   $Valve2 = round($_POST["Valve2"] * $Settings["valve2_pulse"],1);
+  if ($Valve2 > $Settings["valve2_total"]) $Valve2 = $Settings["valve2_total"];
 
   // Requires a difference in Valve1 position to process
   $Difference = 0;
@@ -343,6 +342,7 @@ elseif (isset($_POST["rss_edit_servos"])) {
     $Direction = 0;
   }
   $Difference = round($Difference);
+
   if ($Difference > 0) {
     $Update = mysqli_query($DBcnx,"UPDATE settings SET valve1_position='$Valve1' WHERE ID=1");
     $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
@@ -365,7 +365,7 @@ elseif (isset($_POST["rss_edit_servos"])) {
                                   "VALUES (now(),'1','2','$Direction','$Difference','$Valve2','0','0')");
   }
 
-  if ($Boilermaker["enabled"] == 1) {
+  if (($Boilermaker["enabled"] == 1) && ($Settings["heating_enabled"])) {
     // Power adjustments to a Boilermaker can't be made if there's an active run and external boiler temperature management is used
     if (($Settings["active_run"] == 0) || ($Boilermaker["op_mode"] == 0)) {
       if (($_POST["Heating"] > 0) && ($_POST["Heating"] < 10)) $_POST["Heating"] = 10;
@@ -406,6 +406,25 @@ elseif (isset($_POST["rss_edit_servos"])) {
       }
     }
   }
+}
+//---------------------------------------------------------------------------------------------------
+elseif (isset($_POST["rss_edit_tuning"])) {
+  $boiler_update     = $_POST["boiler_update"];
+  $dephleg_update    = $_POST["dephleg_update"];
+  $dephleg_driver    = $_POST["dephleg_driver"];
+  $dephleg_microstep = $_POST["dephleg_microstep"];
+  $dephleg_largestep = $_POST["dephleg_largestep"];
+  $driver_microstep  = $_POST["driver_microstep"];
+  $driver_largestep  = $_POST["driver_largestep"];
+  $column_update     = $_POST["column_update"];
+  $distillate_timer  = $_POST["distillate_timer"];
+  $distillate_temp   = $_POST["distillate_temp"];
+  $abv_update        = $_POST["abv_update"];
+  $flow_update       = $_POST["flow_update"];
+
+  $Update = mysqli_query($DBcnx,"UPDATE logic_tuning SET boiler_update='$boiler_update',dephleg_update='$dephleg_update',dephleg_driver='$dephleg_driver',dephleg_microstep='$dephleg_microstep'," .
+                                "dephleg_largestep='$dephleg_largestep',driver_microstep='$driver_microstep',driver_largestep='$driver_largestep',column_update='$column_update'," .
+                                "distillate_timer='$distillate_timer',distillate_temp='$distillate_temp',abv_update='$abv_update',flow_update='$flow_update' WHERE ID=1");
 }
 //---------------------------------------------------------------------------------------------------
 elseif (isset($_GET["shutdown_system"])) {

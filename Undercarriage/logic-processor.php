@@ -12,6 +12,8 @@ if (mysqli_num_rows($Result) > 0) {
   $Logic       = mysqli_fetch_assoc($Result);
   $Result      = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings    = mysqli_fetch_assoc($Result);
+  $Result      = mysqli_query($DBcnx,"SELECT * FROM logic_tuning WHERE ID=1");
+  $Tuning      = mysqli_fetch_assoc($Result);
   $Result      = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=" . $Settings["active_program"]);
   $Program     = mysqli_fetch_assoc($Result);
   $Result      = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
@@ -47,7 +49,7 @@ if (mysqli_num_rows($Result) > 0) {
             if (($Boilermaker["op_mode"] == 1) || ($Boilermaker["op_mode"] == 3)) {
               BoilermakerQuery2($Boilermaker["ip_address"],"/?data_0=" . $Boilermaker["op_mode"]); // Put the Boilermaker into Temperature Cruise mode
               BoilermakerQuery2($Boilermaker["ip_address"],"/?data_2=" . $Boilermaker["startup"]); // Set the Boilermaker startup power level
-              BoilermakerQuery2($Boilermaker["ip_address"],"/?data_3=" . $Boilermaker["fallback"]); // Set the Boilermaker fallback power level
+              BoilermakerQuery2($Boilermaker["ip_address"],"/?data_3=" . $Program["heating_idle"]); // Set the Boilermaker fallback power level
             } else {
               BoilermakerQuery2($Boilermaker["ip_address"],"/?data_0=2"); // Put the Boilermaker into Brewing/Fermentation mode
             }
@@ -65,7 +67,7 @@ if (mysqli_num_rows($Result) > 0) {
           } else { // Constant power mode (we're basically using the Boilermaker as a digital SCR power controller in this case)
             BoilermakerQuery2($Boilermaker["ip_address"],"/?data_0=0"); // Put the Boilermaker into Constant Power mode
             BoilermakerQuery2($Boilermaker["ip_address"],"/?data_2=" . $Boilermaker["startup"]); // Set the Boilermaker startup power level
-            BoilermakerQuery2($Boilermaker["ip_address"],"/?data_3=" . $Boilermaker["fallback"]); // Set the Boilermaker fallback power level (this is just for visual reference on the Boilermaker screen)
+            BoilermakerQuery2($Boilermaker["ip_address"],"/?data_3=" . $Program["heating_idle"]); // Set the Boilermaker fallback power level (this is just for visual reference on the Boilermaker screen)
             BoilermakerQuery2($Boilermaker["ip_address"],"/start-run"); // Start the Boilermaker
             if ($Settings["speech_enabled"] == 1) SpeakMessage(64);
           }
@@ -75,7 +77,12 @@ if (mysqli_num_rows($Result) > 0) {
             SpeakMessage(59);
             SpeakMessage(7);
           }
-          $Update = mysqli_query($DBcnx,"TRUNCATE logic_tracker");
+          $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET run_start='2' WHERE ID=1");
+          $Update = mysqli_query($DBcnx,"UPDATE settings SET active_run='0',run_end=now(),paused='0',pause_return='0' WHERE ID=1");
+          if ($Program["abv_managed"] == 1) {
+            $Update = mysqli_query($DBcnx,"UPDATE programs SET dephleg_temp_low='" . $Settings["saved_lower"] . "',dephleg_temp_high='" . $Settings["saved_upper"] . "' WHERE ID=" . $Program["ID"]);
+            $Update = mysqli_query($DBcnx,"UPDATE settings SET saved_lower='0',saved_upper='0' WHERE ID=1");
+          }
         }
       } else {
         $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
@@ -131,7 +138,7 @@ if (mysqli_num_rows($Result) > 0) {
                 PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
                 PingHost($Boilermaker["ip_address"]);
                 PingHost($Boilermaker["ip_address"]);
-                BoilermakerQuery2($Boilermaker["ip_address"],"/?data_2=" . $Boilermaker["fallback"]); // Perform manual Boilermaker power fallback
+                BoilermakerQuery2($Boilermaker["ip_address"],"/?data_2=" . $Program["heating_idle"]); // Perform manual Boilermaker power fallback
                 if ($Settings["speech_enabled"] == 1) SpeakMessage(65);
               } else {
                 if ($Settings["speech_enabled"] == 1) SpeakMessage(59);
@@ -189,19 +196,19 @@ if (mysqli_num_rows($Result) > 0) {
     } else {
       /***** BOILER TEMPERATURE MANAGEMENT ROUTINES *****/
       if (($Program["boiler_managed"] == 1) && (! $ExtBoilMgmt)) {
-        // Check boiler temperature every 30 seconds
+        // Check boiler settings every 30 seconds
         if (time() - strtotime($Logic["boiler_timer"]) >= 30) { // Primary timer, in case it's needed for future development
           $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_timer=now() WHERE ID=1");
           // Boilers are super slow to reflect temperature changes due to the thermal mass of their contents
-          // Therefore, we only check every 15 minutes to see the result of the last adjustment
-          if (time() - strtotime($Logic["boiler_last_adjustment"]) >= 900) {
+          // Therefore, by default we only check every 15 minutes to see the result of the last adjustment
+          if (time() - strtotime($Logic["boiler_last_adjustment"]) >= $Tuning["boiler_update"]) {
             if ($Settings["boiler_temp"] < $Program["boiler_temp_low"]) {
               if ($Settings["heating_enabled"] == 1) {
                 if ($Boilermaker["enabled"] == 1) { // Boilermaker is basically functioning like an SCR power controller
                   if ($Boilermaker["online"] == 1) {
                     // Increase Boilermaker power by 5%
                     if ($Settings["heating_position"] < 100) {
-                      $BoilerPower = $Settings["heating_position"] + 5; // Boilermaker is more accurate than SCR controllers and only needs 5% adjustments
+                      $BoilerPower = $Settings["heating_position"] + 5; // Boilermaker is more accurate than SCR controllers and 5% adjustments are true
                       if ($BoilerPower > 100) $BoilerPower = 100;
                       $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='$BoilerPower' WHERE ID=1");
                       $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now()," .
@@ -216,26 +223,23 @@ if (mysqli_num_rows($Result) > 0) {
                     if ($Settings["speech_enabled"] == 1) SpeakMessage(59);
                   }
                 } else {
-                  // Increase boiler power to the next higher 10% mark
-                  $Result = mysqli_query($DBcnx,"SELECT * FROM heating_translation WHERE position > " . $Settings["heating_position"] . " ORDER BY position ASC LIMIT 1");
-                  if (mysqli_num_rows($Result) > 0) {
-                    $Heating = mysqli_fetch_assoc($Result);
-                  } else {
-                    $Heating["position"] = $Settings["heating_total"];
-                  }
-                  $Difference = $Heating["position"] - $Settings["heating_position"];
+                  // Increase boiler power to the next higher 5% mark (gas valves and SCR controllers just aren't as precise as a Boilermaker)
+                  $FivePct = round($Settings["heating_total"] * 0.05);
+                  $Target = $Settings["heating_position"] + $FivePct;
+                  if ($Target > $Settings["heating_total"]) $Target = $Settings["heating_total"];
+                  $Difference = $Target - $Settings["heating_position"];
                   if ($Difference > 0) {
-                    $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Heating["position"] . "' WHERE ID=1");
+                    $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='$Target' WHERE ID=1");
                     $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now()," .
-                                                  "boiler_note='Boiler is under temperature, increasing heat to " . $Heating["position"] . " steps' WHERE ID=1");
+                                                  "boiler_note='Boiler is under temperature, increasing heat to $Target steps' WHERE ID=1");
                     if ($Settings["speech_enabled"] == 1) SpeakMessage(12);
                     if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
                       $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                                     "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
-                                                           "(now(),'0','3','1','" . $Heating["position"] . "','" . $Heating["position"] . "','1','0')");
+                                                           "(now(),'0','3','1','$Target','$Target','1','0')");
                     } else { // Digital voltage controllers can just be adjusted up and down as necessary
                       $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                                    "VALUES (now(),'0','3','1','$Difference','" . $Heating["position"] . "','1','0')");
+                                                    "VALUES (now(),'0','3','1','$Difference','$Target','1','0')");
                     }
                   }
                 }
@@ -250,7 +254,7 @@ if (mysqli_num_rows($Result) > 0) {
                   if ($Boilermaker["online"] == 1) {
                     // Decrease Boilermaker power by 5%
                     if ($Settings["heating_position"] > 10) {
-                      $BoilerPower = $Settings["heating_position"] - 5; // Boilermaker is more accurate than SCR controllers and only needs 5% adjustments
+                      $BoilerPower = $Settings["heating_position"] - 5; // Boilermaker is more accurate than SCR controllers 5% adjustments are true
                       if ($BoilerPower < 10) $BoilerPower = 10;
                       $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='$BoilerPower' WHERE ID=1");
                       $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now()," .
@@ -265,27 +269,23 @@ if (mysqli_num_rows($Result) > 0) {
                     if ($Settings["speech_enabled"] == 1) SpeakMessage(59);
                   }
                 } else {
-                  // Decrease boiler power to the next lower 10% mark
-                  $Result = mysqli_query($DBcnx,"SELECT * FROM heating_translation WHERE position < " . $Settings["heating_position"] . " ORDER BY position DESC LIMIT 1");
-                  if (mysqli_num_rows($Result) > 0) {
-                    $Heating = mysqli_fetch_assoc($Result);
-                  } else {
-                    $Heating["position"] = $Settings["heating_position"] - 3;
-                    if ($Heating["position"] < 0) $Heating["position"] = 0;
-                  }
-                  $Difference = $Settings["heating_position"] - $Heating["position"];
+                  // Decrease boiler power to the next lower 5% mark (gas valves and SCR controllers just aren't as precise as a Boilermaker)
+                  $FivePct = round($Settings["heating_total"] * 0.05);
+                  $Target = $Settings["heating_position"] - $FivePct;
+                  if ($Target < 0) $Target = 0;
+                  $Difference = $Settings["heating_position"] - $Target;
                   if ($Difference > 0) {
-                    $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='" . $Heating["position"] . "' WHERE ID=1");
+                    $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='$Target' WHERE ID=1");
                     $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now()," .
-                                                  "boiler_note='Boiler is over temperature, decreasing heat to " . $Heating["position"] . " steps' WHERE ID=1");
+                                                  "boiler_note='Boiler is over temperature, decreasing heat to $Target steps' WHERE ID=1");
                     if ($Settings["speech_enabled"] == 1) SpeakMessage(13);
                     if ($Settings["heating_analog"] == 1) { // A digital voltmeter doesn't mean that it's a digital voltage controller!
                       $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                                     "VALUES (now(),'0','3','0','" . $Settings["heating_position"] . "','0','1','0')," .
-                                                           "(now(),'0','3','1','" . $Heating["position"] . "','" . $Heating["position"] . "','1','0')");
+                                                           "(now(),'0','3','1','$Target','$Target','1','0')");
                     } else { // Digital voltage controllers can just be adjusted up and down as necessary
                       $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                                    "VALUES (now(),'0','3','0','$Difference','" . $Heating["position"] . "','1','0')");
+                                                    "VALUES (now(),'0','3','0','$Difference','$Target','1','0')");
                     }
                   }
                 }
@@ -298,12 +298,12 @@ if (mysqli_num_rows($Result) > 0) {
               // Update the user interface status message with a current time stamp
               $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now(),boiler_note='Boiler temperature is within the program\'s operating range' WHERE ID=1");
             } // $Settings["boiler_temp"] vs $Program["boiler_temp_low/high"] checks
-          } // $Logic["boiler_last_adjustment"]) >= 900 check
+          } // $Logic["boiler_last_adjustment"]) >= $Tuning["boiler_update"] check
         } //$Logic["boiler_timer"] >= 30 check
       } // $Program["boiler_managed"] == 1 && ! $ExtBoilMgmt check
       /***** BOILERMAKER PROGRESSIVE TEMPERATURE MANAGEMENT ROUTINES *****/
       if (($Program["boiler_managed"] == 1) && ($Boilermaker["enabled"] == 1) && ($Boilermaker["fixed_temp"] == 0)) {
-        // Perform progressive temperature increases every 5 minutes
+        // Perform progressive temperature increases every 5 minutes, not adjustable, this is fixed math
         // This works similar to Mode 3 in my "Airhead" controller for Air Stills (which runs on 15 minute intervals)
         if (time() - strtotime($Logic["boiler_last_adjustment"]) >= 300) {
           if ($Boilermaker["target_temp"] < $Program["boiler_temp_high"]) {
@@ -330,12 +330,12 @@ if (mysqli_num_rows($Result) > 0) {
                                           "column_note='Column has reached minimum operating temperature',hydrometer_timer=now(),hydrometer_abv_errors='0',hydrometer_temp_errors='0',flow_sensor_errors='0' WHERE ID=1");
           }
         } else {
-          // Check column temperature every 30 seconds
+          // Check column settings every 30 seconds
           if (time() - strtotime($Logic["column_timer"]) >= 30) { // Primary timer, in case it's needed for future development
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_timer=now() WHERE ID=1");
-            // Adjustments are given 5 minutes to take full effect before another
+            // By default, adjustments are given 5 minutes to take full effect before another adjustment
             // The column is slower to react to adjustments than the dephleg sensor
-            if (time() - strtotime($Logic["column_last_adjustment"]) >= 300) {
+            if (time() - strtotime($Logic["column_last_adjustment"]) >= $Tuning["column_update"]) {
               if ($Settings["column_temp"] < $Program["column_temp_low"]) {
                 if (($Program["boiler_managed"] == 1) && ($Settings["heating_enabled"] == 1)) {
                   // Increase boiler power to raise the column temperature
@@ -414,7 +414,7 @@ if (mysqli_num_rows($Result) > 0) {
                 // Update the user interface status message with a current time stamp
                 $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_last_adjustment=now(),column_note='Column temperature is within the program\'s operating range' WHERE ID=1");
               } // $Settings["column_temp"] vs $Program["column_temp_low/high"] checks
-            } // $Logic["column_last_adjustment"]) >= 300 check
+            } // $Logic["column_last_adjustment"]) >= $Tuning["column_update"] check
           } // $Logic["column_timer"]) >= 30 check
         } // $Logic["column_done"] == 0 check
       } // $Program["column_managed"] == 1 check
@@ -427,17 +427,25 @@ if (mysqli_num_rows($Result) > 0) {
                                           "dephleg_note='Dephleg has reached minimum operating temperature',hydrometer_timer=now(),hydrometer_abv_errors='0',hydrometer_temp_errors='0',flow_sensor_errors='0' WHERE ID=1");
           }
         } else {
-          // Check dephleg temperature every 30 seconds
+          // Check dephleg settings every 30 seconds
           if (time() - strtotime($Logic["dephleg_timer"]) >= 30) { // Primary timer, in case it's needed for future development
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_timer=now() WHERE ID=1");
-            // Adjustments are given 2 minutes to take full effect before another
-            if (time() - strtotime($Logic["dephleg_last_adjustment"]) >= 120) {
+            // By default, adjustments are given 2 minutes to take full effect before another adjustment
+            if (time() - strtotime($Logic["dephleg_last_adjustment"]) >= $Tuning["dephleg_update"]) {
               if ($Settings["dephleg_temp"] < $Program["dephleg_temp_low"]) {
                 $TempError = $Program["dephleg_temp_low"] - $Settings["dephleg_temp"];
                 if ($TempError >= 1) {
+                  if ($Tuning["dephleg_driver"] == 1) {
+                    $TempError *= 2;
+                    if ($TempError <= $Tuning["dephleg_largestep"]) $TempError += 1;
+                  }
                   $Difference = round($Settings["valve2_pulse"] * $TempError);
                 } else {
-                  $Difference = round($Settings["valve2_pulse"] * .25,0,PHP_ROUND_HALF_UP);
+                  if ($Tuning["dephleg_driver"] == 1) {
+                    $Difference = round($Settings["valve2_pulse"] * $Tuning["driver_largestep"]);
+                  } else {
+                    $Difference = round($Settings["valve2_pulse"] * $Tuning["dephleg_largestep"],0,PHP_ROUND_HALF_UP);
+                  }
                 }
                 $NewPosition = $Settings["valve2_position"] - $Difference;
                 if ($NewPosition < 0) {
@@ -454,9 +462,17 @@ if (mysqli_num_rows($Result) > 0) {
               } elseif ($Settings["dephleg_temp"] > $Program["dephleg_temp_high"]) {
                 $TempError = $Settings["dephleg_temp"] - $Program["dephleg_temp_high"];
                 if ($TempError >= 1) {
+                  if ($Tuning["dephleg_driver"] == 1) {
+                    $TempError *= 2;
+                    if ($TempError <= $Tuning["dephleg_largestep"]) $TempError += 1;
+                  }
                   $Difference = round($Settings["valve2_pulse"] * $TempError);
                 } else {
-                  $Difference = round($Settings["valve2_pulse"] * .25,0,PHP_ROUND_HALF_UP);
+                  if ($Tuning["dephleg_driver"] == 1) {
+                    $Difference = round($Settings["valve2_pulse"] * $Tuning["driver_largestep"]);
+                  } else {
+                    $Difference = round($Settings["valve2_pulse"] * $Tuning["dephleg_largestep"],0,PHP_ROUND_HALF_UP);
+                  }
                 }
                 $NewPosition = $Settings["valve2_position"] + $Difference;
                 if ($NewPosition >= $Settings["valve2_total"]) {
@@ -473,32 +489,44 @@ if (mysqli_num_rows($Result) > 0) {
               } else {
                 // Update the user interface status message with a current time stamp
                 $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now(),dephleg_note='Dephleg temperature is within the program\'s operating range' WHERE ID=1");
-                // Perform microstepping to maintain the dephleg temperature between the upper and lower limits
+                // Perform microstepping to maintain the dephleg temperature centered between the range upper and lower limits
+                // Here's an example range of 55C to 60C
+                //
+                // [55]   [56]   [57]   (57.5C is the range center)   [58]   [59]   [60]
+                //
+                // Microsteps are used to keep the temperature between 57C and 58C
+                // Largesteps are used if the temperature is less than 57C or greater than 58C
+                // If the dephleg is above or below the range limits, drastic adjustments are used to force it back within limits
+                // $Tuning["dephleg_update"] may need to be adjusted depending on your water pressure to maintain stability
                 $Range = $Program["dephleg_temp_high"] - $Program["dephleg_temp_low"];
-                if ($Range > 4) {
+                if ($Range > 4) { // Microstepping requires a dephleg temperature range of at least 5C and prefereably exactly that as shown above
                   $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now(),dephleg_note='Dephleg temperature is within range, microstepping as needed' WHERE ID=1");
                   if ($Range % 2 == 0) { // Always better to use an odd numbered range, preferably 5 degrees between upper and lower limits
-                    $RangeCenter = ($Range / 2) + $Program["dephleg_temp_low"]; // Range is an even number
+                    $RangeCenter = ($Range / 2) + $Program["dephleg_temp_low"] + 0.5; // Range is an even number, center is slightly raised to help prevent early flow cut-off
                   } else {
-                    $RangeCenter = round($Range / 2,0,PHP_ROUND_HALF_UP) + $Program["dephleg_temp_low"]; // Range is an odd number
+                    $RangeCenter = ($Range / 2) + $Program["dephleg_temp_low"]; // Range is an odd number, we have an accurate range center this way
                   }
-                  $Difference = round($Settings["valve2_pulse"] * .1,0,PHP_ROUND_HALF_DOWN);
-                  if ($Settings["dephleg_temp"] < ($RangeCenter -0.5)) {
+                  if ($Tuning["dephleg_driver"] == 1) {
+                    $Difference = $Settings["valve2_pulse"] * $Tuning["driver_microstep"];
+                  } else {
+                    $Difference = round($Settings["valve2_pulse"] * $Tuning["dephleg_microstep"],0,PHP_ROUND_HALF_DOWN);
+                  }
+                  if ($Settings["dephleg_temp"] < ($RangeCenter - 0.5)) { // Example: Are we below 57C with 57.5 as the center?
                     $NewPosition = $Settings["valve2_position"] - $Difference;
                     $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now(),dephleg_note='Dephleg temperature is below range center, microstepping valve down' WHERE ID=1");
                     $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$NewPosition' WHERE ID=1");
                     $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                                   "VALUES (now(),'0','2','0','$Difference','$NewPosition','1','0')");
-                  } elseif ($Settings["dephleg_temp"] > ($RangeCenter + 0.5)) {
+                  } elseif ($Settings["dephleg_temp"] > ($RangeCenter + 0.5)) { // Example: Are we above 58C with 57.5 as the center?
                     $NewPosition = $Settings["valve2_position"] + $Difference;
                     $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_last_adjustment=now(),dephleg_note='Dephleg temperature is above range center, microstepping valve up' WHERE ID=1");
                     $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$NewPosition' WHERE ID=1");
                     $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
                                                   "VALUES (now(),'0','2','1','$Difference','$NewPosition','1','0')");
                   } // $Settings["dephleg_temp"] vs $RangeCenter check
-                } // Dephleg valid range for microstepping check
+                } // Dephleg valid range for microstepping check, no else condition, less than 4 just breaks the operation of things
               } // $Settings["dephleg_temp"] vs $Program["dephleg_temp_low/high"] checks
-            } // $Logic["dephleg_last_adjustment"]) >= 120 check
+            } // $Logic["dephleg_last_adjustment"]) >= $Tuning["dephleg_update"] check
           } // $Logic["dephleg_timer"]) >= 30 check
         } // $Logic["dephleg_done"] == 0 check
       } // $Program["dephleg_managed"] == 1 check
@@ -508,7 +536,7 @@ if (mysqli_num_rows($Result) > 0) {
           if ($Settings["distillate_abv"] >= $Program["distillate_abv"]) $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_started='1' WHERE ID=1");
         } else {
           if ($Program["mode"] == 0) {
-            if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Logic["hydrometer_started"] == 1)) {
+            if ((time() - strtotime($Logic["hydrometer_timer"]) >= $Tuning["abv_update"]) && ($Logic["hydrometer_started"] == 1)) {
               if ($Settings["distillate_abv"] <= $Program["distillate_abv"]) {
                 $Logic["hydrometer_abv_errors"] ++;
                 $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_errors='" . $Logic["hydrometer_abv_errors"] . "' WHERE ID=1");
@@ -528,7 +556,7 @@ if (mysqli_num_rows($Result) > 0) {
           } else {
             // In reflux mode, we dynamically adjust the program's dephleg upper and lower temperature limits downward
             // Remember, you can only adjust the ABV up, you can't adjust it down without adding distilled water to it
-            if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Logic["hydrometer_started"] == 1)) {
+            if ((time() - strtotime($Logic["hydrometer_timer"]) >= $Tuning["abv_update"]) && ($Logic["hydrometer_started"] == 1)) {
               if ($Settings["distillate_abv"] <= $Program["distillate_abv"]) {
                 $Logic["hydrometer_abv_errors"] ++;
                 $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_abv_errors='" . $Logic["hydrometer_abv_errors"] . "' WHERE ID=1");
@@ -550,7 +578,7 @@ if (mysqli_num_rows($Result) > 0) {
       }
       /***** DISTILLATE MINIMUM FLOW RATE MANAGEMENT ROUTINES *****/
       if ($Program["flow_managed"] == 1) {
-        if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Logic["hydrometer_started"] == 1)) {
+        if ((time() - strtotime($Logic["hydrometer_timer"]) >= $Tuning["flow_update"]) && ($Logic["hydrometer_started"] == 1)) {
           if ($Settings["distillate_flow"] < $Program["minimum_flow"]) {
             $Logic["flow_sensor_errors"] ++;
           } else {
@@ -576,21 +604,21 @@ if (mysqli_num_rows($Result) > 0) {
       /***** DISTILLATE TEMPERATURE MANAGEMENT ROUTINES *****/
       /***** THIS FINAL CODE BRANCH CONTROLS THE RESET OF $Logic["hydrometer_timer"] *****/
       if (($Logic["column_done"] == 1) || ($Logic["dephleg_done"] == 1)) {
-        // Check the distillate temperature every 5 minutes after column or dephleg are up to temperature
-        if ((time() - strtotime($Logic["hydrometer_timer"]) >= 300) && ($Logic["hydrometer_started"] == 1)) {
-          // If distillate is over 27C/80F, increment the $Logic["hydrometer_temp_errors"] counter
+        // By default, check the distillate temperature every 5 minutes after column or dephleg are up to temperature
+        if ((time() - strtotime($Logic["hydrometer_timer"]) >= $Tuning["distillate_timer"]) && ($Logic["hydrometer_started"] == 1)) {
+          // By default, if distillate is over 27C/80F, increment the $Logic["hydrometer_temp_errors"] counter
           // This is for safety since ethanol vapors start becoming combustible over 80F, you can easily light an 80 proof shot of vodka if you just warm it up.
-          if ($Settings["distillate_temp"] > 27) {
+          if ($Settings["distillate_temp"] > $Tuning["distillate_temp"]) {
             $Logic["hydrometer_temp_errors"] ++;
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_timer=now(),hydrometer_temp_errors='" . $Logic["hydrometer_temp_errors"] . "' WHERE ID=1");
           } else {
             $Logic["hydrometer_temp_errors"] = 0;
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET hydrometer_timer=now(),hydrometer_temp_errors='0' WHERE ID=1");
           }
-          // If $Logic["hydrometer_temp_errors"] has 3 errors, increase the condenser cooling flow 10%
+          // If $Logic["hydrometer_temp_errors"] has 3 errors, increase the condenser cooling flow 5%
           if ($Logic["hydrometer_temp_errors"] == 3) {
             if ($Settings["speech_enabled"] == 1) SpeakMessage(34);
-            $Difference = round($Settings["valve1_total"] * 0.1);
+            $Difference = round($Settings["valve1_total"] * 0.05);
             if ($Settings["valve1_position"] + $Difference < $Settings["valve1_total"]) {
               $NewPosition = $Settings["valve1_position"] + $Difference;
             } else {

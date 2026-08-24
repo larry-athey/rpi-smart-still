@@ -195,6 +195,8 @@ if (! isset($_GET["page"])) {
     $Content  = "<div class=\"container-fluid\" style=\"align: left;\">";
     $Content .=   "<div class=\"row\">";
     $Content .= ShowTimelines($DBcnx);
+  } elseif ($_GET["page"] == "tuning") {
+    $Content .= EditTuning($DBcnx);
   }
 }
 

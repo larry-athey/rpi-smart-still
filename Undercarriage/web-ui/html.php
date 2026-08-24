@@ -248,6 +248,7 @@ function DrawMenu($DBcnx) {
   }
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=sensors\"><span class=\"fw-bolder\">Configure&nbsp;Sensors</span></a></li>";
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=heating\"><span class=\"fw-bolder\">Configure&nbsp;Heating</span></a></li>";
+  $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=tuning\"><span class=\"fw-bolder\">Configure&nbsp;Tuning</span></a></li>";
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=hydrometer\"><span class=\"fw-bolder\">Calibrate&nbsp;Hydrometer</span></a></li>";
   $Content .=             "<li><a class=\"dropdown-item\" href=\"?page=relays\"><span class=\"fw-bolder\">Control&nbsp;Relays</span></a></li>";
   if ($Boilermaker["enabled"] == 1) {
@@ -260,7 +261,7 @@ function DrawMenu($DBcnx) {
   }
   $Content .=             "<li><hr class=\"dropdown-divider\"></li>";
   if ($Settings["active_run"] == 1) {
-    $Content .=           "<li><a  class=\"dropdown-item disabled\" href=\"?page=start_run\"><span class=\"text-secondary fw-bolder\">Start&nbsp;Run</span></a></li>";
+    $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"?page=start_run\"><span class=\"text-secondary fw-bolder\">Start&nbsp;Run</span></a></li>";
     if ($Settings["paused"] == 0) {
       $Content .=         "<li><a class=\"dropdown-item\" href=\"process.php?pause_run=1\"><span class=\"fw-bolder\">Pause&nbsp;Run</span></a></li>";
     } else {
@@ -294,8 +295,8 @@ function DrawMenu($DBcnx) {
     $Content .=           "</li>";
   }
   if ($Settings["active_run"] == 1) {
-    $Content .=           "<li><a  class=\"dropdown-item disabled\" href=\"?page=system_confirm&option=1\"><span class=\"text-secondary fw-bolder\">Reboot&nbsp;System</span></a></li>";
-    $Content .=           "<li><a  class=\"dropdown-item disabled\" href=\"?page=system_confirm&option=2\"><span class=\"text-secondary fw-bolder\">Shutdown&nbsp;System</span></a></li>";
+    $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"?page=system_confirm&option=1\"><span class=\"text-secondary fw-bolder\">Reboot&nbsp;System</span></a></li>";
+    $Content .=           "<li><a class=\"dropdown-item disabled\" href=\"?page=system_confirm&option=2\"><span class=\"text-secondary fw-bolder\">Shutdown&nbsp;System</span></a></li>";
   } else {
     $Content .=           "<li><a class=\"dropdown-item\" href=\"?page=system_confirm&option=1\"><span class=\"fw-bolder\">Reboot&nbsp;System</span></a></li>";
     $Content .=           "<li><a class=\"dropdown-item\" href=\"?page=system_confirm&option=2\"><span class=\"fw-bolder\">Shutdown&nbsp;System</span></a></li>";
@@ -358,10 +359,12 @@ function EditHeating($DBcnx) {
     $Content .=         "<label for=\"BMstartup\" class=\"form-label fw-bolder\">Startup Power (%)</label>";
     $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"BMstartup\" name=\"BMstartup\" min=\"10\" max=\"100\" step=\"1\" value=\"" . $Boilermaker["startup"] . "\">";
     $Content .=       "</div>";
+/*
     $Content .=       "<div class=\"col\">";
     $Content .=         "<label for=\"BMfallback\" class=\"form-label fw-bolder\">Fallback Power (%)</label>";
     $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"BMfallback\" name=\"BMfallback\" min=\"10\" max=\"100\" step=\"1\" value=\"" . $Boilermaker["fallback"] . "\">";
     $Content .=       "</div>";
+*/
     $Content .=     "</div>";
     $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
     $Content .=       "<div class=\"col\">";
@@ -453,10 +456,18 @@ function EditHeating($DBcnx) {
 }
 //---------------------------------------------------------------------------------------------------
 function EditProgram($DBcnx,$ID) {
-  $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
-  $Settings = mysqli_fetch_assoc($Result);
-  $Result   = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
+  $Result      = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
+  $Settings    = mysqli_fetch_assoc($Result);
+  $Result      = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
   $Boilermaker = mysqli_fetch_assoc($Result);
+  $Result      = mysqli_query($DBcnx,"SELECT * FROM logic_tuning WHERE ID=1");
+  $Tuning      = mysqli_fetch_assoc($Result);
+
+  if ($Tuning["dephleg_driver"] == 1) {
+    $Dstep = 1;
+  } else {
+    $Dstep = 0.1;
+  }
 
   if ($ID > 0) {
     $Result  = mysqli_query($DBcnx,"SELECT * FROM programs WHERE ID=$ID");
@@ -522,15 +533,18 @@ function EditProgram($DBcnx,$ID) {
   $Content .=       "</div>";
   $Content .=       "<div class=\"col\">";
   $Content .=         "<label for=\"DephlegStart\" class=\"form-label fw-bolder\">Dephleg Valve Start %</label>";
-  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"DephlegStart\" name=\"DephlegStart\" min=\"0\" max=\"100\" step=\".1\" value=\"" . $Program["dephleg_start"] . "\">";
+  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"DephlegStart\" name=\"DephlegStart\" min=\"0\" max=\"100\" step=\"$Dstep\" value=\"" . $Program["dephleg_start"] . "\">";
   $Content .=       "</div>";
   $Content .=     "</div>";
-  if ($Boilermaker["enabled"] == 0) {
-    $Content .=   "<div style=\"margin-top: .5em;\">";
+  $Content .=     "<div style=\"margin-top: .5em;\">";
+  if ($Boilermaker["enabled"] == 1) {
+    $Content .=     "<label for=\"HeatingIdle\" class=\"form-label fw-bolder\">Boilermaker Fallback % <span class=\"text-secondary\"><i>(after boiler is up to temperature)</i></span></label>";
+    $Content .=     "<input type=\"number\" class=\"form-control fw-bolder\" id=\"HeatingIdle\" name=\"HeatingIdle\" min=\"0\" max=\"100\" step=\"1\" value=\"" . $Program["heating_idle"] . "\">";
+  } else {
     $Content .=     "<label for=\"HeatingIdle\" class=\"form-label fw-bolder\">Heating Idle Position <span class=\"text-secondary\"><i>(after boiler is up to temp 0.." . $Settings["heating_total"] . ")</i></span></label>";
     $Content .=     "<input type=\"number\" class=\"form-control fw-bolder\" id=\"HeatingIdle\" name=\"HeatingIdle\" min=\"0\" max=\"" . $Settings["heating_total"] . "\" step=\"1\" value=\"" . $Program["heating_idle"] . "\">";
-    $Content .=   "</div>";
   }
+  $Content .=     "</div>";
   $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
   $Content .=       "<div class=\"col\">";
   $Content .=         "<label for=\"BoilerManaged\" class=\"form-label fw-bolder\">Boiler Managed</label>";
@@ -572,7 +586,7 @@ function EditProgram($DBcnx,$ID) {
   $Content .=           "<input type=\"number\" class=\"form-control fw-bolder\" id=\"DephlegTempLow\" name=\"DephlegTempLow\" min=\"0\" max=\"100\" step=\".1\" value=\"" . $Program["dephleg_temp_low"] . "\">";
   $Content .=         "</div>";
   $Content .=         "<div class=\"col\">";
-  $Content .=           "<label for=\"DephlegTempHigh fw-bolder\" class=\"form-label\">Dephleg High (C)</label>";
+  $Content .=           "<label for=\"DephlegTempHigh\" fw-bolder\" class=\"form-label fw-bolder\">Dephleg High (C)</label>";
   $Content .=           "<input type=\"number\" class=\"form-control fw-bolder\" id=\"DephlegTempHigh\" name=\"DephlegTempHigh\" min=\"0\" max=\"100\" step=\".1\" value=\"" . $Program["dephleg_temp_high"] . "\">";
   $Content .=         "</div>";
   $Content .=       "</div>";
@@ -627,6 +641,86 @@ function EditSensors($DBcnx) {
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
+function EditTuning($DBcnx) {
+  $Result = mysqli_query($DBcnx,"SELECT * FROM logic_tuning WHERE ID=1");
+  $Tuning = mysqli_fetch_assoc($Result);
+
+  $Content  = "<form id=\"edit_tuning\" method=\"post\" action=\"process.php\">";
+  $Content .= "<div class=\"card\" style=\"margin-top: 0.5em; margin-bottom: 0.5em; margin-left: 0.5em; margin-right: 0.5em;\">";
+  $Content .=   "<div class=\"card-body\">";
+
+  $Content .=     "<div class=\"row\">";
+  $Content .=       "<div class=\"col\">";
+  $Content .=         "<label for=\"boiler_update\" class=\"form-label fw-bolder\">Boiler Watch</label>";
+  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"boiler_update\" name=\"boiler_update\" min=\"30\" max=\"3600\" step=\"1\" value=\"" . $Tuning["boiler_update"] . "\">";
+  $Content .=       "</div>";
+  $Content .=       "<div class=\"col\">";
+  $Content .=         "<label for=\"column_update\" class=\"form-label fw-bolder\">Column Watch</label>";
+  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"column_update\" name=\"column_update\" min=\"30\" max=\"3600\" step=\"1\" value=\"" . $Tuning["column_update"] . "\">";
+  $Content .=       "</div>";
+  $Content .=       "<div class=\"col\">";
+  $Content .=         "<label for=\"dephleg_update\" fw-bolder\" class=\"form-label fw-bolder\">Dephleg Watch</label>";
+  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"dephleg_update\" name=\"dephleg_update\" min=\"30\" max=\"3600\" step=\"1\" value=\"" . $Tuning["dephleg_update"] . "\">";
+  $Content .=       "</div>";
+  $Content .=     "</div>";
+
+  $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
+  $Content .=       "<div class=\"col\">";
+  $Content .=         "<label for=\"flow_update\" class=\"form-label fw-bolder\">Flow Watch</label>";
+  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"flow_update\" name=\"flow_update\" min=\"30\" max=\"3600\" step=\"1\" value=\"" . $Tuning["flow_update"] . "\">";
+  $Content .=       "</div>";
+  $Content .=       "<div class=\"col\">";
+  $Content .=         "<label for=\"abv_update\" class=\"form-label fw-bolder\">ABV Watch</label>";
+  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"abv_update\" name=\"abv_update\" min=\"30\" max=\"3600\" step=\"1\" value=\"" . $Tuning["abv_update"] . "\">";
+  $Content .=       "</div>";
+  $Content .=       "<div class=\"col\">";
+  $Content .=         "<label for=\"dephleg_driver\" class=\"form-label fw-bolder\">Dephleg Driver</label>";
+  $Content .=         YNselector($Tuning["dephleg_driver"],"dephleg_driver");
+  $Content .=       "</div>";
+  $Content .=     "</div>";
+
+  $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
+  $Content .=       "<div class=\"col\">";
+  $Content .=         "<label for=\"dephleg_microstep\" class=\"form-label fw-bolder\">Dephleg Micro Step %</label>";
+  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"dephleg_microstep\" name=\"dephleg_microstep\" min=\".1\" max=\"100\" step=\".05\" value=\"" . $Tuning["dephleg_microstep"] . "\">";
+  $Content .=       "</div>";
+  $Content .=       "<div class=\"col\">";
+  $Content .=         "<label for=\"dephleg_largestep\" class=\"form-label fw-bolder\">Dephleg Large Step %</label>";
+  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"dephleg_largestep\" name=\"dephleg_largestep\" min=\".1\" max=\"100\" step=\".05\" value=\"" . $Tuning["dephleg_largestep"] . "\">";
+  $Content .=       "</div>";
+  $Content .=     "</div>";
+
+  $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
+  $Content .=       "<div class=\"col\">";
+  $Content .=         "<label for=\"driver_microstep\" class=\"form-label fw-bolder\">Driver Micro Step %</label>";
+  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"driver_microstep\" name=\"driver_microstep\" min=\"1\" max=\"100\" step=\"1\" value=\"" . $Tuning["driver_microstep"] . "\">";
+  $Content .=       "</div>";
+  $Content .=       "<div class=\"col\">";
+  $Content .=         "<label for=\"driver_largestep\" class=\"form-label fw-bolder\">Driver Large Step %</label>";
+  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"driver_largestep\" name=\"driver_largestep\" min=\"1\" max=\"100\" step=\"1\" value=\"" . $Tuning["driver_largestep"] . "\">";
+  $Content .=       "</div>";
+  $Content .=     "</div>";
+
+  $Content .=     "<div class=\"row\" style=\"margin-top: .5em;\">";
+  $Content .=       "<div class=\"col\">";
+  $Content .=         "<label for=\"distillate_timer\" class=\"form-label fw-bolder\">Distillate Temp Watch</label>";
+  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"distillate_timer\" name=\"distillate_timer\" min=\"30\" max=\"3600\" step=\"1\" value=\"" . $Tuning["distillate_timer"] . "\">";
+  $Content .=       "</div>";
+  $Content .=       "<div class=\"col\">";
+  $Content .=         "<label for=\"distillate_temp\" class=\"form-label fw-bolder\">Distillate Max Temp (C)</label>";
+  $Content .=         "<input type=\"number\" class=\"form-control fw-bolder\" id=\"distillate_temp\" name=\"distillate_temp\" min=\"0\" max=\"100\" step=\".1\" value=\"" . $Tuning["distillate_temp"] . "\">";
+  $Content .=       "</div>";
+  $Content .=     "</div>";
+
+  $Content .=     "<div style=\"margin-top: 1em; float: right;\"><a href=\"index.php\" class=\"btn btn-sm btn-danger fw-bolder\" name=\"cancel_action\">Cancel</a>&nbsp;&nbsp;&nbsp;&nbsp;<button type=\"submit\" class=\"btn btn-sm btn-primary fw-bolder\" name=\"rss_edit_tuning\">Submit</button></div>";
+
+  $Content .=   "</div>";
+  $Content .= "</div>";
+  $Content .= "</form>";
+  $Content .= VoicePrompter($DBcnx,true);
+  return $Content;
+}
+//---------------------------------------------------------------------------------------------------
 function LogicTracker($DBcnx) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
   $Settings = mysqli_fetch_assoc($Result);
@@ -638,6 +732,7 @@ function LogicTracker($DBcnx) {
   } else {
     $RunType = "Reflux Mode";
   }
+
   if ($Settings["active_run"] == 1) {
     $Result = mysqli_query($DBcnx,"SELECT * FROM logic_tracker WHERE ID=1");
     $Logic  = mysqli_fetch_assoc($Result);
@@ -659,16 +754,22 @@ function LogicTracker($DBcnx) {
 }
 //---------------------------------------------------------------------------------------------------
 function ServoPositionEditor($DBcnx) {
-  $Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
-  $Settings = mysqli_fetch_assoc($Result);
-  $Result   = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
+  $Result      = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
+  $Settings    = mysqli_fetch_assoc($Result);
+  $Result      = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
   $Boilermaker = mysqli_fetch_assoc($Result);
+  $Result      = mysqli_query($DBcnx,"SELECT * FROM logic_tuning WHERE ID=1");
+  $Tuning      = mysqli_fetch_assoc($Result);
 
   $Content  = "<form id=\"servo_editor\" method=\"post\" action=\"process.php\">";
   $Content .= "<label for=\"Valve1\" class=\"form-label fw-bolder\">Condenser Cooling Valve %</label>";
   $Content .= "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Valve1\" name=\"Valve1\" min=\"0\" max=\"100\" step=\".1\" value=\"" . PosToPct($Settings["valve1_total"],$Settings["valve1_position"]) . "\">";
   $Content .= "<label for=\"Valve2\" class=\"form-label fw-bolder\" style=\"margin-top: .5em;\">Dephleg Cooling Valve %</label>";
-  $Content .= "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Valve2\" name=\"Valve2\" min=\"0\" max=\"100\" step=\".1\" value=\"" . PosToPct($Settings["valve2_total"],$Settings["valve2_position"]) . "\">";
+  if ($Tuning["dephleg_driver"] == 1) {
+    $Content .= "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Valve2\" name=\"Valve2\" min=\"0\" max=\"100\" step=\"1\" value=\"" . PosToPctDriver($Settings["valve2_total"],$Settings["valve2_position"]) . "\">";
+  } else {
+    $Content .= "<input type=\"number\" class=\"form-control fw-bolder\" id=\"Valve2\" name=\"Valve2\" min=\"0\" max=\"100\" step=\".1\" value=\"" . PosToPct($Settings["valve2_total"],$Settings["valve2_position"]) . "\">";
+  }
   if ($Boilermaker["enabled"] == 1) {
     if (($Settings["active_run"] == 1) && ($Boilermaker["op_mode"]) == 1) {
       $Disabled = "disabled";
@@ -915,6 +1016,8 @@ function ShowValves($DBcnx) {
   $Settings = mysqli_fetch_assoc($Result);
   $Result   = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
   $Boilermaker = mysqli_fetch_assoc($Result);
+  $Result      = mysqli_query($DBcnx,"SELECT * FROM logic_tuning WHERE ID=1");
+  $Tuning      = mysqli_fetch_assoc($Result);
 
   if ($Settings["relay1_state"] == 1) {
     $Relay1 = "<span class=\"fw-bolder text-success\">Relay 1 On</span>";
@@ -929,7 +1032,11 @@ function ShowValves($DBcnx) {
 
   $Content  = "<table class=\"table table-sm table-borderless\">";
   $Content .=   "<tr><td><span class=\"fw-bolder\">Condenser&nbsp;Valve:</span></td><td align=\"right\" nowrap><span class=\"fw-bolder\">" . FormatValvePosition($Settings["valve1_total"],$Settings["valve1_position"]) . "</span></td></tr>";
-  $Content .=   "<tr><td><span class=\"fw-bolder\">Dephleg&nbsp;Valve:</span></td><td align=\"right\" nowrap><span class=\"fw-bolder\">" . FormatValvePosition($Settings["valve2_total"],$Settings["valve2_position"]) . "</span></td></tr>";
+  if ($Tuning["dephleg_driver"] == 1) {
+    $Content .= "<tr><td><span class=\"fw-bolder\">Dephleg&nbsp;Valve:</span></td><td align=\"right\" nowrap><span class=\"fw-bolder\">" . FormatDriverPosition($Settings["valve2_total"],$Settings["valve2_position"]) . "</span></td></tr>";
+  } else {
+    $Content .= "<tr><td><span class=\"fw-bolder\">Dephleg&nbsp;Valve:</span></td><td align=\"right\" nowrap><span class=\"fw-bolder\">" . FormatValvePosition($Settings["valve2_total"],$Settings["valve2_position"]) . "</span></td></tr>";
+  }
   if ($Boilermaker["enabled"] == 1) {
     $Content .= "<tr><td><span class=\"fw-bolder\">Heating&nbsp;Controller:</span></td><td align=\"right\" nowrap><span class=\"text-light fw-bolder\">" . $Settings["heating_position"] . "%</span></td></tr>";
   } else {

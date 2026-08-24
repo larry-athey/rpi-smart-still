@@ -7,8 +7,8 @@ require_once("voice-prompts.php");
 set_time_limit(600);
 $DBcnx = mysqli_connect(DB_HOST,DB_USER,DB_PASS,DB_NAME);
 //---------------------------------------------------------------------------------------------
-$Counter  = 0;
-$Result   = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
+$Counter = 0;
+$Result  = mysqli_query($DBcnx,"SELECT * FROM settings WHERE ID=1");
 if (mysqli_num_rows($Result) > 0) {
   $Settings = mysqli_fetch_assoc($Result);
   $Result = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
@@ -87,8 +87,8 @@ while ($RS = mysqli_fetch_assoc($Result)) {
           $Runtime = trim(BoilermakerQuery($Boilermaker["ip_address"],"/get-runtime")); // Get the Boilermaker current runtime
           if (($Runtime != "") && ($Runtime == 0)) {
             BoilermakerQuery2($Boilermaker["ip_address"],"/?data_16=0"); // Make sure the Boilermaker's countdown timer is disabled
-            BoilermakerQuery2($Boilermaker["ip_address"],"/?data_0=0"); // Put the Boilermaker into Constant Power mode
-            BoilermakerQuery2($Boilermaker["ip_address"],"/start-run"); // Start the Boilermaker
+            BoilermakerQuery2($Boilermaker["ip_address"],"/?data_0=0");  // Put the Boilermaker into Constant Power mode
+            BoilermakerQuery2($Boilermaker["ip_address"],"/start-run");  // Start the Boilermaker
           }
           BoilermakerQuery2($Boilermaker["ip_address"],"/?power=" . $RS["position"]); // Set the Boilermaker power level
         } else {
@@ -132,6 +132,8 @@ while ($RS = mysqli_fetch_assoc($Result)) {
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 4) {
     // Control commands to calibrate the valves
+    $Result = mysqli_query($DBcnx,"SELECT * FROM logic_tuning WHERE ID=1");
+    $Tuning = mysqli_fetch_assoc($Result);
     if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(24);
     $Result1 = trim(shell_exec("/usr/share/rpi-smart-still/valve 1 open calibrate"));
     $Result2 = trim(shell_exec("/usr/share/rpi-smart-still/valve 1 close calibrate"));
@@ -142,8 +144,13 @@ while ($RS = mysqli_fetch_assoc($Result)) {
     if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(26);
     $Result1 = trim(shell_exec("/usr/share/rpi-smart-still/valve 2 open calibrate"));
     $Result2 = trim(shell_exec("/usr/share/rpi-smart-still/valve 2 close calibrate"));
-    $Total   = round(($Result1 + $Result2) / 2,0,PHP_ROUND_HALF_UP);
-    $Pulses  = round($Total / 100,0,PHP_ROUND_HALF_UP);
+    if ($Tuning["dephleg_driver"] == 1) {
+      $Total  = 10000;
+      $Pulses = 100;
+    } else {
+      $Total  = round(($Result1 + $Result2) / 2,0,PHP_ROUND_HALF_UP);
+      $Pulses = round($Total / 100,0,PHP_ROUND_HALF_UP);
+    }
     if ($Pulses > 0) $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_total='$Total',valve2_pulse='$Pulses',valve2_position ='0' WHERE ID=1");
     if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(27);
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);

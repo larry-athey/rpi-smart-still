@@ -148,6 +148,10 @@ function FormatValvePosition($Total,$Position) {
   return "<span class=\"text-light\">" . round($Position / $Total * 100,1) . "%</span>";
 }
 //---------------------------------------------------------------------------------------------------
+function FormatDriverPosition($Total,$Position) {
+  return "<span class=\"text-light\">" . round($Position / $Total * 100) . "%</span>";
+}
+//---------------------------------------------------------------------------------------------------
 function generateRandomString($length = 10) {
   $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
   $charactersLength = strlen($characters);
@@ -223,6 +227,10 @@ function getSensorList() {
 //---------------------------------------------------------------------------------------------------
 function PosToPct($Total,$Position) {
   return round($Position / $Total * 100,1);
+}
+//---------------------------------------------------------------------------------------------------
+function PosToPctDriver($Total,$Position) {
+  return round($Position / $Total * 100);
 }
 //---------------------------------------------------------------------------------------------------
 function ProgramTypeSelector($Selected) {

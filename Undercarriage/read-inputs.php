@@ -11,6 +11,7 @@ if (mysqli_num_rows($Result) > 0) {
   $Settings = mysqli_fetch_assoc($Result);
   $Result = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
   $Boilermaker = mysqli_fetch_assoc($Result);
+  $Sec = date("s",time());
 } else {
   echo("System settings record is missing, reinstall system from GitHub clone.\n");
   mysqli_close($DBcnx);
@@ -40,7 +41,12 @@ if ($Boilermaker["enabled"] == 1) {
   if ($Settings["active_run"] == 1) {
     if ($Boilermaker["online"] == 1) {
       $BoilerPower = trim(BoilermakerQuery($Boilermaker["ip_address"],"/get-power"));
-      if (is_numeric($BoilerPower)) $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='$BoilerPower' WHERE ID=1");
+      if (is_numeric($BoilerPower)) {
+        $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='$BoilerPower' WHERE ID=1");
+        // Create an expired output command to track the power level in the timeline graph
+        if ($Sec <= 10) $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                                      "VALUES (now(),'1','3','1','0','$BoilerPower','1','1')");
+      }
     }
   }
 } else {
@@ -101,22 +107,14 @@ if (($Hydrometer != "") && (mb_substr($Hydrometer,-1) == "#")) {
 }
 
 // If we have an active run, create a record in the input_table every minute for the timeline graphs
-$Sec = date("s",time());
 if (($Settings["active_run"] ==  1) && ($Sec <= 10)) {
-  $Flow = 0;
-  $Data = explode("|",trim($Settings["distillate_flow"],"|"));
-  if (count($Data) == 100) {
-    for ($x = 0; $x <= 99; $x ++) {
-      if ($Data[$x] ==  1) $Flow ++;
-    }
-  }
   if (count($Data) == 5) {
     $Insert = mysqli_query($DBcnx,"INSERT INTO input_table (timestamp,boiler_temp,dephleg_temp,column_temp,distillate_temp,distillate_abv,distillate_flow) " .
-                                  "VALUES (now(),'$BoilerTemp','$DephlegTemp','$ColumnTemp','$DistillateTemp','$DistillateAbv','$Flow')");
+                                  "VALUES (now(),'$BoilerTemp','$DephlegTemp','$ColumnTemp','$DistillateTemp','$DistillateAbv','$DistillateFlow')");
   } else {
     echo("No hydrometer data\n");
     $Insert = mysqli_query($DBcnx,"INSERT INTO input_table (timestamp,boiler_temp,dephleg_temp,column_temp,distillate_temp,distillate_abv,distillate_flow) " .
-                                  "VALUES (now(),'$BoilerTemp','$DephlegTemp','$ColumnTemp','" . $Settings["distillate_temp"] . "','" . $Settings["distillate_abv"] . "','$Flow')");
+                                  "VALUES (now(),'$BoilerTemp','$DephlegTemp','$ColumnTemp','" . $Settings["distillate_temp"] . "','" . $Settings["distillate_abv"] . "','" . $Settings["distillate_flow"] . "')");
   }
 }
 //---------------------------------------------------------------------------------------------
