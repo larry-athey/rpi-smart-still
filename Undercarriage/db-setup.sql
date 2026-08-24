@@ -89,6 +89,26 @@ ALTER TABLE `logic_tracker` ADD PRIMARY KEY (`ID`);
 
 ALTER TABLE `logic_tracker` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
+CREATE TABLE `logic_tuning` (
+  `ID` int(11) NOT NULL,
+  `boiler_update` int(11) NOT NULL DEFAULT 900,
+  `dephleg_update` int(11) NOT NULL DEFAULT 120,
+  `dephleg_driver` tinyint(4) NOT NULL DEFAULT 0,
+  `dephleg_microstep` float NOT NULL DEFAULT 0.1,
+  `dephleg_largestep` float NOT NULL DEFAULT 0.25,
+  `driver_microstep` tinyint(4) NOT NULL DEFAULT 1,
+  `driver_largestep` tinyint(4) NOT NULL DEFAULT 3,
+  `column_update` int(11) NOT NULL DEFAULT 300,
+  `distillate_timer` int(11) NOT NULL DEFAULT 300,
+  `distillate_temp` float NOT NULL DEFAULT 26.6,
+  `abv_update` int(11) NOT NULL DEFAULT 300,
+  `flow_update` int(11) NOT NULL DEFAULT 300
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+ALTER TABLE `logic_tuning` ADD PRIMARY KEY (`ID`);
+
+ALTER TABLE `logic_tuning` MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
 CREATE TABLE `output_table` (
   `ID` int(11) NOT NULL,
   `timestamp` timestamp NULL DEFAULT NULL,
