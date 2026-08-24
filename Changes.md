@@ -18,7 +18,7 @@ Changes since the version 1.04 release
 
 - Improved valve synchronization at distillation run startup and pause/resume to compensate for potential mechanical play/slop issues which is common in the cheap US Solid style knock-offs.
 
-- Heating stepper motor control updated to use 5% of total motor steps rather than using the 10% heat-jump positions for boiler temperature management during a distillation run.
+- Heating stepper motor control updated to use 5% of total motor steps rather than using the 10% heat-jump positions for boiler temperature management during a distillation run. This is so stepper motor heating control is more like Boilermaker operation.
 
 - Two major bugs fixed in the timeline rendering that were preventing flow sensor and Boilermaker power level readings from displaying.
 
