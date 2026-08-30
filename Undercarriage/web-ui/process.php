@@ -326,10 +326,12 @@ elseif (isset($_POST["rss_edit_servos"])) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
   $Boilermaker = mysqli_fetch_assoc($Result);
 
-  $Valve1 = round($_POST["Valve1"] * $Settings["valve1_pulse"],1);
+  $_POST["Valve1"] = $_POST["Valve1"] / 100;
+  $Valve1 = round($_POST["Valve1"] * $Settings["valve1_total"],1);
   if ($Valve1 > $Settings["valve1_total"]) $Valve1 = $Settings["valve1_total"];
 
-  $Valve2 = round($_POST["Valve2"] * $Settings["valve2_pulse"],1);
+  $_POST["Valve2"] = $_POST["Valve2"] / 100;
+  $Valve2 = round($_POST["Valve2"] * $Settings["valve2_total"]);
   if ($Valve2 > $Settings["valve2_total"]) $Valve2 = $Settings["valve2_total"];
 
   // Requires a difference in Valve1 position to process
