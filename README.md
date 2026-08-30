@@ -11,6 +11,8 @@ Subscribe to the official YouTube channel at https://www.youtube.com/@PanhandleP
 **Facebook Idiot:** _Why would you bother?_<br>
 **Me:** It's only a "bother" for somebody who couldn't do it on their best day. I'd rather have nicer things.
 
+_...No, I don't use AI to design and build my projects, I actually still know how to use my brain..._
+
 ---
 
 _**NOTE:** Contrary to a popular misconception, this system does not take away your ability to manually run your still. This system is actually completely stupid until you manually run your still with it and make notes that you would then use to create programs. There is no AI in use here! Every still is different and requires a training period before this system can begin replaying distillation runs. Again, please refer to the [Wiki](https://github.com/larry-athey/rpi-smart-still/wiki), reading is fundamental!_
