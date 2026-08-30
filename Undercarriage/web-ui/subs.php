@@ -144,12 +144,12 @@ function FormatTempRange($Lower,$Upper,$Managed) {
   return $Content;
 }
 //---------------------------------------------------------------------------------------------------
-function FormatValvePosition($Total,$Position) {
-  return "<span class=\"text-light\">" . round($Position / $Total * 100,1) . "%</span>";
-}
-//---------------------------------------------------------------------------------------------------
 function FormatDriverPosition($Total,$Position) {
   return "<span class=\"text-light\">" . round($Position / $Total * 100) . "%</span>";
+}
+//---------------------------------------------------------------------------------------------------
+function FormatValvePosition($Total,$Position) {
+  return "<span class=\"text-light\">" . round($Position / $Total * 100,1) . "%</span>";
 }
 //---------------------------------------------------------------------------------------------------
 function generateRandomString($length = 10) {

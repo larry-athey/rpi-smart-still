@@ -196,8 +196,8 @@ if (mysqli_num_rows($Result) > 0) {
     } else {
       /***** BOILER TEMPERATURE MANAGEMENT ROUTINES *****/
       if (($Program["boiler_managed"] == 1) && (! $ExtBoilMgmt)) {
-        // Check boiler settings every 30 seconds
-        if (time() - strtotime($Logic["boiler_timer"]) >= 30) { // Primary timer, in case it's needed for future development
+        // Check boiler settings every 5 seconds
+        if (time() - strtotime($Logic["boiler_timer"]) >= 5) { // Primary timer, in case it's needed for future development
           $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_timer=now() WHERE ID=1");
           // Boilers are super slow to reflect temperature changes due to the thermal mass of their contents
           // Therefore, by default we only check every 15 minutes to see the result of the last adjustment
@@ -299,7 +299,7 @@ if (mysqli_num_rows($Result) > 0) {
               $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now(),boiler_note='Boiler temperature is within the program\'s operating range' WHERE ID=1");
             } // $Settings["boiler_temp"] vs $Program["boiler_temp_low/high"] checks
           } // $Logic["boiler_last_adjustment"]) >= $Tuning["boiler_update"] check
-        } //$Logic["boiler_timer"] >= 30 check
+        } //$Logic["boiler_timer"] >= 5 check
       } // $Program["boiler_managed"] == 1 && ! $ExtBoilMgmt check
       /***** BOILERMAKER PROGRESSIVE TEMPERATURE MANAGEMENT ROUTINES *****/
       if (($Program["boiler_managed"] == 1) && ($Boilermaker["enabled"] == 1) && ($Boilermaker["fixed_temp"] == 0)) {
@@ -330,8 +330,8 @@ if (mysqli_num_rows($Result) > 0) {
                                           "column_note='Column has reached minimum operating temperature',hydrometer_timer=now(),hydrometer_abv_errors='0',hydrometer_temp_errors='0',flow_sensor_errors='0' WHERE ID=1");
           }
         } else {
-          // Check column settings every 30 seconds
-          if (time() - strtotime($Logic["column_timer"]) >= 30) { // Primary timer, in case it's needed for future development
+          // Check column settings every 5 seconds
+          if (time() - strtotime($Logic["column_timer"]) >= 5) { // Primary timer, in case it's needed for future development
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_timer=now() WHERE ID=1");
             // By default, adjustments are given 5 minutes to take full effect before another adjustment
             // The column is slower to react to adjustments than the dephleg sensor
@@ -415,7 +415,7 @@ if (mysqli_num_rows($Result) > 0) {
                 $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_last_adjustment=now(),column_note='Column temperature is within the program\'s operating range' WHERE ID=1");
               } // $Settings["column_temp"] vs $Program["column_temp_low/high"] checks
             } // $Logic["column_last_adjustment"]) >= $Tuning["column_update"] check
-          } // $Logic["column_timer"]) >= 30 check
+          } // $Logic["column_timer"]) >= 5 check
         } // $Logic["column_done"] == 0 check
       } // $Program["column_managed"] == 1 check
       /***** DEPHLEG TEMPERATURE MANAGEMENT ROUTINES *****/
@@ -427,8 +427,8 @@ if (mysqli_num_rows($Result) > 0) {
                                           "dephleg_note='Dephleg has reached minimum operating temperature',hydrometer_timer=now(),hydrometer_abv_errors='0',hydrometer_temp_errors='0',flow_sensor_errors='0' WHERE ID=1");
           }
         } else {
-          // Check dephleg settings every 30 seconds
-          if (time() - strtotime($Logic["dephleg_timer"]) >= 30) { // Primary timer, in case it's needed for future development
+          // Check dephleg settings every 5 seconds
+          if (time() - strtotime($Logic["dephleg_timer"]) >= 5) { // Primary timer, in case it's needed for future development
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET dephleg_timer=now() WHERE ID=1");
             // By default, adjustments are given 2 minutes to take full effect before another adjustment
             if (time() - strtotime($Logic["dephleg_last_adjustment"]) >= $Tuning["dephleg_update"]) {
@@ -527,7 +527,7 @@ if (mysqli_num_rows($Result) > 0) {
                 } // Dephleg valid range for microstepping check, no else condition, less than 4 just breaks the operation of things
               } // $Settings["dephleg_temp"] vs $Program["dephleg_temp_low/high"] checks
             } // $Logic["dephleg_last_adjustment"]) >= $Tuning["dephleg_update"] check
-          } // $Logic["dephleg_timer"]) >= 30 check
+          } // $Logic["dephleg_timer"]) >= 5 check
         } // $Logic["dephleg_done"] == 0 check
       } // $Program["dephleg_managed"] == 1 check
       /***** DISTILLATE MINIMUM ABV MANAGEMENT ROUTINES *****/

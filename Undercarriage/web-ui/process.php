@@ -341,7 +341,6 @@ elseif (isset($_POST["rss_edit_servos"])) {
     $Difference = $Settings["valve1_position"] - $Valve1;
     $Direction = 0;
   }
-  $Difference = round($Difference);
 
   if ($Difference > 0) {
     $Update = mysqli_query($DBcnx,"UPDATE settings SET valve1_position='$Valve1' WHERE ID=1");
@@ -358,7 +357,7 @@ elseif (isset($_POST["rss_edit_servos"])) {
     $Difference = $Settings["valve2_position"] - $Valve2;
     $Direction = 0;
   }
-  $Difference = round($Difference);
+
   if ($Difference > 0) {
     $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$Valve2' WHERE ID=1");
     $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
