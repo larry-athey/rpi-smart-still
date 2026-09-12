@@ -60,7 +60,7 @@ const bool CLOSE_ACTIVE_HIGH = true;
 const bool LIMIT_ACTIVE_LOW = true;
 
 // Timing
-const unsigned long MS_PER_PERCENT = 100;  // 100 ms → 1%  (10 seconds full scale)
+const unsigned long MS_PER_PERCENT = 99;  // 100 ms → 1%  (10 seconds full scale), allow 1 ms for RPi GPIO latency
 
 // Globals
 int duty = 0;                     // Current position / PWM duty 0-100
@@ -126,19 +126,14 @@ void loop() {
       closeAccum -= MS_PER_PERCENT;
       duty--;
     }
+  } else {
+    openAccum = 0;
+    closeAccum = 0;
   }
-  // If both idle or both active → hold position, keep any partial accumulators
+  // If both idle or both active → hold position and reset accumulators
 
   // Drive PWM (0-255 for 8-bit; change map() if you raised resolution)
   analogWrite(PIN_PWM, map(duty, 0, 100, 0, 255));
-
-  if (duty == 0) { // Zero both accumulators if the motor is fully off
-    openAccum = 0;
-    closeAccum = 0;
-  } else if (duty == 100) { // Zero the closed accumlator if the motor is fully on
-    openAccum = 10000;
-    closeAccum = 0;
-  }
 
   // Update simulated limit switches
   updateLimits();
