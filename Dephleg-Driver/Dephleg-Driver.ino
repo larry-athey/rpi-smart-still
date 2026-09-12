@@ -132,6 +132,12 @@ void loop() {
   // Drive PWM (0-255 for 8-bit; change map() if you raised resolution)
   analogWrite(PIN_PWM, map(duty, 0, 100, 0, 255));
 
+  // Zero the accumulators if the motor is completely off
+  if (duty == 0) {
+    openAccum = 0;
+    closeAccum = 0;
+  }
+
   // Update simulated limit switches
   updateLimits();
 
