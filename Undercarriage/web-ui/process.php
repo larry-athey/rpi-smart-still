@@ -326,44 +326,48 @@ elseif (isset($_POST["rss_edit_servos"])) {
   $Result   = mysqli_query($DBcnx,"SELECT * FROM boilermaker WHERE ID=1");
   $Boilermaker = mysqli_fetch_assoc($Result);
 
-  $_POST["Valve1"] = $_POST["Valve1"] / 100;
-  $Valve1 = round($_POST["Valve1"] * $Settings["valve1_total"],1);
-  if ($Valve1 > $Settings["valve1_total"]) $Valve1 = $Settings["valve1_total"];
-
-  $_POST["Valve2"] = $_POST["Valve2"] / 100;
-  $Valve2 = round($_POST["Valve2"] * $Settings["valve2_total"]);
-  if ($Valve2 > $Settings["valve2_total"]) $Valve2 = $Settings["valve2_total"];
-
   // Requires a difference in Valve1 position to process
-  $Difference = 0;
-  if ($Valve1 > $Settings["valve1_position"]) {
-    $Difference = $Valve1 - $Settings["valve1_position"];
-    $Direction = 1;
-  } elseif ($Valve1 < $Settings["valve1_position"]) {
-    $Difference = $Settings["valve1_position"] - $Valve1;
-    $Direction = 0;
-  }
+  if ($_POST["Valve1"] != round($Settings["valve1_position"] / $Settings["valve1_total"] * 100,1)) {
+    $_POST["Valve1"] = $_POST["Valve1"] / 100;
+    $Valve1 = round($_POST["Valve1"] * $Settings["valve1_total"],1);
+    if ($Valve1 > $Settings["valve1_total"]) $Valve1 = $Settings["valve1_total"];
 
-  if ($Difference > 0) {
-    $Update = mysqli_query($DBcnx,"UPDATE settings SET valve1_position='$Valve1' WHERE ID=1");
-    $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                  "VALUES (now(),'1','1','$Direction','$Difference','$Valve1','0','0')");
+    $Difference = 0;
+    if ($Valve1 > $Settings["valve1_position"]) {
+      $Difference = $Valve1 - $Settings["valve1_position"];
+      $Direction = 1;
+    } elseif ($Valve1 < $Settings["valve1_position"]) {
+      $Difference = $Settings["valve1_position"] - $Valve1;
+      $Direction = 0;
+    }
+
+    if ($Difference > 0) {
+      $Update = mysqli_query($DBcnx,"UPDATE settings SET valve1_position='$Valve1' WHERE ID=1");
+      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                    "VALUES (now(),'1','1','$Direction','$Difference','$Valve1','0','0')");
+    }
   }
 
   // Requires a difference in Valve2 position to process
-  $Difference = 0;
-  if ($Valve2 > $Settings["valve2_position"]) {
-    $Difference = $Valve2 - $Settings["valve2_position"];
-    $Direction = 1;
-  } elseif ($Valve2 < $Settings["valve2_position"]) {
-    $Difference = $Settings["valve2_position"] - $Valve2;
-    $Direction = 0;
-  }
+  if ($_POST["Valve2"] != round($Settings["valve2_position"] / $Settings["valve1_2otal"] * 100,1)) {
+    $_POST["Valve2"] = $_POST["Valve2"] / 100;
+    $Valve2 = round($_POST["Valve2"] * $Settings["valve2_total"]);
+    if ($Valve2 > $Settings["valve2_total"]) $Valve2 = $Settings["valve2_total"];
 
-  if ($Difference > 0) {
-    $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$Valve2' WHERE ID=1");
-    $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
-                                  "VALUES (now(),'1','2','$Direction','$Difference','$Valve2','0','0')");
+    $Difference = 0;
+    if ($Valve2 > $Settings["valve2_position"]) {
+      $Difference = $Valve2 - $Settings["valve2_position"];
+      $Direction = 1;
+    } elseif ($Valve2 < $Settings["valve2_position"]) {
+      $Difference = $Settings["valve2_position"] - $Valve2;
+      $Direction = 0;
+    }
+
+    if ($Difference > 0) {
+      $Update = mysqli_query($DBcnx,"UPDATE settings SET valve2_position='$Valve2' WHERE ID=1");
+      $Insert = mysqli_query($DBcnx,"INSERT INTO output_table (timestamp,auto_manual,valve_id,direction,duration,position,muted,executed) " .
+                                    "VALUES (now(),'1','2','$Direction','$Difference','$Valve2','0','0')");
+    }
   }
 
   if (($Boilermaker["enabled"] == 1) && ($Settings["heating_enabled"])) {
