@@ -329,7 +329,7 @@ elseif (isset($_POST["rss_edit_servos"])) {
   // Requires a difference in Valve1 position to process
   if ($_POST["Valve1"] != round($Settings["valve1_position"] / $Settings["valve1_total"] * 100,1)) {
     $_POST["Valve1"] = $_POST["Valve1"] / 100;
-    $Valve1 = round($_POST["Valve1"] * $Settings["valve1_total"],1);
+    $Valve1 = round($_POST["Valve1"] * $Settings["valve1_total"]);
     if ($Valve1 > $Settings["valve1_total"]) $Valve1 = $Settings["valve1_total"];
 
     $Difference = 0;
