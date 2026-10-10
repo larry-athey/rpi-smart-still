@@ -40,7 +40,7 @@ if (mysqli_num_rows($Result) > 0) {
       if ($Boilermaker["enabled"] == 1) {
         if ($Boilermaker["online"] == 1) {
           $Runtime = BoilermakerQuery($Boilermaker["ip_address"],"/get-runtime"); // Get the Boilermaker current runtime
-          if (($Runtime != "") && ($Runtime > 0)) BoilermakerQuery($Boilermaker["ip_address"],"/stop-run"); // Stop the Boilermaker if it's already running
+          if (($Runtime != $jsonFailure) && ($Runtime > 0)) BoilermakerQuery($Boilermaker["ip_address"],"/stop-run"); // Stop the Boilermaker if it's already running
           BoilermakerQuery($Boilermaker["ip_address"],"/?data_16=0"); // Make sure the Boilermaker's countdown timer is disabled
           if ($ExtBoilMgmt) { // Use Boilermaker temperature management
             if (($Boilermaker["op_mode"] == 1) || ($Boilermaker["op_mode"] == 3)) {

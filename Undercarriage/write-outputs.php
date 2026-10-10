@@ -81,8 +81,8 @@ while ($RS = mysqli_fetch_assoc($Result)) {
       // Control commands for a Boilermaker
       if ($Boilermaker["online"] == 1) {
         if ($RS["position"] > 0) {
-          $Runtime = trim(BoilermakerQuery($Boilermaker["ip_address"],"/get-runtime")); // Get the Boilermaker current runtime
-          if (($Runtime != "") && ($Runtime == 0)) {
+          $Runtime = BoilermakerQuery($Boilermaker["ip_address"],"/get-runtime"); // Get the Boilermaker current runtime
+          if (($Runtime != $jsonFailure) && ($Runtime == 0)) {
             BoilermakerQuery($Boilermaker["ip_address"],"/?data_16=0"); // Make sure the Boilermaker's countdown timer is disabled
             BoilermakerQuery($Boilermaker["ip_address"],"/?data_0=0");  // Put the Boilermaker into Constant Power mode
             BoilermakerQuery($Boilermaker["ip_address"],"/start-run");  // Start the Boilermaker

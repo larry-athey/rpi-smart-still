@@ -32,15 +32,15 @@ if ($Boilermaker["enabled"] == 1) {
 if ($Boilermaker["enabled"] == 1) {
   // If a Boilermaker is configured, we get the boiler temperature from that instead of the DS18B20
   if ($Boilermaker["online"] == 1) {
-    $BoilerTemp = trim(BoilermakerQuery($Boilermaker["ip_address"],"/get-tempc"));
-    if ($BoilerTemp == "") $BoilerTemp = 0;
+    $BoilerTemp = BoilermakerQuery($Boilermaker["ip_address"],"/get-tempc");
+    if ($BoilerTemp == $jsonFailure) $BoilerTemp = 0;
   } else {
     $BoilerTemp = 0;
   }
   // If a Boilermaker is configured, get its current power level during an active run since it manages its own power
   if ($Settings["active_run"] == 1) {
     if ($Boilermaker["online"] == 1) {
-      $BoilerPower = trim(BoilermakerQuery($Boilermaker["ip_address"],"/get-power"));
+      $BoilerPower = BoilermakerQuery($Boilermaker["ip_address"],"/get-power");
       if (is_numeric($BoilerPower)) {
         $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='$BoilerPower' WHERE ID=1");
         // Create an expired output command to track the power level in the timeline graph

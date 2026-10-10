@@ -76,15 +76,15 @@ function BoilermakerModeSelector($Mode) {
 }
 //---------------------------------------------------------------------------------------------------
 function BoilermakerQuery($Host,$Query) {
-  global $jsonSuccess;
-  $Result  = "";
-  $Count   = 0;
+  global $jsonSuccess,$jsonFailure;
+  $Result = $jsonFailure;
+  $Count  = 0;
 
-  while (($Result != $jsonSuccess) && ($Count < 3)) {
+  while ($Count < 3) {
     $Count ++;
     PingHost($Host);
     $Result = curlRequest("http://$Host" . $Query);
-    if ($Result == $jsonSuccess) $Count = 3;
+    if ($Result != $jsonFailure) $Count = 3;
   }
   return $Result;
 }
