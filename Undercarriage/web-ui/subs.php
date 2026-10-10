@@ -14,7 +14,7 @@ $jsonSuccess = "{\"status\": \"success\",\"message\": \"Operation completed succ
 $jsonFailure = "{\"status\": \"error\",\"message\": \"Operation failed\"}";
 //---------------------------------------------------------------------------------------------------
 function PingHost($Host) {
-  $Output = exec("/usr/bin/ping -c 1 -W 1 " . escapeshellarg($Host),$Result,$Status);
+  $Output = exec("/usr/bin/ping -c 2 -W 5 " . escapeshellarg($Host),$Result,$Status);
   if ($Status == 0) {
     return true;
   } else {
