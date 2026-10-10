@@ -9,6 +9,9 @@ define("DB_HOST","localhost");
 define("DB_NAME","rpismartstill");
 define("DB_USER","rssdbuser");
 define("DB_PASS","rssdbpasswd");
+
+$jsonSuccess = "{\"status\": \"success\",\"message\": \"Operation completed successfully\"}";
+$jsonFailure = "{\"status\": \"error\",\"message\": \"Operation failed\"}";
 //---------------------------------------------------------------------------------------------------
 function PingHost($Host) {
   $Output = exec("/usr/bin/ping -c 1 -W 1 " . escapeshellarg($Host),$Result,$Status);
@@ -16,6 +19,28 @@ function PingHost($Host) {
     return true;
   } else {
     return false;
+  }
+}
+//---------------------------------------------------------------------------------------------------
+function curlRequest($URL) {
+  global $jsonSuccess,$jsonFailure;
+  $ch = curl_init($URL);
+
+  curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+  curl_setopt($ch,CURLOPT_FOLLOWLOCATION,true);
+  curl_setopt($ch,CURLOPT_HTTP09_ALLOWED,true);
+  curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+  curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,5);
+  curl_setopt($ch,CURLOPT_TIMEOUT,10);
+
+  $Result = curl_exec($ch);
+
+  curl_close($ch);
+
+  if ($Result === false) {
+    return $jsonFailure;
+  } else {
+    return trim($Result);
   }
 }
 //---------------------------------------------------------------------------------------------------
@@ -51,20 +76,15 @@ function BoilermakerModeSelector($Mode) {
 }
 //---------------------------------------------------------------------------------------------------
 function BoilermakerQuery($Host,$Query) {
-  $Output = shell_exec("/usr/bin/curl -s -m 5 --http0.9 http://$Host" . $Query);
-  return $Output;
-}
-//---------------------------------------------------------------------------------------------------
-function BoilermakerQuery2($Host,$Query) {
-  $Success = "{\"status\": \"success\",\"message\": \"Operation completed successfully\"}";
+  global $jsonSuccess;
   $Result  = "";
   $Count   = 0;
 
-  while (($Result != $Success) && ($Count < 3)) {
+  while (($Result != $jsonSuccess) && ($Count < 3)) {
     $Count ++;
     PingHost($Host);
-    $Result = trim(BoilermakerQuery($Host,$Query));
-    if ($Result == $Success) $Count = 3;
+    $Result = curlRequest("http://$Host" . $Query);
+    if ($Result == $jsonSuccess) $Count = 3;
   }
   return $Result;
 }

@@ -39,36 +39,33 @@ if (mysqli_num_rows($Result) > 0) {
     if ($Settings["heating_enabled"] == 1) {
       if ($Boilermaker["enabled"] == 1) {
         if ($Boilermaker["online"] == 1) {
-          PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
-          PingHost($Boilermaker["ip_address"]);
-          PingHost($Boilermaker["ip_address"]);
-          $Runtime = trim(BoilermakerQuery($Boilermaker["ip_address"],"/get-runtime")); // Get the Boilermaker current runtime
-          if (($Runtime != "") && ($Runtime > 0)) BoilermakerQuery2($Boilermaker["ip_address"],"/stop-run"); // Stop the Boilermaker if it's already running
-          BoilermakerQuery2($Boilermaker["ip_address"],"/?data_16=0"); // Make sure the Boilermaker's countdown timer is disabled
+          $Runtime = BoilermakerQuery($Boilermaker["ip_address"],"/get-runtime"); // Get the Boilermaker current runtime
+          if (($Runtime != "") && ($Runtime > 0)) BoilermakerQuery($Boilermaker["ip_address"],"/stop-run"); // Stop the Boilermaker if it's already running
+          BoilermakerQuery($Boilermaker["ip_address"],"/?data_16=0"); // Make sure the Boilermaker's countdown timer is disabled
           if ($ExtBoilMgmt) { // Use Boilermaker temperature management
             if (($Boilermaker["op_mode"] == 1) || ($Boilermaker["op_mode"] == 3)) {
-              BoilermakerQuery2($Boilermaker["ip_address"],"/?data_0=" . $Boilermaker["op_mode"]); // Put the Boilermaker into Temperature Cruise mode
-              BoilermakerQuery2($Boilermaker["ip_address"],"/?data_2=" . $Boilermaker["startup"]); // Set the Boilermaker startup power level
-              BoilermakerQuery2($Boilermaker["ip_address"],"/?data_3=" . $Program["heating_idle"]); // Set the Boilermaker fallback power level
+              BoilermakerQuery($Boilermaker["ip_address"],"/?data_0=" . $Boilermaker["op_mode"]); // Put the Boilermaker into Temperature Cruise mode
+              BoilermakerQuery($Boilermaker["ip_address"],"/?data_2=" . $Boilermaker["startup"]); // Set the Boilermaker startup power level
+              BoilermakerQuery($Boilermaker["ip_address"],"/?data_3=" . $Program["heating_idle"]); // Set the Boilermaker fallback power level
             } else {
-              BoilermakerQuery2($Boilermaker["ip_address"],"/?data_0=2"); // Put the Boilermaker into Brewing/Fermentation mode
+              BoilermakerQuery($Boilermaker["ip_address"],"/?data_0=2"); // Put the Boilermaker into Brewing/Fermentation mode
             }
-            BoilermakerQuery2($Boilermaker["ip_address"],"/?data_1=" . $Program["boiler_temp_low"]); // Set the Boilermaker initial target temperature
+            BoilermakerQuery($Boilermaker["ip_address"],"/?data_1=" . $Program["boiler_temp_low"]); // Set the Boilermaker initial target temperature
             if ($Boilermaker["fixed_temp"] == 0) {
-              BoilermakerQuery2($Boilermaker["ip_address"],"/?data_13=0"); // Disable the Boilermaker's progressive temperature function
+              BoilermakerQuery($Boilermaker["ip_address"],"/?data_13=0"); // Disable the Boilermaker's progressive temperature function
               $Range = $Program["boiler_temp_high"] - $Program["boiler_temp_low"];
               $IncTemp = $Range / ($Boilermaker["time_spread"] * 12);
               $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='" . $Program["boiler_temp_low"] . "',inc_temp='$IncTemp' WHERE ID=1");
             } else {
               $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='" . $Program["boiler_temp_low"] . "',inc_temp='0' WHERE ID=1");
             }
-            BoilermakerQuery2($Boilermaker["ip_address"],"/start-run"); // Start the Boilermaker
+            BoilermakerQuery($Boilermaker["ip_address"],"/start-run"); // Start the Boilermaker
             if ($Settings["speech_enabled"] == 1) SpeakMessage(58);
           } else { // Constant power mode (we're basically using the Boilermaker as a digital SCR power controller in this case)
-            BoilermakerQuery2($Boilermaker["ip_address"],"/?data_0=0"); // Put the Boilermaker into Constant Power mode
-            BoilermakerQuery2($Boilermaker["ip_address"],"/?data_2=" . $Boilermaker["startup"]); // Set the Boilermaker startup power level
-            BoilermakerQuery2($Boilermaker["ip_address"],"/?data_3=" . $Program["heating_idle"]); // Set the Boilermaker fallback power level (this is just for visual reference on the Boilermaker screen)
-            BoilermakerQuery2($Boilermaker["ip_address"],"/start-run"); // Start the Boilermaker
+            BoilermakerQuery($Boilermaker["ip_address"],"/?data_0=0"); // Put the Boilermaker into Constant Power mode
+            BoilermakerQuery($Boilermaker["ip_address"],"/?data_2=" . $Boilermaker["startup"]); // Set the Boilermaker startup power level
+            BoilermakerQuery($Boilermaker["ip_address"],"/?data_3=" . $Program["heating_idle"]); // Set the Boilermaker fallback power level (this is just for visual reference on the Boilermaker screen)
+            BoilermakerQuery($Boilermaker["ip_address"],"/start-run"); // Start the Boilermaker
             if ($Settings["speech_enabled"] == 1) SpeakMessage(64);
           }
         } else {
@@ -100,10 +97,7 @@ if (mysqli_num_rows($Result) > 0) {
     if ($Settings["heating_enabled"] == 1) {
       if ($Boilermaker["enabled"] == 1) {
         if ($Boilermaker["online"] == 1) {
-          PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
-          PingHost($Boilermaker["ip_address"]);
-          PingHost($Boilermaker["ip_address"]);
-          BoilermakerQuery2($Boilermaker["ip_address"],"/stop-run"); // Stop the Boilermaker
+          BoilermakerQuery($Boilermaker["ip_address"],"/stop-run"); // Stop the Boilermaker
           $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='0',inc_temp='0' WHERE ID=1");
           if ($Settings["speech_enabled"] == 1) SpeakMessage(60);
         } else {
@@ -135,10 +129,7 @@ if (mysqli_num_rows($Result) > 0) {
               if ($Settings["speech_enabled"] == 1) SpeakMessage(61);
             } else {
               if ($Boilermaker["online"] == 1) {
-                PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
-                PingHost($Boilermaker["ip_address"]);
-                PingHost($Boilermaker["ip_address"]);
-                BoilermakerQuery2($Boilermaker["ip_address"],"/?data_2=" . $Program["heating_idle"]); // Perform manual Boilermaker power fallback
+                BoilermakerQuery($Boilermaker["ip_address"],"/?data_2=" . $Program["heating_idle"]); // Perform manual Boilermaker power fallback
                 if ($Settings["speech_enabled"] == 1) SpeakMessage(65);
               } else {
                 if ($Settings["speech_enabled"] == 1) SpeakMessage(59);
@@ -217,10 +208,7 @@ if (mysqli_num_rows($Result) > 0) {
                       $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='$BoilerPower' WHERE ID=1");
                       $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now()," .
                                                     "boiler_note='Boiler is under temperature, increasing Boilermaker power to " . $BoilerPower . "%' WHERE ID=1");
-                      PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
-                      PingHost($Boilermaker["ip_address"]);
-                      PingHost($Boilermaker["ip_address"]);
-                      BoilermakerQuery2($Boilermaker["ip_address"],"/?data_2=$BoilerPower"); // Perform manual Boilermaker power adjustment
+                      BoilermakerQuery($Boilermaker["ip_address"],"/?data_2=$BoilerPower"); // Perform manual Boilermaker power adjustment
                       if ($Settings["speech_enabled"] == 1) SpeakMessage(66);
                     }
                   } else {
@@ -263,10 +251,7 @@ if (mysqli_num_rows($Result) > 0) {
                       $Update = mysqli_query($DBcnx,"UPDATE settings SET heating_position='$BoilerPower' WHERE ID=1");
                       $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now()," .
                                                     "boiler_note='Boiler is over temperature, decreasing Boilermaker power to " . $BoilerPower . "%' WHERE ID=1");
-                      PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
-                      PingHost($Boilermaker["ip_address"]);
-                      PingHost($Boilermaker["ip_address"]);
-                      BoilermakerQuery2($Boilermaker["ip_address"],"/?data_2=$BoilerPower"); // Perform manual Boilermaker power adjustment
+                      BoilermakerQuery($Boilermaker["ip_address"],"/?data_2=$BoilerPower"); // Perform manual Boilermaker power adjustment
                       if ($Settings["speech_enabled"] == 1) SpeakMessage(67);
                     }
                   } else {
@@ -316,10 +301,7 @@ if (mysqli_num_rows($Result) > 0) {
             $TempF = round(($TargetTemp * (9 / 5)) + 32,1) . "F";
             $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='$TargetTemp' WHERE ID=1");
             $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET boiler_last_adjustment=now(),boiler_note='Boilermaker target temperature progressively incremented to $TempC / $TempF' WHERE ID=1");
-            PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
-            PingHost($Boilermaker["ip_address"]);
-            PingHost($Boilermaker["ip_address"]);
-            BoilermakerQuery2($Boilermaker["ip_address"],"/?data_1=$TargetTemp"); // Update the Boilermaker target temperature
+            BoilermakerQuery($Boilermaker["ip_address"],"/?data_1=$TargetTemp"); // Update the Boilermaker target temperature
             if (($TargetTemp >= $Program["boiler_temp_high"]) && ($Settings["speech_enabled"] == 1)) SpeakMessage(63);
           }
         }
@@ -350,10 +332,7 @@ if (mysqli_num_rows($Result) > 0) {
                       $TempF = round(($TargetTemp * (9 / 5)) + 32,1) . "F";
                       $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='$TargetTemp' WHERE ID=1");
                       $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_last_adjustment=now(),boiler_note='Boilermaker target temperature increased to $TempC / $TempF due to column under temp' WHERE ID=1");
-                      PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
-                      PingHost($Boilermaker["ip_address"]);
-                      PingHost($Boilermaker["ip_address"]);
-                      BoilermakerQuery2($Boilermaker["ip_address"],"/?data_1=$TargetTemp"); // Update the Boilermaker target temperature
+                      BoilermakerQuery($Boilermaker["ip_address"],"/?data_1=$TargetTemp"); // Update the Boilermaker target temperature
                       if ($Settings["speech_enabled"] == 1) SpeakMessage(20);
                     }
                   } else {
@@ -387,10 +366,7 @@ if (mysqli_num_rows($Result) > 0) {
                       $TempF = round(($TargetTemp * (9 / 5)) + 32,1) . "F";
                       $Update = mysqli_query($DBcnx,"UPDATE boilermaker SET target_temp='$TargetTemp' WHERE ID=1");
                       $Update = mysqli_query($DBcnx,"UPDATE logic_tracker SET column_last_adjustment=now(),boiler_note='Boilermaker target temperature reduced to $TempC / $TempF due to column over temp' WHERE ID=1");
-                      PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
-                      PingHost($Boilermaker["ip_address"]);
-                      PingHost($Boilermaker["ip_address"]);
-                      BoilermakerQuery2($Boilermaker["ip_address"],"/?data_1=$TargetTemp"); // Update the Boilermaker target temperature
+                      BoilermakerQuery($Boilermaker["ip_address"],"/?data_1=$TargetTemp"); // Update the Boilermaker target temperature
                       if ($Settings["speech_enabled"] == 1) SpeakMessage(21);
                     }
                   } else {

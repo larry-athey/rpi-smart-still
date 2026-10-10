@@ -81,18 +81,15 @@ while ($RS = mysqli_fetch_assoc($Result)) {
       // Control commands for a Boilermaker
       if ($Boilermaker["online"] == 1) {
         if ($RS["position"] > 0) {
-          PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
-          PingHost($Boilermaker["ip_address"]);
-          PingHost($Boilermaker["ip_address"]);
           $Runtime = trim(BoilermakerQuery($Boilermaker["ip_address"],"/get-runtime")); // Get the Boilermaker current runtime
           if (($Runtime != "") && ($Runtime == 0)) {
-            BoilermakerQuery2($Boilermaker["ip_address"],"/?data_16=0"); // Make sure the Boilermaker's countdown timer is disabled
-            BoilermakerQuery2($Boilermaker["ip_address"],"/?data_0=0");  // Put the Boilermaker into Constant Power mode
-            BoilermakerQuery2($Boilermaker["ip_address"],"/start-run");  // Start the Boilermaker
+            BoilermakerQuery($Boilermaker["ip_address"],"/?data_16=0"); // Make sure the Boilermaker's countdown timer is disabled
+            BoilermakerQuery($Boilermaker["ip_address"],"/?data_0=0");  // Put the Boilermaker into Constant Power mode
+            BoilermakerQuery($Boilermaker["ip_address"],"/start-run");  // Start the Boilermaker
           }
-          BoilermakerQuery2($Boilermaker["ip_address"],"/?power=" . $RS["position"]); // Set the Boilermaker power level
+          BoilermakerQuery($Boilermaker["ip_address"],"/?power=" . $RS["position"]); // Set the Boilermaker power level
         } else {
-          BoilermakerQuery2($Boilermaker["ip_address"],"/stop-run"); // Stop the Boilermaker
+          BoilermakerQuery($Boilermaker["ip_address"],"/stop-run"); // Stop the Boilermaker
         }
         if ($RS["direction"] == 0) {
           if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(5);
@@ -157,9 +154,6 @@ while ($RS = mysqli_fetch_assoc($Result)) {
   } elseif ($RS["valve_id"] == 5) {
     // Reboot the Boilermaker (if one is configured)
     if (($Settings["speech_enabled"] == 1) && ($RS["muted"] == 0)) SpeakMessage(62);
-    PingHost($Boilermaker["ip_address"]); // Wake up that damn ESP32 since they like to go WiFi lazy without activity
-    PingHost($Boilermaker["ip_address"]);
-    PingHost($Boilermaker["ip_address"]);
     BoilermakerQuery($Boilermaker["ip_address"],"/reboot"); // Reboot the Boilermaker
     $Update = mysqli_query($DBcnx,"UPDATE output_table SET timestamp=now(),executed='1' WHERE ID=" . $RS["ID"]);
   } elseif ($RS["valve_id"] == 6) {
